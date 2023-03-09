@@ -17,8 +17,8 @@ public class ArticleEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     private UserEntity author;
 
     @Column(name = "slug")
@@ -38,7 +38,7 @@ public class ArticleEntity {
     @OneToMany(mappedBy = "article")
     private List<CommentEntity> comments;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<FavoriteEntity> favorites;
 
     @Column(name = "created_at")

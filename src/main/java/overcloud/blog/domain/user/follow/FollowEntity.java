@@ -3,13 +3,15 @@ package overcloud.blog.domain.user.follow;
 import jakarta.persistence.*;
 import overcloud.blog.domain.user.UserEntity;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "follows", schema = "public")
 public class FollowEntity {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     @ManyToOne
     @JoinColumn(name = "follower_id")
     private UserEntity follower;
@@ -17,11 +19,11 @@ public class FollowEntity {
     @JoinColumn(name = "followee_id")
     private UserEntity followee;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -39,5 +41,20 @@ public class FollowEntity {
 
     public void setFollowee(UserEntity follwing) {
         this.followee = follwing;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FollowEntity that = (FollowEntity) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

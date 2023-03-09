@@ -14,12 +14,12 @@ public class FavoriteEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "article_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "article_id", referencedColumnName = "id")
     private ArticleEntity article;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
     public void setId(UUID id) {

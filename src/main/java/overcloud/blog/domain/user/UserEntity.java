@@ -3,8 +3,11 @@ package overcloud.blog.domain.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import overcloud.blog.domain.article.ArticleEntity;
+import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.follow.FollowEntity;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,11 +37,25 @@ public class UserEntity {
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "follower")
     private Set<FollowEntity> follower;
 
-    @OneToMany(mappedBy = "followee")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "followee")
     private Set<FollowEntity> followee;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<FavoriteEntity> favorites;
+
+    @OneToMany(mappedBy = "author")
+    private List<ArticleEntity> authorize;
+
+    public List<ArticleEntity> getAuthorize() {
+        return authorize;
+    }
+
+    public void setAuthorize(List<ArticleEntity> authorize) {
+        this.authorize = authorize;
+    }
 
     public UUID getId() {
         return id;
@@ -102,5 +119,28 @@ public class UserEntity {
 
     public void setFollowee(Set<FollowEntity> followee) {
         this.followee = followee;
+    }
+
+    public List<FavoriteEntity> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<FavoriteEntity> favorites) {
+        this.favorites = favorites;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserEntity that = (UserEntity) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

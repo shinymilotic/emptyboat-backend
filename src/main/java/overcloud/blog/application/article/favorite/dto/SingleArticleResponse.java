@@ -8,7 +8,6 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Builder
 @JsonTypeName("article")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class SingleArticleResponse {

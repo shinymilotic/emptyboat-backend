@@ -20,52 +20,42 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
     EntityManager entityManager;
 
     @Override
-    public List<ArticleEntity> findByTagAndAuthorAndFavorite(String tag, String author, String favorited, int limit, int offset) {
+    public List<ArticleEntity> findByCriteria(String tag, String author, String favorited, int limit, int offset) {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT articles.author_id,");
-        sql.append("articles.id,");
-        sql.append("articles.body,");
-        sql.append("articles.created_at,");
-        sql.append("articles.description,");
-        sql.append("articles.slug,");
-        sql.append("articles.title,");
-        sql.append("articles.updated_at ");
-        sql.append("from articles ");
-        sql.append("left join article_tag on article_tag.article_id = articles.id ");
-        sql.append("left join tag on article_tag.tag_id = tag.id ");
-        sql.append("left join favorites on articles.id = favorites.article_id ");
-        sql.append("AND  articles.author_id = favorites.user_id ");
-        sql.append("inner join users on users.id = articles.author_id ");
-        sql.append("WHERE users.username is not null ");
-
+        sql.append("SELECT article FROM ArticleEntity article ");
+        sql.append("LEFT JOIN ArticleTag articleTag ON articleTag.article.id = article.id ");
+        sql.append("LEFT JOIN FavoriteEntity favorite ON favorite.article.id = article.id ");
+        sql.append("WHERE true  ");
         if(StringUtils.hasText(tag)) {
-            sql.append("AND tag.name = :tag ");
+            sql.append(" AND (articleTag.tag.name = :tag)  ");
         }
-
         if(StringUtils.hasText(author)) {
-            sql.append("AND users.username = :author ");
+            sql.append(" AND (article.author.username = :author)  ");
         }
-
         if(StringUtils.hasText(favorited)) {
-            sql.append("AND favorites.user_id = users.id ");
-            sql.append("AND users.username = :favorited ");
+            sql.append(" AND (favorite.user.username = :favorited) ");
         }
 
-        sql.append(" LIMIT :limit OFFSET :offset ");
+        Query query = entityManager
+                .createQuery(sql.toString())
+                .setFirstResult(offset)
+                .setFirstResult(limit);
 
-        Query query = entityManager.createNativeQuery(sql.toString(), ArticleEntity.class);
         if(StringUtils.hasText(tag)) {
             query.setParameter("tag", tag);
         }
+
         if(StringUtils.hasText(author)) {
             query.setParameter("author", author);
         }
+
         if(StringUtils.hasText(favorited)) {
             query.setParameter("favorited", favorited);
         }
-        query.setParameter("limit", limit);
-        query.setParameter("offset", offset);
 
-        return query.getResultList();
+        List<ArticleEntity> articleEntities = query.getResultList();
+
+
+        return articleEntities;
     }
 }

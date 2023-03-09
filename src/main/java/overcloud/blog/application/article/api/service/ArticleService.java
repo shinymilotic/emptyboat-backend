@@ -11,6 +11,8 @@ import overcloud.blog.application.article.api.dto.get.GetArticlesResponse;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleRequest;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleResponse;
 import overcloud.blog.application.article.api.repository.ArticleRepository;
+import overcloud.blog.application.article.favorite.utils.FavoriteUtils;
+import overcloud.blog.application.follow.utils.FollowUtils;
 import overcloud.blog.application.tag.repository.TagRepository;
 import overcloud.blog.application.user.repository.UserRepository;
 import overcloud.blog.domain.ArticleTag;
@@ -39,6 +41,12 @@ public class ArticleService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FavoriteUtils favoriteUtils;
+
+    @Autowired
+    private FollowUtils followUtils;
 
     public CreateArticleResponse createArticle(CreateArticleRequest articleRequest) {
         CreateArticleResponse response = new CreateArticleResponse();
@@ -73,7 +81,7 @@ public class ArticleService {
         }
 
         articleEntity.setArticleTags(tagForInsert);
-        articleRepository.save(articleEntity);
+        ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
 
         AuthorResponse authorResponse = new AuthorResponse();
         authorResponse.setBio(securityUser.getBio());
@@ -83,11 +91,11 @@ public class ArticleService {
         response.setAuthorResponse(authorResponse);
         response.setTagList(tagList);
         response.setBody(body);
-        response.setFavorited(false);
+        response.setFavorited(favoriteUtils.isFavorited(securityUser, savedArticleEntity));
         response.setDescription(description);
         response.setSlug(slug);
         response.setTitle(title);
-        response.setFavoritesCount(0);
+        response.setFavoritesCount(savedArticleEntity.getFavorites().size());
         response.setCreatedAt(now);
         response.setUpdatedAt(now);
 
@@ -122,7 +130,8 @@ public class ArticleService {
     public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, int offset) {
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleEntity> articleEntities = articleRepository.findByTagAndAuthorAndFavorite(tag, author, favorited, limit, offset);
+        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, offset);
+        UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();
 
         for (ArticleEntity article: articleEntities) {
             ArticleResponse articleResponse = new ArticleResponse();
@@ -130,17 +139,22 @@ public class ArticleService {
             articleResponse.setBody(article.getBody());
             articleResponse.setDescription(article.getDescription());
             articleResponse.setSlug(article.getSlug());
-            articleResponse.setFavorited(false);
+            articleResponse.setFavorited(favoriteUtils.isFavorited(securityUser, article));
             articleResponse.setFavoritesCount(article.getFavorites().size());
-            articleResponse.setTagList(null);
-            articleResponse.setTitle(null);
-            articleResponse.setCreatedAt(null);
-            articleResponse.setUpdatedAt(null);
+            List<ArticleTag> articleTagList = article.getArticleTags();
+            List<String> tagList = new ArrayList<>();
+            for (ArticleTag articleTag : articleTagList) {
+                tagList.add(articleTag.getTag().getName());
+            }
+            articleResponse.setTagList(tagList);
+            articleResponse.setTitle(article.getTitle());
+            articleResponse.setCreatedAt(article.getCreateAt());
+            articleResponse.setUpdatedAt(article.getUpdatedAt());
 
             GetArticleAuthorResponse articleAuthorResponse = new GetArticleAuthorResponse();
             UserEntity authorEntity = article.getAuthor();
             articleAuthorResponse.setUsername(authorEntity.getUsername());
-            articleAuthorResponse.setFollowing(false);
+            articleAuthorResponse.setFollowing(followUtils.isFollowing(securityUser, authorEntity));
             articleAuthorResponse.setBio(authorEntity.getBio());
             articleAuthorResponse.setImage(authorEntity.getImage());
 
@@ -148,6 +162,46 @@ public class ArticleService {
             getArticlesResponse.getArticles().add(articleResponse);
 
         }
+
+        return getArticlesResponse;
+    }
+
+    public GetArticlesResponse getArticle(String slug) {
+        GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
+        List<ArticleEntity> articleList = articleRepository.findBySlug(slug);
+        ArticleEntity articleEntity = new ArticleEntity();
+        UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();
+
+        if(!articleList.isEmpty()) {
+            articleEntity = articleList.get(0);
+        }
+        ArticleResponse articleResponse = new ArticleResponse();
+        articleResponse.setId(articleEntity.getId().toString());
+        articleResponse.setBody(articleEntity.getBody());
+        articleResponse.setDescription(articleEntity.getDescription());
+        articleResponse.setSlug(articleEntity.getSlug());
+        articleResponse.setFavorited(favoriteUtils.isFavorited(securityUser, articleEntity));
+        articleResponse.setFavoritesCount(articleEntity.getFavorites().size());
+        articleResponse.setTitle(articleEntity.getTitle());
+        articleResponse.setCreatedAt(articleEntity.getCreateAt());
+        articleResponse.setUpdatedAt(articleEntity.getUpdatedAt());
+
+        List<ArticleTag> articleTagList = articleEntity.getArticleTags();
+        List<String> tagList = new ArrayList<>();
+        for (ArticleTag articleTag : articleTagList) {
+            tagList.add(articleTag.getTag().getName());
+        }
+        articleResponse.setTagList(tagList);
+
+        GetArticleAuthorResponse articleAuthorResponse = new GetArticleAuthorResponse();
+        UserEntity authorEntity = articleEntity.getAuthor();
+        articleAuthorResponse.setUsername(authorEntity.getUsername());
+        articleAuthorResponse.setFollowing(followUtils.isFollowing(securityUser, authorEntity));
+        articleAuthorResponse.setBio(authorEntity.getBio());
+        articleAuthorResponse.setImage(authorEntity.getImage());
+
+        articleResponse.setAuthor(articleAuthorResponse);
+        getArticlesResponse.setArticles(List.of(articleResponse));
 
         return getArticlesResponse;
     }

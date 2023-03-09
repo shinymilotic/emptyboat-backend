@@ -35,6 +35,11 @@ public class ArticleController {
         return articleService.deleteArticle(id);
     }
 
+    @GetMapping("/articles/{slug}")
+    public GetArticlesResponse getArticle(@PathVariable("slug") String slug ) {
+        return articleService.getArticle(slug);
+    }
+
     @GetMapping("/articles")
     public GetArticlesResponse getArticles(@RequestParam(value = "tag", required = false) String tag,
                                            @RequestParam(value = "author", required = false) String author,
