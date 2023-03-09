@@ -13,6 +13,8 @@ import java.util.UUID;
 public interface FavoriteRepository extends JpaRepository<FavoriteEntity, UUID> {
 
     @Modifying
-    @Query("DELETE FROM FavoriteEntity f WHERE f.article.slug = :slug")
+    @Query("DELETE FROM FavoriteEntity favorite" +
+            "  WHERE EXISTS (SELECT article FROM ArticleEntity article" +
+            " WHERE article.slug = :slug AND favorite.article.id = article.id) ")
     void deleteBySlug(String slug);
 }

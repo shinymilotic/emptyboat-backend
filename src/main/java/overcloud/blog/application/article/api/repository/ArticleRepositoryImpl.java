@@ -39,7 +39,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
         Query query = entityManager
                 .createQuery(sql.toString())
                 .setFirstResult(offset)
-                .setFirstResult(limit);
+                .setMaxResults(limit);
 
         if(StringUtils.hasText(tag)) {
             query.setParameter("tag", tag);

@@ -51,7 +51,7 @@ public class FavoriteService {
         authorResponse.setEmail(author.getEmail());
 
         articleResponse.setAuthor(authorResponse);
-        articleResponse.setFavoritesCount(articleEntity.getFavorites().size());
+        articleResponse.setFavoritesCount(articleEntity.getFavorites().size() + 1);
         articleResponse.setFavorited(true);
         articleResponse.setBody(articleEntity.getBody());
         articleResponse.setDescription(articleEntity.getDescription());
@@ -79,7 +79,7 @@ public class FavoriteService {
         authorResponse.setEmail(author.getEmail());
 
         articleResponse.setAuthor(authorResponse);
-        articleResponse.setFavoritesCount(articleEntity.getFavorites().size());
+        articleResponse.setFavoritesCount(articleEntity.getFavorites().size() - 1);
         articleResponse.setFavorited(false);
         articleResponse.setBody(articleEntity.getBody());
         articleResponse.setDescription(articleEntity.getDescription());
