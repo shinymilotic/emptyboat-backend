@@ -51,18 +51,18 @@ public class UserController {
         return userService.getCurrentUser();
     }
 
-    @GetMapping(value = "profiles", params = "username")
-    public GetProfileResponse getProfile(@RequestParam String username) throws Exception {
+    @GetMapping(value = "profiles/{username}")
+    public GetProfileResponse getProfile(@PathVariable("username") String username) throws Exception {
         return userService.getProfile(username);
     }
 
     @PostMapping(value = "profiles/{username}/follow")
-    public FollowUserResponse followUser(@RequestParam("username") String username) {
+    public FollowUserResponse followUser(@PathVariable("username") String username) {
         return userService.followUser(username);
     }
 
     @DeleteMapping(value = "profiles/{username}/follow")
-    public UnfollowResponse unfollowUser(@RequestParam("username") String username) {
+    public UnfollowResponse unfollowUser(@PathVariable("username") String username) {
         return userService.unfollowUser(username);
     }
 }

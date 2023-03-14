@@ -37,11 +37,16 @@ public class UserEntity {
     @Column(name = "image")
     private String image;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "follower")
-    private Set<FollowEntity> follower;
+    @ManyToMany
+    @JoinTable(
+            name = "follows",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "followee_id")
+    )
+    private Set<UserEntity> followee;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "followee")
-    private Set<FollowEntity> followee;
+    @ManyToMany(mappedBy = "followee")
+    private Set<UserEntity> follower;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<FavoriteEntity> favorites;
@@ -105,19 +110,19 @@ public class UserEntity {
         this.image = image;
     }
 
-    public Set<FollowEntity> getFollower() {
+    public Set<UserEntity> getFollower() {
         return follower;
     }
 
-    public void setFollower(Set<FollowEntity> follower) {
+    public void setFollower(Set<UserEntity> follower) {
         this.follower = follower;
     }
 
-    public Set<FollowEntity> getFollowee() {
+    public Set<UserEntity> getFollowee() {
         return followee;
     }
 
-    public void setFollowee(Set<FollowEntity> followee) {
+    public void setFollowee(Set<UserEntity> followee) {
         this.followee = followee;
     }
 

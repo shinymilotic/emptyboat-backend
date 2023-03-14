@@ -11,6 +11,8 @@ public class GetArticleAuthorResponse {
     private String image;
     @JsonProperty("following")
     private boolean following;
+    @JsonProperty("followersCount")
+    private int followersCount;
 
     public String getUsername() {
         return username;
@@ -42,5 +44,13 @@ public class GetArticleAuthorResponse {
 
     public void setFollowing(boolean following) {
         this.following = following;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
     }
 }

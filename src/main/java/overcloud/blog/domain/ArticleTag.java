@@ -7,12 +7,12 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "article_tag", schema = "public")
 public class ArticleTag {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Id
     @JoinColumn(name = "tag_id", referencedColumnName = "id")
     private TagEntity tag;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Id
     @JoinColumn(name = "article_id", referencedColumnName = "id")
     private ArticleEntity article;

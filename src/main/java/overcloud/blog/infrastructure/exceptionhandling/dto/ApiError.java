@@ -17,7 +17,7 @@ import java.util.List;
 public class ApiError {
     private HttpStatus status;
     private String message;
-
+                                                                                                                
     private List<ApiErrorDetail> apiErrorDetails;
 
     public ApiError(HttpStatus status, String message) {

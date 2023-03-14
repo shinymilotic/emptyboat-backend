@@ -12,11 +12,11 @@ public class FollowEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @ManyToOne
-    @JoinColumn(name = "follower_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "follower_id", referencedColumnName = "id")
     private UserEntity follower;
-    @ManyToOne
-    @JoinColumn(name = "followee_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "followee_id", referencedColumnName = "id")
     private UserEntity followee;
 
     public UUID getId() {

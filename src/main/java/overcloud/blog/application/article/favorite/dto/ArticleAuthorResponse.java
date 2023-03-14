@@ -11,6 +11,8 @@ public class ArticleAuthorResponse {
     private String image;
     @JsonProperty("following")
     private boolean following;
+    @JsonProperty("followersCount")
+    private int followersCount;
 
     @JsonProperty("email")
     private String email;
@@ -53,5 +55,13 @@ public class ArticleAuthorResponse {
 
     public void setFollowing(boolean following) {
         this.following = following;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
     }
 }

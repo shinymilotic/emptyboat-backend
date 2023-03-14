@@ -17,7 +17,7 @@ public class TagEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
     private List<ArticleTag> articleTags;
 
     public void setId(UUID id) {

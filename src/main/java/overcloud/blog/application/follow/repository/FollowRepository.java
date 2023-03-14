@@ -6,11 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface FollowRepository extends JpaRepository<FollowEntity, Long> {
+import java.util.List;
+import java.util.UUID;
 
-    @Query(" SELECT FollowEntity FROM FollowEntity f WHERE" +
+@Repository
+public interface FollowRepository extends JpaRepository<FollowEntity, UUID> {
+
+    @Query(" SELECT f FROM FollowEntity f WHERE" +
             " f.follower.username = :currentUsername" +
             " AND f.followee.username = :followingUsername ")
-    FollowEntity getFollowing(String currentUsername, String followingUsername);
+    List<FollowEntity> getFollowing(String currentUsername, String followingUsername);
+
 }

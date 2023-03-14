@@ -47,6 +47,7 @@ public class FavoriteService {
         authorResponse.setUsername(author.getUsername());
         authorResponse.setBio(author.getBio());
         authorResponse.setFollowing(followUtils.isFollowing(currenUser, author));
+        authorResponse.setFollowersCount(followUtils.getFollowingCount(author));
         authorResponse.setImage(author.getImage());
         authorResponse.setEmail(author.getEmail());
 
@@ -75,6 +76,7 @@ public class FavoriteService {
         authorResponse.setUsername(author.getUsername());
         authorResponse.setBio(author.getBio());
         authorResponse.setFollowing(followUtils.isFollowing(currenUser, author));
+        authorResponse.setFollowersCount(followUtils.getFollowingCount(author));
         authorResponse.setImage(author.getImage());
         authorResponse.setEmail(author.getEmail());
 

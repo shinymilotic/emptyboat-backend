@@ -1,9 +1,12 @@
-package overcloud.blog.application.article.comment.dto.get;
+package overcloud.blog.application.follow.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-public class GetCommentAuthorResponse {
-
+@JsonTypeName("profile")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+public class FollowResponse {
     @JsonProperty("username")
     private String username;
 
@@ -15,6 +18,9 @@ public class GetCommentAuthorResponse {
 
     @JsonProperty("following")
     private boolean following;
+
+    @JsonProperty("email")
+    private String email;
 
     @JsonProperty("followersCount")
     private int followersCount;
@@ -49,6 +55,14 @@ public class GetCommentAuthorResponse {
 
     public void setFollowing(boolean following) {
         this.following = following;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getFollowersCount() {

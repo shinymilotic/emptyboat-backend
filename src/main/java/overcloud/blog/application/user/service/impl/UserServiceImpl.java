@@ -10,6 +10,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.validation.annotation.Validated;
 import overcloud.blog.application.follow.dto.UnfollowResponse;
 import overcloud.blog.application.follow.repository.FollowRepository;
+import overcloud.blog.application.follow.utils.FollowUtils;
 import overcloud.blog.application.user.dto.get.CurrentUserResponse;
 import overcloud.blog.application.user.dto.get.FollowUserResponse;
 import overcloud.blog.application.user.dto.get.GetProfileResponse;
@@ -56,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private FollowRepository followRepository;
+
+    @Autowired
+    private FollowUtils followUtils;
 
     @Override
     public RegisterResponse registerUser(RegisterRequest registrationDto) throws Exception {
@@ -176,11 +180,7 @@ public class UserServiceImpl implements UserService {
         Optional<SecurityUser> securityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = securityUser.get().getUser().get();
         String currentUsername = currentUser.getUsername();
-        FollowEntity follow = followRepository.getFollowing(currentUsername, username);
-        boolean isFollowing = false;
-        if(securityUser.isPresent() || follow != null) {
-            isFollowing = true;
-        }
+
 
         UserEntity user = userRepository.findByUsername(username);
         if(user == null) {
@@ -188,9 +188,10 @@ public class UserServiceImpl implements UserService {
         }
 
         profileResponse.setUsername(user.getUsername());
-        profileResponse.setFollowing(isFollowing);
+        profileResponse.setFollowing(followUtils.isFollowing(currentUser, user));
         profileResponse.setBio(user.getBio());
         profileResponse.setImage(user.getImage());
+        profileResponse.setFollowersCount(followUtils.getFollowingCount(user));
 
         return profileResponse;
     }
@@ -211,6 +212,7 @@ public class UserServiceImpl implements UserService {
         followUserResponse.setBio(followee.getBio());
         followUserResponse.setImage(followee.getImage());
         followUserResponse.setFollowing(true);
+        followUserResponse.setFollowersCount(followUtils.getFollowingCount(followee));
 
         return followUserResponse;
     }
@@ -220,18 +222,16 @@ public class UserServiceImpl implements UserService {
         UnfollowResponse unfollowResponse = new UnfollowResponse();
         Optional<SecurityUser> securityUser = authenticationService.getCurrentUser();
         UserEntity followee = userRepository.findByUsername(username);
-        FollowEntity followEntity = new FollowEntity();
         UserEntity currentUser = securityUser.get().getUser().get();
-
-        followEntity.setFollower(currentUser);
-        followEntity.setFollowee(followee);
-        followRepository.delete(followEntity);
+        List<FollowEntity> followEntity = followRepository.getFollowing(currentUser.getUsername(), followee.getUsername());
+        followRepository.delete(followEntity.get(0));
 
         unfollowResponse.setUsername(followee.getUsername());
         unfollowResponse.setBio(followee.getBio());
         unfollowResponse.setImage(followee.getImage());
         unfollowResponse.setFollowing(false);
-        
+        unfollowResponse.setFollowersCount(followUtils.getFollowingCount(followee));
+
         return unfollowResponse;
     }
 

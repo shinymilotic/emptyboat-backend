@@ -9,14 +9,16 @@ import java.util.Set;
 @Component
 public class FollowUtils {
     public boolean isFollowing(UserEntity currentUser, UserEntity author) {
-        Set<FollowEntity> follows = currentUser.getFollowee();
-        Set<FollowEntity> authorFollows = author.getFollower();
-        for (FollowEntity follow: follows) {
-            if(authorFollows.contains(follow)) {
-                return true;
-            }
+        Set<UserEntity> authorFollows = author.getFollower();
+
+        if(authorFollows.contains(currentUser)) {
+            return true;
         }
 
         return false;
+    }
+
+    public int getFollowingCount(UserEntity user) {
+        return user.getFollower().size();
     }
 }

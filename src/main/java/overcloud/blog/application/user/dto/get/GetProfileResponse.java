@@ -1,7 +1,11 @@
 package overcloud.blog.application.user.dto.get;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+@JsonTypeName("profile")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class GetProfileResponse {
 
     @JsonProperty("username")
@@ -16,6 +20,8 @@ public class GetProfileResponse {
     @JsonProperty("following")
     private boolean following;
 
+    @JsonProperty("followersCount")
+    private int followersCount;
 
     public String getUsername() {
         return username;
@@ -47,5 +53,13 @@ public class GetProfileResponse {
 
     public void setFollowing(boolean following) {
         this.following = following;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
     }
 }

@@ -1,7 +1,11 @@
 package overcloud.blog.application.follow.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+@JsonTypeName("profile")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class UnfollowResponse {
     @JsonProperty("username")
     private String username;
@@ -14,6 +18,12 @@ public class UnfollowResponse {
 
     @JsonProperty("following")
     private boolean following;
+
+    @JsonProperty("email")
+    private String email;
+
+    @JsonProperty("followersCount")
+    private int followersCount;
 
     public String getUsername() {
         return username;
@@ -45,5 +55,22 @@ public class UnfollowResponse {
 
     public void setFollowing(boolean following) {
         this.following = following;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
     }
 }
