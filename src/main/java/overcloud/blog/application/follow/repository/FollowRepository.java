@@ -1,6 +1,7 @@
 package overcloud.blog.application.follow.repository;
 
 
+import org.springframework.data.jpa.repository.Modifying;
 import overcloud.blog.domain.user.follow.FollowEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +17,4 @@ public interface FollowRepository extends JpaRepository<FollowEntity, UUID> {
             " f.follower.username = :currentUsername" +
             " AND f.followee.username = :followingUsername ")
     List<FollowEntity> getFollowing(String currentUsername, String followingUsername);
-
 }

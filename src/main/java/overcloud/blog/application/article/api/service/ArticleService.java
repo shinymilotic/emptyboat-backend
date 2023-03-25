@@ -11,7 +11,10 @@ import overcloud.blog.application.article.api.dto.get.GetArticlesResponse;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleRequest;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleResponse;
 import overcloud.blog.application.article.api.repository.ArticleRepository;
+import overcloud.blog.application.article.comment.repository.CommentRepository;
+import overcloud.blog.application.article.favorite.repository.FavoriteRepository;
 import overcloud.blog.application.article.favorite.utils.FavoriteUtils;
+import overcloud.blog.application.follow.repository.FollowRepository;
 import overcloud.blog.application.follow.utils.FollowUtils;
 import overcloud.blog.application.tag.repository.TagRepository;
 import overcloud.blog.application.user.repository.UserRepository;
@@ -48,6 +51,11 @@ public class ArticleService {
 
     @Autowired
     private FollowUtils followUtils;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private FavoriteRepository favoriteRepository;
+
 
     public CreateArticleResponse createArticle(CreateArticleRequest articleRequest) {
         CreateArticleResponse response = new CreateArticleResponse();
@@ -92,11 +100,11 @@ public class ArticleService {
         response.setAuthorResponse(authorResponse);
         response.setTagList(tagList);
         response.setBody(body);
-        response.setFavorited(favoriteUtils.isFavorited(securityUser, savedArticleEntity));
+        response.setFavorited(false);
         response.setDescription(description);
         response.setSlug(slug);
         response.setTitle(title);
-        response.setFavoritesCount(savedArticleEntity.getFavorites().size());
+        response.setFavoritesCount(0);
         response.setCreatedAt(now);
         response.setUpdatedAt(now);
 
@@ -123,15 +131,17 @@ public class ArticleService {
     public DeleteArticleResponse deleteArticle(String id) {
         UUID uuid = UUID.fromString(id);
         DeleteArticleResponse deleteArticleResponse = new DeleteArticleResponse();
+        commentRepository.deleteByArticle(uuid);
+        favoriteRepository.deleteByArticle(uuid);
         articleRepository.deleteById(uuid);
         deleteArticleResponse.setId(uuid.toString());
         return deleteArticleResponse;
     }
 
-    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, int offset) {
+    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, int page) {
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, offset);
+        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page);
         Optional<UserEntity> securityUser = authenticationService.getCurrentUser()
                 .map(SecurityUser::getUser)
                 .map(Optional::get);
@@ -213,5 +223,57 @@ public class ArticleService {
         getArticlesResponse.setArticles(List.of(articleResponse));
 
         return getArticlesResponse;
+    }
+
+    public GetArticlesResponse getArticlesFeed(int size, int page) {
+        GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
+        getArticlesResponse.setArticles(new ArrayList<>());
+        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(null, null, null, size, page);
+        Optional<UserEntity> securityUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .map(Optional::get);
+
+        for (ArticleEntity article: articleEntities) {
+            ArticleResponse articleResponse = new ArticleResponse();
+            articleResponse.setId(article.getId().toString());
+            articleResponse.setBody(article.getBody());
+            articleResponse.setDescription(article.getDescription());
+            articleResponse.setSlug(article.getSlug());
+            if(securityUser.isPresent()) {
+                articleResponse.setFavorited(favoriteUtils.isFavorited(securityUser.get(), article));
+            }
+            articleResponse.setFavoritesCount(article.getFavorites().size());
+            List<ArticleTag> articleTagList = article.getArticleTags();
+            List<String> tagList = new ArrayList<>();
+            for (ArticleTag articleTag : articleTagList) {
+                tagList.add(articleTag.getTag().getName());
+            }
+            articleResponse.setTagList(tagList);
+            articleResponse.setTitle(article.getTitle());
+            articleResponse.setCreatedAt(article.getCreateAt());
+            articleResponse.setUpdatedAt(article.getUpdatedAt());
+
+            GetArticleAuthorResponse articleAuthorResponse = new GetArticleAuthorResponse();
+            UserEntity authorEntity = article.getAuthor();
+            articleAuthorResponse.setUsername(authorEntity.getUsername());
+            if(securityUser.isPresent()) {
+                articleAuthorResponse.setFollowing(followUtils.isFollowing(securityUser.get(), authorEntity));
+                articleAuthorResponse.setFollowersCount(followUtils.getFollowingCount(authorEntity));
+            }
+            articleAuthorResponse.setBio(authorEntity.getBio());
+            articleAuthorResponse.setImage(authorEntity.getImage());
+
+            articleResponse.setAuthor(articleAuthorResponse);
+            getArticlesResponse.getArticles().add(articleResponse);
+
+        }
+
+        return getArticlesResponse;
+    }
+
+    public int getArticlesCount() {
+        List<ArticleEntity> articleEntities = articleRepository.findAll();
+
+        return  articleEntities.size();
     }
 }

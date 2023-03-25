@@ -1,5 +1,9 @@
 package overcloud.blog.domain.article;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.comment.CommentEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
@@ -18,7 +22,7 @@ public class ArticleEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    @JoinColumn(name = "author_id")
     private UserEntity author;
 
     @Column(name = "slug")
@@ -32,13 +36,13 @@ public class ArticleEntity {
     @Column(name = "body")
     private String body;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticleTag> articleTags;
 
     @OneToMany(mappedBy = "article")
     private List<CommentEntity> comments;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article")
     private List<FavoriteEntity> favorites;
 
     @Column(name = "created_at")

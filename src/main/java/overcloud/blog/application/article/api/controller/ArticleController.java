@@ -12,8 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class ArticleController {
 
@@ -44,9 +43,19 @@ public class ArticleController {
     public GetArticlesResponse getArticles(@RequestParam(value = "tag", required = false) String tag,
                                            @RequestParam(value = "author", required = false) String author,
                                            @RequestParam(value = "favorited", required = false) String favorited,
-                                           @RequestParam(value = "limit", defaultValue = "20") int limit,
-                                           @RequestParam(value = "offset", defaultValue = "0") int offset) {
-        return articleService.getArticles(tag, author, favorited, limit, offset);
+                                           @RequestParam(value = "size", defaultValue = "20") int limit,
+                                           @RequestParam(value = "page", defaultValue = "0") int page) {
+        return articleService.getArticles(tag, author, favorited, limit, page);
     }
 
+    @GetMapping("/articles/feed")
+    public GetArticlesResponse getArticlesFeed(@RequestParam(value = "size", defaultValue = "20") int size,
+                                           @RequestParam(value = "page", defaultValue = "0") int page) {
+        return articleService.getArticlesFeed(size, page);
+    }
+
+    @GetMapping("/articles/count")
+    public int getArticlesFeed() {
+        return articleService.getArticlesCount();
+    }
 }

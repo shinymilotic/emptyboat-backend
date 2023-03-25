@@ -8,6 +8,7 @@ import overcloud.blog.application.tag.service.TagService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class TagController {
 

@@ -1,15 +1,13 @@
 package overcloud.blog.application.article.comment.dto.create;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
 
-
+@JsonTypeName("comment")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class CreateCommentRequest {
-
-    @JsonProperty("article-slug")
-    @NotNull
-    private String articleSlug;
-
     @JsonProperty("body")
     @NotNull
     private String body;
@@ -22,11 +20,4 @@ public class CreateCommentRequest {
         this.body = body;
     }
 
-    public String getArticleSlug() {
-        return articleSlug;
-    }
-
-    public void setArticleSlug(String articleSlug) {
-        this.articleSlug = articleSlug;
-    }
 }

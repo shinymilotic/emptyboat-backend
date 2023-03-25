@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class CommentController {
 
@@ -20,14 +21,15 @@ public class CommentController {
     private CommentService commentService;
 
 
-    @PostMapping("articles/comments")
-    public CreateCommentResponse createComment(@Valid @RequestBody CreateCommentRequest createCommentRequest) {
-        return commentService.createComment(createCommentRequest);
+    @PostMapping("articles/{slug}/comments")
+    public CreateCommentResponse createComment(@PathVariable("slug") String slug,
+                                               @Valid @RequestBody CreateCommentRequest createCommentRequest) {
+        return commentService.createComment(createCommentRequest, slug);
     }
 
-    @GetMapping("articles/comments")
-    public GetCommentsResponse getComments(@Valid @RequestBody GetCommentRequest getCommentRequest) {
-        return commentService.getComments(getCommentRequest.getArticleSLug());
+    @GetMapping("articles/{slug}/comments")
+    public GetCommentsResponse getComments(@PathVariable("slug") String slug) {
+        return commentService.getComments(slug);
     }
 
     /*@PutMapping

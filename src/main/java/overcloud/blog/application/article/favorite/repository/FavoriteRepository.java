@@ -17,4 +17,9 @@ public interface FavoriteRepository extends JpaRepository<FavoriteEntity, UUID> 
             "  WHERE EXISTS (SELECT article FROM ArticleEntity article" +
             " WHERE article.slug = :slug AND favorite.article.id = article.id) ")
     void deleteBySlug(String slug);
+
+    @Modifying
+    @Query("DELETE FROM FavoriteEntity favorite" +
+            " WHERE favorite.article.id = :uuid ")
+    void deleteByArticle(UUID uuid);
 }

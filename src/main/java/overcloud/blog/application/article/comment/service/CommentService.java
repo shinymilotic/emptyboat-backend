@@ -33,9 +33,9 @@ public class CommentService {
     @Autowired
     private SpringAuthenticationService authenticationService;
 
-    public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest) {
+    public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
         CreateCommentResponse createCommentResponse = new CreateCommentResponse();
-        ArticleEntity articleEntity = articleRepository.findBySlug(createCommentRequest.getArticleSlug()).get(0);
+        ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
         UserEntity userEntity = authenticationService.getCurrentUser().get().getUser().get();
         String body = createCommentRequest.getBody();
         LocalDateTime now = LocalDateTime.now();
@@ -68,12 +68,12 @@ public class CommentService {
         getCommentsResponse.setComments(new ArrayList<>());
 
         getCommentsResponse.setComments(new ArrayList<>());
-        GetCommentResponse getCommentResponse = new GetCommentResponse();
 
         List<CommentEntity> commentEntities = commentRepository.findByArticleSlug(articleSlug);
 
         for (CommentEntity commentEntity : commentEntities) {
             UserEntity author = commentEntity.getAuthor();
+            GetCommentResponse getCommentResponse = new GetCommentResponse();
 
             GetCommentAuthorResponse authorResponse = new GetCommentAuthorResponse();
             authorResponse.setUsername(author.getUsername());

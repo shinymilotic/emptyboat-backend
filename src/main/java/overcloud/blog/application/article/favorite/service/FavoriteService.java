@@ -8,12 +8,14 @@ import overcloud.blog.application.article.favorite.dto.ArticleAuthorResponse;
 import overcloud.blog.application.article.favorite.dto.SingleArticleResponse;
 import overcloud.blog.application.article.favorite.repository.FavoriteRepository;
 import overcloud.blog.application.follow.utils.FollowUtils;
+import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.domain.user.follow.FollowEntity;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +44,7 @@ public class FavoriteService {
         UserEntity author = articleEntity.getAuthor();
         favoriteRepository.save(favoriteEntity);
 
+
         SingleArticleResponse articleResponse = new SingleArticleResponse();
         ArticleAuthorResponse authorResponse = new ArticleAuthorResponse();
         authorResponse.setUsername(author.getUsername());
@@ -56,6 +59,13 @@ public class FavoriteService {
         articleResponse.setFavorited(true);
         articleResponse.setBody(articleEntity.getBody());
         articleResponse.setDescription(articleEntity.getDescription());
+
+        List<ArticleTag> articleTagList = articleEntity.getArticleTags();
+        List<String> tagList = new ArrayList<>();
+        for (ArticleTag articleTag : articleTagList) {
+            tagList.add(articleTag.getTag().getName());
+        }
+        articleResponse.setTagList(tagList);
         articleResponse.setId(articleEntity.getId().toString());
         articleResponse.setCreatedAt(articleEntity.getCreateAt());
         articleResponse.setUpdatedAt(articleEntity.getUpdatedAt());
@@ -84,6 +94,13 @@ public class FavoriteService {
         articleResponse.setFavoritesCount(articleEntity.getFavorites().size() - 1);
         articleResponse.setFavorited(false);
         articleResponse.setBody(articleEntity.getBody());
+        List<ArticleTag> articleTagList = articleEntity.getArticleTags();
+        List<String> tagList = new ArrayList<>();
+        for (ArticleTag articleTag : articleTagList) {
+            tagList.add(articleTag.getTag().getName());
+        }
+        articleResponse.setTagList(tagList);
+
         articleResponse.setDescription(articleEntity.getDescription());
         articleResponse.setId(articleEntity.getId().toString());
         articleResponse.setCreatedAt(articleEntity.getCreateAt());

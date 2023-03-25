@@ -1,6 +1,8 @@
 package overcloud.blog.application.article.comment.dto.get;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
