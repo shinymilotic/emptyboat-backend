@@ -13,7 +13,6 @@ public class AuthorResponse {
     @JsonProperty("image")
     private String image;
 
-
     public String getUsername() {
         return username;
     }

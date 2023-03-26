@@ -53,9 +53,4 @@ public class ArticleController {
                                            @RequestParam(value = "page", defaultValue = "0") int page) {
         return articleService.getArticlesFeed(size, page);
     }
-
-    @GetMapping("/articles/count")
-    public int getArticlesFeed() {
-        return articleService.getArticlesCount();
-    }
 }

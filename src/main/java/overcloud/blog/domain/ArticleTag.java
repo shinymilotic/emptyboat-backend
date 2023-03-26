@@ -4,20 +4,33 @@ import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.tag.TagEntity;
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "article_tag", schema = "public")
 public class ArticleTag {
-    @ManyToOne
+
     @Id
-    @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
     private TagEntity tag;
 
     @ManyToOne
-    @Id
-    @JoinColumn(name = "article_id", referencedColumnName = "id")
+    @JoinColumn(name = "article_id")
     private ArticleEntity article;
 
     public ArticleTag() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public TagEntity getTag() {

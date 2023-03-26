@@ -11,6 +11,9 @@ import lombok.Builder;
 @JsonTypeName("articles")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class UpdateArticleRequest {
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("title")
     @NotNull
     private String title;
@@ -26,6 +29,14 @@ public class UpdateArticleRequest {
 
     @JsonProperty("tagList")
     private Iterable<String> tagList;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

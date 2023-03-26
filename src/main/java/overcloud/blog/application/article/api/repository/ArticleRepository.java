@@ -20,4 +20,6 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, UUID> , 
     @Query("SELECT ar FROM ArticleEntity ar WHERE ar.slug = :slug ")
     List<ArticleEntity> findBySlug(@Param("slug") String slug);
 
+
+
 }

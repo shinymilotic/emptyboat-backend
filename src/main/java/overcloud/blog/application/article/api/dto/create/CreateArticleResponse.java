@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class CreateArticleResponse {
 
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("slug")
     private String slug;
 
@@ -41,6 +44,14 @@ public class CreateArticleResponse {
 
     @JsonProperty("author")
     private AuthorResponse author;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getSlug() {
         return slug;

@@ -1,5 +1,6 @@
 package overcloud.blog.application.article.api.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.application.article.api.dto.AuthorResponse;
 import overcloud.blog.application.article.api.dto.create.CreateArticleRequest;
@@ -10,13 +11,16 @@ import overcloud.blog.application.article.api.dto.get.GetArticleAuthorResponse;
 import overcloud.blog.application.article.api.dto.get.GetArticlesResponse;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleRequest;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleResponse;
+import overcloud.blog.application.article.api.exception.ArticleError;
 import overcloud.blog.application.article.api.repository.ArticleRepository;
+import overcloud.blog.application.article.api.repository.ArticleTagRepository;
 import overcloud.blog.application.article.comment.repository.CommentRepository;
 import overcloud.blog.application.article.favorite.repository.FavoriteRepository;
 import overcloud.blog.application.article.favorite.utils.FavoriteUtils;
 import overcloud.blog.application.follow.repository.FollowRepository;
 import overcloud.blog.application.follow.utils.FollowUtils;
 import overcloud.blog.application.tag.repository.TagRepository;
+import overcloud.blog.application.user.exception.login.LoginError;
 import overcloud.blog.application.user.repository.UserRepository;
 import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
@@ -56,6 +60,9 @@ public class ArticleService {
     @Autowired
     private FavoriteRepository favoriteRepository;
 
+    @Autowired
+    private ArticleTagRepository articleTagRepository;
+
 
     public CreateArticleResponse createArticle(CreateArticleRequest articleRequest) {
         CreateArticleResponse response = new CreateArticleResponse();
@@ -72,13 +79,7 @@ public class ArticleService {
 
         ArticleEntity articleEntity = new ArticleEntity();
         UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();
-        articleEntity.setAuthor(securityUser);
-        articleEntity.setBody(body);
-        articleEntity.setDescription(description);
-        articleEntity.setSlug(slug);
-        articleEntity.setTitle(title);
-        articleEntity.setCreateAt(now);
-        articleEntity.setUpdatedAt(now);
+
 
         for (TagEntity tagEntity : tagEntities) {
             if(tagList.contains(tagEntity.getName())) {
@@ -88,9 +89,15 @@ public class ArticleService {
                 tagForInsert.add(articleTag);
             }
         }
-
+        articleEntity.setAuthor(securityUser);
+        articleEntity.setBody(body);
+        articleEntity.setDescription(description);
+        articleEntity.setSlug(slug);
+        articleEntity.setTitle(title);
+        articleEntity.setCreateAt(now);
+        articleEntity.setUpdatedAt(now);
         articleEntity.setArticleTags(tagForInsert);
-        ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
+        articleRepository.save(articleEntity);
 
         AuthorResponse authorResponse = new AuthorResponse();
         authorResponse.setBio(securityUser.getBio());
@@ -111,22 +118,74 @@ public class ArticleService {
         return response;
     }
 
+    @Transactional
     public UpdateArticleResponse updateArticle(UpdateArticleRequest updateArticleRequest) {
-        UpdateArticleResponse updateArticleResponse = new UpdateArticleResponse();
-        /*String updateBody = updateArticleRequest.getBody();
-        updateArticleRequest.getDescription();
-        updateArticleRequest.getTitle();
-        updateArticleRequest.getTagList();
+        UpdateArticleResponse response = new UpdateArticleResponse();
+        String id = updateArticleRequest.getId();
+        String title = updateArticleRequest.getTitle();
+        String body = updateArticleRequest.getBody();
+        String description = updateArticleRequest.getDescription();
+        String slug = URLConverter.toSlug(title);
+        Set<String> tagList = new HashSet<>();
+        updateArticleRequest.getTagList()
+                .forEach(tagList::add);
+        LocalDateTime now = LocalDateTime.now();
 
-        ArticleEntity articleEntity = new ArticleEntity();
-        articleEntity.setTitle();
-        articleEntity.setSlug();
-        articleEntity.setBody();
-        articleEntity.set*/
+        UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();
 
-        /*articleRepository.save()*/
-        return updateArticleResponse;
+        ArticleEntity articleEntity = articleRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new EntityNotFoundException(ArticleError.ARTICLE_NOT_FOUND.getValue()));
+
+
+        articleEntity.setTitle(title);
+        articleEntity.setBody(body);
+        articleEntity.setUpdatedAt(now);
+
+        List<ArticleTag> articleTags = articleEntity.getArticleTags();
+
+        deleteArticleTags(articleTags);
+
+        List<ArticleTag> updateArticleTags = new ArrayList<>();
+        for (String tag : tagList) {
+            ArticleTag articleTag = new ArticleTag();
+            TagEntity tagEntity = tagRepository.findByTagName(tag);
+            articleTag.setArticle(articleEntity);
+            articleTag.setTag(tagEntity);
+            updateArticleTags.add(articleTag);
+            articleTagRepository.save(articleTag);
+        }
+
+        articleEntity.setArticleTags(updateArticleTags);
+        articleEntity.setSlug(slug);
+
+        articleRepository.save(articleEntity);
+
+        AuthorResponse authorResponse = new AuthorResponse();
+        authorResponse.setBio(securityUser.getBio());
+        authorResponse.setUsername(securityUser.getUsername());
+        authorResponse.setImage(securityUser.getImage());
+
+        response.setId(id);
+        response.setAuthorResponse(authorResponse);
+        response.setTagList(tagList);
+        response.setBody(body);
+        response.setFavorited(false);
+        response.setDescription(description);
+        response.setSlug(slug);
+        response.setTitle(title);
+        response.setFavoritesCount(0);
+        response.setCreatedAt(now);
+        response.setUpdatedAt(now);
+
+        return response;
     }
+
+    private void deleteArticleTags(List<ArticleTag> articleTags) {
+        for (ArticleTag articleTag : articleTags) {
+            articleTagRepository.deleteArticleTags(articleTag.getArticle().getId(), articleTag.getTag().getId());
+        }
+    }
+
     @Transactional
     public DeleteArticleResponse deleteArticle(String id) {
         UUID uuid = UUID.fromString(id);
@@ -186,13 +245,10 @@ public class ArticleService {
 
     public GetArticlesResponse getArticle(String slug) {
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
-        List<ArticleEntity> articleList = articleRepository.findBySlug(slug);
-        ArticleEntity articleEntity = new ArticleEntity();
+        ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
         UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();
 
-        if(!articleList.isEmpty()) {
-            articleEntity = articleList.get(0);
-        }
+
         ArticleResponse articleResponse = new ArticleResponse();
         articleResponse.setId(articleEntity.getId().toString());
         articleResponse.setBody(articleEntity.getBody());
@@ -271,9 +327,5 @@ public class ArticleService {
         return getArticlesResponse;
     }
 
-    public int getArticlesCount() {
-        List<ArticleEntity> articleEntities = articleRepository.findAll();
 
-        return  articleEntities.size();
-    }
 }
