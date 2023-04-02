@@ -1,8 +1,9 @@
-package overcloud.blog.infrastructure.validation;
+package overcloud.blog.infrastructure.validation.customannotation;
 
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import overcloud.blog.infrastructure.validation.customannotation.LetterAndNumber;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

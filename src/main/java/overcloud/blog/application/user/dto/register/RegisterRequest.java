@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
-import overcloud.blog.infrastructure.validation.LetterAndNumber;
+import overcloud.blog.infrastructure.validation.customannotation.LetterAndNumber;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Builder

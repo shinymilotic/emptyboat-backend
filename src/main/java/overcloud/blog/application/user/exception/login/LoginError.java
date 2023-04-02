@@ -1,8 +1,5 @@
 package overcloud.blog.application.user.exception.login;
 
-import lombok.val;
-import org.springframework.http.HttpStatus;
-import overcloud.blog.infrastructure.exceptionhandling.Error;
 
 public enum LoginError {
 

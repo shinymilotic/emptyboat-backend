@@ -2,7 +2,8 @@ package overcloud.blog.infrastructure.exceptionhandling.handler;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
-import overcloud.blog.application.user.service.impl.RegisterInfoExistException;
+import overcloud.blog.application.article.api.exception.WriteArticleException;
+import overcloud.blog.application.user.exception.register.RegisterInfoExistException;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiErrorDetail;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiValidationError;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiError;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,7 +32,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String message = "Validation error";
-        ApiError apiError = new ApiError(BAD_REQUEST, message);
+        ApiError apiError = ApiError.from(message);
         List<ApiErrorDetail> apiErrorDetails = apiError.getApiErrorDetails();
         List<ApiValidationError> fieldErrors = ApiValidationError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         List<ApiValidationError> globalErrors = ApiValidationError.addValidationError(ex.getBindingResult().getGlobalErrors());
@@ -47,7 +47,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleConstraintViolation(
             ConstraintViolationException ex) {
         String message = "Validation error";
-        ApiError apiError = new ApiError(BAD_REQUEST, message);
+        ApiError apiError = ApiError.from(message);
         List<ApiErrorDetail> apiErrorDetails = apiError.getApiErrorDetails();
         List<ApiValidationError> apiValidationError = ApiValidationError.addValidationErrors(ex.getConstraintViolations());
         apiValidationError.forEach(error -> apiErrorDetails.add(error));
@@ -57,7 +57,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
-        return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex.getMessage()));
+        return buildResponseEntity(ApiError.from(ex.getMessage()));
     }
 
     @ExceptionHandler(RegisterInfoExistException.class)
@@ -65,8 +65,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(ex.getApiError());
     }
 
+    @ExceptionHandler(WriteArticleException.class)
+    protected ResponseEntity<Object> handleArticleInfoExist(WriteArticleException ex) {
+        return buildResponseEntity(ex.getApiError());
+    }
+
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-        return new ResponseEntity<>(apiError, apiError.getStatus());
+        return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 
 }

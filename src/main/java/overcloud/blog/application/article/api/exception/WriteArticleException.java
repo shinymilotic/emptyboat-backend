@@ -1,14 +1,11 @@
-package overcloud.blog.application.user.service.impl;
+package overcloud.blog.application.article.api.exception;
 
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiError;
 
-import java.util.List;
-
-public class RegisterInfoExistException extends RuntimeException {
-
+public class WriteArticleException extends RuntimeException {
     private ApiError apiError;
 
-    public RegisterInfoExistException(ApiError apiError) {
+    public WriteArticleException(ApiError apiError) {
         this.apiError = apiError;
     }
 

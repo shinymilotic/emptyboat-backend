@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
+import java.util.Collection;
+
 @Builder
 @JsonTypeName("articles")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
@@ -26,7 +28,7 @@ public class CreateArticleRequest {
     private String body;
 
     @JsonProperty("tagList")
-    private Iterable<String> tagList;
+    private Collection<String> tagList;
 
     public String getTitle() {
         return title;
@@ -52,11 +54,11 @@ public class CreateArticleRequest {
         this.body = body;
     }
 
-    public Iterable<String> getTagList() {
+    public Collection<String> getTagList() {
         return tagList;
     }
 
-    public void setTagList(Iterable<String> tagList) {
+    public void setTagList(Collection<String> tagList) {
         this.tagList = tagList;
     }
 }

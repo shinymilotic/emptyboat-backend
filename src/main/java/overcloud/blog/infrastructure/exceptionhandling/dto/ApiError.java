@@ -15,20 +15,28 @@ import java.util.List;
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CUSTOM, property = "error", visible = true)
 @JsonTypeIdResolver(LowerCaseClassNameResolver.class)
 public class ApiError {
-    private HttpStatus status;
     private String message;
                                                                                                                 
     private List<ApiErrorDetail> apiErrorDetails;
 
-    public ApiError(HttpStatus status, String message) {
+    private ApiError(String message) {
         super();
-        this.status = status;
         this.message = message;
         this.apiErrorDetails = new ArrayList<>();
     }
 
+    // Factory method
+    public static ApiError from(String message) {
+        return new ApiError(message);
+    }
+    public void addApiErrorDetail(ApiErrorDetail subError) {
+        if (apiErrorDetails == null) {
+            apiErrorDetails = new ArrayList<>();
+        }
+        apiErrorDetails.add(subError);
+    }
 
-    private void addApiErrorDetail(ApiErrorDetail subError) {
+    public void addApiValidationErrorDetail(ApiValidationError subError) {
         if (apiErrorDetails == null) {
             apiErrorDetails = new ArrayList<>();
         }

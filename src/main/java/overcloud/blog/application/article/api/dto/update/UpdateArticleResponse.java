@@ -3,6 +3,7 @@ package overcloud.blog.application.article.api.dto.update;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import jakarta.validation.constraints.NotNull;
 import overcloud.blog.application.article.api.dto.AuthorResponse;
 
 import java.time.LocalDateTime;
