@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
         UserResponse userResponse = new UserResponse();
         userResponse.setEmail(user.getEmail());
         userResponse.setUsername(user.getUsername());
-        userResponse.setToken(jwtUtils.encode(username));
+        userResponse.setToken(jwtUtils.encode(email));
         userResponse.setBio(user.getBio());
         userResponse.setImage(user.getImage());
         registerResponse.setUserResponse(userResponse);
