@@ -1,6 +1,5 @@
 package overcloud.blog.application.article.api.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.api.dto.get.ArticleResponse;
 import overcloud.blog.application.article.api.dto.get.GetArticleAuthorResponse;
@@ -16,6 +15,8 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class GetArticleListService {
@@ -43,10 +44,12 @@ public class GetArticleListService {
         getArticlesResponse.setArticles(new ArrayList<>());
         List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page);
 
-        UserEntity currentUser = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
+        Optional<SecurityUser> currentUser = authenticationService.getCurrentUser();
+        Optional<UserEntity> currentUserEntity = Optional.empty();
+        if (currentUser.isPresent()) {
+            currentUserEntity = currentUser.filter(Objects::nonNull)
+                    .map(SecurityUser::getUser).get();
+        }
 
         for (ArticleEntity article: articleEntities) {
             ArticleResponse articleResponse = new ArticleResponse();
@@ -54,7 +57,10 @@ public class GetArticleListService {
             articleResponse.setBody(article.getBody());
             articleResponse.setDescription(article.getDescription());
             articleResponse.setSlug(article.getSlug());
-            articleResponse.setFavorited(favoriteUtils.isFavorited(currentUser, article));
+
+            if(currentUserEntity.isPresent()) {
+                articleResponse.setFavorited(favoriteUtils.isFavorited(currentUserEntity.get(), article));
+            }
 
             articleResponse.setFavoritesCount(article.getFavorites().size());
             List<ArticleTag> articleTagList = article.getArticleTags();
@@ -70,7 +76,10 @@ public class GetArticleListService {
             GetArticleAuthorResponse articleAuthorResponse = new GetArticleAuthorResponse();
             UserEntity authorEntity = article.getAuthor();
             articleAuthorResponse.setUsername(authorEntity.getUsername());
-            articleAuthorResponse.setFollowing(followUtils.isFollowing(currentUser, authorEntity));
+
+            if(currentUserEntity.isPresent()) {
+                articleAuthorResponse.setFollowing(followUtils.isFollowing(currentUserEntity.get(), authorEntity));
+            }
             articleAuthorResponse.setFollowersCount(followUtils.getFollowingCount(authorEntity));
             articleAuthorResponse.setBio(authorEntity.getBio());
             articleAuthorResponse.setImage(authorEntity.getImage());
@@ -88,10 +97,12 @@ public class GetArticleListService {
         getArticlesResponse.setArticles(new ArrayList<>());
         List<ArticleEntity> articleEntities = articleRepository.findByCriteria(null, null, null, size, page);
 
-        UserEntity currentUser = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
+        Optional<SecurityUser> currentUser = authenticationService.getCurrentUser();
+        Optional<UserEntity> currentUserEntity = Optional.empty();
+        if (currentUser.isPresent()) {
+            currentUserEntity = currentUser.filter(Objects::nonNull)
+                    .map(SecurityUser::getUser).get();
+        }
 
         for (ArticleEntity article: articleEntities) {
             ArticleResponse articleResponse = new ArticleResponse();
@@ -99,7 +110,10 @@ public class GetArticleListService {
             articleResponse.setBody(article.getBody());
             articleResponse.setDescription(article.getDescription());
             articleResponse.setSlug(article.getSlug());
-            articleResponse.setFavorited(favoriteUtils.isFavorited(currentUser, article));
+
+            if(currentUserEntity.isPresent()) {
+                articleResponse.setFavorited(favoriteUtils.isFavorited(currentUserEntity.get(), article));
+            }
             articleResponse.setFavoritesCount(article.getFavorites().size());
             List<ArticleTag> articleTagList = article.getArticleTags();
 
@@ -116,7 +130,10 @@ public class GetArticleListService {
             GetArticleAuthorResponse articleAuthorResponse = new GetArticleAuthorResponse();
             UserEntity authorEntity = article.getAuthor();
             articleAuthorResponse.setUsername(authorEntity.getUsername());
-            articleAuthorResponse.setFollowing(followUtils.isFollowing(currentUser, authorEntity));
+
+            if(currentUserEntity.isPresent()) {
+                articleAuthorResponse.setFollowing(followUtils.isFollowing(currentUserEntity.get(), authorEntity));
+            }
             articleAuthorResponse.setFollowersCount(followUtils.getFollowingCount(authorEntity));
             articleAuthorResponse.setBio(authorEntity.getBio());
             articleAuthorResponse.setImage(authorEntity.getImage());

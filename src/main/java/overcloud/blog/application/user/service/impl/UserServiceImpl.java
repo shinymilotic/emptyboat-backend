@@ -3,6 +3,7 @@ package overcloud.blog.application.user.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -21,11 +22,13 @@ import overcloud.blog.application.user.dto.update.UpdateUserResponse;
 import overcloud.blog.application.user.dto.UserResponse;
 import overcloud.blog.application.user.exception.login.LoginError;
 import overcloud.blog.application.user.exception.register.RegisterError;
+import overcloud.blog.application.user.exception.register.RegisterInfoExistException;
 import overcloud.blog.application.user.service.UserService;
 import overcloud.blog.application.user.repository.UserRepository;
 import overcloud.blog.domain.user.follow.FollowEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.application.user.dto.register.RegisterRequest;
+import overcloud.blog.infrastructure.exceptionhandling.dto.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiValidationError;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
@@ -85,11 +88,11 @@ public class UserServiceImpl implements UserService {
         }
 
         if(!errors.isEmpty()) {
-            /*ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Register information invalid");
+            ApiError apiError = ApiError.from("Register information invalid");
             for (ApiValidationError error: errors) {
                 apiError.getApiErrorDetails().add(error);
             }
-            throw new RegisterInfoExistException(apiError);*/
+            throw new RegisterInfoExistException(apiError);
         }
 
         userEntity.setUsername(registrationDto.getUsername());
