@@ -13,7 +13,6 @@ import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.comment.CommentEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,14 +23,19 @@ import java.util.UUID;
 @Service
 public class CommentService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
-    @Autowired
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
+
+    public CommentService(ArticleRepository articleRepository,
+                          CommentRepository commentRepository,
+                          SpringAuthenticationService authenticationService) {
+        this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
+        this.authenticationService = authenticationService;
+    }
 
     public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
         CreateCommentResponse createCommentResponse = new CreateCommentResponse();

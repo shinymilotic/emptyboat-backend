@@ -4,7 +4,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +16,6 @@ public class JwtUtils {
     private final Long validSeconds;
     private final Key key;
 
-    @Autowired
     public JwtUtils( @Value("${blog.auth.token.sign-key}") String signKey,
                      @Value("${blog.auth.token.valid-time}") Long validTime) {
         this.validSeconds = validTime;

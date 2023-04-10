@@ -3,8 +3,6 @@ package overcloud.blog.application.user.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import overcloud.blog.application.follow.dto.UnfollowResponse;
 import overcloud.blog.application.user.dto.get.CurrentUserResponse;
 import overcloud.blog.application.user.dto.get.FollowUserResponse;
@@ -16,15 +14,17 @@ import overcloud.blog.application.user.dto.register.RegisterResponse;
 import overcloud.blog.application.user.dto.update.UpdateUserResponse;
 import overcloud.blog.application.user.service.UserService;
 import overcloud.blog.application.user.dto.register.RegisterRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("users")
     public RegisterResponse register(@Valid @RequestBody RegisterRequest registrationDto) throws Exception {
@@ -32,12 +32,12 @@ public class UserController {
     }
 
     @PutMapping("users")
-    public UpdateUserResponse update(@Valid @RequestBody UpdateUserRequest updateUserDto) throws Exception {
+    public UpdateUserResponse update(@Valid @RequestBody UpdateUserRequest updateUserDto)  {
         return userService.updateUser(updateUserDto);
     }
 
     @PostMapping("users/login")
-    public LoginResponse login(@Valid @RequestBody LoginRequest loginDto) throws Exception {
+    public LoginResponse login(@Valid @RequestBody LoginRequest loginDto)  {
         return userService.login(loginDto);
     }
 

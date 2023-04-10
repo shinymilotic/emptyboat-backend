@@ -1,6 +1,5 @@
 package overcloud.blog.application.article.favorite.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.article.favorite.dto.SingleArticleResponse;
 import overcloud.blog.application.article.favorite.service.FavoriteService;
@@ -9,8 +8,11 @@ import overcloud.blog.application.article.favorite.service.FavoriteService;
 @RestController
 public class FavoriteController {
 
-    @Autowired
-    private FavoriteService favoriteService;
+    private final FavoriteService favoriteService;
+
+    public FavoriteController(FavoriteService favoriteService) {
+        this.favoriteService = favoriteService;
+    }
 
     @CrossOrigin(origins = "*")
     @PostMapping("articles/{slug}/favorite")

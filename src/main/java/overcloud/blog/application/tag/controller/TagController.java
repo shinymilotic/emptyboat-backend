@@ -6,14 +6,16 @@ import overcloud.blog.application.tag.dto.create.CreateTagResponse;
 import overcloud.blog.application.tag.dto.get.GetTagResponse;
 import overcloud.blog.application.tag.service.TagService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class TagController {
 
-    @Autowired
-    private TagService tagService;
+    private final TagService tagService;
+
+    public TagController(TagService tagService) {
+        this.tagService = tagService;
+    }
 
     @PostMapping("/tags")
     public @ResponseBody CreateTagResponse createTag(@Valid @RequestBody CreateTagRequest createTagRequest) throws Exception {

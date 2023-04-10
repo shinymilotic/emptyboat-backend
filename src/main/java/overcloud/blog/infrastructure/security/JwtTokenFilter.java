@@ -6,7 +6,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -19,10 +18,15 @@ import java.util.Optional;
 public class JwtTokenFilter extends OncePerRequestFilter {
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    @Autowired
-    private JwtUtils jwtUtils;
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+    private final JwtUtils jwtUtils;
+
+    private final AuthenticationProvider authenticationProvider;
+
+    public JwtTokenFilter(JwtUtils jwtUtils,
+                          AuthenticationProvider authenticationProvider) {
+        this.jwtUtils = jwtUtils;
+        this.authenticationProvider = authenticationProvider;
+    }
 
     @Override
     protected void doFilterInternal(

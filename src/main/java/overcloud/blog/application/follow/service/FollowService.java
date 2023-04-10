@@ -1,9 +1,7 @@
 package overcloud.blog.application.follow.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.follow.dto.FollowResponse;
-import overcloud.blog.application.follow.dto.UnfollowResponse;
 import overcloud.blog.application.follow.repository.FollowRepository;
 import overcloud.blog.application.user.repository.UserRepository;
 import overcloud.blog.domain.user.UserEntity;
@@ -13,14 +11,19 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 @Service
 public class FollowService {
 
-    @Autowired
-    private FollowRepository followRepository;
+    private final FollowRepository followRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
+
+    public FollowService(FollowRepository followRepository,
+                         UserRepository userRepository,
+                         SpringAuthenticationService authenticationService) {
+        this.followRepository = followRepository;
+        this.userRepository = userRepository;
+        this.authenticationService = authenticationService;
+    }
 
     public FollowResponse follow(String username) {
         UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();

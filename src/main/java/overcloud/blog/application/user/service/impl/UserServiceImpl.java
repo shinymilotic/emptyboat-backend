@@ -3,7 +3,6 @@ package overcloud.blog.application.user.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -22,19 +21,16 @@ import overcloud.blog.application.user.dto.update.UpdateUserResponse;
 import overcloud.blog.application.user.dto.UserResponse;
 import overcloud.blog.application.user.exception.login.LoginError;
 import overcloud.blog.application.user.exception.register.RegisterError;
-import overcloud.blog.application.user.exception.register.RegisterInfoExistException;
 import overcloud.blog.application.user.service.UserService;
 import overcloud.blog.application.user.repository.UserRepository;
 import overcloud.blog.domain.user.follow.FollowEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.application.user.dto.register.RegisterRequest;
-import overcloud.blog.infrastructure.exceptionhandling.dto.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiValidationError;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
@@ -46,20 +42,27 @@ import java.util.Optional;
 @Validated
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private SpringAuthenticationService authenticationService;
 
-    @Autowired
     private JwtUtils jwtUtils;
 
-    @Autowired
     private FollowRepository followRepository;
 
-    @Autowired
     private FollowUtils followUtils;
+
+    public UserServiceImpl(UserRepository userRepository,
+                           SpringAuthenticationService authenticationService,
+                           JwtUtils jwtUtils,
+                           FollowRepository followRepository,
+                           FollowUtils followUtils) {
+        this.userRepository = userRepository;
+        this.authenticationService = authenticationService;
+        this.jwtUtils = jwtUtils;
+        this.followRepository = followRepository;
+        this.followUtils = followUtils;
+    }
 
     @Override
     public RegisterResponse registerUser(RegisterRequest registrationDto) throws Exception {

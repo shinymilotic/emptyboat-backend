@@ -1,6 +1,5 @@
 package overcloud.blog.application.article.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.api.dto.get.ArticleResponse;
 import overcloud.blog.application.article.api.dto.get.GetArticleAuthorResponse;
@@ -19,17 +18,23 @@ import java.util.List;
 @Service
 public class GetArticleService {
 
-    @Autowired
-    private FollowUtils followUtils;
+    private final FollowUtils followUtils;
 
-    @Autowired
-    private FavoriteUtils favoriteUtils;
+    private final FavoriteUtils favoriteUtils;
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
-    @Autowired
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
+
+    public GetArticleService(FollowUtils followUtils,
+                             FavoriteUtils favoriteUtils,
+                             ArticleRepository articleRepository,
+                             SpringAuthenticationService authenticationService) {
+        this.followUtils = followUtils;
+        this.favoriteUtils = favoriteUtils;
+        this.articleRepository = articleRepository;
+        this.authenticationService = authenticationService;
+    }
 
     public GetArticlesResponse getArticle(String slug) {
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();

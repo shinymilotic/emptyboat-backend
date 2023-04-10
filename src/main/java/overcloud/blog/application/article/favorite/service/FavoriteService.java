@@ -1,6 +1,5 @@
 package overcloud.blog.application.article.favorite.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.application.article.api.repository.ArticleRepository;
@@ -12,27 +11,31 @@ import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.UserEntity;
-import overcloud.blog.domain.user.follow.FollowEntity;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class FavoriteService {
 
-    @Autowired
-    private FavoriteRepository favoriteRepository;
+    private final FavoriteRepository favoriteRepository;
 
-    @Autowired
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
-    @Autowired
-    private FollowUtils followUtils;
+    private final FollowUtils followUtils;
+
+    public FavoriteService(FavoriteRepository favoriteRepository,
+                           SpringAuthenticationService authenticationService,
+                           ArticleRepository articleRepository,
+                           FollowUtils followUtils) {
+        this.favoriteRepository = favoriteRepository;
+        this.authenticationService = authenticationService;
+        this.articleRepository = articleRepository;
+        this.followUtils = followUtils;
+    }
 
     @Transactional
     public SingleArticleResponse makeFavorite(String slug) {

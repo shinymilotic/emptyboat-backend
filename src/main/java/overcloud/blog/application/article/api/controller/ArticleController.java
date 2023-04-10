@@ -1,7 +1,6 @@
 package overcloud.blog.application.article.api.controller;
 
 
-import org.hibernate.sql.Update;
 import overcloud.blog.application.article.api.dto.create.CreateArticleRequest;
 import overcloud.blog.application.article.api.dto.create.CreateArticleResponse;
 import overcloud.blog.application.article.api.dto.delete.DeleteArticleResponse;
@@ -9,29 +8,33 @@ import overcloud.blog.application.article.api.dto.get.GetArticlesResponse;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleRequest;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.article.api.service.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class ArticleController {
+    private final CreateArticleService createArticleService;
 
-    @Autowired
-    private CreateArticleService createArticleService;
+    private final UpdateArticleService updateArticleService;
 
-    @Autowired
-    private UpdateArticleService updateArticleService;
+    private final GetArticleService getArticleService;
 
-    @Autowired
-    private GetArticleService getArticleService;
+    private final GetArticleListService getArticleListService;
 
-    @Autowired
-    private GetArticleListService getArticleListService;
+    private final DeleteArticleService deleteArticleService;
 
-    @Autowired
-    private DeleteArticleService deleteArticleService;
-
+    public ArticleController(CreateArticleService createArticleService,
+                             UpdateArticleService updateArticleService,
+                             GetArticleService getArticleService,
+                             GetArticleListService getArticleListService,
+                             DeleteArticleService deleteArticleService) {
+        this.createArticleService = createArticleService;
+        this.updateArticleService = updateArticleService;
+        this.getArticleService = getArticleService;
+        this.getArticleListService = getArticleListService;
+        this.deleteArticleService = deleteArticleService;
+    }
 
     @PostMapping("/articles")
     public CreateArticleResponse createArticle(@Valid @RequestBody CreateArticleRequest createArticleRequest) {

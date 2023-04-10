@@ -4,7 +4,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.api.dto.AuthorResponse;
 import overcloud.blog.application.article.api.dto.create.CreateArticleRequest;
@@ -27,14 +26,19 @@ import java.util.*;
 @Service
 public class CreateArticleService {
 
-    @Autowired
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
 
-    @Autowired
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
+
+    public CreateArticleService(SpringAuthenticationService authenticationService,
+                                TagRepository tagRepository,
+                                ArticleRepository articleRepository) {
+        this.authenticationService = authenticationService;
+        this.tagRepository = tagRepository;
+        this.articleRepository = articleRepository;
+    }
 
     public Optional<ApiError> validate(CreateArticleRequest request) {
         ApiError apiError = ApiError.from("Validation error");

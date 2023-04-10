@@ -5,7 +5,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.application.article.api.dto.AuthorResponse;
@@ -31,17 +30,23 @@ import java.util.*;
 @Service
 public class UpdateArticleService {
 
-    @Autowired
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
-    @Autowired
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
 
-    @Autowired
-    private ArticleTagRepository articleTagRepository;
+    private final ArticleTagRepository articleTagRepository;
+
+    public UpdateArticleService(SpringAuthenticationService authenticationService,
+                                ArticleRepository articleRepository,
+                                TagRepository tagRepository,
+                                ArticleTagRepository articleTagRepository) {
+        this.authenticationService = authenticationService;
+        this.articleRepository = articleRepository;
+        this.tagRepository = tagRepository;
+        this.articleTagRepository = articleTagRepository;
+    }
 
     @Transactional
     public UpdateArticleResponse updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {

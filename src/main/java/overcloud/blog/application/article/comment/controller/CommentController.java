@@ -2,13 +2,9 @@ package overcloud.blog.application.article.comment.controller;
 
 import overcloud.blog.application.article.comment.dto.create.CreateCommentRequest;
 import overcloud.blog.application.article.comment.dto.create.CreateCommentResponse;
-import overcloud.blog.application.article.comment.dto.delete.DeleteCommentResponse;
-import overcloud.blog.application.article.comment.dto.get.GetCommentRequest;
-import overcloud.blog.application.article.comment.dto.get.GetCommentResponse;
 import overcloud.blog.application.article.comment.dto.get.GetCommentsResponse;
 import overcloud.blog.application.article.comment.service.CommentService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -17,9 +13,11 @@ import java.util.UUID;
 @RestController
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+    private final CommentService commentService;
 
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @PostMapping("articles/{slug}/comments")
     public CreateCommentResponse createComment(@PathVariable("slug") String slug,
