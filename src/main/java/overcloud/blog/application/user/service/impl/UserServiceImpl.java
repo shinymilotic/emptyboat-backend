@@ -145,7 +145,8 @@ public class UserServiceImpl implements UserService {
         SecurityUser securityUser = authenticationService.authenticate(email, hashedPassword)
                 // build exception
                 .orElseThrow(() -> new EntityNotFoundException(LoginError.LOGIN_INFO_INVALID.getValue()));
-        UserEntity user = securityUser.getUser().get();
+        UserEntity user = securityUser.getUser().
+                                    orElseThrow(EntityNotFoundException::new);
         String token = jwtUtils.encode(email);
 
         LoginResponse loginResponse = new LoginResponse();
