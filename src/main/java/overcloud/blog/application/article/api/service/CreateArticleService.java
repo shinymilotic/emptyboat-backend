@@ -1,5 +1,6 @@
 package overcloud.blog.application.article.api.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -17,6 +18,7 @@ import overcloud.blog.domain.article.tag.TagEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiValidationError;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.string.URLConverter;
 
@@ -139,7 +141,11 @@ public class CreateArticleService {
         LocalDateTime now = LocalDateTime.now();
 
         ArticleEntity articleEntity = new ArticleEntity();
-        UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();
+
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
 
         for (TagEntity tagEntity : tagEntities) {
             if(tagList.contains(tagEntity.getName())) {
@@ -150,7 +156,7 @@ public class CreateArticleService {
             }
         }
 
-        articleEntity.setAuthor(securityUser);
+        articleEntity.setAuthor(currentUser);
         articleEntity.setBody(body);
         articleEntity.setDescription(description);
         articleEntity.setSlug(slug);
@@ -161,9 +167,9 @@ public class CreateArticleService {
         articleRepository.save(articleEntity);
 
         AuthorResponse authorResponse = new AuthorResponse();
-        authorResponse.setBio(securityUser.getBio());
-        authorResponse.setUsername(securityUser.getUsername());
-        authorResponse.setImage(securityUser.getImage());
+        authorResponse.setBio(currentUser.getBio());
+        authorResponse.setUsername(currentUser.getUsername());
+        authorResponse.setImage(currentUser.getImage());
 
         response.setAuthorResponse(authorResponse);
         response.setTagList(tagList);

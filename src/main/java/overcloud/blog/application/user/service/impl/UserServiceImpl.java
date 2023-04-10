@@ -31,12 +31,10 @@ import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Validated
@@ -116,18 +114,19 @@ public class UserServiceImpl implements UserService {
         String email = updateUserDto.getEmail();
         String updateBio = updateUserDto.getBio();
         String updateImage = updateUserDto.getImage();
-        SecurityUser securityUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new BadCredentialsException("user not found"));
-        UserEntity user = securityUser.getUser().get();
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if(!email.equals(user.getEmail())) {
+        if(!email.equals(currentUser.getEmail())) {
             throw new RuntimeException("Email not match current user");
         }
 
-        user.setBio(updateBio);
-        user.setImage(updateImage);
+        currentUser.setBio(updateBio);
+        currentUser.setImage(updateImage);
 
-        UserEntity updateUserEntity = userRepository.save(user);
+        UserEntity updateUserEntity = userRepository.save(currentUser);
         UpdateUserResponse updateUserResponse = new UpdateUserResponse();
         UserResponse userResponse = new UserResponse();
         userResponse.setUsername(updateUserEntity.getUsername());
@@ -163,32 +162,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CurrentUserResponse getCurrentUser() {
-        SecurityUser securityUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new BadCredentialsException("user not found"));
-        UserEntity user = securityUser.getUser().get();
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
         CurrentUserResponse currentUserResponse = new CurrentUserResponse();
         UserResponse userResponse = new UserResponse();
-        userResponse.setUsername(user.getUsername());
-        userResponse.setEmail(user.getEmail());
-        userResponse.setBio(user.getBio());
-        userResponse.setImage(user.getImage());
+
+        userResponse.setUsername(currentUser.getUsername());
+        userResponse.setEmail(currentUser.getEmail());
+        userResponse.setBio(currentUser.getBio());
+        userResponse.setImage(currentUser.getImage());
         currentUserResponse.setUserResponse(userResponse);
 
         return currentUserResponse;
     }
 
     @Override
-    public GetProfileResponse getProfile(String username) throws Exception {
+    public GetProfileResponse getProfile(String username) {
         GetProfileResponse profileResponse = new GetProfileResponse();
-        Optional<SecurityUser> securityUser = authenticationService.getCurrentUser();
-        UserEntity currentUser = securityUser.get().getUser().get();
-        String currentUsername = currentUser.getUsername();
-
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
 
         UserEntity user = userRepository.findByUsername(username);
-        if(user == null) {
-            throw new Exception("User not found");
-        }
 
         profileResponse.setUsername(user.getUsername());
         profileResponse.setFollowing(followUtils.isFollowing(currentUser, user));
@@ -203,8 +201,11 @@ public class UserServiceImpl implements UserService {
     public FollowUserResponse followUser(String username) {
         FollowUserResponse followUserResponse = new FollowUserResponse();
         FollowEntity followEntity = new FollowEntity();
-        Optional<SecurityUser> securityUser = authenticationService.getCurrentUser();
-        UserEntity currentUser = securityUser.get().getUser().get();
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
+
         UserEntity followee = userRepository.findByUsername(username);
 
         followEntity.setFollower(currentUser);
@@ -223,9 +224,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UnfollowResponse unfollowUser(String username) {
         UnfollowResponse unfollowResponse = new UnfollowResponse();
-        Optional<SecurityUser> securityUser = authenticationService.getCurrentUser();
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
+
         UserEntity followee = userRepository.findByUsername(username);
-        UserEntity currentUser = securityUser.get().getUser().get();
+
         List<FollowEntity> followEntity = followRepository.getFollowing(currentUser.getUsername(), followee.getUsername());
         followRepository.delete(followEntity.get(0));
 
@@ -246,7 +251,5 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
-
-
 }
 

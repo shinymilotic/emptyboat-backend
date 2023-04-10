@@ -1,5 +1,6 @@
 package overcloud.blog.application.article.api.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.api.dto.get.ArticleResponse;
 import overcloud.blog.application.article.api.dto.get.GetArticleAuthorResponse;
@@ -10,6 +11,7 @@ import overcloud.blog.application.follow.utils.FollowUtils;
 import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.user.UserEntity;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 import java.util.ArrayList;
@@ -39,15 +41,17 @@ public class GetArticleService {
     public GetArticlesResponse getArticle(String slug) {
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
-        UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();
-
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
 
         ArticleResponse articleResponse = new ArticleResponse();
         articleResponse.setId(articleEntity.getId().toString());
         articleResponse.setBody(articleEntity.getBody());
         articleResponse.setDescription(articleEntity.getDescription());
         articleResponse.setSlug(articleEntity.getSlug());
-        articleResponse.setFavorited(favoriteUtils.isFavorited(securityUser, articleEntity));
+        articleResponse.setFavorited(favoriteUtils.isFavorited(currentUser, articleEntity));
         articleResponse.setFavoritesCount(articleEntity.getFavorites().size());
         articleResponse.setTitle(articleEntity.getTitle());
         articleResponse.setCreatedAt(articleEntity.getCreateAt());
@@ -63,7 +67,7 @@ public class GetArticleService {
         GetArticleAuthorResponse articleAuthorResponse = new GetArticleAuthorResponse();
         UserEntity authorEntity = articleEntity.getAuthor();
         articleAuthorResponse.setUsername(authorEntity.getUsername());
-        articleAuthorResponse.setFollowing(followUtils.isFollowing(securityUser, authorEntity));
+        articleAuthorResponse.setFollowing(followUtils.isFollowing(currentUser, authorEntity));
         articleAuthorResponse.setFollowersCount(followUtils.getFollowingCount(authorEntity));
         articleAuthorResponse.setBio(authorEntity.getBio());
         articleAuthorResponse.setImage(authorEntity.getImage());

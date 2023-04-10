@@ -1,5 +1,6 @@
 package overcloud.blog.application.article.comment.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import overcloud.blog.application.article.comment.dto.create.CreateCommentAuthorResponse;
 import overcloud.blog.application.article.comment.dto.create.CreateCommentRequest;
 import overcloud.blog.application.article.comment.dto.create.CreateCommentResponse;
@@ -12,6 +13,7 @@ import overcloud.blog.application.article.comment.repository.CommentRepository;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.comment.CommentEntity;
 import overcloud.blog.domain.user.UserEntity;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +42,12 @@ public class CommentService {
     public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
         CreateCommentResponse createCommentResponse = new CreateCommentResponse();
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
-        UserEntity userEntity = authenticationService.getCurrentUser().get().getUser().get();
+
+        UserEntity userEntity = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
+
         String body = createCommentRequest.getBody();
         LocalDateTime now = LocalDateTime.now();
 
@@ -96,7 +103,6 @@ public class CommentService {
     }
 
     public void deleteComment(UUID uuId) {
-        DeleteCommentResponse deleteCommentResponse = new DeleteCommentResponse();
         commentRepository.deleteById(uuId);
     }
 }

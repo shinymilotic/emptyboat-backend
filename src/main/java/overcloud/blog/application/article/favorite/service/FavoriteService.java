@@ -1,5 +1,6 @@
 package overcloud.blog.application.article.favorite.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.application.article.api.repository.ArticleRepository;
@@ -11,6 +12,7 @@ import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.UserEntity;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 import java.util.ArrayList;
@@ -40,10 +42,14 @@ public class FavoriteService {
     @Transactional
     public SingleArticleResponse makeFavorite(String slug) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
-        UserEntity currenUser = authenticationService.getCurrentUser().get().getUser().get();
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
+
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
         favoriteEntity.setArticle(articleEntity);
-        favoriteEntity.setUser(currenUser);
+        favoriteEntity.setUser(currentUser);
         UserEntity author = articleEntity.getAuthor();
         favoriteRepository.save(favoriteEntity);
 
@@ -52,7 +58,7 @@ public class FavoriteService {
         ArticleAuthorResponse authorResponse = new ArticleAuthorResponse();
         authorResponse.setUsername(author.getUsername());
         authorResponse.setBio(author.getBio());
-        authorResponse.setFollowing(followUtils.isFollowing(currenUser, author));
+        authorResponse.setFollowing(followUtils.isFollowing(currentUser, author));
         authorResponse.setFollowersCount(followUtils.getFollowingCount(author));
         authorResponse.setImage(author.getImage());
         authorResponse.setEmail(author.getEmail());
@@ -82,13 +88,16 @@ public class FavoriteService {
     public SingleArticleResponse makeUnfavorite(String slug) {
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
         UserEntity author = articleEntity.getAuthor();
-        UserEntity currenUser = authenticationService.getCurrentUser().get().getUser().get();
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
 
         SingleArticleResponse articleResponse = new SingleArticleResponse();
         ArticleAuthorResponse authorResponse = new ArticleAuthorResponse();
         authorResponse.setUsername(author.getUsername());
         authorResponse.setBio(author.getBio());
-        authorResponse.setFollowing(followUtils.isFollowing(currenUser, author));
+        authorResponse.setFollowing(followUtils.isFollowing(currentUser, author));
         authorResponse.setFollowersCount(followUtils.getFollowingCount(author));
         authorResponse.setImage(author.getImage());
         authorResponse.setEmail(author.getEmail());

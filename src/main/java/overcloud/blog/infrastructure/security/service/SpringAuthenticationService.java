@@ -2,7 +2,6 @@ package overcloud.blog.infrastructure.security.service;
 
 import java.util.Optional;
 
-import org.springframework.security.core.Authentication;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.application.user.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +22,6 @@ public class SpringAuthenticationService {
 
   /** {@inheritDoc} */
   public Optional<SecurityUser> getCurrentUser() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
             .filter(auth -> !auth.getPrincipal().equals("anonymousUser"))

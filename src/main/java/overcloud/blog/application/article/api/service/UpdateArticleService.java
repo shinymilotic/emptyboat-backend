@@ -21,6 +21,7 @@ import overcloud.blog.domain.article.tag.TagEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiValidationError;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.string.URLConverter;
 
@@ -66,11 +67,13 @@ public class UpdateArticleService {
             throw new WriteArticleException(apiError.get());
         }
 
-        UserEntity securityUser = authenticationService.getCurrentUser().get().getUser().get();
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .map(SecurityUser::getUser)
+                .orElseThrow(EntityNotFoundException::new)
+                .orElseThrow(EntityNotFoundException::new);
 
         ArticleEntity articleEntity = articleRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException(ArticleError.ARTICLE_NOT_FOUND.getValue()));
-
 
         articleEntity.setTitle(title);
         articleEntity.setBody(body);
@@ -96,9 +99,9 @@ public class UpdateArticleService {
         articleRepository.save(articleEntity);
 
         AuthorResponse authorResponse = new AuthorResponse();
-        authorResponse.setBio(securityUser.getBio());
-        authorResponse.setUsername(securityUser.getUsername());
-        authorResponse.setImage(securityUser.getImage());
+        authorResponse.setBio(currentUser.getBio());
+        authorResponse.setUsername(currentUser.getUsername());
+        authorResponse.setImage(currentUser.getImage());
 
         response.setId(id);
         response.setAuthorResponse(authorResponse);
