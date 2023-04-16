@@ -1,6 +1,5 @@
 package overcloud.blog.domain.article.comment;
 
-import org.springframework.cglib.core.Local;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.user.UserEntity;
 import jakarta.persistence.*;
@@ -13,14 +12,14 @@ import java.util.UUID;
 public class CommentEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "article_id")
     private ArticleEntity article;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "author_id")
     private UserEntity author;
 

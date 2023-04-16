@@ -10,12 +10,12 @@ import java.util.UUID;
 public class FollowEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "follower_id", referencedColumnName = "id")
     private UserEntity follower;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "followee_id", referencedColumnName = "id")
     private UserEntity followee;
 

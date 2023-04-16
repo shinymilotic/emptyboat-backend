@@ -1,9 +1,5 @@
 package overcloud.blog.domain.article;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.comment.CommentEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
@@ -18,15 +14,16 @@ import java.util.UUID;
 @Table(name = "articles", schema = "public")
 public class ArticleEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
     @Column(name = "slug")
     private String slug;
+
     @Column(name = "title")
     private String title;
 
@@ -137,5 +134,20 @@ public class ArticleEntity {
 
     public void setFavorites(List<FavoriteEntity> favorites) {
         this.favorites = favorites;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ArticleEntity that = (ArticleEntity) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

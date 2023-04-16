@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
-import overcloud.blog.domain.user.follow.FollowEntity;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Table(name = "users", schema = "public")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "email")
@@ -48,7 +47,7 @@ public class UserEntity {
     @ManyToMany(mappedBy = "followee")
     private Set<UserEntity> follower;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<FavoriteEntity> favorites;
 
     @OneToMany(mappedBy = "author")
@@ -136,10 +135,11 @@ public class UserEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
         UserEntity that = (UserEntity) o;
+
+        if(that == null) {
+            return false;
+        }
 
         return id.equals(that.id);
     }

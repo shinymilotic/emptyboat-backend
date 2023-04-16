@@ -11,13 +11,13 @@ import java.util.UUID;
 public class TagEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tag")
     private List<ArticleTag> articleTags;
 
     public void setId(UUID id) {
