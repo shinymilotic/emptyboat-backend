@@ -1,16 +1,20 @@
-package overcloud.blog.application.article.api.dto.get;
+package overcloud.blog.application.article.api.dto.get.single;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GetArticleAuthorResponse {
+public class GetArticlesAuthorResponse {
     @JsonProperty("username")
     private String username;
+
     @JsonProperty("bio")
     private String bio;
+
     @JsonProperty("image")
     private String image;
+
     @JsonProperty("following")
     private boolean following;
+
     @JsonProperty("followersCount")
     private int followersCount;
 

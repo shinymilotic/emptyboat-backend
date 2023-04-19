@@ -1,14 +1,8 @@
-package overcloud.blog.application.user.dto;
+package overcloud.blog.application.article.api.dto.get.multiple;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserResponse {
-
-    @JsonProperty("email")
-    private String email;
-
-    @JsonProperty("token")
-    private String token;
+public class GetArticlesAuthorResponse {
 
     @JsonProperty("username")
     private String username;
@@ -19,21 +13,11 @@ public class UserResponse {
     @JsonProperty("image")
     private String image;
 
-    public String getEmail() {
-        return email;
-    }
+    @JsonProperty("following")
+    private boolean following;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
+    @JsonProperty("followersCount")
+    private int followersCount;
 
     public String getUsername() {
         return username;
@@ -57,5 +41,21 @@ public class UserResponse {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isFollowing() {
+        return following;
+    }
+
+    public void setFollowing(boolean following) {
+        this.following = following;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
     }
 }

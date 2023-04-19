@@ -1,16 +1,12 @@
-package overcloud.blog.application.article.api.dto.create;
+package overcloud.blog.application.article.api.dto.get.multiple;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.Builder;
-import overcloud.blog.application.article.api.dto.AuthorResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import overcloud.blog.application.article.api.dto.get.multiple.GetArticlesAuthorResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@JsonTypeName("article")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public class CreateArticleResponse {
+public class GetArticlesSingleResponse {
 
     @JsonProperty("id")
     private String id;
@@ -28,12 +24,12 @@ public class CreateArticleResponse {
     private String body;
 
     @JsonProperty("tagList")
-    private Iterable<String> tagList;
+    private List<String> tagList;
 
-    @JsonProperty("created_at")
+    @JsonProperty("createdAt")
     private LocalDateTime createdAt;
 
-    @JsonProperty("updated_at")
+    @JsonProperty("updatedAt")
     private LocalDateTime updatedAt;
 
     @JsonProperty("favorited")
@@ -43,7 +39,7 @@ public class CreateArticleResponse {
     private int favoritesCount;
 
     @JsonProperty("author")
-    private AuthorResponse author;
+    private GetArticlesAuthorResponse author;
 
     public String getId() {
         return id;
@@ -85,11 +81,11 @@ public class CreateArticleResponse {
         this.body = body;
     }
 
-    public Iterable<String> getTagList() {
+    public List<String> getTagList() {
         return tagList;
     }
 
-    public void setTagList(Iterable<String> tagList) {
+    public void setTagList(List<String> tagList) {
         this.tagList = tagList;
     }
 
@@ -125,19 +121,11 @@ public class CreateArticleResponse {
         this.favoritesCount = favoritesCount;
     }
 
-    public AuthorResponse getAuthorResponse() {
+    public GetArticlesAuthorResponse getAuthor() {
         return author;
     }
 
-    public void setAuthorResponse(AuthorResponse author) {
-        this.author = author;
-    }
-
-    public AuthorResponse getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(AuthorResponse author) {
+    public void setAuthor(GetArticlesAuthorResponse author) {
         this.author = author;
     }
 }

@@ -22,7 +22,7 @@ public class UpdateArticleRequest {
 
     @JsonProperty("description")
     @NotNull
-    @Size(min = 1, max = 60)
+    @Size(min = 1, max = 60, message = "Description size must between 1 and 60")
     private String description;
 
     @JsonProperty("body")
