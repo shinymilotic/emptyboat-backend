@@ -4,7 +4,8 @@ package overcloud.blog.application.article.api.controller;
 import overcloud.blog.application.article.api.dto.create.CreateArticleRequest;
 import overcloud.blog.application.article.api.dto.create.CreateArticleResponse;
 import overcloud.blog.application.article.api.dto.delete.DeleteArticleResponse;
-import overcloud.blog.application.article.api.dto.get.GetArticlesResponse;
+import overcloud.blog.application.article.api.dto.get.single.GetArticleResponse;
+import overcloud.blog.application.article.api.dto.get.multiple.GetArticlesResponse;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleRequest;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleResponse;
 import jakarta.validation.Valid;
@@ -37,7 +38,7 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public CreateArticleResponse createArticle(@Valid @RequestBody CreateArticleRequest createArticleRequest) {
+    public CreateArticleResponse createArticle(@RequestBody CreateArticleRequest createArticleRequest) {
         return createArticleService.createArticle(createArticleRequest);
     }
 
@@ -53,7 +54,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{slug}")
-    public GetArticlesResponse getArticle(@PathVariable("slug") String slug ) {
+    public GetArticleResponse getArticle(@PathVariable("slug") String slug ) {
         return getArticleService.getArticle(slug);
     }
 
@@ -62,13 +63,16 @@ public class ArticleController {
                                            @RequestParam(value = "author", required = false) String author,
                                            @RequestParam(value = "favorited", required = false) String favorited,
                                            @RequestParam(value = "size", defaultValue = "20") int limit,
-                                           @RequestParam(value = "page", defaultValue = "0") int page) {
-        return getArticleListService.getArticles(tag, author, favorited, limit, page);
+                                           @RequestParam(value = "page", defaultValue = "0") int page,
+                                           @RequestParam(value = "searchParam", defaultValue = "") String searchParam) {
+        return getArticleListService.getArticles(tag, author, favorited, limit, page, searchParam);
     }
 
     @GetMapping("/articles/feed")
     public GetArticlesResponse getArticlesFeed(@RequestParam(value = "size", defaultValue = "20") int size,
-                                           @RequestParam(value = "page", defaultValue = "0") int page) {
-        return getArticleListService.getArticlesFeed(size, page);
+                                               @RequestParam(value = "page", defaultValue = "0") int page,
+                                               @RequestParam(value = "searchParam", defaultValue = "") String searchParam) {
+        return getArticleListService.getArticlesFeed(size, page, searchParam);
     }
+
 }
