@@ -1,14 +1,15 @@
 package overcloud.blog.application.article.comment.dto.get;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class GetCommentResponse {
-
     @JsonProperty("id")
     private UUID id;
 
@@ -23,44 +24,4 @@ public class GetCommentResponse {
 
     @JsonProperty("author")
     private GetCommentAuthorResponse authorResponse;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public GetCommentAuthorResponse getAuthorResponse() {
-        return authorResponse;
-    }
-
-    public void setAuthorResponse(GetCommentAuthorResponse authorResponse) {
-        this.authorResponse = authorResponse;
-    }
 }

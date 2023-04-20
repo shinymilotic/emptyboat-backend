@@ -1,5 +1,7 @@
 package overcloud.blog.domain.article.comment;
 
+import lombok.Getter;
+import lombok.Setter;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.user.UserEntity;
 import jakarta.persistence.*;
@@ -8,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "comment", schema = "public")
 public class CommentEntity {
 
@@ -31,52 +35,4 @@ public class CommentEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public ArticleEntity getArticle() {
-        return article;
-    }
-
-    public void setArticle(ArticleEntity article) {
-        this.article = article;
-    }
-
-    public UserEntity getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(UserEntity author) {
-        this.author = author;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

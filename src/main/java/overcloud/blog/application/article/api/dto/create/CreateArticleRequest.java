@@ -6,11 +6,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.io.Serial;
 import java.util.Collection;
 
 @Builder
 @JsonTypeName("articles")
+@Getter
+@Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class CreateArticleRequest {
 
@@ -29,36 +34,4 @@ public class CreateArticleRequest {
 
     @JsonProperty("tagList")
     private Collection<String> tagList;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public Collection<String> getTagList() {
-        return tagList;
-    }
-
-    public void setTagList(Collection<String> tagList) {
-        this.tagList = tagList;
-    }
 }

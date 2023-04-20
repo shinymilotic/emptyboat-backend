@@ -104,7 +104,7 @@ public class UpdateArticleService {
         authorResponse.setImage(currentUser.getImage());
 
         response.setId(id);
-        response.setAuthorResponse(authorResponse);
+        response.setAuthor(authorResponse);
         response.setTagList(tagList);
         response.setBody(body);
         response.setFavorited(false);

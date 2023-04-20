@@ -180,7 +180,7 @@ public class CreateArticleService {
         authorResponse.setUsername(currentUser.getUsername());
         authorResponse.setImage(currentUser.getImage());
 
-        response.setAuthorResponse(authorResponse);
+        response.setAuthor(authorResponse);
         response.setTagList(tagList);
         response.setBody(body);
         response.setFavorited(false);

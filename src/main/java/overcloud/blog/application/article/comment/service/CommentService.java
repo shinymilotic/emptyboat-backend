@@ -5,7 +5,6 @@ import overcloud.blog.application.article.comment.dto.create.CreateCommentAuthor
 import overcloud.blog.application.article.comment.dto.create.CreateCommentRequest;
 import overcloud.blog.application.article.comment.dto.create.CreateCommentResponse;
 import overcloud.blog.application.article.api.repository.ArticleRepository;
-import overcloud.blog.application.article.comment.dto.delete.DeleteCommentResponse;
 import overcloud.blog.application.article.comment.dto.get.GetCommentAuthorResponse;
 import overcloud.blog.application.article.comment.dto.get.GetCommentResponse;
 import overcloud.blog.application.article.comment.dto.get.GetCommentsResponse;
