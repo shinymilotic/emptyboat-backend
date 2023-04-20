@@ -1,6 +1,6 @@
 package overcloud.blog.domain.article.tag;
 
-import overcloud.blog.domain.ArticleTag;
+import overcloud.blog.domain.article.ArticleTag;
 import jakarta.persistence.*;
 
 import java.util.List;

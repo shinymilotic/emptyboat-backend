@@ -8,7 +8,7 @@ import overcloud.blog.application.article.favorite.dto.ArticleAuthorResponse;
 import overcloud.blog.application.article.favorite.dto.SingleArticleResponse;
 import overcloud.blog.application.article.favorite.repository.FavoriteRepository;
 import overcloud.blog.application.follow.utils.FollowUtils;
-import overcloud.blog.domain.ArticleTag;
+import overcloud.blog.domain.article.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.UserEntity;

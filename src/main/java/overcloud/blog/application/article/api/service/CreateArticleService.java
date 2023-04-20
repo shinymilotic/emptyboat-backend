@@ -13,7 +13,7 @@ import overcloud.blog.application.article.api.dto.create.CreateArticleResponse;
 import overcloud.blog.application.article.api.exception.WriteArticleException;
 import overcloud.blog.application.article.api.repository.ArticleRepository;
 import overcloud.blog.application.tag.repository.TagRepository;
-import overcloud.blog.domain.ArticleTag;
+import overcloud.blog.domain.article.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.tag.TagEntity;
 import overcloud.blog.domain.user.UserEntity;

@@ -1,6 +1,5 @@
 package overcloud.blog.domain.article;
 
-import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.comment.CommentEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.UserEntity;
@@ -13,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "articles", schema = "public")
 public class ArticleEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

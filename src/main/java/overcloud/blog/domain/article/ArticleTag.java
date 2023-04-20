@@ -1,4 +1,4 @@
-package overcloud.blog.domain;
+package overcloud.blog.domain.article;
 
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.tag.TagEntity;
@@ -10,26 +10,27 @@ import java.util.UUID;
 @Table(name = "article_tag", schema = "public")
 public class ArticleTag {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @EmbeddedId
+    private ArticleTagId id;
 
     @ManyToOne
     @JoinColumn(name = "tag_id")
+    @MapsId("tagId")
     private TagEntity tag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
+    @MapsId("articleId")
     private ArticleEntity article;
 
     public ArticleTag() {
     }
 
-    public UUID getId() {
+    public ArticleTagId getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(ArticleTagId id) {
         this.id = id;
     }
 

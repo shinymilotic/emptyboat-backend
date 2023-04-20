@@ -7,7 +7,7 @@ import overcloud.blog.application.article.api.dto.get.multiple.GetArticlesRespon
 import overcloud.blog.application.article.api.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.utils.FavoriteUtils;
 import overcloud.blog.application.follow.utils.FollowUtils;
-import overcloud.blog.domain.ArticleTag;
+import overcloud.blog.domain.article.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.UserEntity;
