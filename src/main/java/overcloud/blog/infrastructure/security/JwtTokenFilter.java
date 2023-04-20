@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String TOKEN_PREFIX = "Token ";
 
     private final JwtUtils jwtUtils;
 
@@ -33,6 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
+
         Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .filter(authHeader -> authHeader.startsWith(TOKEN_PREFIX))
                 .map(authHeader -> authHeader.substring(TOKEN_PREFIX.length()))
@@ -40,6 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 .map(jwtUtils::getSub)
                 .map(authenticationProvider::getAuthentication)
                 .ifPresent(SecurityContextHolder.getContext()::setAuthentication);
+
         chain.doFilter(request, response);
     }
 }
