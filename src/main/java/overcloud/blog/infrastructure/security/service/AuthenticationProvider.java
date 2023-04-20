@@ -16,8 +16,8 @@ public class AuthenticationProvider {
         this.userDetailsService = userDetailsService;
     }
 
-    public Authentication getAuthentication(String username) {
-        return Optional.ofNullable(username)
+    public Authentication getAuthentication(String email) {
+        return Optional.ofNullable(email)
                 .map(userDetailsService::loadUserByUsername)
                 .map(userDetails ->
                     new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities()))
