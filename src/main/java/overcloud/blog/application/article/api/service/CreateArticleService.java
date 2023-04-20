@@ -6,6 +6,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import overcloud.blog.application.article.api.dto.AuthorResponse;
 import overcloud.blog.application.article.api.dto.create.CreateArticleRequest;
 import overcloud.blog.application.article.api.dto.create.CreateArticleResponse;
@@ -53,8 +54,16 @@ public class CreateArticleService {
         validateTagList(request.getTagList())
                 .ifPresent(apiError::addApiValidationErrorDetail);
 
-        validateTitle(request.getTitle())
-                .ifPresent(apiError::addApiValidationErrorDetail);
+        if(!StringUtils.hasText(request.getTitle())) {
+            apiError.addApiValidationErrorDetail(ApiValidationError.addValidationError(
+                    "CreateArticle",
+                    "title",
+                    "",
+                    "title is required"));
+        } else {
+            validateTitle(request.getTitle())
+                    .ifPresent(apiError::addApiValidationErrorDetail);
+        }
 
         if(apiError.getApiErrorDetails().isEmpty()) {
             return Optional.empty();
@@ -95,12 +104,12 @@ public class CreateArticleService {
 
         List<TagEntity> tagEntities = tagRepository.checkAllTagsExistDB(tagList);
 
-        if(tagEntities.size() != 0 && tagEntities.size() != tagList.size()) {
+        if(tagEntities.size() != tagList.size()) {
             return Optional.of(ApiValidationError.addValidationError(
                     "CreateArticle",
                     "tagList",
                     "",
-                    "tag list doesn't exist"));
+                    "There is tag doesn't exist"));
         }
 
         return Optional.empty();

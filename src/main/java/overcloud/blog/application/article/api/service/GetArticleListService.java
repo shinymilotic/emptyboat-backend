@@ -1,14 +1,15 @@
 package overcloud.blog.application.article.api.service;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.article.api.dto.get.ArticleResponse;
-import overcloud.blog.application.article.api.dto.get.GetArticleAuthorResponse;
-import overcloud.blog.application.article.api.dto.get.GetArticlesResponse;
+import overcloud.blog.application.article.api.dto.get.multiple.GetArticlesSingleResponse;
+import overcloud.blog.application.article.api.dto.get.multiple.GetArticlesAuthorResponse;
+import overcloud.blog.application.article.api.dto.get.multiple.GetArticlesResponse;
 import overcloud.blog.application.article.api.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.utils.FavoriteUtils;
 import overcloud.blog.application.follow.utils.FollowUtils;
 import overcloud.blog.domain.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
+import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
@@ -39,10 +40,10 @@ public class GetArticleListService {
         this.authenticationService = authenticationService;
     }
 
-    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, int page) {
+    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, int page, String searchParam) {
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page);
+        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page, searchParam);
 
         Optional<SecurityUser> currentUser = authenticationService.getCurrentUser();
         Optional<UserEntity> currentUserEntity = Optional.empty();
@@ -52,14 +53,16 @@ public class GetArticleListService {
         }
 
         for (ArticleEntity article: articleEntities) {
-            ArticleResponse articleResponse = new ArticleResponse();
+            GetArticlesSingleResponse articleResponse = new GetArticlesSingleResponse();
             articleResponse.setId(article.getId().toString());
             articleResponse.setBody(article.getBody());
             articleResponse.setDescription(article.getDescription());
             articleResponse.setSlug(article.getSlug());
 
             if(currentUserEntity.isPresent()) {
-                articleResponse.setFavorited(favoriteUtils.isFavorited(currentUserEntity.get(), article));
+                UserEntity user = currentUserEntity.get();
+                List<FavoriteEntity> favorites = article.getFavorites();
+                articleResponse.setFavorited(favoriteUtils.isFavorited(user, favorites));
             }
 
             articleResponse.setFavoritesCount(article.getFavorites().size());
@@ -73,7 +76,7 @@ public class GetArticleListService {
             articleResponse.setCreatedAt(article.getCreateAt());
             articleResponse.setUpdatedAt(article.getUpdatedAt());
 
-            GetArticleAuthorResponse articleAuthorResponse = new GetArticleAuthorResponse();
+            GetArticlesAuthorResponse articleAuthorResponse = new GetArticlesAuthorResponse();
             UserEntity authorEntity = article.getAuthor();
             articleAuthorResponse.setUsername(authorEntity.getUsername());
 
@@ -92,10 +95,10 @@ public class GetArticleListService {
         return getArticlesResponse;
     }
 
-    public GetArticlesResponse getArticlesFeed(int size, int page) {
+    public GetArticlesResponse getArticlesFeed(int size, int page, String searchParam) {
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(null, null, null, size, page);
+        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(null, null, null, size, page, searchParam);
 
         Optional<SecurityUser> currentUser = authenticationService.getCurrentUser();
         Optional<UserEntity> currentUserEntity = Optional.empty();
@@ -105,14 +108,16 @@ public class GetArticleListService {
         }
 
         for (ArticleEntity article: articleEntities) {
-            ArticleResponse articleResponse = new ArticleResponse();
+            GetArticlesSingleResponse articleResponse = new GetArticlesSingleResponse();
             articleResponse.setId(article.getId().toString());
             articleResponse.setBody(article.getBody());
             articleResponse.setDescription(article.getDescription());
             articleResponse.setSlug(article.getSlug());
 
             if(currentUserEntity.isPresent()) {
-                articleResponse.setFavorited(favoriteUtils.isFavorited(currentUserEntity.get(), article));
+                UserEntity user = currentUserEntity.get();
+                List<FavoriteEntity> favorites = article.getFavorites();
+                articleResponse.setFavorited(favoriteUtils.isFavorited(user, favorites));
             }
             articleResponse.setFavoritesCount(article.getFavorites().size());
             List<ArticleTag> articleTagList = article.getArticleTags();
@@ -127,7 +132,7 @@ public class GetArticleListService {
             articleResponse.setCreatedAt(article.getCreateAt());
             articleResponse.setUpdatedAt(article.getUpdatedAt());
 
-            GetArticleAuthorResponse articleAuthorResponse = new GetArticleAuthorResponse();
+            GetArticlesAuthorResponse articleAuthorResponse = new GetArticlesAuthorResponse();
             UserEntity authorEntity = article.getAuthor();
             articleAuthorResponse.setUsername(authorEntity.getUsername());
 
