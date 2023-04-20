@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Size;
 public class LoginRequest {
     @JsonProperty("email")
     @NotNull
-    @Size(min = 3, max = 256)
+        @Size(min = 3, max = 256, message = "Email must between 3 to 256 characters")
     private String email;
     @JsonProperty("password")
     @NotNull

@@ -1,6 +1,5 @@
 package overcloud.blog.infrastructure.config;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +19,5 @@ public class DataSourceConfig {
         dataSourceBuilder.username("root");
         dataSourceBuilder.password("root");
         return dataSourceBuilder.build();
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
     }
 }

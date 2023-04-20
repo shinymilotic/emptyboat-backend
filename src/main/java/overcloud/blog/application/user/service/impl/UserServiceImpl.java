@@ -3,7 +3,6 @@ package overcloud.blog.application.user.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -176,6 +175,7 @@ public class UserServiceImpl implements UserService {
         userResponse.setUsername(currentUser.getUsername());
         userResponse.setEmail(currentUser.getEmail());
         userResponse.setBio(currentUser.getBio());
+        userResponse.setToken(jwtUtils.encode(currentUser.getEmail()));
         userResponse.setImage(currentUser.getImage());
         currentUserResponse.setUserResponse(userResponse);
 

@@ -1,6 +1,5 @@
 package overcloud.blog.application.user.service;
 
-import com.nimbusds.openid.connect.sdk.LogoutRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import overcloud.blog.application.follow.dto.UnfollowResponse;
@@ -9,7 +8,6 @@ import overcloud.blog.application.user.dto.get.FollowUserResponse;
 import overcloud.blog.application.user.dto.get.GetProfileResponse;
 import overcloud.blog.application.user.dto.login.LoginRequest;
 import overcloud.blog.application.user.dto.login.LoginResponse;
-import overcloud.blog.application.user.dto.logout.LogoutResponse;
 import overcloud.blog.application.user.dto.register.RegisterRequest;
 import overcloud.blog.application.user.dto.update.UpdateUserRequest;
 import overcloud.blog.application.user.dto.register.RegisterResponse;
