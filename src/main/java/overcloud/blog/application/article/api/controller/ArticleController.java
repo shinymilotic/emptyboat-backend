@@ -63,14 +63,14 @@ public class ArticleController {
                                            @RequestParam(value = "author", required = false) String author,
                                            @RequestParam(value = "favorited", required = false) String favorited,
                                            @RequestParam(value = "size", defaultValue = "20") int limit,
-                                           @RequestParam(value = "page", defaultValue = "0") int page,
+                                           @RequestParam(value = "page", defaultValue = "1") int page,
                                            @RequestParam(value = "searchParam", defaultValue = "") String searchParam) {
         return getArticleListService.getArticles(tag, author, favorited, limit, page, searchParam);
     }
 
     @GetMapping("/articles/feed")
     public GetArticlesResponse getArticlesFeed(@RequestParam(value = "size", defaultValue = "20") int size,
-                                               @RequestParam(value = "page", defaultValue = "0") int page,
+                                               @RequestParam(value = "page", defaultValue = "1") int page,
                                                @RequestParam(value = "searchParam", defaultValue = "") String searchParam) {
         return getArticleListService.getArticlesFeed(size, page, searchParam);
     }
