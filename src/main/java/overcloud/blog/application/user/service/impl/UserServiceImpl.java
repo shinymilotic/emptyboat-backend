@@ -24,6 +24,7 @@ import overcloud.blog.application.user.exception.register.RegisterError;
 import overcloud.blog.application.user.exception.register.RegisterInfoExistException;
 import overcloud.blog.application.user.service.UserService;
 import overcloud.blog.application.user.repository.UserRepository;
+import overcloud.blog.domain.article.FollowId;
 import overcloud.blog.domain.user.follow.FollowEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.application.user.dto.register.RegisterRequest;
@@ -211,7 +212,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(EntityNotFoundException::new);
 
         UserEntity followee = userRepository.findByUsername(username);
-
+        followEntity.setId(new FollowId());
         followEntity.setFollower(currentUser);
         followEntity.setFollowee(followee);
         followRepository.save(followEntity);

@@ -10,6 +10,7 @@ import overcloud.blog.application.article.favorite.repository.FavoriteRepository
 import overcloud.blog.application.follow.utils.FollowUtils;
 import overcloud.blog.domain.article.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
+import overcloud.blog.domain.article.FavoriteId;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
@@ -48,6 +49,7 @@ public class FavoriteService {
                 .orElseThrow(EntityNotFoundException::new);
 
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
+        favoriteEntity.setId(new FavoriteId());
         favoriteEntity.setArticle(articleEntity);
         favoriteEntity.setUser(currentUser);
         UserEntity author = articleEntity.getAuthor();

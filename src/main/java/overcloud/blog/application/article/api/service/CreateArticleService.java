@@ -15,6 +15,7 @@ import overcloud.blog.application.article.api.repository.ArticleRepository;
 import overcloud.blog.application.tag.repository.TagRepository;
 import overcloud.blog.domain.article.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
+import overcloud.blog.domain.article.ArticleTagId;
 import overcloud.blog.domain.article.tag.TagEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiError;
@@ -25,6 +26,7 @@ import overcloud.blog.infrastructure.string.URLConverter;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CreateArticleService {
@@ -130,11 +132,11 @@ public class CreateArticleService {
     }
 
     public CreateArticleResponse createArticle(CreateArticleRequest articleRequest) {
-        CreateArticleResponse response = new CreateArticleResponse();
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();
         String slug = URLConverter.toSlug(title);
+        LocalDateTime now = LocalDateTime.now();
 
         Optional<ApiError> apiError = validate(articleRequest);
 
@@ -142,28 +144,18 @@ public class CreateArticleService {
             throw new WriteArticleException(apiError.get());
         }
 
-        Set<String> tagList = new HashSet<>();
-        articleRequest.getTagList()
-                .forEach(tagList::add);
-        List<TagEntity> tagEntities = tagRepository.findAll();
-        List<ArticleTag> tagForInsert = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
-
-        ArticleEntity articleEntity = new ArticleEntity();
-
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .map(SecurityUser::getUser)
                 .orElseThrow(EntityNotFoundException::new)
                 .orElseThrow(EntityNotFoundException::new);
 
-        for (TagEntity tagEntity : tagEntities) {
-            if(tagList.contains(tagEntity.getName())) {
-                ArticleTag articleTag = new ArticleTag();
-                articleTag.setArticle(articleEntity);
-                articleTag.setTag(tagEntity);
-                tagForInsert.add(articleTag);
-            }
-        }
+        ArticleEntity articleEntity = new ArticleEntity();
+        List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
+        List<ArticleTag> articleTags = tagEntities.stream()
+                                .map(tagEntity -> ArticleTag.builder()
+                                .tag(tagEntity)
+                                .article(articleEntity)
+                                .build()).collect(Collectors.toList());
 
         articleEntity.setAuthor(currentUser);
         articleEntity.setBody(body);
@@ -172,25 +164,31 @@ public class CreateArticleService {
         articleEntity.setTitle(title);
         articleEntity.setCreateAt(now);
         articleEntity.setUpdatedAt(now);
-        articleEntity.setArticleTags(tagForInsert);
+        articleEntity.setArticleTags(articleTags);
         articleRepository.save(articleEntity);
 
-        AuthorResponse authorResponse = new AuthorResponse();
-        authorResponse.setBio(currentUser.getBio());
-        authorResponse.setUsername(currentUser.getUsername());
-        authorResponse.setImage(currentUser.getImage());
+        return toCreateArticleResponse(articleEntity);
+    }
 
-        response.setAuthor(authorResponse);
-        response.setTagList(tagList);
-        response.setBody(body);
-        response.setFavorited(false);
-        response.setDescription(description);
-        response.setSlug(slug);
-        response.setTitle(title);
-        response.setFavoritesCount(0);
-        response.setCreatedAt(now);
-        response.setUpdatedAt(now);
+    private CreateArticleResponse toCreateArticleResponse(ArticleEntity articleEntity) {
+        return CreateArticleResponse.builder()
+                .title(articleEntity.getTitle())
+                .body(articleEntity.getBody())
+                .description(articleEntity.getDescription())
+                .tagList(articleEntity.getTagNameList())
+                .author(toAuthorResponse(articleEntity.getAuthor()))
+                .slug(articleEntity.getSlug())
+                .createdAt(articleEntity.getCreateAt())
+                .updatedAt(articleEntity.getUpdatedAt())
+                .favorited(false)
+                .build();
+    }
 
-        return response;
+    private AuthorResponse toAuthorResponse(UserEntity userEntity) {
+        return AuthorResponse.builder()
+              .bio(userEntity.getBio())
+              .username(userEntity.getUsername())
+              .image(userEntity.getImage())
+              .build();
     }
 }

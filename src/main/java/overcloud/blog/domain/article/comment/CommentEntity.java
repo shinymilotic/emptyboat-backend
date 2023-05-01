@@ -14,7 +14,6 @@ import java.util.UUID;
 @Setter
 @Table(name = "comment", schema = "public")
 public class CommentEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

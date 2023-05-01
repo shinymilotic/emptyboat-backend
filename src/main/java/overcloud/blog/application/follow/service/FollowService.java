@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.application.follow.dto.FollowResponse;
 import overcloud.blog.application.follow.repository.FollowRepository;
 import overcloud.blog.application.user.repository.UserRepository;
+import overcloud.blog.domain.article.FollowId;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.domain.user.follow.FollowEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
@@ -36,6 +37,7 @@ public class FollowService {
         UserEntity followee = userRepository.findByUsername(username);
 
         FollowEntity followEntity = new FollowEntity();
+        followEntity.setId(new FollowId());
         followEntity.setFollower(currentUser);
         followEntity.setFollowee(followee);
 

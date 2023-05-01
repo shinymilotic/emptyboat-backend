@@ -11,28 +11,28 @@ import java.util.UUID;
 @Embeddable
 @Getter
 @Setter
-public class ArticleTagId implements Serializable {
-    @Column(name = "article_id")
-    private UUID articleId;
+public class FollowId implements Serializable {
+    @Column(name = "follower_id")
+    private UUID followerId;
 
-    @Column(name = "tag_id")
-    private UUID tagId;
+    @Column(name = "followee_id")
+    private UUID followeeId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ArticleTagId that = (ArticleTagId) o;
+        FollowId followId = (FollowId) o;
 
-        if (!articleId.equals(that.articleId)) return false;
-        return tagId.equals(that.tagId);
+        if (!followerId.equals(followId.followerId)) return false;
+        return followeeId.equals(followId.followeeId);
     }
 
     @Override
     public int hashCode() {
-        int result = articleId.hashCode();
-        result = 31 * result + tagId.hashCode();
+        int result = followerId.hashCode();
+        result = 31 * result + followeeId.hashCode();
         return result;
     }
 }

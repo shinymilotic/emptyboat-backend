@@ -1,19 +1,25 @@
 package overcloud.blog.domain.article;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import overcloud.blog.domain.article.comment.CommentEntity;
 import overcloud.blog.domain.article.favorite.FavoriteEntity;
+import overcloud.blog.domain.article.tag.TagEntity;
 import overcloud.blog.domain.user.UserEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 @Table(name = "articles", schema = "public")
 public class ArticleEntity {
     @Id
@@ -51,6 +57,10 @@ public class ArticleEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public ArticleEntity() {
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,5 +74,17 @@ public class ArticleEntity {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public List<String> getTagNameList() {
+        List<String> list = new ArrayList<>();
+
+        if (articleTags == null && articleTags.size() > 0) {
+            list = articleTags.stream()
+                    .map(ArticleTag::getTag)
+                    .map(TagEntity::getName).toList();
+        }
+
+        return list;
     }
 }

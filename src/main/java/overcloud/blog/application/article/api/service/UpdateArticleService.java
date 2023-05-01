@@ -8,6 +8,7 @@ import jakarta.validation.ValidatorFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.application.article.api.dto.AuthorResponse;
+import overcloud.blog.application.article.api.dto.create.CreateArticleResponse;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleRequest;
 import overcloud.blog.application.article.api.dto.update.UpdateArticleResponse;
 import overcloud.blog.application.article.api.exception.ArticleError;
@@ -17,6 +18,7 @@ import overcloud.blog.application.article.api.repository.ArticleTagRepository;
 import overcloud.blog.application.tag.repository.TagRepository;
 import overcloud.blog.domain.article.ArticleTag;
 import overcloud.blog.domain.article.ArticleEntity;
+import overcloud.blog.domain.article.ArticleTagId;
 import overcloud.blog.domain.article.tag.TagEntity;
 import overcloud.blog.domain.user.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiError;
@@ -51,15 +53,11 @@ public class UpdateArticleService {
 
     @Transactional
     public UpdateArticleResponse updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
-        UpdateArticleResponse response = new UpdateArticleResponse();
         String id = updateArticleRequest.getId();
         String title = updateArticleRequest.getTitle();
         String body = updateArticleRequest.getBody();
         String description = updateArticleRequest.getDescription();
         String slug = URLConverter.toSlug(title);
-        Set<String> tagList = new HashSet<>();
-        updateArticleRequest.getTagList()
-                .forEach(tagList::add);
         LocalDateTime now = LocalDateTime.now();
         Optional<ApiError> apiError = validate(updateArticleRequest, currentSlug, slug);
 
@@ -67,55 +65,49 @@ public class UpdateArticleService {
             throw new WriteArticleException(apiError.get());
         }
 
-        UserEntity currentUser = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
-
         ArticleEntity articleEntity = articleRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException(ArticleError.ARTICLE_NOT_FOUND.getValue()));
 
         articleEntity.setTitle(title);
+        articleEntity.setDescription(description);
         articleEntity.setBody(body);
         articleEntity.setUpdatedAt(now);
-
         List<ArticleTag> articleTags = articleEntity.getArticleTags();
-
         deleteArticleTags(articleTags);
-
-        List<ArticleTag> updateArticleTags = new ArrayList<>();
-        for (String tag : tagList) {
-            ArticleTag articleTag = new ArticleTag();
-            TagEntity tagEntity = tagRepository.findByTagName(tag);
-            articleTag.setArticle(articleEntity);
-            articleTag.setTag(tagEntity);
-            updateArticleTags.add(articleTag);
-            articleTagRepository.save(articleTag);
-        }
-
+        List<TagEntity> tagEntities = tagRepository.findByTagName(updateArticleRequest.getTagList());
+        List<ArticleTag> updateArticleTags = tagEntities.stream()
+                                        .map(tagEntity -> ArticleTag.builder()
+                                            .article(articleEntity)
+                                            .tag(tagEntity).build())
+                                        .map(articleTagRepository::save).toList();
         articleEntity.setArticleTags(updateArticleTags);
         articleEntity.setSlug(slug);
 
         articleRepository.save(articleEntity);
 
-        AuthorResponse authorResponse = new AuthorResponse();
-        authorResponse.setBio(currentUser.getBio());
-        authorResponse.setUsername(currentUser.getUsername());
-        authorResponse.setImage(currentUser.getImage());
+        return toUpdateArticleResponse(articleEntity);
+    }
 
-        response.setId(id);
-        response.setAuthor(authorResponse);
-        response.setTagList(tagList);
-        response.setBody(body);
-        response.setFavorited(false);
-        response.setDescription(description);
-        response.setSlug(slug);
-        response.setTitle(title);
-        response.setFavoritesCount(0);
-        response.setCreatedAt(now);
-        response.setUpdatedAt(now);
+    private UpdateArticleResponse toUpdateArticleResponse(ArticleEntity articleEntity) {
+        return UpdateArticleResponse.builder()
+                .title(articleEntity.getTitle())
+                .body(articleEntity.getBody())
+                .description(articleEntity.getDescription())
+                .tagList(articleEntity.getTagNameList())
+                .author(toAuthorResponse(articleEntity.getAuthor()))
+                .slug(articleEntity.getSlug())
+                .createdAt(articleEntity.getCreateAt())
+                .updatedAt(articleEntity.getUpdatedAt())
+                .favorited(false)
+                .build();
+    }
 
-        return response;
+    private AuthorResponse toAuthorResponse(UserEntity userEntity) {
+        return AuthorResponse.builder()
+                .bio(userEntity.getBio())
+                .username(userEntity.getUsername())
+                .image(userEntity.getImage())
+                .build();
     }
 
     private void deleteArticleTags(List<ArticleTag> articleTags) {

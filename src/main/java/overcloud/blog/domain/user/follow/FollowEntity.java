@@ -1,47 +1,28 @@
 package overcloud.blog.domain.user.follow;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import overcloud.blog.domain.article.FollowId;
 import overcloud.blog.domain.user.UserEntity;
 
-import java.util.UUID;
-
 @Entity
+@Getter
+@Setter
 @Table(name = "follows", schema = "public")
 public class FollowEntity {
+    @EmbeddedId
+    private FollowId id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
     @ManyToOne
-    @JoinColumn(name = "follower_id", referencedColumnName = "id")
+    @JoinColumn(name = "follower_id")
+    @MapsId("followerId")
     private UserEntity follower;
+
     @ManyToOne
-    @JoinColumn(name = "followee_id", referencedColumnName = "id")
+    @JoinColumn(name = "followee_id")
+    @MapsId("followeeId")
     private UserEntity followee;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UserEntity getFollower() {
-        return follower;
-    }
-
-    public void setFollower(UserEntity follower) {
-        this.follower = follower;
-    }
-
-    public UserEntity getFollowee() {
-        return followee;
-    }
-
-    public void setFollowee(UserEntity follwing) {
-        this.followee = follwing;
-    }
 
     @Override
     public boolean equals(Object o) {

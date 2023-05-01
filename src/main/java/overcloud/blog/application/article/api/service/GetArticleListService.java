@@ -119,6 +119,7 @@ public class GetArticleListService {
                 List<FavoriteEntity> favorites = article.getFavorites();
                 articleResponse.setFavorited(favoriteUtils.isFavorited(user, favorites));
             }
+
             articleResponse.setFavoritesCount(article.getFavorites().size());
             List<ArticleTag> articleTagList = article.getArticleTags();
 

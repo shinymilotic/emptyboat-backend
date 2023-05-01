@@ -2,6 +2,8 @@ package overcloud.blog.application.article.api.dto.create;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import overcloud.blog.application.article.api.dto.AuthorResponse;
@@ -12,6 +14,8 @@ import java.time.LocalDateTime;
 @JsonTypeName("article")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class CreateArticleResponse {
     @JsonProperty("id")
