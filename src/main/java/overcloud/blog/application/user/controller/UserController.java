@@ -31,7 +31,7 @@ public class UserController {
         return userService.registerUser(registrationDto);
     }
 
-    @PutMapping("users")
+    @PutMapping("user")
     public UpdateUserResponse update(@Valid @RequestBody UpdateUserRequest updateUserDto)  {
         return userService.updateUser(updateUserDto);
     }
@@ -46,7 +46,7 @@ public class UserController {
         return userService.logout(request, response);
     }
 
-    @GetMapping("users")
+    @GetMapping("user")
     public CurrentUserResponse getCurrentUser() {
         return userService.getCurrentUser();
     }

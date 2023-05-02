@@ -58,7 +58,8 @@ public class GetArticleService {
 
         if (currentUser != null) {
             List<FavoriteEntity> favorites = favoriteRepository.findById(currentUser.getId(), articleEntity.getId());
-            articleResponse.setFavorited(favoriteUtils.isFavorited(currentUser, favorites));
+            articleEntity.setFavorites(favorites);
+            articleResponse.setFavorited(favoriteUtils.isFavorited(currentUser, articleEntity));
         }
 
         articleResponse.setFavoritesCount(articleEntity.getFavorites().size());

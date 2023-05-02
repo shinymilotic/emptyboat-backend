@@ -1,6 +1,7 @@
 package overcloud.blog.application.article.api.dto.get.multiple;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import overcloud.blog.application.article.api.dto.get.multiple.GetArticlesAuthorResponse;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 public class GetArticlesSingleResponse {
 
     @JsonProperty("id")
