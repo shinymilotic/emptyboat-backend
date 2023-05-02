@@ -79,7 +79,7 @@ public class ArticleEntity {
     public List<String> getTagNameList() {
         List<String> list = new ArrayList<>();
 
-        if (articleTags == null && articleTags.size() > 0) {
+        if (articleTags != null && articleTags.size() > 0) {
             list = articleTags.stream()
                     .map(ArticleTag::getTag)
                     .map(TagEntity::getName).toList();
