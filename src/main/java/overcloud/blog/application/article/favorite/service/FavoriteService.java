@@ -122,8 +122,10 @@ public class FavoriteService {
         articleResponse.setSlug(articleEntity.getSlug());
         articleResponse.setTitle(articleEntity.getTitle());
 
-        favoriteRepository.deleteBySlug(slug);
-
+        FavoriteId favoritePk = new FavoriteId();
+        favoritePk.setUserId(currentUser.getId());
+        favoritePk.setArticleId(articleEntity.getId());
+        favoriteRepository.deleteById(favoritePk);
         return articleResponse;
     }
 
