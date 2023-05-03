@@ -1,10 +1,10 @@
-package overcloud.blog.domain.user;
+package overcloud.blog.application.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import overcloud.blog.domain.article.ArticleEntity;
-import overcloud.blog.domain.article.favorite.FavoriteEntity;
+import overcloud.blog.application.article.ArticleEntity;
+import overcloud.blog.application.article.favorite.FavoriteEntity;
 
 import java.util.List;
 import java.util.Set;

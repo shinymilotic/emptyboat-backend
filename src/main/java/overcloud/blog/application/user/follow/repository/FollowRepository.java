@@ -1,15 +1,13 @@
-package overcloud.blog.application.follow.repository;
+package overcloud.blog.application.user.follow.repository;
 
 
-import org.springframework.data.jpa.repository.Modifying;
-import overcloud.blog.domain.article.FollowId;
-import overcloud.blog.domain.user.follow.FollowEntity;
+import overcloud.blog.application.user.follow.FollowId;
+import overcloud.blog.application.user.follow.FollowEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public interface FollowRepository extends JpaRepository<FollowEntity, FollowId> {

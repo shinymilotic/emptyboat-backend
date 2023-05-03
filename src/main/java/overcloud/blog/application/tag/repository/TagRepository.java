@@ -1,7 +1,7 @@
 package overcloud.blog.application.tag.repository;
 
 import org.springframework.data.jpa.repository.Query;
-import overcloud.blog.domain.article.tag.TagEntity;
+import overcloud.blog.application.tag.TagEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

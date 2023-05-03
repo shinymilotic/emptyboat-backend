@@ -1,16 +1,16 @@
-package overcloud.blog.application.article.api.controller;
+package overcloud.blog.application.article;
 
 
-import overcloud.blog.application.article.api.dto.create.CreateArticleRequest;
-import overcloud.blog.application.article.api.dto.create.CreateArticleResponse;
-import overcloud.blog.application.article.api.dto.delete.DeleteArticleResponse;
-import overcloud.blog.application.article.api.dto.get.single.GetArticleResponse;
-import overcloud.blog.application.article.api.dto.get.multiple.GetArticlesResponse;
-import overcloud.blog.application.article.api.dto.update.UpdateArticleRequest;
-import overcloud.blog.application.article.api.dto.update.UpdateArticleResponse;
+import overcloud.blog.application.article.dto.create.CreateArticleRequest;
+import overcloud.blog.application.article.dto.create.CreateArticleResponse;
+import overcloud.blog.application.article.dto.delete.DeleteArticleResponse;
+import overcloud.blog.application.article.dto.get.single.GetArticleResponse;
+import overcloud.blog.application.article.dto.get.multiple.GetArticlesResponse;
+import overcloud.blog.application.article.dto.update.UpdateArticleRequest;
+import overcloud.blog.application.article.dto.update.UpdateArticleResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.application.article.api.service.*;
+import overcloud.blog.application.article.service.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

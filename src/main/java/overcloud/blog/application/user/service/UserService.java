@@ -2,7 +2,7 @@ package overcloud.blog.application.user.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import overcloud.blog.application.follow.dto.UnfollowResponse;
+import overcloud.blog.application.user.follow.dto.UnfollowResponse;
 import overcloud.blog.application.user.dto.get.CurrentUserResponse;
 import overcloud.blog.application.user.dto.get.FollowUserResponse;
 import overcloud.blog.application.user.dto.get.GetProfileResponse;

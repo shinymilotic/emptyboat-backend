@@ -1,8 +1,8 @@
-package overcloud.blog.domain.article.tag;
+package overcloud.blog.application.tag;
 
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.domain.article.ArticleTag;
+import overcloud.blog.application.article_tag.ArticleTag;
 import jakarta.persistence.*;
 
 import java.util.List;

@@ -1,8 +1,7 @@
-package overcloud.blog.domain.article;
+package overcloud.blog.application.article.favorite;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

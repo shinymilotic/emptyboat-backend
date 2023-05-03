@@ -1,6 +1,6 @@
 package overcloud.blog.application.user.repository;
 
-import overcloud.blog.domain.user.UserEntity;
+import overcloud.blog.application.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

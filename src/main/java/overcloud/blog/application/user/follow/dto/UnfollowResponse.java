@@ -1,4 +1,4 @@
-package overcloud.blog.application.follow.dto;
+package overcloud.blog.application.user.follow.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

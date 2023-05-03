@@ -1,4 +1,4 @@
-package overcloud.blog.domain.article;
+package overcloud.blog.application.user.follow;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

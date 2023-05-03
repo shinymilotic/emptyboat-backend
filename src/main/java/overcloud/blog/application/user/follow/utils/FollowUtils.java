@@ -1,8 +1,7 @@
-package overcloud.blog.application.follow.utils;
+package overcloud.blog.application.user.follow.utils;
 
 import org.springframework.stereotype.Component;
-import overcloud.blog.domain.user.UserEntity;
-import overcloud.blog.domain.user.follow.FollowEntity;
+import overcloud.blog.application.user.UserEntity;
 
 import java.util.Set;
 

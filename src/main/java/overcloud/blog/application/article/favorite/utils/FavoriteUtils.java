@@ -1,9 +1,9 @@
 package overcloud.blog.application.article.favorite.utils;
 
 import org.springframework.stereotype.Component;
-import overcloud.blog.domain.article.ArticleEntity;
-import overcloud.blog.domain.article.favorite.FavoriteEntity;
-import overcloud.blog.domain.user.UserEntity;
+import overcloud.blog.application.article.ArticleEntity;
+import overcloud.blog.application.article.favorite.FavoriteEntity;
+import overcloud.blog.application.user.UserEntity;
 
 import java.util.List;
 

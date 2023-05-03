@@ -1,10 +1,9 @@
-package overcloud.blog.domain.article.favorite;
+package overcloud.blog.application.article.favorite;
 
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.domain.article.ArticleEntity;
-import overcloud.blog.domain.article.FavoriteId;
-import overcloud.blog.domain.user.UserEntity;
+import overcloud.blog.application.article.ArticleEntity;
+import overcloud.blog.application.user.UserEntity;
 import jakarta.persistence.*;
 
 

@@ -1,4 +1,4 @@
-package overcloud.blog.application.tag.controller;
+package overcloud.blog.application.tag;
 
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.tag.dto.create.CreateTagRequest;

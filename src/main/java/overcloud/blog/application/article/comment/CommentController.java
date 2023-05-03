@@ -1,4 +1,4 @@
-package overcloud.blog.application.article.comment.controller;
+package overcloud.blog.application.article.comment;
 
 import overcloud.blog.application.article.comment.dto.create.CreateCommentRequest;
 import overcloud.blog.application.article.comment.dto.create.CreateCommentResponse;

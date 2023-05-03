@@ -2,7 +2,7 @@ package overcloud.blog.application.article.comment.repository;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import overcloud.blog.domain.article.comment.CommentEntity;
+import overcloud.blog.application.article.comment.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

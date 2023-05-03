@@ -1,10 +1,9 @@
-package overcloud.blog.domain.user.follow;
+package overcloud.blog.application.user.follow;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.domain.article.FollowId;
-import overcloud.blog.domain.user.UserEntity;
+import overcloud.blog.application.user.UserEntity;
 
 @Entity
 @Getter
@@ -15,12 +14,10 @@ public class FollowEntity {
     private FollowId id;
 
     @ManyToOne
-    @JoinColumn(name = "follower_id")
     @MapsId("followerId")
     private UserEntity follower;
 
     @ManyToOne
-    @JoinColumn(name = "followee_id")
     @MapsId("followeeId")
     private UserEntity followee;
 

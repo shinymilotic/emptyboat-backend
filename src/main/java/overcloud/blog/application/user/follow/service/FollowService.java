@@ -1,13 +1,13 @@
-package overcloud.blog.application.follow.service;
+package overcloud.blog.application.user.follow.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.follow.dto.FollowResponse;
-import overcloud.blog.application.follow.repository.FollowRepository;
+import overcloud.blog.application.user.follow.dto.FollowResponse;
+import overcloud.blog.application.user.follow.repository.FollowRepository;
 import overcloud.blog.application.user.repository.UserRepository;
-import overcloud.blog.domain.article.FollowId;
-import overcloud.blog.domain.user.UserEntity;
-import overcloud.blog.domain.user.follow.FollowEntity;
+import overcloud.blog.application.user.follow.FollowId;
+import overcloud.blog.application.user.UserEntity;
+import overcloud.blog.application.user.follow.FollowEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 

@@ -4,7 +4,7 @@ import overcloud.blog.application.tag.dto.create.CreateTagRequest;
 import overcloud.blog.application.tag.dto.create.CreateTagResponse;
 import overcloud.blog.application.tag.dto.get.GetTagResponse;
 import overcloud.blog.application.tag.repository.TagRepository;
-import overcloud.blog.domain.article.tag.TagEntity;
+import overcloud.blog.application.tag.TagEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

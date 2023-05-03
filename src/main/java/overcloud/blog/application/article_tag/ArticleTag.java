@@ -1,10 +1,11 @@
-package overcloud.blog.domain.article;
+package overcloud.blog.application.article_tag;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.domain.article.tag.TagEntity;
+import overcloud.blog.application.article.ArticleEntity;
+import overcloud.blog.application.tag.TagEntity;
 import jakarta.persistence.*;
 
 @Entity

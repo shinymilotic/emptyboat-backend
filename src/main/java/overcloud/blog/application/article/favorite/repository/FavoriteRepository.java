@@ -4,8 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import overcloud.blog.domain.article.FavoriteId;
-import overcloud.blog.domain.article.favorite.FavoriteEntity;
+import overcloud.blog.application.article.favorite.FavoriteId;
+import overcloud.blog.application.article.favorite.FavoriteEntity;
 
 import java.util.List;
 import java.util.UUID;

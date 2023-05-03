@@ -1,9 +1,9 @@
-package overcloud.blog.application.user.controller;
+package overcloud.blog.application.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import overcloud.blog.application.follow.dto.UnfollowResponse;
+import overcloud.blog.application.user.follow.dto.UnfollowResponse;
 import overcloud.blog.application.user.dto.get.CurrentUserResponse;
 import overcloud.blog.application.user.dto.get.FollowUserResponse;
 import overcloud.blog.application.user.dto.get.GetProfileResponse;

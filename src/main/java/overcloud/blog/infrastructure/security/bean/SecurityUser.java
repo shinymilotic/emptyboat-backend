@@ -1,6 +1,6 @@
 package overcloud.blog.infrastructure.security.bean;
 
-import overcloud.blog.domain.user.UserEntity;
+import overcloud.blog.application.user.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
