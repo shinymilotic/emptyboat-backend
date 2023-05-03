@@ -2,7 +2,7 @@ package overcloud.blog.infrastructure.exceptionhandling.handler;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
-import overcloud.blog.application.article.api.exception.WriteArticleException;
+import overcloud.blog.application.article.exception.WriteArticleException;
 import overcloud.blog.application.user.exception.register.RegisterInfoExistException;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiErrorDetail;
 import overcloud.blog.infrastructure.exceptionhandling.dto.ApiValidationError;

@@ -4,7 +4,6 @@ import jakarta.validation.ConstraintViolation;
 import lombok.*;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import overcloud.blog.application.article.api.dto.create.CreateArticleRequest;
 
 import java.util.ArrayList;
 import java.util.List;
