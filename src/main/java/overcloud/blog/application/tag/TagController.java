@@ -1,29 +1,34 @@
 package overcloud.blog.application.tag;
 
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.application.tag.dto.create.CreateTagRequest;
-import overcloud.blog.application.tag.dto.create.CreateTagResponse;
-import overcloud.blog.application.tag.dto.get.GetTagResponse;
-import overcloud.blog.application.tag.service.TagService;
+import overcloud.blog.application.tag.create_tag.CreateTagRequest;
+import overcloud.blog.application.tag.create_tag.CreateTagResponse;
+import overcloud.blog.application.tag.create_tag.CreateTagsService;
+import overcloud.blog.application.tag.get_tags.GetTagResponse;
 import jakarta.validation.Valid;
+import overcloud.blog.application.tag.get_tags.GetTagsService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class TagController {
 
-    private final TagService tagService;
+    private final CreateTagsService createTagService;
 
-    public TagController(TagService tagService) {
-        this.tagService = tagService;
+    private final GetTagsService getTagsService;
+
+    public TagController(CreateTagsService createTagService,
+                         GetTagsService getTagsService) {
+        this.createTagService = createTagService;
+        this.getTagsService = getTagsService;
     }
 
     @PostMapping("/tags")
-    public @ResponseBody CreateTagResponse createTag(@Valid @RequestBody CreateTagRequest createTagRequest) throws Exception {
-        return tagService.createTag(createTagRequest);
+    public @ResponseBody CreateTagResponse createTags(@Valid @RequestBody CreateTagRequest createTagRequest) throws Exception {
+        return createTagService.createTags(createTagRequest);
     }
 
     @GetMapping(value = "/tags")
     public GetTagResponse getTags() {
-        return tagService.getTags();
+        return getTagsService.getTags();
     }
 }

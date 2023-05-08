@@ -3,7 +3,7 @@ package overcloud.blog.infrastructure.security.service;
 import java.util.Optional;
 
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
-import overcloud.blog.application.user.repository.UserRepository;
+import overcloud.blog.application.user.core.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

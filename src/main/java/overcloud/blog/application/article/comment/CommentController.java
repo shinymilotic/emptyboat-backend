@@ -1,11 +1,13 @@
 package overcloud.blog.application.article.comment;
 
-import overcloud.blog.application.article.comment.dto.create.CreateCommentRequest;
-import overcloud.blog.application.article.comment.dto.create.CreateCommentResponse;
-import overcloud.blog.application.article.comment.dto.get.GetCommentsResponse;
-import overcloud.blog.application.article.comment.service.CommentService;
+import overcloud.blog.application.article.comment.create_comment.CreateCommentRequest;
+import overcloud.blog.application.article.comment.create_comment.CreateCommentResponse;
+import overcloud.blog.application.article.comment.create_comment.CreateCommentService;
+import overcloud.blog.application.article.comment.delete_comment.DeleteCommentService;
+import overcloud.blog.application.article.comment.get_comments.GetCommentsResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import overcloud.blog.application.article.comment.get_comments.GetCommentsService;
 
 import java.util.UUID;
 
@@ -13,30 +15,34 @@ import java.util.UUID;
 @RestController
 public class CommentController {
 
-    private final CommentService commentService;
+    private final GetCommentsService getCommentsService;
 
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
+    private final DeleteCommentService deleteCommentService;
+
+    private final CreateCommentService createCommentService;
+
+    public CommentController(GetCommentsService getCommentsService,
+                             DeleteCommentService deleteCommentService,
+                             CreateCommentService createCommentService) {
+        this.getCommentsService = getCommentsService;
+        this.deleteCommentService = deleteCommentService;
+        this.createCommentService = createCommentService;
     }
 
     @PostMapping("articles/{slug}/comments")
     public CreateCommentResponse createComment(@PathVariable("slug") String slug,
                                                @Valid @RequestBody CreateCommentRequest createCommentRequest) {
-        return commentService.createComment(createCommentRequest, slug);
+        return createCommentService.createComment(createCommentRequest, slug);
     }
 
     @GetMapping("articles/{slug}/comments")
     public GetCommentsResponse getComments(@PathVariable("slug") String slug) {
-        return commentService.getComments(slug);
+        return getCommentsService.getComments(slug);
     }
-
-    /*@PutMapping
-
-    */
 
     @DeleteMapping("articles/comments/{id}")
     public void deleteComment(@PathVariable("id") String id) {
         UUID uuId = UUID.fromString(id);
-        commentService.deleteComment(uuId);
+        deleteCommentService.deleteComment(uuId);
     }
 }

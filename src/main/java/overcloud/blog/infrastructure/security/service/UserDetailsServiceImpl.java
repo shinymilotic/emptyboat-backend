@@ -1,7 +1,7 @@
 package overcloud.blog.infrastructure.security.service;
 
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
-import overcloud.blog.application.user.repository.UserRepository;
+import overcloud.blog.application.user.core.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
