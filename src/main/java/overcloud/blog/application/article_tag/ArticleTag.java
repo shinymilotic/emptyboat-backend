@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.application.article.ArticleEntity;
-import overcloud.blog.application.tag.TagEntity;
+import overcloud.blog.application.article.core.ArticleEntity;
+import overcloud.blog.application.tag.core.TagEntity;
 import jakarta.persistence.*;
 
 @Entity

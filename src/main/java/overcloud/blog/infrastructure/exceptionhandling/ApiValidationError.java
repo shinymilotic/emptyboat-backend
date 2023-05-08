@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.exceptionhandling.dto;
+package overcloud.blog.infrastructure.exceptionhandling;
 
 import jakarta.validation.ConstraintViolation;
 import lombok.*;

@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.exceptionhandling.dto;
+package overcloud.blog.infrastructure.exceptionhandling;
 
 import overcloud.blog.infrastructure.LowerCaseClassNameResolver;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,6 +28,7 @@ public class ApiError {
     public static ApiError from(String message) {
         return new ApiError(message);
     }
+
     public void addApiErrorDetail(ApiErrorDetail subError) {
         if (apiErrorDetails == null) {
             apiErrorDetails = new ArrayList<>();

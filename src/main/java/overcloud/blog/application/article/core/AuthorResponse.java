@@ -1,4 +1,4 @@
-package overcloud.blog.application.article.dto;
+package overcloud.blog.application.article.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

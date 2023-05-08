@@ -1,4 +1,4 @@
-package overcloud.blog.application.article.favorite.dto;
+package overcloud.blog.application.article.favorite.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

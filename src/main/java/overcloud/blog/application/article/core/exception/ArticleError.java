@@ -1,4 +1,4 @@
-package overcloud.blog.application.article.exception;
+package overcloud.blog.application.article.core.exception;
 
 public enum ArticleError {
 
