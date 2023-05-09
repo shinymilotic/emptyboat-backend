@@ -6,10 +6,11 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import overcloud.blog.application.article.core.AuthorResponse;
 import overcloud.blog.application.article.core.exception.WriteArticleException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
+import overcloud.blog.application.article.core.utils.ArticleUtils;
+import overcloud.blog.application.article_tag.ArticleTagId;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.article_tag.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
@@ -19,9 +20,9 @@ import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiValidationError;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.string.URLConverter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,16 +54,9 @@ public class CreateArticleService {
         validateTagList(request.getTagList())
                 .ifPresent(apiError::addApiValidationErrorDetail);
 
-        if(!StringUtils.hasText(request.getTitle())) {
-            apiError.addApiValidationErrorDetail(ApiValidationError.addValidationError(
-                    "CreateArticle",
-                    "title",
-                    "",
-                    "title is required"));
-        } else {
-            validateTitle(request.getTitle())
-                    .ifPresent(apiError::addApiValidationErrorDetail);
-        }
+        validateTitle(request.getTitle())
+                .ifPresent(apiError::addApiValidationErrorDetail);
+
 
         if(apiError.getApiErrorDetails().isEmpty()) {
             return Optional.empty();
@@ -107,7 +101,7 @@ public class CreateArticleService {
             return Optional.of(ApiValidationError.addValidationError(
                     "CreateArticle",
                     "tagList",
-                    "",
+                    tagList,
                     "There is tag doesn't exist"));
         }
 
@@ -132,7 +126,7 @@ public class CreateArticleService {
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();
-        String slug = URLConverter.toSlug(title);
+        String slug = ArticleUtils.toSlug(title);
         LocalDateTime now = LocalDateTime.now();
 
         Optional<ApiError> apiError = validate(articleRequest);
@@ -150,6 +144,7 @@ public class CreateArticleService {
         List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
         List<ArticleTag> articleTags = tagEntities.stream()
                                 .map(tagEntity -> ArticleTag.builder()
+                                .id(new ArticleTagId())
                                 .tag(tagEntity)
                                 .article(articleEntity)
                                 .build()).collect(Collectors.toList());
@@ -159,7 +154,7 @@ public class CreateArticleService {
         articleEntity.setDescription(description);
         articleEntity.setSlug(slug);
         articleEntity.setTitle(title);
-        articleEntity.setCreateAt(now);
+        articleEntity.setCreatedAt(now);
         articleEntity.setUpdatedAt(now);
         articleEntity.setArticleTags(articleTags);
         articleRepository.save(articleEntity);
@@ -169,14 +164,15 @@ public class CreateArticleService {
 
     private CreateArticleResponse toCreateArticleResponse(ArticleEntity articleEntity) {
         return CreateArticleResponse.builder()
+                .id(articleEntity.getId().toString())
                 .title(articleEntity.getTitle())
                 .body(articleEntity.getBody())
                 .description(articleEntity.getDescription())
                 .tagList(articleEntity.getTagNameList())
                 .author(toAuthorResponse(articleEntity.getAuthor()))
                 .slug(articleEntity.getSlug())
-                .createdAt(articleEntity.getCreateAt())
-                .updatedAt(articleEntity.getUpdatedAt())
+                .createdAt(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
+                .updatedAt(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
                 .favorited(false)
                 .build();
     }

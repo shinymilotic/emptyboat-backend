@@ -86,7 +86,7 @@ public class GetArticleListService {
                 .favorited(favoriteUtils.isFavorited(currentUser, article))
                 .favoritesCount(article.getFavorites().size())
                 .tagList(article.getTagNameList())
-                .createdAt(article.getCreateAt())
+                .createdAt(article.getCreatedAt())
                 .updatedAt(article.getUpdatedAt())
                 .build();
     }

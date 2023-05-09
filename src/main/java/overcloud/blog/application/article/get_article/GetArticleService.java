@@ -62,7 +62,7 @@ public class GetArticleService {
 
         articleResponse.setFavoritesCount(articleEntity.getFavorites().size());
         articleResponse.setTitle(articleEntity.getTitle());
-        articleResponse.setCreatedAt(articleEntity.getCreateAt());
+        articleResponse.setCreatedAt(articleEntity.getCreatedAt());
         articleResponse.setUpdatedAt(articleEntity.getUpdatedAt());
 
         List<ArticleTag> articleTagList = articleEntity.getArticleTags();

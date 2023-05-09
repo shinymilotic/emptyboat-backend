@@ -1,5 +1,6 @@
 package overcloud.blog.infrastructure.exceptionhandling;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.validation.ConstraintViolation;
 import lombok.*;
 import org.springframework.validation.FieldError;
@@ -11,19 +12,14 @@ import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-public class ApiValidationError extends ApiErrorDetail {
+public class ApiValidationError {
     private String object;
     private String field;
     private Object rejectedValue;
     private String message;
 
     public ApiValidationError() {
-    }
-
-    public ApiValidationError(String object, String message) {
-        super();
     }
 
     public static ApiValidationError addValidationError(String object, String field, Object rejectedValue, String message) {

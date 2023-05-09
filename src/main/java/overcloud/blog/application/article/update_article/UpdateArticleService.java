@@ -12,6 +12,7 @@ import overcloud.blog.application.article.core.exception.ArticleError;
 import overcloud.blog.application.article.core.exception.WriteArticleException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.core.repository.ArticleTagRepository;
+import overcloud.blog.application.article.core.utils.ArticleUtils;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.article_tag.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
@@ -19,8 +20,6 @@ import overcloud.blog.application.tag.core.TagEntity;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiValidationError;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.string.URLConverter;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -48,7 +47,7 @@ public class UpdateArticleService {
         String title = updateArticleRequest.getTitle();
         String body = updateArticleRequest.getBody();
         String description = updateArticleRequest.getDescription();
-        String slug = URLConverter.toSlug(title);
+        String slug = ArticleUtils.toSlug(title);
         LocalDateTime now = LocalDateTime.now();
         Optional<ApiError> apiError = validate(updateArticleRequest, currentSlug, slug);
 
@@ -87,7 +86,7 @@ public class UpdateArticleService {
                 .tagList(articleEntity.getTagNameList())
                 .author(toAuthorResponse(articleEntity.getAuthor()))
                 .slug(articleEntity.getSlug())
-                .createdAt(articleEntity.getCreateAt())
+                .createdAt(articleEntity.getCreatedAt())
                 .updatedAt(articleEntity.getUpdatedAt())
                 .favorited(false)
                 .build();

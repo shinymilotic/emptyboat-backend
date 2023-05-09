@@ -1,8 +1,8 @@
 package overcloud.blog.infrastructure.exceptionhandling;
 
-import overcloud.blog.infrastructure.LowerCaseClassNameResolver;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,12 +11,13 @@ import java.util.List;
 
 @Getter
 @Setter
-@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CUSTOM, property = "error", visible = true)
-@JsonTypeIdResolver(LowerCaseClassNameResolver.class)
+@JsonTypeName("apierror")
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
+@NoArgsConstructor
 public class ApiError {
     private String message;
                                                                                                                 
-    private List<ApiErrorDetail> apiErrorDetails;
+    private List<ApiValidationError> apiErrorDetails;
 
     private ApiError(String message) {
         super();
@@ -27,13 +28,6 @@ public class ApiError {
     // Factory method
     public static ApiError from(String message) {
         return new ApiError(message);
-    }
-
-    public void addApiErrorDetail(ApiErrorDetail subError) {
-        if (apiErrorDetails == null) {
-            apiErrorDetails = new ArrayList<>();
-        }
-        apiErrorDetails.add(subError);
     }
 
     public void addApiValidationErrorDetail(ApiValidationError subError) {

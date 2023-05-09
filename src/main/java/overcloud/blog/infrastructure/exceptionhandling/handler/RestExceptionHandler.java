@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import overcloud.blog.application.article.core.exception.WriteArticleException;
 import overcloud.blog.application.user.core.exception.register.RegisterInfoExistException;
-import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.exceptionhandling.ApiValidationError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String message = "Validation error";
         ApiError apiError = ApiError.from(message);
-        List<ApiErrorDetail> apiErrorDetails = apiError.getApiErrorDetails();
+        List<ApiValidationError> apiErrorDetails = apiError.getApiErrorDetails();
         List<ApiValidationError> fieldErrors = ApiValidationError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         List<ApiValidationError> globalErrors = ApiValidationError.addValidationError(ex.getBindingResult().getGlobalErrors());
 
@@ -48,7 +47,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             ConstraintViolationException ex) {
         String message = "Validation error";
         ApiError apiError = ApiError.from(message);
-        List<ApiErrorDetail> apiErrorDetails = apiError.getApiErrorDetails();
+        List<ApiValidationError> apiErrorDetails = apiError.getApiErrorDetails();
         List<ApiValidationError> apiValidationError = ApiValidationError.addValidationErrors(ex.getConstraintViolations());
         apiValidationError.forEach(error -> apiErrorDetails.add(error));
 

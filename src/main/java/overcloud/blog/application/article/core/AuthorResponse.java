@@ -1,12 +1,12 @@
 package overcloud.blog.application.article.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class AuthorResponse {
     @JsonProperty("username")

@@ -79,7 +79,7 @@ public class MakeFavoriteService {
         }
         articleResponse.setTagList(tagList);
         articleResponse.setId(articleEntity.getId().toString());
-        articleResponse.setCreatedAt(articleEntity.getCreateAt());
+        articleResponse.setCreatedAt(articleEntity.getCreatedAt());
         articleResponse.setUpdatedAt(articleEntity.getUpdatedAt());
         articleResponse.setSlug(articleEntity.getSlug());
         articleResponse.setTitle(articleEntity.getTitle());
