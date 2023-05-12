@@ -1,4 +1,4 @@
-package overcloud.blog.application.article.get_article;
+package overcloud.blog.application.article.comment.create_comment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GetArticlesAuthorResponse {
+public class AuthorResponse {
     @JsonProperty("username")
     private String username;
 
@@ -15,10 +15,4 @@ public class GetArticlesAuthorResponse {
 
     @JsonProperty("image")
     private String image;
-
-    @JsonProperty("following")
-    private boolean following;
-
-    @JsonProperty("followersCount")
-    private int followersCount;
 }

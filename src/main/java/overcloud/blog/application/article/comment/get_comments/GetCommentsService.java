@@ -29,9 +29,9 @@ public class GetCommentsService {
 
         for (CommentEntity commentEntity : commentEntities) {
             UserEntity author = commentEntity.getAuthor();
-            GetCommentResponse getCommentResponse = new GetCommentResponse();
+            CommentResponse getCommentResponse = new CommentResponse();
 
-            GetCommentAuthorResponse authorResponse = new GetCommentAuthorResponse();
+            AuthorResposne authorResponse = new AuthorResposne();
             authorResponse.setUsername(author.getUsername());
             authorResponse.setBio(author.getBio());
             authorResponse.setImage(author.getImage());

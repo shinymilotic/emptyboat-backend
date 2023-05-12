@@ -3,8 +3,8 @@ package overcloud.blog.application.article;
 
 import overcloud.blog.application.article.create_article.CreateArticleService;
 import overcloud.blog.application.article.delete_article.DeleteArticleService;
-import overcloud.blog.application.article.create_article.CreateArticleRequest;
-import overcloud.blog.application.article.create_article.CreateArticleResponse;
+import overcloud.blog.application.article.create_article.ArticleRequest;
+import overcloud.blog.application.article.create_article.ArticleResponse;
 import overcloud.blog.application.article.delete_article.DeleteArticleResponse;
 import overcloud.blog.application.article.get_article.GetArticleResponse;
 import overcloud.blog.application.article.get_article_list.GetArticlesResponse;
@@ -42,7 +42,7 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public CreateArticleResponse createArticle(@RequestBody CreateArticleRequest createArticleRequest) {
+    public ArticleResponse createArticle(@RequestBody ArticleRequest createArticleRequest) {
         return createArticleService.createArticle(createArticleRequest);
     }
 

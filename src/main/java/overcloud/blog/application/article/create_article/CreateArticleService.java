@@ -43,7 +43,7 @@ public class CreateArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Optional<ApiError> validate(CreateArticleRequest request) {
+    public Optional<ApiError> validate(ArticleRequest request) {
         ApiError apiError = ApiError.from("Validation error");
 
         List<ApiValidationError> apiValidationError = validateCreateArticleDto(request);
@@ -65,15 +65,15 @@ public class CreateArticleService {
         return Optional.of(apiError);
     }
 
-    private List<ApiValidationError> validateCreateArticleDto(CreateArticleRequest request) {
+    private List<ApiValidationError> validateCreateArticleDto(ArticleRequest request) {
         List<ApiValidationError> apiValidationErrors = new ArrayList<>();
 
         try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
             final Validator validator = validatorFactory.getValidator();
-            final Set<ConstraintViolation<CreateArticleRequest>> constraintsViolations = validator.validate(request);
+            final Set<ConstraintViolation<ArticleRequest>> constraintsViolations = validator.validate(request);
 
             if (!constraintsViolations.isEmpty()) {
-                Iterator<ConstraintViolation<CreateArticleRequest>> cvIterator = constraintsViolations.iterator();
+                Iterator<ConstraintViolation<ArticleRequest>> cvIterator = constraintsViolations.iterator();
                 while(cvIterator.hasNext()) {
                     ConstraintViolation<?> cv = cvIterator.next();
                     apiValidationErrors.add(ApiValidationError.addValidationError(
@@ -122,7 +122,7 @@ public class CreateArticleService {
         return Optional.empty();
     }
 
-    public CreateArticleResponse createArticle(CreateArticleRequest articleRequest) {
+    public ArticleResponse createArticle(ArticleRequest articleRequest) {
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();
@@ -162,8 +162,8 @@ public class CreateArticleService {
         return toCreateArticleResponse(articleEntity);
     }
 
-    private CreateArticleResponse toCreateArticleResponse(ArticleEntity articleEntity) {
-        return CreateArticleResponse.builder()
+    private ArticleResponse toCreateArticleResponse(ArticleEntity articleEntity) {
+        return ArticleResponse.builder()
                 .id(articleEntity.getId().toString())
                 .title(articleEntity.getTitle())
                 .body(articleEntity.getBody())

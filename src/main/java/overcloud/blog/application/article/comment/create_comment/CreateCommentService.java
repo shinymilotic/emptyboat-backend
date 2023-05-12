@@ -29,8 +29,8 @@ public class CreateCommentService {
         this.authenticationService = authenticationService;
     }
 
-    public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
-        CreateCommentResponse createCommentResponse = new CreateCommentResponse();
+    public CreateCommetResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
+        CreateCommetResponse createCommentResponse = new CreateCommetResponse();
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
 
         UserEntity userEntity = authenticationService.getCurrentUser()
@@ -50,7 +50,7 @@ public class CreateCommentService {
 
         CommentEntity savedCommentEntity = commentRepository.save(commentEntity);
 
-        CreateCommentAuthorResponse authorResponse = new CreateCommentAuthorResponse();
+        AuthorResponse authorResponse = new AuthorResponse();
         authorResponse.setUsername(userEntity.getUsername());
         authorResponse.setBio(userEntity.getBio());
         authorResponse.setImage(userEntity.getImage());

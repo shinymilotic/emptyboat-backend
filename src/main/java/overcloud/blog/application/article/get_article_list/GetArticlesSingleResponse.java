@@ -44,5 +44,5 @@ public class GetArticlesSingleResponse {
     private int favoritesCount;
 
     @JsonProperty("author")
-    private GetArticlesAuthorResponse author;
+    private AuthorResponse author;
 }

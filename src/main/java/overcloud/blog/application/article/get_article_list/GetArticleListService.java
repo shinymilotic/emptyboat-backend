@@ -91,8 +91,8 @@ public class GetArticleListService {
                 .build();
     }
 
-    private GetArticlesAuthorResponse toGetArticleAuthorResponse(Optional<UserEntity> currentUser, UserEntity author) {
-        return GetArticlesAuthorResponse.builder()
+    private AuthorResponse toGetArticleAuthorResponse(Optional<UserEntity> currentUser, UserEntity author) {
+        return AuthorResponse.builder()
                 .username(author.getUsername())
                 .bio(author.getBio())
                 .image(author.getImage())

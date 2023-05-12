@@ -5,13 +5,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
 import java.util.Collection;
 
 @Builder
@@ -19,7 +17,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public class CreateArticleRequest {
+public class ArticleRequest {
 
     @JsonProperty("title")
     @NotBlank(message = "Title must be specified")

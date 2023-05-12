@@ -72,7 +72,7 @@ public class GetArticleService {
         }
         articleResponse.setTagList(tagList);
 
-        GetArticlesAuthorResponse articleAuthorResponse = new GetArticlesAuthorResponse();
+        AuthorResponse articleAuthorResponse = new AuthorResponse();
         UserEntity authorEntity = articleEntity.getAuthor();
         articleAuthorResponse.setUsername(authorEntity.getUsername());
         if(currentUser != null) {

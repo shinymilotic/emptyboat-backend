@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GetCommentAuthorResponse {
+public class AuthorResposne {
     @JsonProperty("username")
     private String username;
 

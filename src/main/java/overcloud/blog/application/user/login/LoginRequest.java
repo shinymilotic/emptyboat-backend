@@ -5,15 +5,21 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonTypeName("user")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class LoginRequest {
     @JsonProperty("email")
-    @NotNull
-        @Size(min = 3, max = 256, message = "Email must between 3 to 256 characters")
+    @NotNull(message = "Please enter a email address")
+    @Size(min = 3, max = 256, message = "Email must between 3 to 256 characters")
     private String email;
+
     @JsonProperty("password")
     @NotNull
     private String password;

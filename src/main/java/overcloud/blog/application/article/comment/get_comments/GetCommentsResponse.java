@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 public class GetCommentsResponse {
     @JsonProperty("comments")
-    private List<GetCommentResponse> comments;
+    private List<CommentResponse> comments;
 }

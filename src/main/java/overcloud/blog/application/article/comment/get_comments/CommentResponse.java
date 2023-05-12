@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class GetCommentResponse {
+public class CommentResponse {
     @JsonProperty("id")
     private UUID id;
 
@@ -23,5 +23,5 @@ public class GetCommentResponse {
     private String body;
 
     @JsonProperty("author")
-    private GetCommentAuthorResponse authorResponse;
+    private AuthorResposne authorResponse;
 }

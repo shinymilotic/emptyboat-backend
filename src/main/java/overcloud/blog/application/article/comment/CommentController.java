@@ -1,7 +1,7 @@
 package overcloud.blog.application.article.comment;
 
 import overcloud.blog.application.article.comment.create_comment.CreateCommentRequest;
-import overcloud.blog.application.article.comment.create_comment.CreateCommentResponse;
+import overcloud.blog.application.article.comment.create_comment.CreateCommetResponse;
 import overcloud.blog.application.article.comment.create_comment.CreateCommentService;
 import overcloud.blog.application.article.comment.delete_comment.DeleteCommentService;
 import overcloud.blog.application.article.comment.get_comments.GetCommentsResponse;
@@ -30,8 +30,8 @@ public class CommentController {
     }
 
     @PostMapping("articles/{slug}/comments")
-    public CreateCommentResponse createComment(@PathVariable("slug") String slug,
-                                               @Valid @RequestBody CreateCommentRequest createCommentRequest) {
+    public CreateCommetResponse createComment(@PathVariable("slug") String slug,
+                                              @Valid @RequestBody CreateCommentRequest createCommentRequest) {
         return createCommentService.createComment(createCommentRequest, slug);
     }
 

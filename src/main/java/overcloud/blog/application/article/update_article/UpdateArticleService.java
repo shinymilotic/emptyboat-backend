@@ -7,12 +7,14 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import overcloud.blog.application.article.core.AuthorResponse;
 import overcloud.blog.application.article.core.exception.ArticleError;
 import overcloud.blog.application.article.core.exception.WriteArticleException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.core.repository.ArticleTagRepository;
 import overcloud.blog.application.article.core.utils.ArticleUtils;
+import overcloud.blog.application.article_tag.ArticleTagId;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.article_tag.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
@@ -22,7 +24,9 @@ import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiValidationError;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UpdateArticleService {
@@ -43,7 +47,6 @@ public class UpdateArticleService {
 
     @Transactional
     public UpdateArticleResponse updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
-        String id = updateArticleRequest.getId();
         String title = updateArticleRequest.getTitle();
         String body = updateArticleRequest.getBody();
         String description = updateArticleRequest.getDescription();
@@ -55,11 +58,16 @@ public class UpdateArticleService {
             throw new WriteArticleException(apiError.get());
         }
 
-        ArticleEntity articleEntity = articleRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new EntityNotFoundException(ArticleError.ARTICLE_NOT_FOUND.getValue()));
+        List<ArticleEntity> articleEntities = articleRepository.findBySlug(slug);
+
+        if(articleEntities.isEmpty()) {
+            throw new EntityNotFoundException(ArticleError.ARTICLE_NOT_FOUND.getValue());
+        }
+        ArticleEntity articleEntity = articleEntities.get(0);
 
         articleEntity.setTitle(title);
         articleEntity.setDescription(description);
+        articleEntity.setSlug(slug);
         articleEntity.setBody(body);
         articleEntity.setUpdatedAt(now);
         List<ArticleTag> articleTags = articleEntity.getArticleTags();
@@ -67,9 +75,11 @@ public class UpdateArticleService {
         List<TagEntity> tagEntities = tagRepository.findByTagName(updateArticleRequest.getTagList());
         List<ArticleTag> updateArticleTags = tagEntities.stream()
                                         .map(tagEntity -> ArticleTag.builder()
-                                            .article(articleEntity)
-                                            .tag(tagEntity).build())
-                                        .map(articleTagRepository::save).toList();
+                                                .id(new ArticleTagId(articleEntity.getId(), tagEntity.getId()))
+                                                .article(articleEntity)
+                                                .tag(tagEntity)
+                                                .build())
+                                        .map(articleTagRepository::save).collect(Collectors.toList());
         articleEntity.setArticleTags(updateArticleTags);
         articleEntity.setSlug(slug);
 
@@ -80,14 +90,15 @@ public class UpdateArticleService {
 
     private UpdateArticleResponse toUpdateArticleResponse(ArticleEntity articleEntity) {
         return UpdateArticleResponse.builder()
+                .id(articleEntity.getId().toString())
                 .title(articleEntity.getTitle())
                 .body(articleEntity.getBody())
                 .description(articleEntity.getDescription())
                 .tagList(articleEntity.getTagNameList())
                 .author(toAuthorResponse(articleEntity.getAuthor()))
                 .slug(articleEntity.getSlug())
-                .createdAt(articleEntity.getCreatedAt())
-                .updatedAt(articleEntity.getUpdatedAt())
+                .createdAt(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
+                .updatedAt(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
                 .favorited(false)
                 .build();
     }
