@@ -2,8 +2,7 @@ package overcloud.blog.application.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import overcloud.blog.application.user.get_current_user.CurrentUserResponse;
+import overcloud.blog.application.user.core.UserResponse;
 import overcloud.blog.application.user.get_current_user.GetCurrentUserService;
 import overcloud.blog.application.user.get_profile.GetProfileResponse;
 import overcloud.blog.application.user.get_profile.GetProfileService;
@@ -13,8 +12,6 @@ import overcloud.blog.application.user.logout.LogoutService;
 import overcloud.blog.application.user.register.RegisterService;
 import overcloud.blog.application.user.update_user.UpdateUserRequest;
 import overcloud.blog.application.user.login.LoginResponse;
-import overcloud.blog.application.user.register.RegisterResponse;
-import overcloud.blog.application.user.update_user.UpdateUserResponse;
 import overcloud.blog.application.user.register.RegisterRequest;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.user.update_user.UpdateUserService;
@@ -47,17 +44,17 @@ public class UserController {
     }
 
     @PostMapping("users")
-    public RegisterResponse register(@Valid @RequestBody RegisterRequest registrationDto) throws Exception {
+    public UserResponse register(@RequestBody RegisterRequest registrationDto) throws Exception {
         return registerService.registerUser(registrationDto);
     }
 
     @PutMapping("user")
-    public UpdateUserResponse update(@Valid @RequestBody UpdateUserRequest updateUserDto)  {
+    public UserResponse update(@RequestBody UpdateUserRequest updateUserDto)  {
         return updateUserService.updateUser(updateUserDto);
     }
 
     @PostMapping("users/login")
-    public LoginResponse login(@Valid @RequestBody LoginRequest loginDto)  {
+    public LoginResponse login(@RequestBody LoginRequest loginDto)  {
         return loginService.login(loginDto);
     }
 
@@ -67,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("user")
-    public CurrentUserResponse getCurrentUser() {
+    public UserResponse getCurrentUser() {
         return getCurrentUserService.getCurrentUser();
     }
 

@@ -44,7 +44,7 @@ public class GetArticleListService {
         Optional<UserEntity> currentUserEntity = Optional.empty();
         if (currentUser.isPresent()) {
             currentUserEntity = currentUser.filter(Objects::nonNull)
-                    .map(SecurityUser::getUser).get();
+                    .map(SecurityUser::getUser);
         }
 
         for (ArticleEntity article: articleEntities) {
@@ -64,7 +64,7 @@ public class GetArticleListService {
         Optional<UserEntity> currentUserEntity = Optional.empty();
         if (currentUser.isPresent()) {
             currentUserEntity = currentUser.filter(Objects::nonNull)
-                    .map(SecurityUser::getUser).get();
+                    .map(SecurityUser::getUser);
         }
 
         for (ArticleEntity article: articleEntities) {

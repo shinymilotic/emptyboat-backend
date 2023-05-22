@@ -1,10 +1,11 @@
 package overcloud.blog.application.user.get_current_user;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.UserResponse;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
@@ -20,21 +21,21 @@ public class GetCurrentUserService {
         this.jwtUtils = jwtUtils;
     }
 
-    public CurrentUserResponse getCurrentUser() {
+    public UserResponse getCurrentUser() {
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
-        CurrentUserResponse currentUserResponse = new CurrentUserResponse();
-        UserResponse userResponse = new UserResponse();
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
 
-        userResponse.setUsername(currentUser.getUsername());
-        userResponse.setEmail(currentUser.getEmail());
-        userResponse.setBio(currentUser.getBio());
-        userResponse.setToken(jwtUtils.encode(currentUser.getEmail()));
-        userResponse.setImage(currentUser.getImage());
-        currentUserResponse.setUserResponse(userResponse);
+        return toUserResponse(currentUser);
+    }
 
-        return currentUserResponse;
+    public UserResponse toUserResponse(UserEntity userEntity) {
+        return UserResponse.builder()
+                .username(userEntity.getUsername())
+                .email(userEntity.getEmail())
+                .bio(userEntity.getBio())
+                .token(jwtUtils.encode(userEntity.getEmail()))
+                .image(userEntity.getImage())
+                .build();
     }
 }

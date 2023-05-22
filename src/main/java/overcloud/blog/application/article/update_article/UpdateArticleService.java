@@ -1,19 +1,14 @@
 package overcloud.blog.application.article.update_article;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+import overcloud.blog.application.article.core.ArticleError;
 import overcloud.blog.application.article.core.AuthorResponse;
-import overcloud.blog.application.article.core.exception.ArticleError;
-import overcloud.blog.application.article.core.exception.WriteArticleException;
+import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.core.repository.ArticleTagRepository;
 import overcloud.blog.application.article.core.utils.ArticleUtils;
+import overcloud.blog.application.article.create_article.ArticleRequest;
 import overcloud.blog.application.article_tag.ArticleTagId;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.article_tag.ArticleTag;
@@ -21,7 +16,7 @@ import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.tag.core.TagEntity;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiValidationError;
+import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,34 +32,38 @@ public class UpdateArticleService {
 
     private final ArticleTagRepository articleTagRepository;
 
+    private final ObjectsValidator<ArticleRequest> validator;
+
     public UpdateArticleService(ArticleRepository articleRepository,
                                 TagRepository tagRepository,
-                                ArticleTagRepository articleTagRepository) {
+                                ArticleTagRepository articleTagRepository,
+                                ObjectsValidator<ArticleRequest> validator) {
         this.articleRepository = articleRepository;
         this.tagRepository = tagRepository;
         this.articleTagRepository = articleTagRepository;
+        this.validator = validator;
     }
 
     @Transactional
-    public UpdateArticleResponse updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
+    public UpdateArticleResponse updateArticle(ArticleRequest updateArticleRequest, String currentSlug) {
         String title = updateArticleRequest.getTitle();
         String body = updateArticleRequest.getBody();
         String description = updateArticleRequest.getDescription();
         String slug = ArticleUtils.toSlug(title);
         LocalDateTime now = LocalDateTime.now();
-        Optional<ApiError> apiError = validate(updateArticleRequest, currentSlug, slug);
+        Optional<ApiError> apiError = validator.validate(updateArticleRequest);
 
         if(apiError.isPresent()) {
-            throw new WriteArticleException(apiError.get());
+            throw new InvalidDataException(apiError.get());
         }
 
         List<ArticleEntity> articleEntities = articleRepository.findBySlug(slug);
 
         if(articleEntities.isEmpty()) {
-            throw new EntityNotFoundException(ArticleError.ARTICLE_NOT_FOUND.getValue());
+            throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_NO_EXISTS));
         }
-        ArticleEntity articleEntity = articleEntities.get(0);
 
+        ArticleEntity articleEntity = articleEntities.get(0);
         articleEntity.setTitle(title);
         articleEntity.setDescription(description);
         articleEntity.setSlug(slug);
@@ -73,16 +72,13 @@ public class UpdateArticleService {
         List<ArticleTag> articleTags = articleEntity.getArticleTags();
         deleteArticleTags(articleTags);
         List<TagEntity> tagEntities = tagRepository.findByTagName(updateArticleRequest.getTagList());
-        List<ArticleTag> updateArticleTags = tagEntities.stream()
-                                        .map(tagEntity -> ArticleTag.builder()
-                                                .id(new ArticleTagId(articleEntity.getId(), tagEntity.getId()))
-                                                .article(articleEntity)
-                                                .tag(tagEntity)
-                                                .build())
-                                        .map(articleTagRepository::save).collect(Collectors.toList());
+        List<ArticleTag> updateArticleTags = tagEntities.stream().map(tagEntity -> ArticleTag.builder()
+                                        .id(new ArticleTagId(articleEntity.getId(), tagEntity.getId()))
+                                        .article(articleEntity)
+                                        .tag(tagEntity)
+                                        .build()).map(articleTagRepository::save).collect(Collectors.toList());
         articleEntity.setArticleTags(updateArticleTags);
         articleEntity.setSlug(slug);
-
         articleRepository.save(articleEntity);
 
         return toUpdateArticleResponse(articleEntity);
@@ -115,88 +111,5 @@ public class UpdateArticleService {
         for (ArticleTag articleTag : articleTags) {
             articleTagRepository.deleteArticleTags(articleTag.getArticle().getId(), articleTag.getTag().getId());
         }
-    }
-
-    public Optional<ApiError> validate(UpdateArticleRequest request, String currentSlug, String newSlug) {
-        ApiError apiError = ApiError.from("Validation error");
-
-        List<ApiValidationError> apiValidationError = validateUpdateArticleDto(request);
-        for (ApiValidationError error : apiValidationError) {
-            apiError.addApiValidationErrorDetail(error);
-        }
-
-        Optional<ApiValidationError> tagError = validateTagList(request.getTagList());
-        Optional<ApiValidationError> slugError = validateSlug(currentSlug, newSlug);
-
-        if(tagError.isPresent()) {
-            apiError.addApiValidationErrorDetail(tagError.get());
-        }
-
-        if(slugError.isPresent()) {
-            apiError.addApiValidationErrorDetail(slugError.get());
-        }
-
-        if(apiError.getApiErrorDetails().isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(apiError);
-    }
-
-    private List<ApiValidationError> validateUpdateArticleDto(UpdateArticleRequest request) {
-        List<ApiValidationError> apiValidationErrors = new ArrayList<>();
-
-        try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
-            final Validator validator = validatorFactory.getValidator();
-            final Set<ConstraintViolation<UpdateArticleRequest>> constraintsViolations = validator.validate(request);
-
-            if (!constraintsViolations.isEmpty()) {
-                Iterator<ConstraintViolation<UpdateArticleRequest>> cvIterator = constraintsViolations.iterator();
-                while(cvIterator.hasNext()) {
-                    ConstraintViolation<?> cv = cvIterator.next();
-                    apiValidationErrors.add(ApiValidationError.addValidationError(
-                            cv.getRootBeanClass().getSimpleName(),
-                            cv.getPropertyPath().toString(),
-                            cv.getInvalidValue(),
-                            cv.getMessage()));
-                }
-
-            }
-        }
-
-        return apiValidationErrors;
-    }
-
-    private Optional<ApiValidationError> validateTagList(Collection<String> tagList) {
-
-        if(tagList == null || tagList.isEmpty()) {
-            return Optional.empty();
-        }
-
-        List<TagEntity> tagEntities = tagRepository.checkAllTagsExistDB(tagList);
-
-        if(tagEntities.size() != 0 && tagEntities.size() != tagList.size()) {
-            return Optional.of(ApiValidationError.addValidationError(
-                    "UpdateArticle",
-                    "tagList",
-                    "",
-                    "tag list doesn't exist"));
-        }
-
-        return Optional.empty();
-    }
-
-    private Optional<ApiValidationError> validateSlug(String currentSlug, String newSlug) {
-        List<ArticleEntity> articleEntities = articleRepository.findBySlug(newSlug);
-
-        if(!currentSlug.equals(newSlug) && !articleEntities.isEmpty()) {
-            return Optional.of(ApiValidationError.addValidationError(
-                    "UpdateArticle",
-                    "title",
-                    "",
-                    "Title existed"));
-        }
-
-        return Optional.empty();
     }
 }

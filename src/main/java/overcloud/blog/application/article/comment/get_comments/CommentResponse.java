@@ -1,12 +1,14 @@
 package overcloud.blog.application.article.comment.get_comments;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import overcloud.blog.application.article.comment.core.AuthorResposne;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Builder
 @Getter
 @Setter
 public class CommentResponse {
@@ -14,10 +16,10 @@ public class CommentResponse {
     private UUID id;
 
     @JsonProperty("created_at")
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @JsonProperty("updated_at")
-    private LocalDateTime updatedAt;
+    private String updatedAt;
 
     @JsonProperty("body")
     private String body;

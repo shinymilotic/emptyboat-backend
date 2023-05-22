@@ -16,12 +16,12 @@ import lombok.NoArgsConstructor;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class LoginRequest {
     @JsonProperty("email")
-    @NotNull(message = "Please enter a email address")
-    @Size(min = 3, max = 256, message = "Email must between 3 to 256 characters")
+    @NotNull(message = "user.login.email.not-null")
+    @Size(min = 3, max = 256, message = "user.login.email.size")
     private String email;
 
     @JsonProperty("password")
-    @NotNull
+    @NotNull(message = "user.login.password.not-null")
     private String password;
 
     public String getEmail() {

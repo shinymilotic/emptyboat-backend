@@ -1,12 +1,13 @@
-package overcloud.blog.application.user.core.exception.register;
+package overcloud.blog.application.article.core.exception;
+
 
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 
-public class RegisterInfoExistException extends RuntimeException {
+public class InvalidDataException extends RuntimeException {
 
     private ApiError apiError;
 
-    public RegisterInfoExistException(ApiError apiError) {
+    public InvalidDataException(ApiError apiError) {
         this.apiError = apiError;
     }
 

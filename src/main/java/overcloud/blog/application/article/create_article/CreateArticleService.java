@@ -1,13 +1,8 @@
 package overcloud.blog.application.article.create_article;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.core.AuthorResponse;
-import overcloud.blog.application.article.core.exception.WriteArticleException;
+import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.core.utils.ArticleUtils;
 import overcloud.blog.application.article_tag.ArticleTagId;
@@ -16,10 +11,10 @@ import overcloud.blog.application.article_tag.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.tag.core.TagEntity;
 import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiValidationError;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,110 +30,33 @@ public class CreateArticleService {
 
     private final ArticleRepository articleRepository;
 
+    private final ObjectsValidator<ArticleRequest> validator;
+
     public CreateArticleService(SpringAuthenticationService authenticationService,
                                 TagRepository tagRepository,
-                                ArticleRepository articleRepository) {
+                                ArticleRepository articleRepository,
+                                ObjectsValidator<ArticleRequest> validator) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;
         this.articleRepository = articleRepository;
-    }
-
-    public Optional<ApiError> validate(ArticleRequest request) {
-        ApiError apiError = ApiError.from("Validation error");
-
-        List<ApiValidationError> apiValidationError = validateCreateArticleDto(request);
-        for (ApiValidationError error : apiValidationError) {
-            apiError.addApiValidationErrorDetail(error);
-        }
-
-        validateTagList(request.getTagList())
-                .ifPresent(apiError::addApiValidationErrorDetail);
-
-        validateTitle(request.getTitle())
-                .ifPresent(apiError::addApiValidationErrorDetail);
-
-
-        if(apiError.getApiErrorDetails().isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(apiError);
-    }
-
-    private List<ApiValidationError> validateCreateArticleDto(ArticleRequest request) {
-        List<ApiValidationError> apiValidationErrors = new ArrayList<>();
-
-        try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
-            final Validator validator = validatorFactory.getValidator();
-            final Set<ConstraintViolation<ArticleRequest>> constraintsViolations = validator.validate(request);
-
-            if (!constraintsViolations.isEmpty()) {
-                Iterator<ConstraintViolation<ArticleRequest>> cvIterator = constraintsViolations.iterator();
-                while(cvIterator.hasNext()) {
-                    ConstraintViolation<?> cv = cvIterator.next();
-                    apiValidationErrors.add(ApiValidationError.addValidationError(
-                            cv.getRootBeanClass().getSimpleName(),
-                            cv.getPropertyPath().toString(),
-                            cv.getInvalidValue(),
-                            cv.getMessage()));
-                }
-
-            }
-        }
-
-        return apiValidationErrors;
-    }
-
-    private Optional<ApiValidationError> validateTagList(Collection<String> tagList) {
-
-        if(tagList == null || tagList.isEmpty()) {
-            return Optional.empty();
-        }
-
-        List<TagEntity> tagEntities = tagRepository.checkAllTagsExistDB(tagList);
-
-        if(tagEntities.size() != tagList.size()) {
-            return Optional.of(ApiValidationError.addValidationError(
-                    "CreateArticle",
-                    "tagList",
-                    tagList,
-                    "There is tag doesn't exist"));
-        }
-
-        return Optional.empty();
-    }
-
-    private Optional<ApiValidationError> validateTitle(String title) {
-        List<ArticleEntity> articleEntities = articleRepository.findByTitle(title);
-
-        if(!articleEntities.isEmpty()) {
-            return Optional.of(ApiValidationError.addValidationError(
-                    "CreateArticle",
-                    "title",
-                    "",
-                    "Title existed"));
-        }
-
-        return Optional.empty();
+        this.validator = validator;
     }
 
     public ArticleResponse createArticle(ArticleRequest articleRequest) {
+        Optional<ApiError> apiError = validator.validate(articleRequest);
+        if(!apiError.isEmpty()) {
+            throw new InvalidDataException(apiError.get());
+        }
+
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();
         String slug = ArticleUtils.toSlug(title);
         LocalDateTime now = LocalDateTime.now();
 
-        Optional<ApiError> apiError = validate(articleRequest);
-
-        if(apiError.isPresent()) {
-            throw new WriteArticleException(apiError.get());
-        }
-
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
 
         ArticleEntity articleEntity = new ArticleEntity();
         List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());

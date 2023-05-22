@@ -1,13 +1,14 @@
 package overcloud.blog.application.user.follow.make_unfollow;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.application.user.follow.core.FollowEntity;
 import overcloud.blog.application.user.follow.core.repository.FollowRepository;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 import java.util.List;
@@ -34,23 +35,25 @@ public class UnfollowService {
     }
 
     public UnfollowResponse unfollowUser(String username) {
-        UnfollowResponse unfollowResponse = new UnfollowResponse();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
 
         UserEntity followee = userRepository.findByUsername(username);
 
         List<FollowEntity> followEntity = followRepository.getFollowing(currentUser.getUsername(), followee.getUsername());
         followRepository.delete(followEntity.get(0));
 
-        unfollowResponse.setUsername(followee.getUsername());
-        unfollowResponse.setBio(followee.getBio());
-        unfollowResponse.setImage(followee.getImage());
-        unfollowResponse.setFollowing(false);
-        unfollowResponse.setFollowersCount(followUtils.getFollowingCount(followee));
+        return toUnfollowResponse(followee);
+    }
 
-        return unfollowResponse;
+    public UnfollowResponse toUnfollowResponse(UserEntity followee) {
+        return UnfollowResponse.builder()
+                .username(followee.getUsername())
+                .bio(followee.getBio())
+                .image(followee.getImage())
+                .following(false)
+                .followersCount(followUtils.getFollowingCount(followee))
+                .build();
     }
 }

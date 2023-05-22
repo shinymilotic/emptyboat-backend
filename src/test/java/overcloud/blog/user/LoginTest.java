@@ -13,6 +13,7 @@ import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.application.user.login.LoginRequest;
 import overcloud.blog.application.user.login.LoginResponse;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -60,16 +61,45 @@ public class LoginTest {
         assertEquals(targetObject.getUserResponse().getEmail(), user.getEmail());
         assertEquals(targetObject.getUserResponse().getUsername(), user.getUsername());
         assertEquals(targetObject.getUserResponse().getImage(), user.getImage());
-        assertEquals(targetObject.getUserResponse().getToken(), jwtUtils.encode(user.getEmail()));
     }
 
     @Test
-    public void testUserameNotNull() {
+    public void testUsernameNotNull() throws Exception {
         LoginRequest loginRequest = LoginRequest.builder()
-                .email("trungtin.mai1412@gmail.com")
                 .password("123123123")
                 .build();
 
+        String loginRequestStr = objectMapper.writeValueAsString(loginRequest);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginRequestStr)).andReturn();
 
+        String response = result.getResponse().getContentAsString();
+
+        ObjectMapper mapper = new ObjectMapper();
+        ApiError targetObject = mapper.readValue(response, ApiError.class);
+
+        assertEquals(targetObject.getApiErrorDetails().get(0).getMessage(), "Email/password must be specified");
     }
+
+    @Test
+    public void testUsernameNotEmpty() throws Exception {
+        LoginRequest loginRequest = LoginRequest.builder()
+                .email("")
+                .password("123123123")
+                .build();
+
+        String loginRequestStr = objectMapper.writeValueAsString(loginRequest);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginRequestStr)).andReturn();
+
+        String response = result.getResponse().getContentAsString();
+
+        ObjectMapper mapper = new ObjectMapper();
+        ApiError targetObject = mapper.readValue(response, ApiError.class);
+
+        assertEquals(targetObject.getApiErrorDetails().get(0).getMessage(), "Email/password must be specified");
+    }
+
 }

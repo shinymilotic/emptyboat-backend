@@ -5,35 +5,35 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.Collection;
 
 @Builder
-@JsonTypeName("articles")
+@JsonTypeName("article")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class UpdateArticleRequest {
+
     @JsonProperty("title")
-    @NotBlank(message = "Title must be specified")
-    @Size(min = 1, max = 60, message ="Title length must be between 1 and 60 characters")
+    @NotBlank(message = "article.create.not-blank")
+    @Size(min = 1, max = 60, message ="article.create.size")
     private String title;
 
     @JsonProperty("description")
-    @NotBlank(message = "Description must be specified")
-    @Size(min = 1, max = 100, message = "Description size must between 1 and 100")
+    @NotBlank(message = "article.description.not-blank")
+    @Size(min = 1, max = 100, message = "article.description.size")
     private String description;
 
     @JsonProperty("body")
-    @NotBlank(message = "Article body must be specified")
+    @NotBlank(message = "article.body.not-blank")
     private String body;
 
     @JsonProperty("tagList")
-    @NotEmpty(message = "Tag must be specified")
+    @NotEmpty(message = "article.tags.not-empty")
     private Collection<String> tagList;
 }

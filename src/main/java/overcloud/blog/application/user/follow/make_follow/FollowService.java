@@ -1,14 +1,15 @@
 package overcloud.blog.application.user.follow.make_follow;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.application.user.follow.core.FollowEntity;
 import overcloud.blog.application.user.follow.core.FollowId;
 import overcloud.blog.application.user.follow.core.repository.FollowRepository;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 @Service
@@ -33,12 +34,10 @@ public class FollowService {
     }
 
     public FollowResponse followUser(String username) {
-        FollowResponse followUserResponse = new FollowResponse();
         FollowEntity followEntity = new FollowEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
 
         UserEntity followee = userRepository.findByUsername(username);
         FollowId followId = new FollowId();
@@ -49,12 +48,17 @@ public class FollowService {
         followEntity.setFollowee(followee);
         followRepository.save(followEntity);
 
-        followUserResponse.setUsername(followee.getUsername());
-        followUserResponse.setBio(followee.getBio());
-        followUserResponse.setImage(followee.getImage());
-        followUserResponse.setFollowing(true);
-        followUserResponse.setFollowersCount(followUtils.getFollowingCount(followee));
+        return toFollowResponse(followee);
+    }
 
-        return followUserResponse;
+    public FollowResponse toFollowResponse(UserEntity followee) {
+        return FollowResponse.builder()
+                .username(followee.getUsername())
+                .email(followee.getEmail())
+                .bio(followee.getBio())
+                .image(followee.getImage())
+                .following(true)
+                .followersCount(followUtils.getFollowingCount(followee))
+                .build();
     }
 }

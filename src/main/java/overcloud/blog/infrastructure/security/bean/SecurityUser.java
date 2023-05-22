@@ -17,8 +17,8 @@ public class SecurityUser implements UserDetails {
         this.user = user;
     }
 
-    public Optional<UserEntity> getUser() {
-        return Optional.of(user);
+    public UserEntity getUser() {
+        return user;
     }
 
     @Override

@@ -1,16 +1,19 @@
 package overcloud.blog.application.article.comment.create_comment;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.comment.core.CommentEntity;
 import overcloud.blog.application.article.comment.core.repository.CommentRepository;
 import overcloud.blog.application.article.core.ArticleEntity;
+import overcloud.blog.application.article.core.AuthorResponse;
+import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.user.core.UserEntity;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
+import overcloud.blog.application.user.core.UserError;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class CreateCommentService {
@@ -29,38 +32,40 @@ public class CreateCommentService {
         this.authenticationService = authenticationService;
     }
 
-    public CreateCommetResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
-        CreateCommetResponse createCommentResponse = new CreateCommetResponse();
+    public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
-
-        UserEntity userEntity = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
 
         String body = createCommentRequest.getBody();
         LocalDateTime now = LocalDateTime.now();
-
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setArticle(articleEntity);
-        commentEntity.setAuthor(userEntity);
+        commentEntity.setAuthor(currentUser);
         commentEntity.setBody(body);
         commentEntity.setCreatedAt(now);
         commentEntity.setUpdatedAt(now);
-
         CommentEntity savedCommentEntity = commentRepository.save(commentEntity);
 
-        AuthorResponse authorResponse = new AuthorResponse();
-        authorResponse.setUsername(userEntity.getUsername());
-        authorResponse.setBio(userEntity.getBio());
-        authorResponse.setImage(userEntity.getImage());
+        return toCreateCommentResponse(savedCommentEntity, currentUser);
+    }
 
-        createCommentResponse.setId(savedCommentEntity.getId());
-        createCommentResponse.setAuthor(authorResponse);
-        createCommentResponse.setBody(body);
-        createCommentResponse.setCreatedAt(savedCommentEntity.getCreatedAt());
-        createCommentResponse.setUpdatedAt(savedCommentEntity.getUpdatedAt());
+    public CreateCommentResponse toCreateCommentResponse(CommentEntity commentEntity, UserEntity userEntity){
+        return CreateCommentResponse.builder()
+                .id(commentEntity.getId())
+                .body(commentEntity.getBody())
+                .author(toAuthorResponse(userEntity))
+                .createdAt(commentEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
+                .updatedAt(commentEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
+                .build();
+    }
 
-        return createCommentResponse;
+    private AuthorResponse toAuthorResponse(UserEntity userEntity) {
+        return AuthorResponse.builder()
+                .username(userEntity.getUsername())
+                .bio(userEntity.getBio())
+                .image(userEntity.getImage())
+                .build();
     }
 }

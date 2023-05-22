@@ -3,7 +3,9 @@ package overcloud.blog.application.user.follow.make_follow;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.Builder;
 
+@Builder
 @JsonTypeName("profile")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class FollowResponse {

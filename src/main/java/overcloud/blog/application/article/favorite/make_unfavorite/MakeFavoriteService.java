@@ -1,9 +1,9 @@
 package overcloud.blog.application.article.favorite.make_unfavorite;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.application.article.core.ArticleEntity;
+import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.core.FavoriteEntity;
 import overcloud.blog.application.article.favorite.core.FavoriteId;
@@ -12,8 +12,9 @@ import overcloud.blog.application.article.favorite.core.dto.SingleArticleRespons
 import overcloud.blog.application.article.favorite.core.repository.FavoriteRepository;
 import overcloud.blog.application.article_tag.ArticleTag;
 import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 import java.util.ArrayList;
@@ -45,9 +46,8 @@ public class MakeFavoriteService {
     public SingleArticleResponse makeFavorite(String slug) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .map(SecurityUser::getUser)
-                .orElseThrow(EntityNotFoundException::new)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
 
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
         favoriteEntity.setId(new FavoriteId());

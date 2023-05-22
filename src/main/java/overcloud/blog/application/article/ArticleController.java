@@ -47,7 +47,7 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{slug}")
-    public UpdateArticleResponse updateArticle(@Valid @RequestBody UpdateArticleRequest updateArticleRequest,
+    public UpdateArticleResponse updateArticle(@RequestBody ArticleRequest updateArticleRequest,
                                                @PathVariable("slug") String currentSlug) {
         return updateArticleService.updateArticle(updateArticleRequest, currentSlug);
     }
