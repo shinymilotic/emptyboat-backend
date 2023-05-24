@@ -4,7 +4,9 @@ import overcloud.blog.infrastructure.validation.Error;
 
 
 public enum UserError implements Error {
-    USER_NOT_FOUND("user.get-current-user.not-found","You have to sign in first!");
+    USER_NOT_FOUND("user.get-current-user.not-found","You have to sign in first!"),
+    USER_USERNAME_EXIST("user.username.exists","Username already used!"),
+    USER_EMAIL_EXIST("user.email.exists", "Email already used!");
     ;
 
     private String id;

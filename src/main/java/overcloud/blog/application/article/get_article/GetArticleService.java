@@ -5,7 +5,7 @@ import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.core.repository.FavoriteRepository;
 import overcloud.blog.application.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
-import overcloud.blog.application.article_tag.ArticleTag;
+import overcloud.blog.application.article.article_tag.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.article.favorite.core.FavoriteEntity;
 import overcloud.blog.application.user.core.UserEntity;

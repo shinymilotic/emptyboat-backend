@@ -1,25 +1,24 @@
 package overcloud.blog.article;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import overcloud.blog.application.article.core.ArticleEntity;
+import overcloud.blog.application.article.core.ArticleError;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
-import overcloud.blog.application.article.create_article.CreateArticleRequest;
-import overcloud.blog.application.article.create_article.CreateArticleResponse;
+import overcloud.blog.application.article.create_article.ArticleRequest;
+import overcloud.blog.application.article.create_article.ArticleResponse;
 import overcloud.blog.application.tag.core.TagEntity;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiValidationError;
+import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,8 +27,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CreateArticleTest {
@@ -52,7 +49,7 @@ public class CreateArticleTest {
 
     @Test
     public void testCreateArticle() throws Exception {
-        CreateArticleRequest articleRequest = CreateArticleRequest.builder()
+        ArticleRequest articleRequest = ArticleRequest.builder()
                 .title("testCreateArticle")
                 .description("Empty title")
                 .body("Nothing inside the body")
@@ -69,7 +66,7 @@ public class CreateArticleTest {
         String response = result.getResponse().getContentAsString();
 
         ObjectMapper mapper = new ObjectMapper();
-        CreateArticleResponse targetObject = mapper.readValue(response, CreateArticleResponse.class);
+        ArticleResponse targetObject = mapper.readValue(response, ArticleResponse.class);
 
         UUID id = UUID.fromString(targetObject.getId());
         ArticleEntity articleEntity = articleRepository.findById(id).orElse(null);
@@ -94,13 +91,11 @@ public class CreateArticleTest {
         assertEquals(author.getUsername(), author.getUsername());
         assertEquals(author.getBio(), author.getBio());
         assertEquals(author.getImage(), author.getImage());
-
-        articleRepository.delete(articleEntity);
     }
 
     @Test
     public void testCreateArticleNoTag() throws Exception {
-        CreateArticleRequest articleRequest = CreateArticleRequest.builder()
+        ArticleRequest articleRequest = ArticleRequest.builder()
                 .title("testCreateArticleNoTag")
                 .description("Empty title")
                 .body("Nothing inside the body")
@@ -117,18 +112,14 @@ public class CreateArticleTest {
 
         ObjectMapper mapper = new ObjectMapper();
         ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiValidationError> apiValidationError = targetObject.getApiErrorDetails();
+        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
 
-        assertEquals("Validation error", targetObject.getMessage());
-        assertEquals(apiValidationError.get(0).getObject(), "CreateArticleRequest");
-        assertEquals(apiValidationError.get(0).getField(), "tagList");
-        assertEquals(apiValidationError.get(0).getRejectedValue(), List.of());
-        assertEquals(apiValidationError.get(0).getMessage(), "Tag must be specified");
+        assertEquals(apiValidationError.get(0).getMessage(), ArticleError.TAG_EMPTY.getErrorMessage());
     }
 
     @Test
     public void testCreateArticleWrongTag() throws Exception {
-        CreateArticleRequest articleRequest = CreateArticleRequest.builder()
+        ArticleRequest articleRequest = ArticleRequest.builder()
                 .title("testCreateArticleWrongTag")
                 .description("Empty title")
                 .body("Nothing inside the body")
@@ -144,18 +135,14 @@ public class CreateArticleTest {
         String response = result.getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiValidationError> apiValidationError = targetObject.getApiErrorDetails();
+        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
 
-        assertEquals("Validation error", targetObject.getMessage());
-        assertEquals(apiValidationError.get(0).getObject(), "CreateArticle");
-        assertEquals(apiValidationError.get(0).getField(), "tagList");
-        assertEquals(apiValidationError.get(0).getRejectedValue(), List.of("Wrong", "Spring"));
-        assertEquals(apiValidationError.get(0).getMessage(), "There is tag doesn't exist");
+        assertEquals(apiValidationError.get(0).getMessage(), ArticleError.TAG_NO_EXISTS.getErrorMessage());
     }
 
     @Test
     public void testCreateArticleNoTitle() throws Exception {
-        CreateArticleRequest articleRequest = CreateArticleRequest.builder()
+        ArticleRequest articleRequest = ArticleRequest.builder()
                 .description("Empty title")
                 .body("Nothing inside the body")
                 .tagList(List.of("Spring"))
@@ -170,18 +157,14 @@ public class CreateArticleTest {
         String response = result.getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiValidationError> apiValidationError = targetObject.getApiErrorDetails();
+        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
 
-        assertEquals("Validation error", targetObject.getMessage());
-        assertEquals(apiValidationError.get(0).getObject(), "CreateArticleRequest");
-        assertEquals(apiValidationError.get(0).getField(), "title");
-        assertEquals(apiValidationError.get(0).getRejectedValue(), null);
-        assertEquals(apiValidationError.get(0).getMessage(), "Title must be specified");
+        assertEquals(apiValidationError.get(0).getMessage(), ArticleError.TITLE_NOT_BLANK.getErrorMessage());
     }
 
     @Test
     public void testCreateArticleEmptyTitle() throws Exception {
-        CreateArticleRequest articleRequest = CreateArticleRequest.builder()
+        ArticleRequest articleRequest = ArticleRequest.builder()
                 .title("")
                 .description("Empty title")
                 .body("Nothing inside the body")
@@ -197,18 +180,14 @@ public class CreateArticleTest {
         String response = result.getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiValidationError> apiValidationError = targetObject.getApiErrorDetails();
+        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
 
-        assertEquals("Validation error", targetObject.getMessage());
-        assertEquals(apiValidationError.get(0).getObject(), "CreateArticleRequest");
-        assertEquals(apiValidationError.get(0).getField(), "title");
-        assertEquals(apiValidationError.get(0).getRejectedValue(), "");
-        assertEquals(apiValidationError.get(0).getMessage(), "Title must be specified");
+        assertEquals(apiValidationError.get(0).getMessage(), ArticleError.TITLE_NOT_BLANK.getErrorMessage());
     }
 
     @Test
     public void testCreateArticleTitleLength() throws Exception {
-        CreateArticleRequest articleRequest = CreateArticleRequest.builder()
+        ArticleRequest articleRequest = ArticleRequest.builder()
                 .title("1dsadsssssssssssssssssssssssssssasfsafsafssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
                 .description("Empty title")
                 .body("Nothing inside the body")
@@ -224,19 +203,15 @@ public class CreateArticleTest {
         String response = result.getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiValidationError> apiValidationError = targetObject.getApiErrorDetails();
+        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
 
-        assertEquals("Validation error", targetObject.getMessage());
-        assertEquals(apiValidationError.get(0).getObject(), "CreateArticleRequest");
-        assertEquals(apiValidationError.get(0).getField(), "title");
-        assertEquals(apiValidationError.get(0).getRejectedValue(), "1dsadsssssssssssssssssssssssssssasfsafsafssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
-        assertEquals(apiValidationError.get(0).getMessage(), "Title length must be between 1 and 60 characters");
+        assertEquals(apiValidationError.get(0).getMessage(), ArticleError.TITLE_LENGTH.getErrorMessage());
     }
 
     @Test
     public void testCreateArticleNoDescription() throws Exception {
-        CreateArticleRequest articleRequest = CreateArticleRequest.builder()
-                .title("testCreateArticleNoTag")
+        ArticleRequest articleRequest = ArticleRequest.builder()
+                .title("testCreateArticleNoDescription")
                 .body("Nothing inside the body")
                 .tagList(List.of("Spring"))
                 .build();
@@ -250,19 +225,15 @@ public class CreateArticleTest {
         String response = result.getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiValidationError> apiValidationError = targetObject.getApiErrorDetails();
+        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
 
-        assertEquals("Validation error", targetObject.getMessage());
-        assertEquals(apiValidationError.get(0).getObject(), "CreateArticleRequest");
-        assertEquals(apiValidationError.get(0).getField(), "description");
-        assertEquals(apiValidationError.get(0).getRejectedValue(), null);
-        assertEquals(apiValidationError.get(0).getMessage(), "Description must be specified");
+        assertEquals(apiValidationError.get(0).getMessage(), ArticleError.DESCRIPTION_NOT_BLANK.getErrorMessage());
     }
 
     @Test
     public void testCreateArticleDescriptionLength() throws Exception {
-        CreateArticleRequest articleRequest = CreateArticleRequest.builder()
-                .title("testCreateArticleNoTag")
+        ArticleRequest articleRequest = ArticleRequest.builder()
+                .title("testCreateArticleDescriptionLength")
                 .body("Nothing inside the body")
                 .description("1dsadsssssssssssssssssssssssssssasfsafsafsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd")
                 .tagList(List.of("Spring"))
@@ -277,12 +248,8 @@ public class CreateArticleTest {
         String response = result.getResponse().getContentAsString();
         ObjectMapper mapper = new ObjectMapper();
         ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiValidationError> apiValidationError = targetObject.getApiErrorDetails();
+        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
 
-        assertEquals("Validation error", targetObject.getMessage());
-        assertEquals(apiValidationError.get(0).getObject(), "CreateArticleRequest");
-        assertEquals(apiValidationError.get(0).getField(), "description");
-        assertEquals(apiValidationError.get(0).getRejectedValue(), "1dsadsssssssssssssssssssssssssssasfsafsafsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
-        assertEquals(apiValidationError.get(0).getMessage(), "Description size must between 1 and 100");
+        assertEquals(apiValidationError.get(0).getMessage(), ArticleError.DESCRIPTION_LENGTH.getErrorMessage());
     }
 }

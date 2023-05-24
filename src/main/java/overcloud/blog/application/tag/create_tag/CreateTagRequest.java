@@ -1,17 +1,17 @@
 package overcloud.blog.application.tag.create_tag;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+
+@Getter
+@Setter
 public class CreateTagRequest {
-
     @JsonProperty("tags")
-    private Iterable<String> tagList;
+    @NotEmpty(message = "tag.tagList.not-empty")
+    private List<String> tags;
 
-    public Iterable<String> getTagList() {
-        return tagList;
-    }
-
-    public void setTagList(Iterable<String> tagList) {
-        this.tagList = tagList;
-    }
 }

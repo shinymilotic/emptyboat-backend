@@ -22,19 +22,15 @@ public class LoginService {
 
     private final ObjectsValidator<LoginRequest> validator;
 
-    private final MessageSource messageSource;
-
     public LoginService(SpringAuthenticationService authenticationService,
                         JwtUtils jwtUtils,
-                        ObjectsValidator<LoginRequest> validator,
-                        MessageSource messageSource) {
+                        ObjectsValidator<LoginRequest> validator) {
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
-        this.messageSource = messageSource;
     }
 
-    public LoginResponse login(LoginRequest loginRequest) {
+    public UserResponse login(LoginRequest loginRequest) {
         Optional<ApiError> apiError = validator.validate(loginRequest);
 
         if (apiError.isPresent()) {
@@ -47,17 +43,16 @@ public class LoginService {
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
 
-        String token = jwtUtils.encode(email);
+        return toUserResponse(user);
+    }
 
-        LoginResponse loginResponse = new LoginResponse();
-        UserResponse userResponse = new UserResponse();
-        userResponse.setUsername(user.getUsername());
-        userResponse.setToken(token);
-        userResponse.setImage(user.getImage());
-        userResponse.setBio(user.getBio());
-        userResponse.setEmail(user.getEmail());
-        loginResponse.setUserResponse(userResponse);
-
-        return loginResponse;
+    public UserResponse toUserResponse(UserEntity userEntity) {
+        return UserResponse.builder()
+                .username(userEntity.getUsername())
+                .email(userEntity.getEmail())
+                .bio(userEntity.getBio())
+                .token(jwtUtils.encode(userEntity.getEmail()))
+                .image(userEntity.getImage())
+                .build();
     }
 }

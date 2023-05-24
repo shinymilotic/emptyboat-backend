@@ -9,7 +9,7 @@ import overcloud.blog.application.article.favorite.core.FavoriteId;
 import overcloud.blog.application.article.favorite.core.dto.ArticleAuthorResponse;
 import overcloud.blog.application.article.favorite.core.dto.SingleArticleResponse;
 import overcloud.blog.application.article.favorite.core.repository.FavoriteRepository;
-import overcloud.blog.application.article_tag.ArticleTag;
+import overcloud.blog.application.article.article_tag.ArticleTag;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;

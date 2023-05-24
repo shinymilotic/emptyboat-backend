@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping("users/login")
-    public LoginResponse login(@RequestBody LoginRequest loginDto)  {
+    public UserResponse login(@RequestBody LoginRequest loginDto)  {
         return loginService.login(loginDto);
     }
 

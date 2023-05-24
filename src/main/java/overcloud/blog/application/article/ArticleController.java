@@ -8,7 +8,6 @@ import overcloud.blog.application.article.create_article.ArticleResponse;
 import overcloud.blog.application.article.delete_article.DeleteArticleResponse;
 import overcloud.blog.application.article.get_article.GetArticleResponse;
 import overcloud.blog.application.article.get_article_list.GetArticlesResponse;
-import overcloud.blog.application.article.update_article.UpdateArticleRequest;
 import overcloud.blog.application.article.update_article.UpdateArticleResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

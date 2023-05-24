@@ -23,7 +23,7 @@ public class TagController {
     }
 
     @PostMapping("/tags")
-    public @ResponseBody CreateTagResponse createTags(@RequestBody CreateTagRequest createTagRequest) throws Exception {
+    public CreateTagResponse createTags(@RequestBody CreateTagRequest createTagRequest) throws Exception {
         return createTagService.createTags(createTagRequest);
     }
 

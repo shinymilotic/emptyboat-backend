@@ -2,7 +2,7 @@ package overcloud.blog.application.tag.core;
 
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.application.article_tag.ArticleTag;
+import overcloud.blog.application.article.article_tag.ArticleTag;
 import jakarta.persistence.*;
 
 import java.util.List;
