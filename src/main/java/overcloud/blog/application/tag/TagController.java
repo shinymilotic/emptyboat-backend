@@ -11,9 +11,7 @@ import overcloud.blog.application.tag.get_tags.GetTagsService;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class TagController {
-
     private final CreateTagsService createTagService;
-
     private final GetTagsService getTagsService;
 
     public TagController(CreateTagsService createTagService,

@@ -13,5 +13,4 @@ public class CreateTagRequest {
     @JsonProperty("tags")
     @NotEmpty(message = "tag.tagList.not-empty")
     private List<String> tags;
-
 }

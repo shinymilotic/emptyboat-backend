@@ -1,8 +1,10 @@
 package overcloud.blog.application.tag.core;
 
+import org.springframework.beans.factory.annotation.Value;
 import overcloud.blog.infrastructure.validation.Error;
 
 public enum TagError implements Error {
+
     TAG_EXISTS("tag.exists","Tag existed!");
 
     private String messageId;

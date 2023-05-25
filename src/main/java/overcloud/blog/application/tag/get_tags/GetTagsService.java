@@ -17,16 +17,19 @@ public class GetTagsService {
     }
 
     public GetTagResponse getTags() {
-        GetTagResponse tagResponse = new GetTagResponse();
-        List<TagEntity> tagEntities = tagRepository.findAll();
         List<String> tags = new ArrayList<>();
+        List<TagEntity> tagEntities = tagRepository.findAll();
 
         for (TagEntity tagEntity : tagEntities) {
             tags.add(tagEntity.getName());
         }
 
-        tagResponse.setTagList(tags);
+        return toGetTagReponse(tags);
+    }
 
-        return tagResponse;
+    public GetTagResponse toGetTagReponse(List<String> tags) {
+        return GetTagResponse.builder()
+                .tagList(tags)
+                .build();
     }
 }

@@ -32,7 +32,7 @@ public class CreateTagsService {
         List<String> tags = removeDuplicatedTags(createTagRequest.getTags());
 
         List<TagEntity> tagEntities = tagRepository.findByTagName(createTagRequest.getTags());
-        if (tagEntities.size() == tags.size()) {
+        if (tagEntities.size() >= tags.size()) {
             throw new InvalidDataException(ApiError.from(TagError.TAG_EXISTS));
         }
 
