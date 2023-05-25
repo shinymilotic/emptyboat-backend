@@ -15,7 +15,9 @@ import overcloud.blog.application.article.article_tag.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.tag.core.TagEntity;
 import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
 import java.time.LocalDateTime;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UpdateArticleService {
+    private final SpringAuthenticationService authenticationService;
 
     private final ArticleRepository articleRepository;
 
@@ -32,12 +35,14 @@ public class UpdateArticleService {
 
     private final ArticleTagRepository articleTagRepository;
 
-    private final ObjectsValidator<ArticleRequest> validator;
+    private final ObjectsValidator<UpdateArticleRequest> validator;
 
-    public UpdateArticleService(ArticleRepository articleRepository,
+    public UpdateArticleService(SpringAuthenticationService authenticationService,
+                                ArticleRepository articleRepository,
                                 TagRepository tagRepository,
                                 ArticleTagRepository articleTagRepository,
-                                ObjectsValidator<ArticleRequest> validator) {
+                                ObjectsValidator<UpdateArticleRequest> validator) {
+        this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
         this.tagRepository = tagRepository;
         this.articleTagRepository = articleTagRepository;
@@ -45,43 +50,31 @@ public class UpdateArticleService {
     }
 
     @Transactional
-    public UpdateArticleResponse updateArticle(ArticleRequest updateArticleRequest, String currentSlug) {
-        String title = updateArticleRequest.getTitle();
-        String body = updateArticleRequest.getBody();
-        String description = updateArticleRequest.getDescription();
-        String slug = ArticleUtils.toSlug(title);
-        LocalDateTime now = LocalDateTime.now();
+    public UpdateArticleResponse updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
         Optional<ApiError> apiError = validator.validate(updateArticleRequest);
-
         if(apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
 
-        List<ArticleEntity> articleEntities = articleRepository.findBySlug(slug);
-
+        List<ArticleEntity> articleEntities = articleRepository.findBySlug(currentSlug);
         if(articleEntities.isEmpty()) {
             throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_NO_EXISTS));
         }
-
         ArticleEntity articleEntity = articleEntities.get(0);
-        articleEntity.setTitle(title);
-        articleEntity.setDescription(description);
-        articleEntity.setSlug(slug);
-        articleEntity.setBody(body);
-        articleEntity.setUpdatedAt(now);
-        List<ArticleTag> articleTags = articleEntity.getArticleTags();
-        deleteArticleTags(articleTags);
-        List<TagEntity> tagEntities = tagRepository.findByTagName(updateArticleRequest.getTagList());
-        List<ArticleTag> updateArticleTags = tagEntities.stream().map(tagEntity -> ArticleTag.builder()
-                                        .id(new ArticleTagId(articleEntity.getId(), tagEntity.getId()))
-                                        .article(articleEntity)
-                                        .tag(tagEntity)
-                                        .build()).map(articleTagRepository::save).collect(Collectors.toList());
-        articleEntity.setArticleTags(updateArticleTags);
-        articleEntity.setSlug(slug);
-        articleRepository.save(articleEntity);
 
-        return toUpdateArticleResponse(articleEntity);
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
+        if (currentUser.getId().equals(articleEntity.getAuthor().getId())) {
+            throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_UPDATE_NO_AUTHORIZATION));
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        articleEntity.setBody(updateArticleRequest.getBody());
+        articleEntity.setUpdatedAt(now);
+        ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
+
+        return toUpdateArticleResponse(savedArticleEntity);
     }
 
     private UpdateArticleResponse toUpdateArticleResponse(ArticleEntity articleEntity) {
@@ -105,11 +98,5 @@ public class UpdateArticleService {
                 .username(userEntity.getUsername())
                 .image(userEntity.getImage())
                 .build();
-    }
-
-    private void deleteArticleTags(List<ArticleTag> articleTags) {
-        for (ArticleTag articleTag : articleTags) {
-            articleTagRepository.deleteArticleTags(articleTag.getArticle().getId(), articleTag.getTag().getId());
-        }
     }
 }

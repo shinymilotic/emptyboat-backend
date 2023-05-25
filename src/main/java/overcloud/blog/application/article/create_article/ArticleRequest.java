@@ -18,7 +18,6 @@ import java.util.Collection;
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class ArticleRequest {
-
     @JsonProperty("title")
     @NotBlank(message = "article.create.not-blank")
     @Size(min = 1, max = 60, message ="article.create.size")

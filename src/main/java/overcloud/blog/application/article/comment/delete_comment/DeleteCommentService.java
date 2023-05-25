@@ -14,8 +14,9 @@ public class DeleteCommentService {
         this.commentRepository = commentRepository;
     }
 
-    public void deleteComment(UUID uuId) {
+    public boolean deleteComment(UUID uuId) {
         commentRepository.deleteById(uuId);
+        return true;
     }
 
 }

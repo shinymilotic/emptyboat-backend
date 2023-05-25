@@ -40,40 +40,16 @@ public class GetArticleListService {
         getArticlesResponse.setArticles(new ArrayList<>());
         List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page, searchParam);
 
-        Optional<SecurityUser> currentUser = authenticationService.getCurrentUser();
-        Optional<UserEntity> currentUserEntity = Optional.empty();
-        if (currentUser.isPresent()) {
-            currentUserEntity = currentUser.filter(Objects::nonNull)
-                    .map(SecurityUser::getUser);
-        }
+        Optional<UserEntity> currentUser = authenticationService.getCurrentUser().map(SecurityUser::getUser);
 
         for (ArticleEntity article: articleEntities) {
-            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUserEntity);
+            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
             getArticlesResponse.getArticles().add(singleResponse);
         }
 
         return getArticlesResponse;
     }
 
-    public GetArticlesResponse getArticlesFeed(int size, int page, String searchParam) {
-        GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
-        getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(null, null, null, size, page, searchParam);
-
-        Optional<SecurityUser> currentUser = authenticationService.getCurrentUser();
-        Optional<UserEntity> currentUserEntity = Optional.empty();
-        if (currentUser.isPresent()) {
-            currentUserEntity = currentUser.filter(Objects::nonNull)
-                    .map(SecurityUser::getUser);
-        }
-
-        for (ArticleEntity article: articleEntities) {
-            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUserEntity);
-            getArticlesResponse.getArticles().add(singleResponse);
-        }
-
-        return getArticlesResponse;
-    }
 
     private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleEntity article, Optional<UserEntity> currentUser) {
         return GetArticlesSingleResponse.builder()

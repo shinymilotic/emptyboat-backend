@@ -44,40 +44,47 @@ public class CreateArticleService {
 
     public ArticleResponse createArticle(ArticleRequest articleRequest) {
         Optional<ApiError> apiError = validator.validate(articleRequest);
-        if(!apiError.isEmpty()) {
+        if(apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
 
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
+
+        List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
+
+        ArticleEntity articleEntity = saveArticle(articleRequest, currentUser, tagEntities);
+
+        return toCreateArticleResponse(articleEntity);
+    }
+
+    public ArticleEntity saveArticle(ArticleRequest articleRequest, UserEntity author, List<TagEntity> tagEntities) {
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();
         String slug = ArticleUtils.toSlug(title);
         LocalDateTime now = LocalDateTime.now();
 
-        UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
-                .getUser();
-
         ArticleEntity articleEntity = new ArticleEntity();
-        List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
-        List<ArticleTag> articleTags = tagEntities.stream()
-                                .map(tagEntity -> ArticleTag.builder()
-                                .id(new ArticleTagId())
-                                .tag(tagEntity)
-                                .article(articleEntity)
-                                .build()).collect(Collectors.toList());
-
-        articleEntity.setAuthor(currentUser);
+        articleEntity.setAuthor(author);
         articleEntity.setBody(body);
         articleEntity.setDescription(description);
         articleEntity.setSlug(slug);
         articleEntity.setTitle(title);
         articleEntity.setCreatedAt(now);
         articleEntity.setUpdatedAt(now);
-        articleEntity.setArticleTags(articleTags);
-        articleRepository.save(articleEntity);
+        articleEntity.setArticleTags(toArticleTag(tagEntities, articleEntity));
+        return articleRepository.save(articleEntity);
+    }
 
-        return toCreateArticleResponse(articleEntity);
+    private List<ArticleTag> toArticleTag(List<TagEntity> tagEntities, ArticleEntity articleEntity) {
+        return tagEntities.stream()
+                .map(tagEntity -> ArticleTag.builder()
+                        .id(new ArticleTagId())
+                        .tag(tagEntity)
+                        .article(articleEntity)
+                        .build()).collect(Collectors.toList());
     }
 
     private ArticleResponse toCreateArticleResponse(ArticleEntity articleEntity) {

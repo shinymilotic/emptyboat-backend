@@ -2,6 +2,7 @@ package overcloud.blog.application.article.comment.create_comment;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.comment.core.CommentEntity;
+import overcloud.blog.application.article.comment.core.CommentError;
 import overcloud.blog.application.article.comment.core.repository.CommentRepository;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.article.core.AuthorResponse;
@@ -11,9 +12,12 @@ import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CreateCommentService {
@@ -24,31 +28,50 @@ public class CreateCommentService {
 
     private final SpringAuthenticationService authenticationService;
 
+    private final ObjectsValidator<CreateCommentRequest> validator;
+
     public CreateCommentService(ArticleRepository articleRepository,
                                 CommentRepository commentRepository,
-                                SpringAuthenticationService authenticationService) {
+                                SpringAuthenticationService authenticationService,
+                                ObjectsValidator<CreateCommentRequest> validator) {
         this.articleRepository = articleRepository;
         this.commentRepository = commentRepository;
         this.authenticationService = authenticationService;
+        this.validator = validator;
     }
 
     public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
-        ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
+        Optional<ApiError> apiError = validator.validate(createCommentRequest);
+
+        if (apiError.isPresent()) {
+            throw new InvalidDataException(apiError.get());
+        }
+
+        List<ArticleEntity> articleEntities = articleRepository.findBySlug(slug);
+        if(articleEntities.isEmpty()) {
+            throw new InvalidDataException(ApiError.from(CommentError.COMMENT_ARTICLE_NOT_EXIST));
+        }
+
+        ArticleEntity articleEntity = articleEntities.get(0);
+
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
+        CommentEntity savedCommentEntity = saveComment(createCommentRequest, articleEntity,currentUser);
 
+        return toCreateCommentResponse(savedCommentEntity, currentUser);
+    }
+
+    public CommentEntity saveComment(CreateCommentRequest createCommentRequest,ArticleEntity articleEntity, UserEntity author ) {
         String body = createCommentRequest.getBody();
         LocalDateTime now = LocalDateTime.now();
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setArticle(articleEntity);
-        commentEntity.setAuthor(currentUser);
+        commentEntity.setAuthor(author);
         commentEntity.setBody(body);
         commentEntity.setCreatedAt(now);
         commentEntity.setUpdatedAt(now);
-        CommentEntity savedCommentEntity = commentRepository.save(commentEntity);
-
-        return toCreateCommentResponse(savedCommentEntity, currentUser);
+        return commentRepository.save(commentEntity);
     }
 
     public CreateCommentResponse toCreateCommentResponse(CommentEntity commentEntity, UserEntity userEntity){

@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 public class GetCommentsService {
-
     private final CommentRepository commentRepository;
 
     public GetCommentsService(CommentRepository commentRepository) {

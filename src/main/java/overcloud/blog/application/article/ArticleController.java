@@ -8,6 +8,7 @@ import overcloud.blog.application.article.create_article.ArticleResponse;
 import overcloud.blog.application.article.delete_article.DeleteArticleResponse;
 import overcloud.blog.application.article.get_article.GetArticleResponse;
 import overcloud.blog.application.article.get_article_list.GetArticlesResponse;
+import overcloud.blog.application.article.update_article.UpdateArticleRequest;
 import overcloud.blog.application.article.update_article.UpdateArticleResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{slug}")
-    public UpdateArticleResponse updateArticle(@RequestBody ArticleRequest updateArticleRequest,
+    public UpdateArticleResponse updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
                                                @PathVariable("slug") String currentSlug) {
         return updateArticleService.updateArticle(updateArticleRequest, currentSlug);
     }
@@ -70,12 +71,4 @@ public class ArticleController {
                                            @RequestParam(value = "searchParam", defaultValue = "") String searchParam) {
         return getArticleListService.getArticles(tag, author, favorited, limit, page, searchParam);
     }
-
-    @GetMapping("/articles/feed")
-    public GetArticlesResponse getArticlesFeed(@RequestParam(value = "size", defaultValue = "20") int size,
-                                               @RequestParam(value = "page", defaultValue = "1") int page,
-                                               @RequestParam(value = "searchParam", defaultValue = "") String searchParam) {
-        return getArticleListService.getArticlesFeed(size, page, searchParam);
-    }
-
 }

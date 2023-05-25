@@ -16,7 +16,6 @@ import overcloud.blog.application.article.delete_article.DeleteArticleService;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class DeleteArticleTest {
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
 
