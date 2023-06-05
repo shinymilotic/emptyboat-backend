@@ -10,7 +10,6 @@ import overcloud.blog.application.article.get_article.GetArticleResponse;
 import overcloud.blog.application.article.get_article_list.GetArticlesResponse;
 import overcloud.blog.application.article.update_article.UpdateArticleRequest;
 import overcloud.blog.application.article.update_article.UpdateArticleResponse;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.article.get_article.GetArticleService;
 import overcloud.blog.application.article.get_article_list.GetArticleListService;
@@ -52,9 +51,9 @@ public class ArticleController {
         return updateArticleService.updateArticle(updateArticleRequest, currentSlug);
     }
 
-    @DeleteMapping("/articles/{id}")
-    public DeleteArticleResponse deleteArticle(@PathVariable("id") String id ) {
-        return deleteArticleService.deleteArticle(id);
+    @DeleteMapping("/articles/{slug}")
+    public DeleteArticleResponse deleteArticle(@PathVariable("slug") String slug ) {
+        return deleteArticleService.deleteArticle(slug);
     }
 
     @GetMapping("/articles/{slug}")

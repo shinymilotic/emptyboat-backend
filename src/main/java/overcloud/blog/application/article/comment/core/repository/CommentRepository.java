@@ -16,7 +16,7 @@ public interface CommentRepository extends JpaRepository<CommentEntity, UUID> {
     List<CommentEntity> findByArticleSlug(String articleSlug);
 
     @Modifying
-    @Query("DELETE FROM CommentEntity comment" +
-            " WHERE comment.article.id = :uuid ")
-    void deleteByArticle(UUID uuid);
+    @Query("DELETE FROM CommentEntity comment " +
+            " WHERE comment.article.slug = :slug ")
+    void deleteByArticleSlug(String slug);
 }

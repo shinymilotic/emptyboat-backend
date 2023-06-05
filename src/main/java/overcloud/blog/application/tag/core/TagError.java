@@ -5,7 +5,8 @@ import overcloud.blog.infrastructure.validation.Error;
 
 public enum TagError implements Error {
 
-    TAG_EXISTS("tag.exists","Tag existed!");
+    TAG_EXISTS("tag.exists","Tag existed!"),
+    TAG_NO_EXISTS("tag.no-exists","These tags doesn't exist: %s!");
 
     private String messageId;
 

@@ -21,9 +21,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public SecurityUser loadUserByUsername(String email) throws UsernameNotFoundException {
         return Optional.ofNullable(userRepository.findByEmail(email))
-                .map(userEntity -> new SecurityUser(userEntity))
+                .map(SecurityUser::new)
                 .orElse(null);
     }
 }

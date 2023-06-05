@@ -26,13 +26,12 @@ public class DeleteArticleService {
     }
 
     @Transactional
-    public DeleteArticleResponse deleteArticle(String id) {
-        UUID uuid = UUID.fromString(id);
+    public DeleteArticleResponse deleteArticle(String slug) {
         DeleteArticleResponse deleteArticleResponse = new DeleteArticleResponse();
-        commentRepository.deleteByArticle(uuid);
-        favoriteRepository.deleteByArticle(uuid);
-        articleRepository.deleteById(uuid);
-        deleteArticleResponse.setId(uuid.toString());
+        commentRepository.deleteByArticleSlug(slug);
+        favoriteRepository.deleteByArticleSlug(slug);
+        articleRepository.deleteBySlug(slug);
+        deleteArticleResponse.setSlug(slug);
         return deleteArticleResponse;
     }
 }

@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DeleteArticleResponse {
-    @JsonProperty("id")
-    private String id;
+    @JsonProperty("slug")
+    private String slug;
 }

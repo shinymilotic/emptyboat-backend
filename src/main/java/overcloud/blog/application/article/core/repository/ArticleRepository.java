@@ -1,6 +1,7 @@
 package overcloud.blog.application.article.core.repository;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import overcloud.blog.application.article.core.ArticleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,8 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, UUID> , 
 
     @Query("SELECT ar FROM ArticleEntity ar WHERE ar.title = :title ")
     List<ArticleEntity> findByTitle(String title);
+
+    @Modifying
+    @Query("")
+    void deleteBySlug(String slug);
 }

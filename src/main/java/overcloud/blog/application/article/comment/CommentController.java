@@ -41,8 +41,7 @@ public class CommentController {
     }
 
     @DeleteMapping("articles/comments/{id}")
-    public boolean deleteComment(@PathVariable("id") String id) {
-        UUID uuId = UUID.fromString(id);
-        return deleteCommentService.deleteComment(uuId);
+    public boolean deleteComment(@PathVariable("slug") String slug) {
+        return deleteCommentService.deleteComment(slug);
     }
 }

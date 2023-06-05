@@ -6,6 +6,7 @@ import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.core.utils.ArticleUtils;
 import overcloud.blog.application.article.article_tag.ArticleTagId;
+import overcloud.blog.application.tag.core.TagError;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.article.article_tag.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
@@ -43,7 +44,10 @@ public class CreateArticleService {
     }
 
     public ArticleResponse createArticle(ArticleRequest articleRequest) {
+        List<String> distinctTags = filterDistinctTags(articleRequest.getTagList());
+        articleRequest.setTagList(distinctTags);
         Optional<ApiError> apiError = validator.validate(articleRequest);
+
         if(apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
@@ -53,13 +57,27 @@ public class CreateArticleService {
                 .getUser();
 
         List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
+        if(distinctTags.size() > tagEntities.size()) {
+            throw new InvalidDataException(ApiError.from(TagError.TAG_NO_EXISTS));
+        }
 
-        ArticleEntity articleEntity = saveArticle(articleRequest, currentUser, tagEntities);
+        ArticleEntity articleEntity = initArticleEntity(articleRequest, currentUser, tagEntities);
+        ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
 
-        return toCreateArticleResponse(articleEntity);
+        return toCreateArticleResponse(savedArticleEntity);
     }
 
-    public ArticleEntity saveArticle(ArticleRequest articleRequest, UserEntity author, List<TagEntity> tagEntities) {
+    private List<String> filterDistinctTags(List<String> tags) {
+        if(tags != null) {
+            tags = tags.stream().distinct().toList();
+        } else {
+            tags = new ArrayList<>();
+        }
+
+        return tags;
+    }
+
+    public ArticleEntity initArticleEntity(ArticleRequest articleRequest, UserEntity author, List<TagEntity> tagEntities) {
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();
@@ -75,10 +93,11 @@ public class CreateArticleService {
         articleEntity.setCreatedAt(now);
         articleEntity.setUpdatedAt(now);
         articleEntity.setArticleTags(toArticleTag(tagEntities, articleEntity));
-        return articleRepository.save(articleEntity);
+
+        return articleEntity;
     }
 
-    private List<ArticleTag> toArticleTag(List<TagEntity> tagEntities, ArticleEntity articleEntity) {
+    public List<ArticleTag> toArticleTag(List<TagEntity> tagEntities, ArticleEntity articleEntity) {
         return tagEntities.stream()
                 .map(tagEntity -> ArticleTag.builder()
                         .id(new ArticleTagId())
@@ -87,7 +106,7 @@ public class CreateArticleService {
                         .build()).collect(Collectors.toList());
     }
 
-    private ArticleResponse toCreateArticleResponse(ArticleEntity articleEntity) {
+    public ArticleResponse toCreateArticleResponse(ArticleEntity articleEntity) {
         return ArticleResponse.builder()
                 .id(articleEntity.getId().toString())
                 .title(articleEntity.getTitle())

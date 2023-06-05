@@ -46,18 +46,7 @@ public class ArticleValidator {
         return Optional.empty();
     }
 
-    public Optional<ApiErrorDetail> validateTagList(Collection<String> tagList) {
-        if(tagList == null || tagList.isEmpty()) {
-            return Optional.empty();
-        }
 
-        List<TagEntity> tagEntities = tagRepository.checkAllTagsExistDB(tagList);
-        if(tagEntities.size() != tagList.size()) {
-            return Optional.empty();
-        }
-
-        return Optional.empty();
-    }
 
     public Optional<ApiErrorDetail> validateTitleLength(String title) {
         if(!StringUtils.hasText(title)) {

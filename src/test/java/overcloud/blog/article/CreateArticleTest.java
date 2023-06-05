@@ -1,246 +1,336 @@
 package overcloud.blog.article;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import overcloud.blog.application.article.core.ArticleEntity;
-import overcloud.blog.application.article.core.ArticleError;
+import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.create_article.ArticleRequest;
 import overcloud.blog.application.article.create_article.ArticleResponse;
+import overcloud.blog.application.article.create_article.CreateArticleService;
 import overcloud.blog.application.tag.core.TagEntity;
+import overcloud.blog.application.tag.core.TagError;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.application.user.core.repository.UserRepository;
+import overcloud.blog.builder.ArticleRequestFactory;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
+import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class CreateArticleTest {
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private ArticleRepository articleRepository;
-
-    @Autowired
+@ExtendWith(MockitoExtension.class)
+public class CreateArticleTest { @Mock
+    private CreateArticleService createArticleService;
+    @Mock
+    private SpringAuthenticationService authenticationService;
+    @Mock
     private TagRepository tagRepository;
+    @Mock
+    private ArticleRepository articleRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private ObjectsValidator<ArticleRequest> validator;
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource
+                = new ReloadableResourceBundleMessageSource();
 
-    public CreateArticleTest() {
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+    @BeforeEach
+    void initUseCase() {
+        setAuthentication();
+        validator = new ObjectsValidator<ArticleRequest>(messageSource());
+        authenticationService = new SpringAuthenticationService(userRepository,new BCryptPasswordEncoder());
+        createArticleService = new CreateArticleService(authenticationService, tagRepository, articleRepository, validator);
+    }
+
+    private void setAuthentication() {
+        // add principal object to SecurityContextHolder
+        UserEntity user = new UserEntity();
+        user.setId(UUID.fromString("e7e861df-2c3f-4304-a2b0-3b98c1ba16c8"));
+        user.setEmail("trungtin.mai1412@gmail.com");
+        user.setUsername("thepianist00");
+        user.setBio("A pragmatddsdsadsaic programmerss");
+        user.setImage("https://avatars.githubusercontent.com/u/19252712?s=100&v=100");
+        user.setPassword("$2a$10$ba45PLemGgZxRXAjHkyuRuuHE0o4dmrKFcyW5a");
+        UserDetails secureUser = new SecurityUser(user);
+        Authentication auth = new UsernamePasswordAuthenticationToken(secureUser,secureUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+    private ArticleResponse createArticle(ArticleRequest articleRequest) throws Exception {
+        when(articleRepository.save(any(ArticleEntity.class))).thenAnswer(invocation -> {
+            ArticleEntity articleEntity = invocation.getArgument(0);
+            articleEntity.setId(UUID.fromString("011d2f94-7897-4a7a-9737-bb600154be00"));
+            return articleEntity;
+        });
+
+        when(tagRepository.findByTagName(anyList())).thenAnswer(invocation -> {
+            List<String> tags = invocation.getArgument(0);
+            List<TagEntity> tagEntities = new ArrayList<>();
+            for (String tag : tags ){
+                TagEntity tagEntity = new TagEntity();
+                tagEntity.setName(tag);
+                tagEntities.add(tagEntity);
+            }
+            return tagEntities;
+        });
+
+        return createArticleService.createArticle(articleRequest);
+    }
+
+    private ArticleResponse createArticleError(ArticleRequest articleRequest) throws Exception {
+        return createArticleService.createArticle(articleRequest);
+    }
+
+    private ArticleResponse createArticleNoExistTag(ArticleRequest articleRequest) {
+        when(tagRepository.findByTagName(anyList())).thenAnswer(invocation -> {
+            List<String> tags =  invocation.getArgument(0);
+            List<String> newTagList = new ArrayList<>();
+            for (int i = 1; i < tags.size(); i++) {
+                newTagList.add(tags.get(i));
+            }
+
+            List<TagEntity> tagEntities = new ArrayList<>();
+            for (String tag : newTagList){
+                TagEntity tagEntity = new TagEntity();
+                tagEntity.setName(tag);
+                tagEntities.add(tagEntity);
+            }
+            return tagEntities;
+        });
+
+        return createArticleService.createArticle(articleRequest);
     }
 
     @Test
     public void testCreateArticle() throws Exception {
-        ArticleRequest articleRequest = ArticleRequest.builder()
-                .title("testCreateArticle")
-                .description("Empty title")
-                .body("Nothing inside the body")
-                .tagList(List.of("Spring", "Clean code"))
-                .build();
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequest();
 
-        String articleRequestStr = objectMapper.writeValueAsString(articleRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVuZ3Rpbi5tYWkxNDEyQGdtYWlsLmNvbSIsImlhdCI6MTY4MjI0NTU0OCwiZXhwIjoxNjg1MjQ1NTQ4fQ.VGevNNJXuUvYESDSmARGbtCpNvX2-mqnZjtx1nYXv88")
-                        .content(articleRequestStr)).andReturn();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticle(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
 
+        assertEquals(articleResponse.getBody(), articleRequest.getBody());
+        assertEquals(articleResponse.getTitle(), articleRequest.getTitle());
+        assertEquals(articleResponse.getSlug(), "testa-dsadcreaatdasdas-earticle");
+        assertEquals(articleResponse.getFavoritesCount(), 0);
+        assertEquals(articleResponse.getAuthor().getUsername(), "thepianist00");
+        assertEquals(articleResponse.getAuthor().getBio(), "A pragmatddsdsadsaic programmerss");
+        assertEquals(articleResponse.getAuthor().getImage(), "https://avatars.githubusercontent.com/u/19252712?s=100&v=100");
+    }
 
-        String response = result.getResponse().getContentAsString();
+    public void assertApiError(ApiError apiError, String id, String message) {
+        List<ApiErrorDetail> apiErrorDetail = apiError.getApiErrorDetails();
 
-        ObjectMapper mapper = new ObjectMapper();
-        ArticleResponse targetObject = mapper.readValue(response, ArticleResponse.class);
-
-        UUID id = UUID.fromString(targetObject.getId());
-        ArticleEntity articleEntity = articleRepository.findById(id).orElse(null);
-
-        assertEquals(UUID.fromString(targetObject.getId()), articleEntity.getId());
-        assertEquals(articleEntity.getSlug(), targetObject.getSlug());
-        assertEquals(articleEntity.getTitle(), targetObject.getTitle());
-        assertEquals(articleEntity.getDescription(), targetObject.getDescription());
-        assertEquals(articleEntity.getBody(), targetObject.getBody());
-        assertEquals(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")), targetObject.getCreatedAt());
-        assertEquals(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")), targetObject.getUpdatedAt());
-        Iterable<String> responseTags = targetObject.getTagList();
-
-        for (String tagName : responseTags) {
-            TagEntity tag = tagRepository.findByTagName(tagName);
-            if(tag != null) {
-                assertTrue(true);
+        for (ApiErrorDetail detail : apiErrorDetail) {
+            if(detail.getId().equals(id)) {
+                assertEquals(detail.getMessage(), message);
+                return;
             }
         }
 
-        UserEntity author = articleEntity.getAuthor();
-        assertEquals(author.getUsername(), author.getUsername());
-        assertEquals(author.getBio(), author.getBio());
-        assertEquals(author.getImage(), author.getImage());
-    }
-
-    @Test
-    public void testCreateArticleNoTag() throws Exception {
-        ArticleRequest articleRequest = ArticleRequest.builder()
-                .title("testCreateArticleNoTag")
-                .description("Empty title")
-                .body("Nothing inside the body")
-                .tagList(List.of())
-                .build();
-
-        String articleRequestStr = objectMapper.writeValueAsString(articleRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVuZ3Rpbi5tYWkxNDEyQGdtYWlsLmNvbSIsImlhdCI6MTY4MjI0NTU0OCwiZXhwIjoxNjg1MjQ1NTQ4fQ.VGevNNJXuUvYESDSmARGbtCpNvX2-mqnZjtx1nYXv88")
-                .content(articleRequestStr)).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
-
-    }
-
-    @Test
-    public void testCreateArticleWrongTag() throws Exception {
-        ArticleRequest articleRequest = ArticleRequest.builder()
-                .title("testCreateArticleWrongTag")
-                .description("Empty title")
-                .body("Nothing inside the body")
-                .tagList(List.of("Wrong", "Spring"))
-                .build();
-
-        String articleRequestStr = objectMapper.writeValueAsString(articleRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVuZ3Rpbi5tYWkxNDEyQGdtYWlsLmNvbSIsImlhdCI6MTY4MjI0NTU0OCwiZXhwIjoxNjg1MjQ1NTQ4fQ.VGevNNJXuUvYESDSmARGbtCpNvX2-mqnZjtx1nYXv88")
-                .content(articleRequestStr)).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
-
-    }
-
-    @Test
-    public void testCreateArticleNoTitle() throws Exception {
-        ArticleRequest articleRequest = ArticleRequest.builder()
-                .description("Empty title")
-                .body("Nothing inside the body")
-                .tagList(List.of("Spring"))
-                .build();
-
-        String articleRequestStr = objectMapper.writeValueAsString(articleRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVuZ3Rpbi5tYWkxNDEyQGdtYWlsLmNvbSIsImlhdCI6MTY4MjI0NTU0OCwiZXhwIjoxNjg1MjQ1NTQ4fQ.VGevNNJXuUvYESDSmARGbtCpNvX2-mqnZjtx1nYXv88")
-                .content(articleRequestStr)).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
-
+        assertFalse(false);
     }
 
     @Test
     public void testCreateArticleEmptyTitle() throws Exception {
-        ArticleRequest articleRequest = ArticleRequest.builder()
-                .title("")
-                .description("Empty title")
-                .body("Nothing inside the body")
-                .tagList(List.of("Spring"))
-                .build();
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestEmptyTitle();
 
-        String articleRequestStr = objectMapper.writeValueAsString(articleRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVuZ3Rpbi5tYWkxNDEyQGdtYWlsLmNvbSIsImlhdCI6MTY4MjI0NTU0OCwiZXhwIjoxNjg1MjQ1NTQ4fQ.VGevNNJXuUvYESDSmARGbtCpNvX2-mqnZjtx1nYXv88")
-                .content(articleRequestStr)).andReturn();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
 
-        String response = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
-
+        assertApiError(apiError, "article.create.not-blank" ,"Title must be specified");
     }
 
     @Test
-    public void testCreateArticleTitleLength() throws Exception {
-        ArticleRequest articleRequest = ArticleRequest.builder()
-                .title("1dsadsssssssssssssssssssssssssssasfsafsafssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-                .description("Empty title")
-                .body("Nothing inside the body")
-                .tagList(List.of("Spring"))
-                .build();
+    public void testCreateArticleNullTitle() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNullTitle();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
 
-        String articleRequestStr = objectMapper.writeValueAsString(articleRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVuZ3Rpbi5tYWkxNDEyQGdtYWlsLmNvbSIsImlhdCI6MTY4MjI0NTU0OCwiZXhwIjoxNjg1MjQ1NTQ4fQ.VGevNNJXuUvYESDSmARGbtCpNvX2-mqnZjtx1nYXv88")
-                .content(articleRequestStr)).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
-
+        assertApiError(apiError, "article.create.not-blank" ,"Title must be specified");
     }
 
     @Test
-    public void testCreateArticleNoDescription() throws Exception {
-        ArticleRequest articleRequest = ArticleRequest.builder()
-                .title("testCreateArticleNoDescription")
-                .body("Nothing inside the body")
-                .tagList(List.of("Spring"))
-                .build();
+    public void testCreateArticleNotFitSizeTitle() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNotFitSizeTitle();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
 
-        String articleRequestStr = objectMapper.writeValueAsString(articleRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVuZ3Rpbi5tYWkxNDEyQGdtYWlsLmNvbSIsImlhdCI6MTY4MjI0NTU0OCwiZXhwIjoxNjg1MjQ1NTQ4fQ.VGevNNJXuUvYESDSmARGbtCpNvX2-mqnZjtx1nYXv88")
-                .content(articleRequestStr)).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
-
+        assertApiError(apiError, "article.create.size" ,"Title length must be between 1 and 60 characters");
     }
 
     @Test
-    public void testCreateArticleDescriptionLength() throws Exception {
-        ArticleRequest articleRequest = ArticleRequest.builder()
-                .title("testCreateArticleDescriptionLength")
-                .body("Nothing inside the body")
-                .description("1dsadsssssssssssssssssssssssssssasfsafsafsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd")
-                .tagList(List.of("Spring"))
-                .build();
+    public void testCreateArticleNullDescription() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNullDescription();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
 
-        String articleRequestStr = objectMapper.writeValueAsString(articleRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cnVuZ3Rpbi5tYWkxNDEyQGdtYWlsLmNvbSIsImlhdCI6MTY4MjI0NTU0OCwiZXhwIjoxNjg1MjQ1NTQ4fQ.VGevNNJXuUvYESDSmARGbtCpNvX2-mqnZjtx1nYXv88")
-                .content(articleRequestStr)).andReturn();
+        assertApiError(apiError, "article.description.not-blank" ,"Description must be specified");
+    }
 
-        String response = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-        List<ApiErrorDetail> apiValidationError = targetObject.getApiErrorDetails();
+    @Test
+    public void testCreateArticleEmptyDescription() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestEmptyDescription();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
 
+        assertApiError(apiError, "article.description.not-blank" ,"Description must be specified");
+    }
+
+    @Test
+    public void testCreateArticleNotFitDescription() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNotFitDescription();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
+
+        assertApiError(apiError, "article.description.size" ,"Description size must be between 1 and 100");
+    }
+
+    @Test
+    public void testCreateArticleNullBody() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNullBody();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
+
+        assertApiError(apiError, "article.body.not-blank" ,"Article body must be specified");
+    }
+
+    @Test
+    public void testCreateArticleBlankBody() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestBlankBody();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
+
+        assertApiError(apiError, "article.body.not-blank" ,"Article body must be specified");
+    }
+
+    @Test
+    public void testCreateArticleNullTag() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNullTag();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
+
+        assertApiError(apiError, "article.tags.not-empty" ,"Tags must be specified");
+    }
+
+    @Test
+    public void testCreateArticleEmptyTag() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestEmptyTag();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleError(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
+
+        assertApiError(apiError, "article.tags.not-empty" ,"Tags must be specified");
+    }
+
+    @Test
+    public void testCreateArticleDuplicateTag() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestDuplicateTag();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticle(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
+
+        assertEquals(articleResponse.getBody(), articleRequest.getBody());
+        assertEquals(articleResponse.getTitle(), articleRequest.getTitle());
+        assertEquals(articleResponse.getSlug(), "titlecss");
+        assertEquals(articleResponse.getFavoritesCount(), 0);
+        assertEquals(articleResponse.getAuthor().getUsername(), "thepianist00");
+        assertEquals(articleResponse.getAuthor().getBio(), "A pragmatddsdsadsaic programmerss");
+        assertEquals(articleResponse.getAuthor().getImage(), "https://avatars.githubusercontent.com/u/19252712?s=100&v=100");
+    }
+
+    @Test
+    public void testCreateArticleNotExistTag() throws Exception {
+        ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNotExistTag();
+        ArticleResponse articleResponse = null;
+        ApiError apiError = null;
+        try {
+            articleResponse = createArticleNoExistTag(articleRequest);
+        } catch (InvalidDataException e) {
+            apiError = e.getApiError();
+        }
+
+        assertApiError(apiError, TagError.TAG_NO_EXISTS.getMessageId(), TagError.TAG_NO_EXISTS.getErrorMessage());
     }
 }

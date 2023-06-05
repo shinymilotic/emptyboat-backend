@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.List;
 
 @Builder
 @JsonTypeName("article")
@@ -34,5 +35,5 @@ public class ArticleRequest {
 
     @JsonProperty("tagList")
     @NotEmpty(message = "article.tags.not-empty")
-    private Collection<String> tagList;
+    private List<String> tagList;
 }
