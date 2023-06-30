@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.article.favorite.core.dto.SingleArticleResponse;
 import overcloud.blog.application.article.favorite.make_favorite.MakeUnfavoriteService;
 import overcloud.blog.application.article.favorite.make_unfavorite.MakeFavoriteService;
+import overcloud.blog.infrastructure.ApiConst;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -20,13 +21,13 @@ public class FavoriteController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("articles/{slug}/favorite")
+    @PostMapping(ApiConst.ARTICLES_SLUG_FAVORITE)
     public SingleArticleResponse makeFavorite(@PathVariable("slug") String slug) {
         return makeFavoriteService.makeFavorite(slug);
     }
 
     @CrossOrigin(origins = "*")
-    @DeleteMapping("articles/{slug}/favorite")
+    @DeleteMapping(ApiConst.ARTICLES_SLUG_FAVORITE)
     public SingleArticleResponse makeUnfavorite(@PathVariable("slug") String slug) {
         return makeUnfavoriteService.makeUnfavorite(slug);
     }

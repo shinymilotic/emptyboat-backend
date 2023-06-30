@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "comment", schema = "public")
+@Table(name = "comments", schema = "public")
 public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

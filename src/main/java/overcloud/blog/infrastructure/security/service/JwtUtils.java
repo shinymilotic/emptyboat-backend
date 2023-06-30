@@ -19,7 +19,7 @@ public class JwtUtils {
     public JwtUtils( @Value("${blog.auth.token.sign-key}") String signKey,
                      @Value("${blog.auth.token.valid-time}") Long validTime) {
         this.validSeconds = validTime;
-        key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
+        this.key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
     }
 
     public String encode(String sub) {

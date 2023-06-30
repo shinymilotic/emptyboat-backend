@@ -40,7 +40,7 @@ public class GetArticleListService {
         getArticlesResponse.setArticles(new ArrayList<>());
         List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page, searchParam);
 
-        Optional<UserEntity> currentUser = authenticationService.getCurrentUser().map(SecurityUser::getUser);
+        UserEntity currentUser = authenticationService.getCurrentUser().map(SecurityUser::getUser).get();
 
         for (ArticleEntity article: articleEntities) {
             GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
@@ -51,7 +51,7 @@ public class GetArticleListService {
     }
 
 
-    private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleEntity article, Optional<UserEntity> currentUser) {
+    private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleEntity article, UserEntity currentUser) {
         return GetArticlesSingleResponse.builder()
                 .id(article.getId().toString())
                 .title(article.getTitle())
@@ -67,7 +67,7 @@ public class GetArticleListService {
                 .build();
     }
 
-    private AuthorResponse toGetArticleAuthorResponse(Optional<UserEntity> currentUser, UserEntity author) {
+    private AuthorResponse toGetArticleAuthorResponse(UserEntity currentUser, UserEntity author) {
         return AuthorResponse.builder()
                 .username(author.getUsername())
                 .bio(author.getBio())

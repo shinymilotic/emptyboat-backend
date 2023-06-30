@@ -8,6 +8,7 @@ import overcloud.blog.application.user.follow.make_follow.FollowResponse;
 import overcloud.blog.application.user.follow.make_follow.FollowService;
 import overcloud.blog.application.user.follow.make_unfollow.UnfollowResponse;
 import overcloud.blog.application.user.follow.make_unfollow.UnfollowService;
+import overcloud.blog.infrastructure.ApiConst;
 
 @RestController
 public class FollowController {
@@ -21,12 +22,12 @@ public class FollowController {
         this.unfollowService = unfollowService;
     }
 
-    @PostMapping(value = "profiles/{username}/follow")
+    @PostMapping(ApiConst.PROFILES_USERNAME_FOLLOW)
     public FollowResponse followUser(@PathVariable("username") String username) {
         return followService.followUser(username);
     }
 
-    @DeleteMapping(value = "profiles/{username}/follow")
+    @DeleteMapping(ApiConst.PROFILES_USERNAME_FOLLOW)
     public UnfollowResponse unfollowUser(@PathVariable("username") String username) {
         return unfollowService.unfollowUser(username);
     }

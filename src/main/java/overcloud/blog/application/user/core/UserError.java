@@ -15,6 +15,8 @@ public enum UserError implements Error {
     private String errorMessage;
 
     UserError(String id, String errorMessage) {
+        this.id = id;
+        this.errorMessage = errorMessage;
     }
 
     @Override

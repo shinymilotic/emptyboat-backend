@@ -15,6 +15,7 @@ import overcloud.blog.application.user.login.LoginResponse;
 import overcloud.blog.application.user.register.RegisterRequest;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.user.update_user.UpdateUserService;
+import overcloud.blog.infrastructure.ApiConst;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -43,32 +44,32 @@ public class UserController {
         this.getCurrentUserService = getCurrentUserService;
     }
 
-    @PostMapping("users")
+    @PostMapping(ApiConst.USERS)
     public UserResponse register(@RequestBody RegisterRequest registrationDto) throws Exception {
         return registerService.registerUser(registrationDto);
     }
 
-    @PutMapping("user")
+    @PutMapping(ApiConst.USERS)
     public UserResponse update(@RequestBody UpdateUserRequest updateUserDto)  {
         return updateUserService.updateUser(updateUserDto);
     }
 
-    @PostMapping("users/login")
+    @PostMapping(ApiConst.USERS_LOGIN)
     public UserResponse login(@RequestBody LoginRequest loginDto)  {
         return loginService.login(loginDto);
     }
 
-    @PostMapping("users/logout")
+    @PostMapping(ApiConst.USERS_LOGOUT)
     public boolean logout(HttpServletRequest request, HttpServletResponse response) {
         return logoutService.logout(request, response);
     }
 
-    @GetMapping("user")
+    @GetMapping(ApiConst.USERS)
     public UserResponse getCurrentUser() {
         return getCurrentUserService.getCurrentUser();
     }
 
-    @GetMapping(value = "profiles/{username}")
+    @GetMapping(ApiConst.PROFILES_USERNAME)
     public GetProfileResponse getProfile(@PathVariable("username") String username) throws Exception {
         return getProfileService.getProfile(username);
     }

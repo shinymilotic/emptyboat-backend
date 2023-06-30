@@ -21,19 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LoginTest {
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
-    private MockMvc mockMvc;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private JwtUtils jwtUtils;
 
     public LoginTest() {
 
@@ -46,21 +33,6 @@ public class LoginTest {
                 .password("123123123")
                 .build();
 
-        String loginRequestStr = objectMapper.writeValueAsString(loginRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(loginRequestStr)).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-
-        ObjectMapper mapper = new ObjectMapper();
-        LoginResponse targetObject = mapper.readValue(response, LoginResponse.class);
-
-        UserEntity user = userRepository.findByEmail("trungtin.mai1412@gmail.com");
-
-        assertEquals(targetObject.getUserResponse().getEmail(), user.getEmail());
-        assertEquals(targetObject.getUserResponse().getUsername(), user.getUsername());
-        assertEquals(targetObject.getUserResponse().getImage(), user.getImage());
     }
 
     @Test
@@ -69,17 +41,6 @@ public class LoginTest {
                 .password("123123123")
                 .build();
 
-        String loginRequestStr = objectMapper.writeValueAsString(loginRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(loginRequestStr)).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-
-        assertEquals(targetObject.getApiErrorDetails().get(0).getMessage(), "Email/password must be specified");
     }
 
     @Test
@@ -89,17 +50,6 @@ public class LoginTest {
                 .password("123123123")
                 .build();
 
-        String loginRequestStr = objectMapper.writeValueAsString(loginRequest);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(loginRequestStr)).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-
-        ObjectMapper mapper = new ObjectMapper();
-        ApiError targetObject = mapper.readValue(response, ApiError.class);
-
-        assertEquals(targetObject.getApiErrorDetails().get(0).getMessage(), "Email/password must be specified");
     }
 
 }

@@ -15,13 +15,13 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 @Service
 public class FollowService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
 
-    private FollowRepository followRepository;
+    private final FollowRepository followRepository;
 
-    private FollowUtils followUtils;
+    private final FollowUtils followUtils;
 
     public FollowService(UserRepository userRepository,
                            SpringAuthenticationService authenticationService,

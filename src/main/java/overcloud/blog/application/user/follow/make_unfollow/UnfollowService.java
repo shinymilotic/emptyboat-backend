@@ -51,6 +51,7 @@ public class UnfollowService {
         return UnfollowResponse.builder()
                 .username(followee.getUsername())
                 .bio(followee.getBio())
+                .email(followee.getEmail())
                 .image(followee.getImage())
                 .following(false)
                 .followersCount(followUtils.getFollowingCount(followee))

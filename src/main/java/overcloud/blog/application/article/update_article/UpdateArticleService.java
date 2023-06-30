@@ -6,14 +6,9 @@ import overcloud.blog.application.article.core.ArticleError;
 import overcloud.blog.application.article.core.AuthorResponse;
 import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
-import overcloud.blog.application.article.core.repository.ArticleTagRepository;
-import overcloud.blog.application.article.core.utils.ArticleUtils;
-import overcloud.blog.application.article.create_article.ArticleRequest;
-import overcloud.blog.application.article.article_tag.ArticleTagId;
+import overcloud.blog.application.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.application.tag.core.repository.TagRepository;
-import overcloud.blog.application.article.article_tag.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
-import overcloud.blog.application.tag.core.TagEntity;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
@@ -23,7 +18,6 @@ import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UpdateArticleService {
@@ -33,19 +27,19 @@ public class UpdateArticleService {
 
     private final TagRepository tagRepository;
 
-    private final ArticleTagRepository articleTagRepository;
+    private final FavoriteUtils favoriteUtils;
 
     private final ObjectsValidator<UpdateArticleRequest> validator;
 
     public UpdateArticleService(SpringAuthenticationService authenticationService,
                                 ArticleRepository articleRepository,
                                 TagRepository tagRepository,
-                                ArticleTagRepository articleTagRepository,
+                                FavoriteUtils favoriteUtils,
                                 ObjectsValidator<UpdateArticleRequest> validator) {
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
         this.tagRepository = tagRepository;
-        this.articleTagRepository = articleTagRepository;
+        this.favoriteUtils = favoriteUtils;
         this.validator = validator;
     }
 
@@ -65,7 +59,9 @@ public class UpdateArticleService {
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
-        if (currentUser.getId().equals(articleEntity.getAuthor().getId())) {
+
+        // Update authorization
+        if (!currentUser.getId().equals(articleEntity.getAuthor().getId())) {
             throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_UPDATE_NO_AUTHORIZATION));
         }
 
@@ -74,10 +70,10 @@ public class UpdateArticleService {
         articleEntity.setUpdatedAt(now);
         ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
 
-        return toUpdateArticleResponse(savedArticleEntity);
+        return toUpdateArticleResponse(currentUser, savedArticleEntity);
     }
 
-    private UpdateArticleResponse toUpdateArticleResponse(ArticleEntity articleEntity) {
+    private UpdateArticleResponse toUpdateArticleResponse(UserEntity currentUser, ArticleEntity articleEntity) {
         return UpdateArticleResponse.builder()
                 .id(articleEntity.getId().toString())
                 .title(articleEntity.getTitle())
@@ -88,7 +84,7 @@ public class UpdateArticleService {
                 .slug(articleEntity.getSlug())
                 .createdAt(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
                 .updatedAt(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
-                .favorited(false)
+                .favorited(favoriteUtils.isFavorited(currentUser, articleEntity))
                 .build();
     }
 

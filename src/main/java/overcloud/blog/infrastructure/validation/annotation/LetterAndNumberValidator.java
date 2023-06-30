@@ -3,6 +3,7 @@ package overcloud.blog.infrastructure.validation.annotation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.util.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,10 +11,13 @@ import java.util.regex.Pattern;
 public class LetterAndNumberValidator implements ConstraintValidator<LetterAndNumber, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+        boolean isValid = false;
         String regex = "[A-Za-z0-9]+";
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(value);
+        if(StringUtils.hasText(value)) {
+            isValid = pattern.matcher(value).matches();
+        }
 
-        return matcher.matches();
+        return isValid;
     }
 }

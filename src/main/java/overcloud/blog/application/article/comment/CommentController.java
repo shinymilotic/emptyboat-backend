@@ -8,6 +8,7 @@ import overcloud.blog.application.article.comment.get_comments.GetCommentsRespon
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.article.comment.get_comments.GetCommentsService;
+import overcloud.blog.infrastructure.ApiConst;
 
 import java.util.UUID;
 
@@ -29,18 +30,18 @@ public class CommentController {
         this.createCommentService = createCommentService;
     }
 
-    @PostMapping("articles/{slug}/comments")
+    @PostMapping(ApiConst.ARTICLES_SLUG_COMMENTS)
     public CreateCommentResponse createComment(@PathVariable("slug") String slug,
                                                @RequestBody CreateCommentRequest createCommentRequest) {
         return createCommentService.createComment(createCommentRequest, slug);
     }
 
-    @GetMapping("articles/{slug}/comments")
+    @GetMapping(ApiConst.ARTICLES_SLUG_COMMENTS)
     public GetCommentsResponse getComments(@PathVariable("slug") String slug) {
         return getCommentsService.getComments(slug);
     }
 
-    @DeleteMapping("articles/comments/{id}")
+    @DeleteMapping(ApiConst.ARTICLES_SLUG_COMMENTS_ID)
     public boolean deleteComment(@PathVariable("slug") String slug) {
         return deleteCommentService.deleteComment(slug);
     }

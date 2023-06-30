@@ -1,4 +1,4 @@
-package overcloud.blog.builder;
+package overcloud.blog.article;
 
 import overcloud.blog.application.article.create_article.ArticleRequest;
 

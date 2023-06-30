@@ -11,12 +11,12 @@ import java.util.Optional;
 @Component
 public class FavoriteUtils {
 
-    public boolean isFavorited(Optional<UserEntity> user, ArticleEntity article) {
+    public boolean isFavorited(UserEntity user, ArticleEntity article) {
         List<FavoriteEntity> favorites = article.getFavorites();
 
         for (FavoriteEntity favorite: favorites) {
             UserEntity u = favorite.getUser();
-            if(user.isPresent() && user.get().equals(u)) {
+            if(user != null && user.equals(u)) {
                 return true;
             }
         }

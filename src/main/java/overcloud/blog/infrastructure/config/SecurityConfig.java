@@ -1,11 +1,14 @@
 package overcloud.blog.infrastructure.config;
 
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import overcloud.blog.infrastructure.security.JwtTokenFilter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import overcloud.blog.infrastructure.security.filters.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -14,18 +17,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import overcloud.blog.infrastructure.security.interceptors.AuthInterceptor;
 
 import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
 
-    private final JwtTokenFilter jwtTokenFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(JwtTokenFilter jwtTokenFilter) {
-        this.jwtTokenFilter = jwtTokenFilter;
+    private final AuthInterceptor authInterceptor;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          AuthInterceptor authInterceptor) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.authInterceptor = authInterceptor;
     }
 
     @Bean
@@ -39,8 +46,8 @@ public class SecurityConfig {
             .and()
             .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             .and()
-            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-            .cors(Customizer.withDefaults());
+            .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
     }
@@ -65,5 +72,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authInterceptor);
     }
 }

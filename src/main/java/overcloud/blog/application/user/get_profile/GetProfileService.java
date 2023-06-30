@@ -37,7 +37,7 @@ public class GetProfileService {
         UserEntity user = userRepository.findByUsername(username);
 
         profileResponse.setUsername(user.getUsername());
-        profileResponse.setFollowing(followUtils.isFollowing(Optional.of(currentUser), user));
+        profileResponse.setFollowing(followUtils.isFollowing(currentUser, user));
         profileResponse.setBio(user.getBio());
         profileResponse.setImage(user.getImage());
         profileResponse.setFollowersCount(followUtils.getFollowingCount(user));

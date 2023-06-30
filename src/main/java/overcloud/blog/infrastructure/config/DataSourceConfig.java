@@ -11,13 +11,13 @@ public class DataSourceConfig {
     @Bean
     public DataSource getDataSource() {
         StringBuilder connectionString = new StringBuilder();
-        connectionString.append("jdbc:postgresql://14.225.205.146/overcloud?currentSchema=public");
+        connectionString.append("jdbc:postgresql://localhost:5432/realworld?currentSchema=public");
 
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
         dataSourceBuilder.url(connectionString.toString());
-        dataSourceBuilder.username("root");
-        dataSourceBuilder.password("root");
+        dataSourceBuilder.username("postgres");
+        dataSourceBuilder.password("123123");
         return dataSourceBuilder.build();
     }
 }

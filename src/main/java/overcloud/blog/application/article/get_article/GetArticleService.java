@@ -5,7 +5,7 @@ import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.core.repository.FavoriteRepository;
 import overcloud.blog.application.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
-import overcloud.blog.application.article.article_tag.ArticleTag;
+import overcloud.blog.application.article_tag.core.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.article.favorite.core.FavoriteEntity;
 import overcloud.blog.application.user.core.UserEntity;
@@ -13,7 +13,6 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GetArticleService {
@@ -56,7 +55,7 @@ public class GetArticleService {
         if (currentUser != null) {
             List<FavoriteEntity> favorites = favoriteRepository.findById(currentUser.getId(), articleEntity.getId());
             articleEntity.setFavorites(favorites);
-            articleResponse.setFavorited(favoriteUtils.isFavorited(Optional.of(currentUser), articleEntity));
+            articleResponse.setFavorited(favoriteUtils.isFavorited(currentUser, articleEntity));
         }
 
         articleResponse.setFavoritesCount(articleEntity.getFavorites().size());
@@ -75,7 +74,7 @@ public class GetArticleService {
         UserEntity authorEntity = articleEntity.getAuthor();
         articleAuthorResponse.setUsername(authorEntity.getUsername());
         if(currentUser != null) {
-            articleAuthorResponse.setFollowing(followUtils.isFollowing(Optional.of(currentUser), authorEntity));
+            articleAuthorResponse.setFollowing(followUtils.isFollowing(currentUser, authorEntity));
         }
         articleAuthorResponse.setFollowersCount(followUtils.getFollowingCount(authorEntity));
         articleAuthorResponse.setBio(authorEntity.getBio());

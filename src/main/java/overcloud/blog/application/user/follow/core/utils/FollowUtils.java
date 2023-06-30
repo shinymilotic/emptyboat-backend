@@ -3,15 +3,14 @@ package overcloud.blog.application.user.follow.core.utils;
 import org.springframework.stereotype.Component;
 import overcloud.blog.application.user.core.UserEntity;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Component
 public class FollowUtils {
-    public boolean isFollowing(Optional<UserEntity> currentUser, UserEntity author) {
-        Set<UserEntity> authorFollows = author.getFollower();
+    public boolean isFollowing(UserEntity currentUser, UserEntity author) {
+        Set<UserEntity> authorFollows = author.getFollowers();
 
-        if(currentUser.isPresent() && authorFollows.contains(currentUser)) {
+        if(currentUser != null && authorFollows.contains(currentUser)) {
             return true;
         }
 
@@ -19,6 +18,6 @@ public class FollowUtils {
     }
 
     public int getFollowingCount(UserEntity user) {
-        return user.getFollower().size();
+        return user.getFollowers().size();
     }
 }

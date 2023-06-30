@@ -9,7 +9,7 @@ import overcloud.blog.application.article.favorite.core.FavoriteId;
 import overcloud.blog.application.article.favorite.core.dto.ArticleAuthorResponse;
 import overcloud.blog.application.article.favorite.core.dto.SingleArticleResponse;
 import overcloud.blog.application.article.favorite.core.repository.FavoriteRepository;
-import overcloud.blog.application.article.article_tag.ArticleTag;
+import overcloud.blog.application.article_tag.core.ArticleTag;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
@@ -18,7 +18,6 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MakeUnfavoriteService {
@@ -53,7 +52,7 @@ public class MakeUnfavoriteService {
         ArticleAuthorResponse authorResponse = new ArticleAuthorResponse();
         authorResponse.setUsername(author.getUsername());
         authorResponse.setBio(author.getBio());
-        authorResponse.setFollowing(followUtils.isFollowing(Optional.of(currentUser), author));
+        authorResponse.setFollowing(followUtils.isFollowing(currentUser, author));
         authorResponse.setFollowersCount(followUtils.getFollowingCount(author));
         authorResponse.setImage(author.getImage());
         authorResponse.setEmail(author.getEmail());

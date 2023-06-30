@@ -40,7 +40,6 @@ public class RegisterService {
 
     public UserResponse registerUser(RegisterRequest registrationDto) {
         Optional<ApiError> apiError = validator.validate(registrationDto);
-
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
@@ -62,13 +61,15 @@ public class RegisterService {
             throw new InvalidDataException(ApiError.from(errors));
         }
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(registrationDto.getUsername());
-        userEntity.setEmail(registrationDto.getEmail());
-        userEntity.setPassword(hashedPassword);
-        UserEntity user = userRepository.save(userEntity);
+        UserEntity userEntity = UserEntity.builder()
+                .username(registrationDto.getUsername())
+                .email(registrationDto.getEmail())
+                .password(hashedPassword)
+                .build();
 
-        return toUserResponse(user);
+        UserEntity savedUser = userRepository.save(userEntity);
+
+        return toUserResponse(savedUser);
     }
 
     public UserResponse toUserResponse(UserEntity userEntity) {

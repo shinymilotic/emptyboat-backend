@@ -1,4 +1,4 @@
-package overcloud.blog.application.article.article_tag;
+package overcloud.blog.application.article_tag.core;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,7 @@ public class ArticleTag {
     @MapsId("tagId")
     private TagEntity tag;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @MapsId("articleId")
     private ArticleEntity article;
 

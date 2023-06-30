@@ -1,4 +1,4 @@
-package overcloud.blog.article;
+package overcloud.blog.article.create;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import overcloud.blog.application.tag.core.TagError;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.repository.UserRepository;
-import overcloud.blog.builder.ArticleRequestFactory;
+import overcloud.blog.article.ArticleRequestFactory;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
@@ -31,7 +31,6 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +38,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateArticleTest { @Mock
+public class CreateArticleTest {
+    @Mock
     private CreateArticleService createArticleService;
     @Mock
     private SpringAuthenticationService authenticationService;
@@ -69,13 +69,15 @@ public class CreateArticleTest { @Mock
 
     private void setAuthentication() {
         // add principal object to SecurityContextHolder
-        UserEntity user = new UserEntity();
-        user.setId(UUID.fromString("e7e861df-2c3f-4304-a2b0-3b98c1ba16c8"));
-        user.setEmail("trungtin.mai1412@gmail.com");
-        user.setUsername("thepianist00");
-        user.setBio("A pragmatddsdsadsaic programmerss");
-        user.setImage("https://avatars.githubusercontent.com/u/19252712?s=100&v=100");
-        user.setPassword("$2a$10$ba45PLemGgZxRXAjHkyuRuuHE0o4dmrKFcyW5a");
+        UserEntity user = UserEntity.builder()
+                .id(UUID.fromString("e7e861df-2c3f-4304-a2b0-3b98c1ba16c8"))
+                .email("trungtin.mai1412@gmail.com")
+                .username("thepianist00")
+                .bio("A pragmatddsdsadsaic programmerss")
+                .image("https://avatars.githubusercontent.com/u/19252712?s=100&v=100")
+                .password("$2a$10$ba45PLemGgZxRXAjHkyuRuuHE0o4dmrKFcyW5a")
+                .build();
+
         UserDetails secureUser = new SecurityUser(user);
         Authentication auth = new UsernamePasswordAuthenticationToken(secureUser,secureUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
