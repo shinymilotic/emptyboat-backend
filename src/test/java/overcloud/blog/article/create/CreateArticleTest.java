@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
+import overcloud.blog.application.article.core.repository.ArticleTagRepository;
 import overcloud.blog.application.article.create_article.ArticleRequest;
 import overcloud.blog.application.article.create_article.ArticleResponse;
 import overcloud.blog.application.article.create_article.CreateArticleService;
@@ -51,6 +52,10 @@ public class CreateArticleTest {
     private UserRepository userRepository;
     @Mock
     private ObjectsValidator<ArticleRequest> validator;
+
+    @Mock
+    private ArticleTagRepository articleTagRepository;
+
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource
                 = new ReloadableResourceBundleMessageSource();
@@ -64,7 +69,7 @@ public class CreateArticleTest {
         setAuthentication();
         validator = new ObjectsValidator<ArticleRequest>(messageSource());
         authenticationService = new SpringAuthenticationService(userRepository,new BCryptPasswordEncoder());
-        createArticleService = new CreateArticleService(authenticationService, tagRepository, articleRepository, validator);
+        createArticleService = new CreateArticleService(authenticationService, tagRepository, articleRepository, validator, articleTagRepository);
     }
 
     private void setAuthentication() {

@@ -28,9 +28,8 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
-                             Object handler)  {
+                             Object handler) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication != null && !"anonymousUser".equals(authentication.getPrincipal())) {
             List<RoleEntity> roleEntities = (List<RoleEntity>) authentication.getAuthorities();
 
@@ -46,7 +45,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             authStrategy.get("guestAuthStrategy").auth(request);
         }
 
-        return true;
+        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
 }

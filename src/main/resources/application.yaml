@@ -31,12 +31,37 @@ spring:
         format_sql: false
     show-sql: true
   kafka:
-    bootstrap-servers: 127.0.0.1:9092
+    bootstrap-servers: 192.168.1.8:29093
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
-      group-id: group_id
+      group-id: consumer-articles
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    elasticsearch:
+      topic:
+        name: articles
+
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      cluster-nodes: 192.168.1.8:9200
+      cluster-name:  elasticsearch
+
+  elasticsearch:
+    rest:
+      uris: 192.168.1.8:9200
+      username: elastic
+      password: nuE9TjbhqMTe-p4Z+fhB
+
+elasticsearch:
+  url: 192.168.1.8:9200
+
+logging:
+  level:
+      org:
+        hibernate:
+          type: trace

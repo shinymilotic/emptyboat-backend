@@ -34,7 +34,6 @@ public class GetCommentsService {
                 .id(commentEntity.getId())
                 .body(commentEntity.getBody())
                 .createdAt(commentEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
-                .updatedAt(commentEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
                 .authorResponse(toAuthorResponse(authorEntity))
                 .build();
     }

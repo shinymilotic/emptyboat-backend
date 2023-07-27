@@ -20,16 +20,12 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
     EntityManager entityManager;
 
     @Override
-    public List<ArticleEntity> findByCriteria(String tag, String author, String favorited, int limit, int page, String searchParam) {
+    public List<ArticleEntity> findByCriteria(String tag, String author, String favorited, int limit, int page) {
         List<ArticleEntity> resultList = new ArrayList<>();
 
         resultList = fetchArticlesTagList(tag);
         resultList = fetchArticlesAuthor(resultList, author);
         resultList = fetchArticlesFavorite(resultList, favorited);
-
-        if(StringUtils.hasText(searchParam)) {
-            resultList = fetchBySearchParam(resultList, searchParam).getResultList();
-        }
 
         resultList = entityManager
                 .createQuery("SELECT articles FROM ArticleEntity articles" +
@@ -43,45 +39,15 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         return resultList;
     }
 
-    private Query fetchBySearchParam(List<ArticleEntity> resultList, String searchParam) {
-        StringBuilder articleQueryStmt = new StringBuilder();
-
-        if(!resultList.isEmpty()) {
-            StringBuilder parameterStr = new StringBuilder("(:?0");
-            IntStream.range(1, resultList.size()).forEach(i -> parameterStr.append(",:?" + i));
-            parameterStr.append(")");
-            articleQueryStmt.append(" AND articles.id IN ");
-            articleQueryStmt.append(parameterStr);
-        }
-
-        Query articleQuery = entityManager
-                .createNativeQuery("SELECT articles.* FROM articles" +
-                                " WHERE concat(articles.body, ' ', articles.title, ' ', articles.description) @@ to_tsquery(:searchParam) " +
-                                articleQueryStmt,
-                        ArticleEntity.class);
-
-        IntStream.range(0, resultList.size()).forEach(index -> {
-            String parameterName = "?" + index;
-            articleQuery.setParameter(parameterName, resultList.get(index).getId());
-        });
-
-        if (StringUtils.hasText(searchParam)) {
-            articleQuery.setParameter("searchParam", searchParam);
-        }
-
-        return articleQuery;
-    }
-
     private List<ArticleEntity> fetchArticlesFavorite(List<ArticleEntity> resultList, String favorited) {
         StringBuilder favoritedCondition = new StringBuilder();
 
         if(StringUtils.hasText(favorited)) {
-            favoritedCondition.append(" AND favorites.user.username = :favorited ");
+            favoritedCondition.append(" AND EXISTS (SELECT f FROM FavoriteEntity f WHERE f.user.username = :favorited AND f.id.articleId = articles.id) ");
         }
 
         TypedQuery<ArticleEntity> articleQuery = entityManager
                 .createQuery("SELECT articles FROM ArticleEntity articles" +
-                                " LEFT JOIN fetch articles.favorites favorites " +
                                 " WHERE articles IN :articles " +
                                 favoritedCondition,
                         ArticleEntity.class)

@@ -15,11 +15,8 @@ public class CommentResponse {
     @JsonProperty("id")
     private UUID id;
 
-    @JsonProperty("created_at")
+    @JsonProperty("createdAt")
     private String createdAt;
-
-    @JsonProperty("updated_at")
-    private String updatedAt;
 
     @JsonProperty("body")
     private String body;

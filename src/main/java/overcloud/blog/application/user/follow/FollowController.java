@@ -1,15 +1,13 @@
 package overcloud.blog.application.user.follow;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.user.follow.make_follow.FollowResponse;
 import overcloud.blog.application.user.follow.make_follow.FollowService;
 import overcloud.blog.application.user.follow.make_unfollow.UnfollowResponse;
 import overcloud.blog.application.user.follow.make_unfollow.UnfollowService;
 import overcloud.blog.infrastructure.ApiConst;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class FollowController {
 

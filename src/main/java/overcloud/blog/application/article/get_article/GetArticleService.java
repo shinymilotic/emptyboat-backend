@@ -9,6 +9,7 @@ import overcloud.blog.application.article_tag.core.ArticleTag;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.article.favorite.core.FavoriteEntity;
 import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 import java.util.ArrayList;
@@ -41,10 +42,13 @@ public class GetArticleService {
 
     public GetArticleResponse getArticle(String slug) {
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
-        UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseGet(null)
-                .getUser();
+        SecurityUser securityUser = authenticationService.getCurrentUser()
+                .orElse(null);
 
+        UserEntity currentUser = null;
+        if(securityUser != null) {
+            currentUser = securityUser.getUser();
+        }
 
         GetArticleResponse articleResponse = new GetArticleResponse();
         articleResponse.setId(articleEntity.getId().toString());
@@ -53,8 +57,6 @@ public class GetArticleService {
         articleResponse.setSlug(articleEntity.getSlug());
 
         if (currentUser != null) {
-            List<FavoriteEntity> favorites = favoriteRepository.findById(currentUser.getId(), articleEntity.getId());
-            articleEntity.setFavorites(favorites);
             articleResponse.setFavorited(favoriteUtils.isFavorited(currentUser, articleEntity));
         }
 

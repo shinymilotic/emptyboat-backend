@@ -40,7 +40,7 @@ public class LoginService {
         String email = loginRequest.getEmail();
         String hashedPassword = loginRequest.getPassword();
         UserEntity user = authenticationService.authenticate(email, hashedPassword)
-                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_EMAIL_NO_EXIST)))
                 .getUser();
 
         return toUserResponse(user);

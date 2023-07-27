@@ -1,6 +1,7 @@
 package overcloud.blog.application.article.favorite;
 
 import org.springframework.web.bind.annotation.*;
+import overcloud.blog.application.article.create_article.ArticleResponse;
 import overcloud.blog.application.article.favorite.core.dto.SingleArticleResponse;
 import overcloud.blog.application.article.favorite.make_favorite.MakeUnfavoriteService;
 import overcloud.blog.application.article.favorite.make_unfavorite.MakeFavoriteService;
@@ -22,13 +23,13 @@ public class FavoriteController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(ApiConst.ARTICLES_SLUG_FAVORITE)
-    public SingleArticleResponse makeFavorite(@PathVariable("slug") String slug) {
+    public ArticleResponse makeFavorite(@PathVariable("slug") String slug) {
         return makeFavoriteService.makeFavorite(slug);
     }
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(ApiConst.ARTICLES_SLUG_FAVORITE)
-    public SingleArticleResponse makeUnfavorite(@PathVariable("slug") String slug) {
+    public ArticleResponse makeUnfavorite(@PathVariable("slug") String slug) {
         return makeUnfavoriteService.makeUnfavorite(slug);
     }
 }

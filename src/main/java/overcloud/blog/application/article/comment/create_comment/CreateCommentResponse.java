@@ -1,26 +1,27 @@
 package overcloud.blog.application.article.comment.create_comment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.*;
 import overcloud.blog.application.article.core.AuthorResponse;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Builder
+@JsonTypeName("comment")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class CreateCommentResponse {
     @JsonProperty("id")
     private UUID id;
 
     @JsonProperty("createdAt")
     private String createdAt;
-
-    @JsonProperty("updatedAt")
-    private String updatedAt;
 
     @JsonProperty("body")
     private String body;

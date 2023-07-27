@@ -7,6 +7,7 @@ import overcloud.blog.application.article.core.AuthorResponse;
 import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.core.utils.FavoriteUtils;
+import overcloud.blog.application.article_tag.core.ArticleTag;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.user.core.UserEntity;

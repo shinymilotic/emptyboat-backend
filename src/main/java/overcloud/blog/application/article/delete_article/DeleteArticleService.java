@@ -28,8 +28,10 @@ public class DeleteArticleService {
     @Transactional
     public DeleteArticleResponse deleteArticle(String slug) {
         DeleteArticleResponse deleteArticleResponse = new DeleteArticleResponse();
+/*
         commentRepository.deleteByArticleSlug(slug);
         favoriteRepository.deleteByArticleSlug(slug);
+*/
         articleRepository.deleteBySlug(slug);
         deleteArticleResponse.setSlug(slug);
         return deleteArticleResponse;

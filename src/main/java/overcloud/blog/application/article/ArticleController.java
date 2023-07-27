@@ -71,27 +71,17 @@ public class ArticleController {
         return deleteArticleService.deleteArticle(slug);
     }
 
-    @Secured({})
     @GetMapping(ApiConst.ARTICLES_SLUG)
     public GetArticleResponse getArticle(@PathVariable("slug") String slug) {
         return getArticleService.getArticle(slug);
     }
-
     
     @GetMapping(ApiConst.ARTICLES)
     public GetArticlesResponse getArticles(@RequestParam(value = "tag", required = false) String tag,
                                            @RequestParam(value = "author", required = false) String author,
                                            @RequestParam(value = "favorited", required = false) String favorited,
                                            @RequestParam(value = "size", defaultValue = "20") int limit,
-                                           @RequestParam(value = "page", defaultValue = "1") int page,
-                                           @RequestParam(value = "searchParam", defaultValue = "") String searchParam) {
-        return getArticleListService.getArticles(tag, author, favorited, limit, page, searchParam);
-    }
-
-    @PostMapping("/articles/produce")
-    public ResponseEntity<String> postModelToKafka(@RequestBody String body)
-            throws InterruptedException, ExecutionException {
-        kafkaTemplate.send("articles", body);
-        return ResponseEntity.ok("Data published");
+                                           @RequestParam(value = "page", defaultValue = "1") int page) {
+        return getArticleListService.getArticles(tag, author, favorited, limit, page);
     }
 }

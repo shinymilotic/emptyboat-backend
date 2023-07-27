@@ -42,7 +42,7 @@ public class CommentController {
     }
 
     @DeleteMapping(ApiConst.ARTICLES_SLUG_COMMENTS_ID)
-    public boolean deleteComment(@PathVariable("slug") String slug) {
-        return deleteCommentService.deleteComment(slug);
+    public boolean deleteComment(@PathVariable("slug") String slug, @PathVariable("id") String commendId) {
+        return deleteCommentService.deleteComment(slug, commendId);
     }
 }

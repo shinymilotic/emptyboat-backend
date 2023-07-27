@@ -14,9 +14,8 @@ public class DeleteCommentService {
         this.commentRepository = commentRepository;
     }
 
-    public boolean deleteComment(String slug) {
-        commentRepository.deleteByArticleSlug(slug);
+    public boolean deleteComment(String slug, String commendId) {
+        commentRepository.deleteById(UUID.fromString(commendId));
         return true;
     }
-
 }

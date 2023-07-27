@@ -3,8 +3,11 @@ package overcloud.blog.application.article.favorite.make_unfavorite;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.application.article.core.ArticleEntity;
+import overcloud.blog.application.article.core.ArticleError;
+import overcloud.blog.application.article.core.AuthorResponse;
 import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
+import overcloud.blog.application.article.create_article.ArticleResponse;
 import overcloud.blog.application.article.favorite.core.FavoriteEntity;
 import overcloud.blog.application.article.favorite.core.FavoriteId;
 import overcloud.blog.application.article.favorite.core.dto.ArticleAuthorResponse;
@@ -42,28 +45,29 @@ public class MakeFavoriteService {
     }
 
     @Transactional
-    public SingleArticleResponse makeFavorite(String slug) {
+    public ArticleResponse makeFavorite(String slug) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
 
-        ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
+        List<ArticleEntity> articleList = articleRepository.findBySlug(slug);
+        if(articleList.isEmpty()) {
+            throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_NO_EXISTS));
+        }
+        ArticleEntity articleEntity = articleList.get(0);
         favoriteEntity.setId(new FavoriteId());
         favoriteEntity.setArticle(articleEntity);
         favoriteEntity.setUser(currentUser);
-        UserEntity author = articleEntity.getAuthor();
         favoriteRepository.save(favoriteEntity);
 
+        UserEntity author = articleEntity.getAuthor();
 
-        SingleArticleResponse articleResponse = new SingleArticleResponse();
-        ArticleAuthorResponse authorResponse = new ArticleAuthorResponse();
+        ArticleResponse articleResponse = new ArticleResponse();
+        AuthorResponse authorResponse = new AuthorResponse();
         authorResponse.setUsername(author.getUsername());
         authorResponse.setBio(author.getBio());
-        authorResponse.setFollowing(followUtils.isFollowing(currentUser, author));
-        authorResponse.setFollowersCount(followUtils.getFollowingCount(author));
         authorResponse.setImage(author.getImage());
-        authorResponse.setEmail(author.getEmail());
 
         articleResponse.setAuthor(authorResponse);
         articleResponse.setFavoritesCount(articleEntity.getFavorites().size() + 1);
@@ -78,8 +82,6 @@ public class MakeFavoriteService {
         }
         articleResponse.setTagList(tagList);
         articleResponse.setId(articleEntity.getId().toString());
-        articleResponse.setCreatedAt(articleEntity.getCreatedAt());
-        articleResponse.setUpdatedAt(articleEntity.getUpdatedAt());
         articleResponse.setSlug(articleEntity.getSlug());
         articleResponse.setTitle(articleEntity.getTitle());
 

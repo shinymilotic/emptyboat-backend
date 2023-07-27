@@ -16,7 +16,7 @@ public class KafkaConfig {
     @Bean
     ProducerFactory<String, String> producerFactory() {
         Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.1.8:29092");
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.1.8:29093");
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return new DefaultKafkaProducerFactory<String, String>(config);

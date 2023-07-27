@@ -21,8 +21,7 @@ public class GuestAuthStrategy implements AuthStrategy {
             Map.entry(ApiConst.ROLES_USERNAME, Set.of("GET")),
             Map.entry(ApiConst.ROLES, Set.of("GET", "PUT")),
             Map.entry(ApiConst.TAGS, Set.of("POST")),
-            Map.entry(ApiConst.USERS, Set.of("POST", "PUT", "GET")),
-            Map.entry(ApiConst.USERS_LOGIN, Set.of("POST")),
+            Map.entry(ApiConst.USERS, Set.of("PUT", "GET")),
             Map.entry(ApiConst.USERS_LOGOUT, Set.of("POST")),
             Map.entry(ApiConst.USERS_USERNAME_ASSIGNMENT, Set.of("PUT")),
             Map.entry(ApiConst.PROFILES_USERNAME_FOLLOW, Set.of("POST", "DELETE"))

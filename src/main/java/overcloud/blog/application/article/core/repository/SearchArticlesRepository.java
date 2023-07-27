@@ -5,6 +5,6 @@ import overcloud.blog.application.article.core.ArticleEntity;
 import java.util.List;
 
 public interface SearchArticlesRepository {
-    List<ArticleEntity> findByCriteria(String tag, String author, String favorited, int limit, int offset, String searchParam);
+    List<ArticleEntity> findByCriteria(String tag, String author, String favorited, int limit, int offset);
 
 }

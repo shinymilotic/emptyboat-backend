@@ -8,7 +8,7 @@ import overcloud.blog.application.article.core.AuthorResponse;
 
 import java.time.LocalDateTime;
 
-@JsonTypeName("articles")
+@JsonTypeName("article")
 @Getter
 @Setter
 @Builder

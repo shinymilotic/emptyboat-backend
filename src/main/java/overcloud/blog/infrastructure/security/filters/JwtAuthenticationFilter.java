@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    public static final String TOKEN_PREFIX = "Token ";
+    public static final String TOKEN_PREFIX = "";
 
     private final JwtUtils jwtUtils;
 

@@ -43,13 +43,13 @@ public class ArticleEntity {
     @Column(name = "body")
     private String body;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", orphanRemoval = true)
     private List<ArticleTag> articleTags;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", orphanRemoval = true)
     private List<CommentEntity> comments;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", orphanRemoval = true)
     private List<FavoriteEntity> favorites;
 
     @Column(name = "created_at")

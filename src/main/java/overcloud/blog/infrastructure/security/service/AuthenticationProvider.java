@@ -21,7 +21,7 @@ public class AuthenticationProvider {
         return Optional.ofNullable(email)
                 .map(userDetailsService::loadUserByUsername)
                 .map(userDetails ->
-                    new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities()))
+                    new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities()))
                 .orElse(null);
     }
 }

@@ -57,7 +57,7 @@ public class CreateCommentService {
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
-        CommentEntity savedCommentEntity = saveComment(createCommentRequest, articleEntity,currentUser);
+        CommentEntity savedCommentEntity = saveComment(createCommentRequest, articleEntity, currentUser);
 
         return toCreateCommentResponse(savedCommentEntity, currentUser);
     }
@@ -80,7 +80,6 @@ public class CreateCommentService {
                 .body(commentEntity.getBody())
                 .author(toAuthorResponse(userEntity))
                 .createdAt(commentEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
-                .updatedAt(commentEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
                 .build();
     }
 

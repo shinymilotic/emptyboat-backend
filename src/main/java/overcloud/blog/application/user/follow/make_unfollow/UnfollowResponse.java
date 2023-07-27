@@ -4,9 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @JsonTypeName("profile")
+@Getter
+@Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class UnfollowResponse {
     @JsonProperty("username")
@@ -21,11 +25,6 @@ public class UnfollowResponse {
     @JsonProperty("following")
     private boolean following;
 
-    @JsonProperty("email")
-    private String email;
-
-    @JsonProperty("followersCount")
-    private int followersCount;
 
     public String getUsername() {
         return username;
@@ -59,20 +58,4 @@ public class UnfollowResponse {
         this.following = following;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
-    public int getFollowersCount() {
-        return followersCount;
-    }
-
-    public void setFollowersCount(int followersCount) {
-        this.followersCount = followersCount;
-    }
 }
