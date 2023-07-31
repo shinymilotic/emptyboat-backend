@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import overcloud.blog.application.user.core.UserEntity;
-import overcloud.blog.application.user_role.core.UserRole;
 
 import java.util.Set;
 import java.util.UUID;

@@ -6,6 +6,7 @@ import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.UserResponse;
+import overcloud.blog.application.user.core.UserResponseMapper;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
@@ -22,12 +23,16 @@ public class LoginService {
 
     private final ObjectsValidator<LoginRequest> validator;
 
+    private final UserResponseMapper userResponseMapper;
+
     public LoginService(SpringAuthenticationService authenticationService,
                         JwtUtils jwtUtils,
-                        ObjectsValidator<LoginRequest> validator) {
+                        ObjectsValidator<LoginRequest> validator,
+                        UserResponseMapper userResponseMapper) {
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
+        this.userResponseMapper = userResponseMapper;
     }
 
     public UserResponse login(LoginRequest loginRequest) {
@@ -43,16 +48,6 @@ public class LoginService {
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_EMAIL_NO_EXIST)))
                 .getUser();
 
-        return toUserResponse(user);
-    }
-
-    public UserResponse toUserResponse(UserEntity userEntity) {
-        return UserResponse.builder()
-                .username(userEntity.getUsername())
-                .email(userEntity.getEmail())
-                .bio(userEntity.getBio())
-                .token(jwtUtils.encode(userEntity.getEmail()))
-                .image(userEntity.getImage())
-                .build();
+        return userResponseMapper.toUserResponse(user);
     }
 }

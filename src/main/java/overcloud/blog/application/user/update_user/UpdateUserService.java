@@ -5,6 +5,7 @@ import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.UserResponse;
+import overcloud.blog.application.user.core.UserResponseMapper;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
@@ -12,14 +13,18 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 @Service
 public class UpdateUserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
+
+    private final UserResponseMapper userResponseMapper;
 
     public UpdateUserService(UserRepository userRepository,
-                           SpringAuthenticationService authenticationService) {
+                           SpringAuthenticationService authenticationService,
+                             UserResponseMapper userResponseMapper) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
+        this.userResponseMapper = userResponseMapper;
     }
 
     public UserResponse updateUser(UpdateUserRequest updateUserDto) {
@@ -35,16 +40,6 @@ public class UpdateUserService {
         currentUser.setEmail(email);
         UserEntity updateUserEntity = userRepository.save(currentUser);
 
-        return toUserResponse(updateUserEntity);
+        return userResponseMapper.toUserResponse(updateUserEntity);
     }
-
-    public UserResponse toUserResponse(UserEntity userEntity) {
-        return UserResponse.builder()
-                .username(userEntity.getUsername())
-                .email(userEntity.getEmail())
-                .bio(userEntity.getBio())
-                .image(userEntity.getImage())
-                .build();
-    }
-
 }

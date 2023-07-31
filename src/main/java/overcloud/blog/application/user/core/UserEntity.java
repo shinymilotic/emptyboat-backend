@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import overcloud.blog.application.article.favorite.core.FavoriteEntity;
-import overcloud.blog.application.article_tag.core.ArticleTag;
 import overcloud.blog.application.role.core.RoleEntity;
 
 import java.time.LocalDateTime;

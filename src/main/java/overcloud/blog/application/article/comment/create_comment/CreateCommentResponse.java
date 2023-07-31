@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.*;
 import overcloud.blog.application.article.core.AuthorResponse;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @JsonTypeName("comment")

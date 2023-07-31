@@ -3,7 +3,6 @@ package overcloud.blog.application.role.manage_role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import overcloud.blog.application.role.core.RoleDto;
 
 import java.util.List;
 

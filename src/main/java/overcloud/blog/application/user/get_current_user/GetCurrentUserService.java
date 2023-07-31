@@ -5,6 +5,7 @@ import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.UserResponse;
+import overcloud.blog.application.user.core.UserResponseMapper;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
@@ -12,13 +13,14 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 @Service
 public class GetCurrentUserService {
 
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
 
-    private JwtUtils jwtUtils;
+    private final UserResponseMapper userResponseMapper;
 
-    public GetCurrentUserService(SpringAuthenticationService authenticationService, JwtUtils jwtUtils) {
+    public GetCurrentUserService(SpringAuthenticationService authenticationService,
+                                 UserResponseMapper userResponseMapper) {
         this.authenticationService = authenticationService;
-        this.jwtUtils = jwtUtils;
+        this.userResponseMapper = userResponseMapper;
     }
 
     public UserResponse getCurrentUser() {
@@ -26,16 +28,6 @@ public class GetCurrentUserService {
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
 
-        return toUserResponse(currentUser);
-    }
-
-    public UserResponse toUserResponse(UserEntity userEntity) {
-        return UserResponse.builder()
-                .username(userEntity.getUsername())
-                .email(userEntity.getEmail())
-                .bio(userEntity.getBio())
-                .token(jwtUtils.encode(userEntity.getEmail()))
-                .image(userEntity.getImage())
-                .build();
+        return userResponseMapper.toUserResponse(currentUser);
     }
 }

@@ -1,6 +1,5 @@
 package overcloud.blog.application.role;
 
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.role.get_role.GetRoleUserService;
 import overcloud.blog.application.role.manage_role.ManageRoleRequest;

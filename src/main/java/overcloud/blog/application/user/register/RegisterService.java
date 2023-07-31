@@ -5,6 +5,7 @@ import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.UserResponse;
+import overcloud.blog.application.user.core.UserResponseMapper;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.application.user.update_user.UpdateUserRequest;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
@@ -28,14 +29,18 @@ public class RegisterService {
 
     private final ObjectsValidator<RegisterRequest> validator;
 
+    private final UserResponseMapper userResponseMapper;
+
     public RegisterService(UserRepository userRepository,
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
-                           ObjectsValidator<RegisterRequest> validator) {
+                           ObjectsValidator<RegisterRequest> validator,
+                           UserResponseMapper userResponseMapper) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
+        this.userResponseMapper = userResponseMapper;
     }
 
     public UserResponse registerUser(RegisterRequest registrationDto) {
@@ -69,16 +74,6 @@ public class RegisterService {
 
         UserEntity savedUser = userRepository.save(userEntity);
 
-        return toUserResponse(savedUser);
-    }
-
-    public UserResponse toUserResponse(UserEntity userEntity) {
-        return UserResponse.builder()
-                .username(userEntity.getUsername())
-                .email(userEntity.getEmail())
-                .bio(userEntity.getBio())
-                .token(jwtUtils.encode(userEntity.getEmail()))
-                .image(userEntity.getImage())
-                .build();
+        return userResponseMapper.toUserResponse(savedUser);
     }
 }
