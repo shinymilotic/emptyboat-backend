@@ -1,5 +1,6 @@
 package overcloud.blog.application.user.get_current_user;
 
+import io.jsonwebtoken.Jwt;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.core.exception.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
@@ -17,10 +18,14 @@ public class GetCurrentUserService {
 
     private final UserResponseMapper userResponseMapper;
 
+    private final JwtUtils jwtUtils;
+
     public GetCurrentUserService(SpringAuthenticationService authenticationService,
-                                 UserResponseMapper userResponseMapper) {
+                                 UserResponseMapper userResponseMapper,
+                                 JwtUtils jwtUtils) {
         this.authenticationService = authenticationService;
         this.userResponseMapper = userResponseMapper;
+        this.jwtUtils = jwtUtils;
     }
 
     public UserResponse getCurrentUser() {
@@ -28,6 +33,6 @@ public class GetCurrentUserService {
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
 
-        return userResponseMapper.toUserResponse(currentUser);
+        return userResponseMapper.toUserResponse(currentUser, jwtUtils.encode(currentUser.getEmail()));
     }
 }

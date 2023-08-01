@@ -48,6 +48,6 @@ public class LoginService {
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_EMAIL_NO_EXIST)))
                 .getUser();
 
-        return userResponseMapper.toUserResponse(user);
+        return userResponseMapper.toUserResponse(user, jwtUtils.encode(user.getEmail()));
     }
 }

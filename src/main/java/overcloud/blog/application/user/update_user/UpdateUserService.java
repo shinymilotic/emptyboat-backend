@@ -40,6 +40,6 @@ public class UpdateUserService {
         currentUser.setEmail(email);
         UserEntity updateUserEntity = userRepository.save(currentUser);
 
-        return userResponseMapper.toUserResponse(updateUserEntity);
+        return userResponseMapper.toUserResponse(updateUserEntity, "");
     }
 }

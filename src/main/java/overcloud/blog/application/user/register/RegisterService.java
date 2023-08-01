@@ -74,6 +74,6 @@ public class RegisterService {
 
         UserEntity savedUser = userRepository.save(userEntity);
 
-        return userResponseMapper.toUserResponse(savedUser);
+        return userResponseMapper.toUserResponse(savedUser, jwtUtils.encode(savedUser.getEmail()));
     }
 }
