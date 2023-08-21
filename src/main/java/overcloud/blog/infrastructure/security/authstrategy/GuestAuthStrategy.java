@@ -3,7 +3,7 @@ package overcloud.blog.infrastructure.security.authstrategy;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.ApiConst;
 import overcloud.blog.infrastructure.AuthError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;

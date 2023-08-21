@@ -1,13 +1,9 @@
 package overcloud.blog.application.user.register;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
-import overcloud.blog.application.user.core.UserEntity;
-import overcloud.blog.application.user.core.UserError;
-import overcloud.blog.application.user.core.UserResponse;
-import overcloud.blog.application.user.core.UserResponseMapper;
+import overcloud.blog.application.user.core.*;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.user.core.repository.UserRepository;
-import overcloud.blog.application.user.update_user.UpdateUserRequest;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
@@ -74,6 +70,8 @@ public class RegisterService {
 
         UserEntity savedUser = userRepository.save(userEntity);
 
-        return userResponseMapper.toUserResponse(savedUser, jwtUtils.encode(savedUser.getEmail()));
+        return userResponseMapper.toUserResponse(savedUser,
+                jwtUtils.encode(savedUser.getEmail()),
+                jwtUtils.generateRefreshToken(savedUser.getEmail()));
     }
 }

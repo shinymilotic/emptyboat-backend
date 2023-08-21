@@ -1,8 +1,12 @@
 package overcloud.blog.application.article.create_article;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.core.AuthorResponse;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.core.repository.ArticleTagRepository;
 import overcloud.blog.application.article.core.utils.ArticleUtils;
@@ -21,6 +25,7 @@ import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,19 +41,24 @@ public class CreateArticleService {
 
     private final ArticleTagRepository articleTagRepository;
 
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+
     public CreateArticleService(SpringAuthenticationService authenticationService,
                                 TagRepository tagRepository,
                                 ArticleRepository articleRepository,
                                 ObjectsValidator<ArticleRequest> validator,
-                                ArticleTagRepository articleTagRepository) {
+                                ArticleTagRepository articleTagRepository,
+                                KafkaTemplate<String, String> kafkaTemplate) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;
         this.articleRepository = articleRepository;
         this.validator = validator;
         this.articleTagRepository = articleTagRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
-    public ArticleResponse createArticle(ArticleRequest articleRequest) {
+    public ArticleResponse createArticle(ArticleRequest articleRequest) throws JsonProcessingException {
         List<String> distinctTags = filterDistinctTags(articleRequest.getTagList());
         articleRequest.setTagList(distinctTags);
         Optional<ApiError> apiError = validator.validate(articleRequest);
@@ -70,8 +80,24 @@ public class CreateArticleService {
         ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
         List<ArticleTag> articleTags = toArticleTag(tagEntities, savedArticleEntity);
         articleTagRepository.saveAll(articleTags);
+        ArticleResponse response = toCreateArticleResponse(savedArticleEntity);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String message = objectMapper.writeValueAsString(response);
+        sendMessage(message);
+        return response;
+    }
 
-        return toCreateArticleResponse(savedArticleEntity);
+    public void sendMessage(String message) {
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send("notifications", message);
+        future.whenComplete((result, ex) -> {
+            if (ex == null) {
+                System.out.println("Sent message=[" + message +
+                        "] with offset=[" + result.getRecordMetadata().offset() + "]");
+            } else {
+                System.out.println("Unable to send message=[" +
+                        message + "] due to : " + ex.getMessage());
+            }
+        });
     }
 
     private List<String> filterDistinctTags(List<String> tags) {

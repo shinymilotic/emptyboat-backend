@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.config;
+package overcloud.blog.infrastructure.security;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -8,6 +8,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import overcloud.blog.infrastructure.security.filters.ExceptionHandlerFilter;
 import overcloud.blog.infrastructure.security.filters.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,15 +30,20 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
 
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
+
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                          AuthInterceptor authInterceptor) {
+                          AuthInterceptor authInterceptor,
+                          ExceptionHandlerFilter exceptionHandlerFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authInterceptor = authInterceptor;
+        this.exceptionHandlerFilter = exceptionHandlerFilter;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .cors().and()
             .csrf().disable()
             .formLogin().disable()
             .authorizeHttpRequests()
@@ -46,7 +52,8 @@ public class SecurityConfig implements WebMvcConfigurer {
             .and()
             .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             .and()
-            .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(jwtAuthenticationFilter, ExceptionHandlerFilter.class)
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
@@ -55,7 +62,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://www.overcloud.guru/", "http://14.225.205.146/", "http://localhost:4200/"));
+        configuration.setAllowedOrigins(Arrays.asList("**", "http://14.225.205.146/", "http://localhost:4200/"));
         configuration.setAllowedMethods(Arrays.asList("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         // setAllowCredentials(true) is important, otherwise:

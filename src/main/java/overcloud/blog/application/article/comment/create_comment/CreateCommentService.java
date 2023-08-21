@@ -6,7 +6,7 @@ import overcloud.blog.application.article.comment.core.CommentError;
 import overcloud.blog.application.article.comment.core.repository.CommentRepository;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.article.core.AuthorResponse;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;

@@ -2,7 +2,7 @@ package overcloud.blog.application.tag.create_tag;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.tag.core.TagEntity;
 import overcloud.blog.application.tag.core.TagError;
 import overcloud.blog.application.tag.core.repository.TagRepository;

@@ -5,12 +5,10 @@ import overcloud.blog.application.article.comment.create_comment.CreateCommentRe
 import overcloud.blog.application.article.comment.create_comment.CreateCommentService;
 import overcloud.blog.application.article.comment.delete_comment.DeleteCommentService;
 import overcloud.blog.application.article.comment.get_comments.GetCommentsResponse;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.article.comment.get_comments.GetCommentsService;
 import overcloud.blog.infrastructure.ApiConst;
 
-import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

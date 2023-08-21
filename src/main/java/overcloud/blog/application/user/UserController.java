@@ -2,6 +2,9 @@ package overcloud.blog.application.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.catalina.User;
+import org.springframework.data.redis.core.RedisTemplate;
+import overcloud.blog.application.user.core.UserResponse;
 import overcloud.blog.application.user.core.UserResponse;
 import overcloud.blog.application.user.get_current_user.GetCurrentUserService;
 import overcloud.blog.application.user.get_profile.GetProfileResponse;
@@ -9,9 +12,9 @@ import overcloud.blog.application.user.get_profile.GetProfileService;
 import overcloud.blog.application.user.login.LoginRequest;
 import overcloud.blog.application.user.login.LoginService;
 import overcloud.blog.application.user.logout.LogoutService;
+import overcloud.blog.application.user.refresh_token.RefreshTokenService;
 import overcloud.blog.application.user.register.RegisterService;
 import overcloud.blog.application.user.update_user.UpdateUserRequest;
-import overcloud.blog.application.user.login.LoginResponse;
 import overcloud.blog.application.user.register.RegisterRequest;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.user.update_user.UpdateUserService;
@@ -29,19 +32,26 @@ public class UserController {
     private final GetProfileService getProfileService;
     private final GetCurrentUserService getCurrentUserService;
 
+    private final RedisTemplate<String, String> template;
+
+    private final RefreshTokenService refreshTokenService;
 
     public UserController(RegisterService registerService,
                           UpdateUserService updateUserService,
                           LogoutService logoutService,
                           LoginService loginService,
                           GetProfileService getProfileService,
-                          GetCurrentUserService getCurrentUserService) {
+                          GetCurrentUserService getCurrentUserService,
+                          RedisTemplate<String, String> template,
+                          RefreshTokenService refreshTokenService) {
         this.registerService = registerService;
         this.updateUserService = updateUserService;
         this.logoutService = logoutService;
         this.loginService = loginService;
         this.getProfileService = getProfileService;
         this.getCurrentUserService = getCurrentUserService;
+        this.template = template;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping(ApiConst.USERS)
@@ -72,5 +82,10 @@ public class UserController {
     @GetMapping(ApiConst.PROFILES_USERNAME)
     public GetProfileResponse getProfile(@PathVariable("username") String username) throws Exception {
         return getProfileService.getProfile(username);
+    }
+
+    @GetMapping("refreshToken")
+    public String refreshToken(String expiredAccessToken) {
+        return refreshTokenService.getRefreshToken(expiredAccessToken);
     }
 }

@@ -1,6 +1,5 @@
 package overcloud.blog.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +8,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.application.user.core.UserResponse;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserResponse;
 import overcloud.blog.application.user.core.repository.UserRepository;
@@ -47,9 +47,9 @@ public class SignUpTest {
     @BeforeEach
     void initUseCase() {
         SpringAuthenticationService authenticationService = Mockito.mock(SpringAuthenticationService.class);
-        JwtUtils jwtUtils = new JwtUtils("signKey012345678901234567890123456789", Long.valueOf(3000000));
+        JwtUtils jwtUtils = new JwtUtils("signKey012345678901234567890123456789", Long.valueOf(3000000), Long.valueOf(9));
         ObjectsValidator<RegisterRequest> validator = new ObjectsValidator<>(messageSource());
-        registerService = new RegisterService(userRepository, authenticationService, jwtUtils, validator);
+        registerService = new RegisterService(userRepository, authenticationService, jwtUtils, validator, null);
     }
 
     public void assertApiError(ApiError apiError, String id, String message) {
@@ -103,6 +103,7 @@ public class SignUpTest {
         });
 
         return registerService.registerUser(request);
+
     }
 
     @Test

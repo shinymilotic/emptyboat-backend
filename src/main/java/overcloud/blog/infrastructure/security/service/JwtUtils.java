@@ -3,6 +3,7 @@ package overcloud.blog.infrastructure.security.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,15 +11,20 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtUtils {
-    private final Long validSeconds;
+    private final Long validAccessTokenTime;
+
+    private final Long validRefreshTokenSeconds;
     private final Key key;
 
     public JwtUtils( @Value("${blog.auth.token.sign-key}") String signKey,
-                     @Value("${blog.auth.token.valid-time}") Long validTime) {
-        this.validSeconds = validTime;
+                     @Value("${blog.auth.token.valid-access-time}") Long validAccessTokenTime,
+                     @Value("${blog.auth.token.valid-refresh-time}") Long validRefreshTokenSeconds) {
+        this.validAccessTokenTime = validAccessTokenTime;
+        this.validRefreshTokenSeconds = validRefreshTokenSeconds;
         this.key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -30,12 +36,12 @@ public class JwtUtils {
         Instant exp = Instant.now();
         return Jwts.builder().setSubject(sub)
                 .setIssuedAt(new Date(exp.toEpochMilli()))
-                .setExpiration(new Date(exp.toEpochMilli() + validSeconds*1000))
+                .setExpiration(new Date(exp.toEpochMilli() + validAccessTokenTime*1000))
                 .signWith(key)
                 .compact();
     }
 
-    public boolean validateToken(String jwt) {
+    public boolean validateToken(String jwt)  {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
@@ -63,4 +69,13 @@ public class JwtUtils {
             return null;
         }
     }
+
+    public String generateRefreshToken( String subject) {
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + validRefreshTokenSeconds*1000))
+                .signWith(key).compact();
+    }
+
 }

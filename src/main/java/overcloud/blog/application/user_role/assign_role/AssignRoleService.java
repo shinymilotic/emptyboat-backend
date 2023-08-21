@@ -2,7 +2,7 @@ package overcloud.blog.application.user_role.assign_role;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.role.RolesRequest;
 import overcloud.blog.application.role.core.*;
 import overcloud.blog.application.user.core.UserEntity;
@@ -12,11 +12,9 @@ import overcloud.blog.application.user_role.core.UserRoleId;
 import overcloud.blog.infrastructure.UpdateFlg;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 
-import javax.management.relation.Role;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

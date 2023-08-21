@@ -16,8 +16,11 @@ public class UserResponse {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("token")
-    private String token;
+    @JsonProperty("accessToken")
+    private String accessToken;
+
+    @JsonProperty("refreshToken")
+    private String refreshToken;
 
     @JsonProperty("username")
     private String username;

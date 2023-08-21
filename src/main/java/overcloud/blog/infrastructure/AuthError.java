@@ -3,7 +3,10 @@ package overcloud.blog.infrastructure;
 import overcloud.blog.infrastructure.validation.Error;
 
 public enum AuthError implements Error {
-    AUTHORIZE_FAILED("authorize.failed", "Authorize failed!");
+    AUTHORIZE_FAILED("authorize.failed", "Authorize failed!"),
+
+    TOKEN_TIMEOUT("authorize.token.timeout", "Token timeout!");
+
 
     private String messageId;
 

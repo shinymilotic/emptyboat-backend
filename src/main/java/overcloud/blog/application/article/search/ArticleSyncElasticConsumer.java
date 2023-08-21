@@ -22,7 +22,6 @@ import java.util.Optional;
 @Service
 public class ArticleSyncElasticConsumer {
 
-
     private final ArticleSyncDataService articleSyncDataService;
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 

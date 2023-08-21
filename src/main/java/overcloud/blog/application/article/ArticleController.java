@@ -1,6 +1,7 @@
 package overcloud.blog.application.article;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -37,25 +38,22 @@ public class ArticleController {
 
     private final DeleteArticleService deleteArticleService;
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
 
     public ArticleController(CreateArticleService createArticleService,
                              UpdateArticleService updateArticleService,
                              GetArticleService getArticleService,
                              GetArticleListService getArticleListService,
-                             DeleteArticleService deleteArticleService,
-                             KafkaTemplate<String, String> kafkaTemplate) {
+                             DeleteArticleService deleteArticleService) {
         this.createArticleService = createArticleService;
         this.updateArticleService = updateArticleService;
         this.getArticleService = getArticleService;
         this.getArticleListService = getArticleListService;
         this.deleteArticleService = deleteArticleService;
-        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Secured({"ADMIN", "USER"})
     @PostMapping(ApiConst.ARTICLES)
-    public ArticleResponse createArticle(@RequestBody ArticleRequest createArticleRequest) {
+    public ArticleResponse createArticle(@RequestBody ArticleRequest createArticleRequest) throws JsonProcessingException {
         return createArticleService.createArticle(createArticleRequest);
     }
 

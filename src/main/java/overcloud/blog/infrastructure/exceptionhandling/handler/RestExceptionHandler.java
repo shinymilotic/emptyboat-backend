@@ -1,6 +1,6 @@
 package overcloud.blog.infrastructure.exceptionhandling.handler;
 
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

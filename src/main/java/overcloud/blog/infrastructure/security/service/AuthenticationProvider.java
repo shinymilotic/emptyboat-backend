@@ -1,5 +1,6 @@
 package overcloud.blog.infrastructure.security.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +18,7 @@ public class AuthenticationProvider {
         this.userDetailsService = userDetailsService;
     }
 
+    @Transactional
     public Authentication getAuthentication(String email) {
         return Optional.ofNullable(email)
                 .map(userDetailsService::loadUserByUsername)

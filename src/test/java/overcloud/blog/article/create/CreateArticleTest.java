@@ -1,5 +1,6 @@
 package overcloud.blog.article.create;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import overcloud.blog.application.article.core.ArticleEntity;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.article.core.repository.ArticleRepository;
 import overcloud.blog.application.article.core.repository.ArticleTagRepository;
 import overcloud.blog.application.article.create_article.ArticleRequest;
@@ -69,7 +70,7 @@ public class CreateArticleTest {
         setAuthentication();
         validator = new ObjectsValidator<ArticleRequest>(messageSource());
         authenticationService = new SpringAuthenticationService(userRepository,new BCryptPasswordEncoder());
-        createArticleService = new CreateArticleService(authenticationService, tagRepository, articleRepository, validator, articleTagRepository);
+        createArticleService = new CreateArticleService(authenticationService, tagRepository, articleRepository, validator, articleTagRepository, null);
     }
 
     private void setAuthentication() {
@@ -112,7 +113,7 @@ public class CreateArticleTest {
         return createArticleService.createArticle(articleRequest);
     }
 
-    private ArticleResponse createArticleNoExistTag(ArticleRequest articleRequest) {
+    private ArticleResponse createArticleNoExistTag(ArticleRequest articleRequest) throws JsonProcessingException {
         when(tagRepository.findByTagName(anyList())).thenAnswer(invocation -> {
             List<String> tags =  invocation.getArgument(0);
             List<String> newTagList = new ArrayList<>();

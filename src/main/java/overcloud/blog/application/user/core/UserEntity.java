@@ -27,16 +27,12 @@ public class UserEntity {
     private UUID id;
 
     @Column(name = "email")
-    @NotNull
-    @Email
     private String email;
 
     @Column(name = "username")
-    @NotNull
     private String username;
 
     @Column(name = "password")
-    @NotNull
     private String password;
 
     @Column(name = "bio")
@@ -56,7 +52,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<FavoriteEntity> favorites;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

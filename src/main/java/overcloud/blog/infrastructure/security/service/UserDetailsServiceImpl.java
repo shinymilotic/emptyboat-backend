@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public SecurityUser loadUserByUsername(String email) throws UsernameNotFoundException {
         return Optional.ofNullable(userRepository.findByEmail(email))

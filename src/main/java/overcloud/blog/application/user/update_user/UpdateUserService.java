@@ -1,7 +1,7 @@
 package overcloud.blog.application.user.update_user;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.article.core.exception.InvalidDataException;
+import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.UserResponse;
@@ -40,6 +40,8 @@ public class UpdateUserService {
         currentUser.setEmail(email);
         UserEntity updateUserEntity = userRepository.save(currentUser);
 
-        return userResponseMapper.toUserResponse(updateUserEntity, "");
+        return userResponseMapper.toUserResponse(currentUser,
+                "",
+                "");
     }
 }

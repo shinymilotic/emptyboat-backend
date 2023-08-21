@@ -23,14 +23,6 @@ public class RoleEntity implements GrantedAuthority {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<UserEntity> user;
-
     @Override
     public String getAuthority() {
         return name;
