@@ -2,22 +2,27 @@ package overcloud.blog.application.article.core.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import overcloud.blog.application.article.core.ArticleEntity;
 import overcloud.blog.application.tag.core.TagEntity;
+import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Repository
 public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
 
     @PersistenceContext
     EntityManager entityManager;
+
+    private final PlainQueryBuilder plainQueryBuilder;
+
+    public SearchArticlesRepositoryImpl(PlainQueryBuilder plainQueryBuilder) {
+        this.plainQueryBuilder = plainQueryBuilder;
+    }
 
     @Override
     public List<ArticleEntity> findByCriteria(String tag, String author, String favorited, int limit, int page) {
@@ -32,7 +37,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
                                 " WHERE articles IN :articles ",
                         ArticleEntity.class)
                 .setParameter("articles", resultList)
-                .setFirstResult(getOffset(page, limit))
+                .setFirstResult(plainQueryBuilder.getOffset(page, limit))
                 .setMaxResults(limit)
                 .getResultList();
 
@@ -114,11 +119,4 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
 
         return tagQuery;
     }
-
-    private int getOffset(int page, int limit) {
-        int offset = limit*(page-1);
-
-        return offset;
-    }
-
 }

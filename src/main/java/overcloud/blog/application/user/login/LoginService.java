@@ -2,6 +2,8 @@ package overcloud.blog.application.user.login;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.user.core.*;
+import overcloud.blog.application.user.refresh_token.RefreshTokenHash;
+import overcloud.blog.application.user.refresh_token.RefreshTokenRepository;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
@@ -21,17 +23,21 @@ public class LoginService {
 
     private final UserResponseMapper userResponseMapper;
 
+    private final RefreshTokenRepository refreshTokenRepository;
+
     public LoginService(SpringAuthenticationService authenticationService,
                         JwtUtils jwtUtils,
                         ObjectsValidator<LoginRequest> validator,
-                        UserResponseMapper userResponseMapper) {
+                        UserResponseMapper userResponseMapper,
+                        RefreshTokenRepository refreshTokenRepository) {
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
         this.userResponseMapper = userResponseMapper;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    public UserResponse login(LoginRequest loginRequest) {
+    public AuthResponse login(LoginRequest loginRequest) {
         Optional<ApiError> apiError = validator.validate(loginRequest);
 
         if (apiError.isPresent()) {
@@ -40,12 +46,20 @@ public class LoginService {
 
         String email = loginRequest.getEmail();
         String hashedPassword = loginRequest.getPassword();
+
         UserEntity user = authenticationService.authenticate(email, hashedPassword)
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_EMAIL_NO_EXIST)))
                 .getUser();
 
-        return userResponseMapper.toUserResponse(user,
-                jwtUtils.encode(user.getEmail()),
-                jwtUtils.generateRefreshToken(user.getEmail()));
+        String accessToken = jwtUtils.encode(user.getEmail());
+        String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());
+        RefreshTokenHash refreshTokenHash = RefreshTokenHash.builder()
+                .id(refreshToken)
+                .email(email)
+                .build();
+        refreshTokenRepository.save(refreshTokenHash);
+        return userResponseMapper.toAuthResponse(user,
+                accessToken,
+                refreshToken);
     }
 }

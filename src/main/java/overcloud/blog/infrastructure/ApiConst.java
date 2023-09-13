@@ -73,6 +73,9 @@ public class ApiConst {
 
     public static final String USERS_LOGOUT = "/users/logout";
 
+    public static final String USERS_REFRESHTOKEN = "/users/refreshToken";
+
+
     public static final String PROFILES_USERNAME = "/profiles/{username}";
 
     /*
@@ -84,4 +87,7 @@ public class ApiConst {
     public static final String PROFILES_USERNAME_FOLLOW = "/profiles/{username}/follow";
 
     public static final String ARTICLES_SEARCH = "/searchArticles";
+
+
+    public static final String USER_LIST = "/userList";
 }

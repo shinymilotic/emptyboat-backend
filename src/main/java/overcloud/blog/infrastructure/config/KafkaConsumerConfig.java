@@ -20,7 +20,7 @@ public class KafkaConsumerConfig {
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(
-                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.1.9:29093");
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.1.7:29093");
         props.put(
                 ConsumerConfig.GROUP_ID_CONFIG, "consumer-noti");
         props.put(

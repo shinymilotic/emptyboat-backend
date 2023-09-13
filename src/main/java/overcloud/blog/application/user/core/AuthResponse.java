@@ -1,8 +1,6 @@
 package overcloud.blog.application.user.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +8,15 @@ import lombok.Setter;
 @Builder
 @Setter
 @Getter
-public class UserResponse {
+public class AuthResponse {
     @JsonProperty("email")
     private String email;
+
+    @JsonProperty("accessToken")
+    private String accessToken;
+
+    @JsonProperty("refreshToken")
+    private String refreshToken;
 
     @JsonProperty("username")
     private String username;

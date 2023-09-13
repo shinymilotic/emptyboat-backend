@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, UUID> {
+public interface UserRepository extends JpaRepository<UserEntity, UUID>, PagingUserRepository {
 
     @Query("SELECT u FROM UserEntity u WHERE u.username = :username ")
     UserEntity findByUsername(@Param("username") String username);

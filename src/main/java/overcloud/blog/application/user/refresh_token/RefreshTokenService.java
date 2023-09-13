@@ -11,28 +11,26 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private final RedisTemplate<String, String> redisTemplate;
-    private HashOperations<String, String, String> hashOperations;
-
     private final JwtUtils jwtUtils;
 
     public RefreshTokenService(RefreshTokenRepository refreshTokenRepository,
-                               RedisTemplate<String, String> redisTemplate,
                                JwtUtils jwtUtils) {
         this.refreshTokenRepository = refreshTokenRepository;
-        this.redisTemplate = redisTemplate;
         this.jwtUtils = jwtUtils;
     }
 
-    @PostConstruct
-    private void intializeHashOperations() {
-        hashOperations = redisTemplate.opsForHash();
-    }
-
     @Transactional
-    public String getRefreshToken(String expiredRefreshToken) {
+    public TokenRefreshResponse getRefreshToken(RefreshTokenRequest refreshTokenRequest) {
+        String expiredRefreshToken = refreshTokenRequest.getRefreshToken();
         String email = jwtUtils.getSub(expiredRefreshToken);
-        String newAccessToken = jwtUtils.encode(email);
-        return newAccessToken;
+        String accessToken = jwtUtils.encode(email);
+        String refreshToken = jwtUtils.generateRefreshToken(email);
+        refreshTokenRepository.deleteById(expiredRefreshToken);
+        RefreshTokenHash refreshTokenHash = RefreshTokenHash.builder()
+                .id(refreshToken)
+                .email(email)
+                .build();
+        refreshTokenRepository.save(refreshTokenHash);
+        return new TokenRefreshResponse(accessToken, refreshToken);
     }
 }

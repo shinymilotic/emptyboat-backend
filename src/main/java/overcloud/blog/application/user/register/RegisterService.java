@@ -39,7 +39,7 @@ public class RegisterService {
         this.userResponseMapper = userResponseMapper;
     }
 
-    public UserResponse registerUser(RegisterRequest registrationDto) {
+    public AuthResponse registerUser(RegisterRequest registrationDto) {
         Optional<ApiError> apiError = validator.validate(registrationDto);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -70,7 +70,7 @@ public class RegisterService {
 
         UserEntity savedUser = userRepository.save(userEntity);
 
-        return userResponseMapper.toUserResponse(savedUser,
+        return userResponseMapper.toAuthResponse(savedUser,
                 jwtUtils.encode(savedUser.getEmail()),
                 jwtUtils.generateRefreshToken(savedUser.getEmail()));
     }

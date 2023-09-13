@@ -32,8 +32,6 @@ public class GetCurrentUserService {
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
 
-        return userResponseMapper.toUserResponse(currentUser,
-                jwtUtils.encode(currentUser.getEmail()),
-                jwtUtils.generateRefreshToken(currentUser.getEmail()));
+        return userResponseMapper.toUserResponse(currentUser);
     }
 }

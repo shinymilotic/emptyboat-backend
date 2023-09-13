@@ -12,11 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 
 import java.io.IOException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
@@ -28,7 +27,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (InvalidDataException e) {
-            response.setStatus(BAD_REQUEST.value());
+            response.setStatus(UNAUTHORIZED.value());
             response.setContentType("application/json");
             response.getWriter().write(convertObjectToJson(e.getApiError()));
         }

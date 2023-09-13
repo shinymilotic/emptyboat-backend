@@ -74,7 +74,6 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + validRefreshTokenSeconds*1000))
                 .signWith(key).compact();
     }
 

@@ -11,7 +11,7 @@ public class DataSourceConfig {
     @Bean
     public DataSource getDataSource() {
         StringBuilder connectionString = new StringBuilder();
-        connectionString.append("jdbc:postgresql://localhost:5432/realworld?currentSchema=public");
+        connectionString.append("jdbc:postgresql://192.168.1.7:5432/realworld");
 
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");

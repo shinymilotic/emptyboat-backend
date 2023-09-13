@@ -8,15 +8,12 @@ import org.springframework.data.redis.core.index.Indexed;
 import java.io.Serializable;
 
 @Data
-@RedisHash("RefreshToken")
+@RedisHash
 @Builder
 public class RefreshTokenHash implements Serializable {
     @Id
     @ToString.Include
     private String id;
 
-    @EqualsAndHashCode.Include
-    @ToString.Include
-    @Indexed
-    private String refreshToken;
+    private String email;
 }
