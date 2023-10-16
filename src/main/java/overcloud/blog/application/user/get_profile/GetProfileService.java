@@ -7,16 +7,19 @@ import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+
+import java.util.Optional;
 
 @Service
 public class GetProfileService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
 
-    private FollowUtils followUtils;
+    private final FollowUtils followUtils;
 
     public GetProfileService(UserRepository userRepository,
                            SpringAuthenticationService authenticationService,
@@ -28,13 +31,16 @@ public class GetProfileService {
 
     public GetProfileResponse getProfile(String username) {
         GetProfileResponse profileResponse = new GetProfileResponse();
-        UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
-                .getUser();
+        Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
+        UserEntity currentUser = null;
+        if(currentSecurityUser.isPresent()) {
+            currentUser = currentSecurityUser.get().getUser();
+        }
 
         UserEntity user = userRepository.findByUsername(username);
 
         profileResponse.setUsername(user.getUsername());
+        profileResponse.setEmail(user.getEmail());
         profileResponse.setFollowing(followUtils.isFollowing(currentUser, user));
         profileResponse.setBio(user.getBio());
         profileResponse.setImage(user.getImage());

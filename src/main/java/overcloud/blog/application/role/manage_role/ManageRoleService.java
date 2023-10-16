@@ -64,8 +64,8 @@ public class ManageRoleService {
 
     private int updateRole(ManageRoleDto role) {
         try {
-            String currentRoleName = role.getCurrentRoleName();
-            String updateRoleName = role.getRoleName();
+            String currentRoleName = role.getRoleName();
+            String updateRoleName = role.getUpdateRoleName();
             return roleRepository.updateRoleByName(currentRoleName, updateRoleName);
         } catch (Exception e) {
             throw new InvalidDataException(ApiError.from(RoleError.ROLE_EXISTED));

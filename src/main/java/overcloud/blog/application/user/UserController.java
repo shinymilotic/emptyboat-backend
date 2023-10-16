@@ -2,12 +2,16 @@ package overcloud.blog.application.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import overcloud.blog.application.role.RoleListResponse;
+import overcloud.blog.application.role.core.RoleResponse;
 import overcloud.blog.application.user.core.AuthResponse;
 import overcloud.blog.application.user.core.UserListResponse;
 import overcloud.blog.application.user.core.UserResponse;
 import overcloud.blog.application.user.get_current_user.GetCurrentUserService;
 import overcloud.blog.application.user.get_profile.GetProfileResponse;
 import overcloud.blog.application.user.get_profile.GetProfileService;
+import overcloud.blog.application.user.get_roles_user.GetRolesUserService;
+import overcloud.blog.application.user.get_roles_user.UserRoleListResponse;
 import overcloud.blog.application.user.get_users.GetUserListService;
 import overcloud.blog.application.user.login.LoginRequest;
 import overcloud.blog.application.user.login.LoginService;
@@ -32,10 +36,9 @@ public class UserController {
     private final LoginService loginService;
     private final GetProfileService getProfileService;
     private final GetCurrentUserService getCurrentUserService;
-
     private final RefreshTokenService refreshTokenService;
-
     private final GetUserListService getUserListService;
+    private final GetRolesUserService getRolesUserService;
 
     public UserController(RegisterService registerService,
                           UpdateUserService updateUserService,
@@ -44,7 +47,8 @@ public class UserController {
                           GetProfileService getProfileService,
                           GetCurrentUserService getCurrentUserService,
                           RefreshTokenService refreshTokenService,
-                          GetUserListService getUserListService) {
+                          GetUserListService getUserListService,
+                          GetRolesUserService getRolesUserService) {
         this.registerService = registerService;
         this.updateUserService = updateUserService;
         this.logoutService = logoutService;
@@ -53,6 +57,7 @@ public class UserController {
         this.getCurrentUserService = getCurrentUserService;
         this.refreshTokenService = refreshTokenService;
         this.getUserListService = getUserListService;
+        this.getRolesUserService = getRolesUserService;
     }
 
     @PostMapping(ApiConst.USERS)
@@ -67,6 +72,11 @@ public class UserController {
 
     @PostMapping(ApiConst.USERS_LOGIN)
     public AuthResponse login(@RequestBody LoginRequest loginDto)  {
+        return loginService.login(loginDto);
+    }
+
+    @PostMapping(ApiConst.USERS_LOGIN_ADMIN)
+    public AuthResponse loginAdmin(@RequestBody LoginRequest loginDto)  {
         return loginService.login(loginDto);
     }
 
@@ -93,5 +103,10 @@ public class UserController {
     @GetMapping(ApiConst.USER_LIST)
     public UserListResponse getUsers(int page, int size) throws Exception {
         return getUserListService.getUsers(page, size);
+    }
+
+    @GetMapping(ApiConst.ROLES_USERNAME)
+    public UserRoleListResponse getRolesUser(@PathVariable("username") String username) {
+        return getRolesUserService.getRolesUser(username);
     }
 }

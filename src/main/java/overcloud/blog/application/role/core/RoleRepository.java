@@ -20,7 +20,4 @@ public interface RoleRepository extends JpaRepository<RoleEntity, UUID> {
     @Modifying
     @Query("UPDATE RoleEntity r SET r.name=:updateRoleName WHERE r.name=:currentRoleName")
     int updateRoleByName(@Param("currentRoleName") String currentRoleName, @Param("updateRoleName") String updateRoleName);
-
-    @Query("SELECT roles FROM RoleEntity roles WHERE roles.id IN (:roleIds)")
-    List<RoleEntity> findByUser(@Param("roleIds") List<UUID> roleIds);
 }

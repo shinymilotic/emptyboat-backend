@@ -9,11 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ManageRoleDto {
-    @JsonProperty("currentRoleName")
-    private String currentRoleName;
-
     @JsonProperty("roleName")
     private String roleName;
+
+    @JsonProperty("updateRoleName")
+    private String updateRoleName;
 
     @JsonProperty("updateFlg")
     private int updateFlg;

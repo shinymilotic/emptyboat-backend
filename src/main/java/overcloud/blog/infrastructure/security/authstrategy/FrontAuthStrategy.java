@@ -19,7 +19,8 @@ public class FrontAuthStrategy implements AuthStrategy {
     private static final Map<String, Set<String>> EXCLUDED_RESOURCE = Map.ofEntries(
             Map.entry(ApiConst.ROLES, Set.of("POST", "PUT", "GET", "DELETE")),
             Map.entry(ApiConst.ROLES_USERNAME, Set.of("POST", "PUT", "GET", "DELETE")),
-            Map.entry(ApiConst.USERS_USERNAME_ASSIGNMENT, Set.of("POST", "PUT", "GET", "DELETE"))
+            Map.entry(ApiConst.USERS_USERNAME_ASSIGNMENT, Set.of("POST", "PUT", "GET", "DELETE")),
+            Map.entry(ApiConst.USERS_LOGIN_ADMIN, Set.of("POST"))
     );
     @Override
     public void auth(HttpServletRequest request) {

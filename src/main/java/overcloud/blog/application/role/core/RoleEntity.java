@@ -27,4 +27,17 @@ public class RoleEntity implements GrantedAuthority {
     public String getAuthority() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RoleEntity that)) return false;
+
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }
