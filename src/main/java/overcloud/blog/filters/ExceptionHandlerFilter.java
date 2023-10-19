@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.security.filters;
+package overcloud.blog.filters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

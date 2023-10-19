@@ -8,8 +8,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import overcloud.blog.infrastructure.security.filters.ExceptionHandlerFilter;
-import overcloud.blog.infrastructure.security.filters.JwtAuthenticationFilter;
+import overcloud.blog.filters.ExceptionHandlerFilter;
+import overcloud.blog.filters.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import overcloud.blog.infrastructure.security.interceptors.AuthInterceptor;
+import overcloud.blog.interceptors.AuthInterceptor;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.security.interceptors;
+package overcloud.blog.interceptors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.infrastructure.security.authstrategy.AuthStrategy;
 
 import java.util.List;
 import java.util.Map;

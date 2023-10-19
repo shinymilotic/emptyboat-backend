@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.security.filters;
+package overcloud.blog.filters;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
