@@ -1,7 +1,7 @@
 package overcloud.blog.application.article.comment.delete_comment;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.article.comment.core.repository.CommentRepository;
+import overcloud.blog.repository.CommentRepository;
 
 import java.util.UUID;
 

@@ -2,7 +2,7 @@ package overcloud.blog.application.user.follow.make_unfollow;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.entity.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.application.user.follow.core.FollowEntity;

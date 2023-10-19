@@ -1,6 +1,7 @@
 package overcloud.blog.application.user.core;
 
 import org.springframework.stereotype.Component;
+import overcloud.blog.entity.UserEntity;
 
 @Component
 public class UserResponseMapper {

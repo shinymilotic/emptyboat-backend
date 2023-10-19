@@ -3,7 +3,6 @@ package overcloud.blog.infrastructure.security.service;
 import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
-import overcloud.blog.application.user.core.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;

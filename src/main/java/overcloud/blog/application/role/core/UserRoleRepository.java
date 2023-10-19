@@ -4,8 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import overcloud.blog.application.user_role.core.UserRole;
-import overcloud.blog.application.user_role.core.UserRoleId;
+import overcloud.blog.entity.UserRole;
+import overcloud.blog.entity.UserRoleId;
 
 import java.util.List;
 import java.util.UUID;

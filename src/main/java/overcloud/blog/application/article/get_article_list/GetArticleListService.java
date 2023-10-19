@@ -1,17 +1,16 @@
 package overcloud.blog.application.article.get_article_list;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.article.core.repository.ArticleRepository;
+import overcloud.blog.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
-import overcloud.blog.application.article.core.ArticleEntity;
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.entity.ArticleEntity;
+import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

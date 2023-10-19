@@ -1,6 +1,6 @@
 package overcloud.blog.article;
 
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.entity.UserEntity;
 
 import java.util.UUID;
 

@@ -3,7 +3,7 @@ package overcloud.blog.application.user.follow.core;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.entity.UserEntity;
 
 @Entity
 @Getter

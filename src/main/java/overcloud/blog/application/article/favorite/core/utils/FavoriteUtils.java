@@ -1,12 +1,11 @@
 package overcloud.blog.application.article.favorite.core.utils;
 
 import org.springframework.stereotype.Component;
-import overcloud.blog.application.article.core.ArticleEntity;
-import overcloud.blog.application.article.favorite.core.FavoriteEntity;
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.entity.ArticleEntity;
+import overcloud.blog.entity.FavoriteEntity;
+import overcloud.blog.entity.UserEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class FavoriteUtils {

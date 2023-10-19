@@ -1,9 +1,7 @@
-package overcloud.blog.application.user_role.core;
+package overcloud.blog.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import overcloud.blog.application.role.core.RoleEntity;
-import overcloud.blog.application.user.core.UserEntity;
 
 @Entity
 @Getter

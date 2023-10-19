@@ -2,7 +2,7 @@ package overcloud.blog.application.user.get_roles_user;
 
 
 import org.springframework.stereotype.Component;
-import overcloud.blog.application.role.core.RoleEntity;
+import overcloud.blog.entity.RoleEntity;
 
 import java.util.Collection;
 

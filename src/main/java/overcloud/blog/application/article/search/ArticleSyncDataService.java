@@ -3,6 +3,7 @@ package overcloud.blog.application.article.search;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.search.json.ArticleSyncData;
+import overcloud.blog.repository.ArticleElasticRepository;
 
 @Service
 public class ArticleSyncDataService {

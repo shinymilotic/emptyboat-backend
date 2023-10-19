@@ -1,14 +1,10 @@
-package overcloud.blog.application.user.core;
+package overcloud.blog.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.application.article.favorite.core.FavoriteEntity;
-import overcloud.blog.application.role.core.RoleEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;

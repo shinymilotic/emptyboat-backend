@@ -1,13 +1,14 @@
-package overcloud.blog.application.article.core.repository;
+package overcloud.blog.repository.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import overcloud.blog.application.article.core.ArticleEntity;
-import overcloud.blog.application.tag.core.TagEntity;
+import overcloud.blog.entity.ArticleEntity;
+import overcloud.blog.entity.TagEntity;
 import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
+import overcloud.blog.repository.SearchArticlesRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package overcloud.blog.application.role.manage_role;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.application.role.core.RoleEntity;
+import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.application.role.core.RoleError;
 import overcloud.blog.application.role.core.RoleRepository;
 import overcloud.blog.infrastructure.UpdateFlg;

@@ -1,14 +1,9 @@
-package overcloud.blog.application.article.core;
+package overcloud.blog.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.application.article_tag.core.ArticleTag;
-import overcloud.blog.application.article.comment.core.CommentEntity;
-import overcloud.blog.application.article.favorite.core.FavoriteEntity;
-import overcloud.blog.application.tag.core.TagEntity;
-import overcloud.blog.application.user.core.UserEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

@@ -1,11 +1,11 @@
-package overcloud.blog.application.article.core.repository;
+package overcloud.blog.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import overcloud.blog.application.article_tag.core.ArticleTag;
-import overcloud.blog.application.article_tag.core.ArticleTagId;
+import overcloud.blog.entity.ArticleTag;
+import overcloud.blog.entity.ArticleTagId;
 
 import java.util.UUID;
 

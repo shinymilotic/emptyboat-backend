@@ -2,6 +2,7 @@ package overcloud.blog.application.role.core;
 
 import org.springframework.stereotype.Component;
 import overcloud.blog.application.role.RoleListResponse;
+import overcloud.blog.entity.RoleEntity;
 
 import java.util.Collection;
 import java.util.List;

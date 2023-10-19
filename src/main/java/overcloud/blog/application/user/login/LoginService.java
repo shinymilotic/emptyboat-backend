@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.application.user.core.*;
 import overcloud.blog.application.user.refresh_token.RefreshTokenHash;
 import overcloud.blog.application.user.refresh_token.RefreshTokenRepository;
+import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.JwtUtils;

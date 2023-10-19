@@ -6,10 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.application.role.core.RoleEntity;
-import overcloud.blog.infrastructure.AuthError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.infrastructure.security.authstrategy.AuthStrategy;
 
 import java.util.List;
@@ -34,11 +31,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             for (RoleEntity role : roleEntities) {
                 String authority = role.getAuthority();
-                switch (authority) {
-                    case "ADMIN" -> authStrategy.get("adminAuthStrategy").auth(request);
-                    case "USER" -> authStrategy.get("frontAuthStrategy").auth(request);
-                    default -> throw new InvalidDataException(ApiError.from(AuthError.AUTHORIZE_FAILED));
-                }
+
+//                switch (authority) {
+//                    case "ADMIN" -> authStrategy.get("adminAuthStrategy").auth(request);
+//                    case "USER" -> authStrategy.get("frontAuthStrategy").auth(request);
+//                    default -> throw new InvalidDataException(ApiError.from(AuthError.AUTHORIZE_FAILED));
+//                }
+//                break;
             }
         } else {
             authStrategy.get("guestAuthStrategy").auth(request);

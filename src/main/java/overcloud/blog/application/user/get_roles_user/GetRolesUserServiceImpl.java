@@ -1,12 +1,9 @@
 package overcloud.blog.application.user.get_roles_user;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.role.RoleListResponse;
-import overcloud.blog.application.role.core.RoleEntity;
-import overcloud.blog.application.role.core.RoleMapper;
+import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.application.role.core.RoleRepository;
-import overcloud.blog.application.role.core.RoleResponse;
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.entity.UserEntity;
 import overcloud.blog.application.user.core.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -52,6 +49,4 @@ public class GetRolesUserServiceImpl implements  GetRolesUserService {
         UserRoleListResponse rs =  new UserRoleListResponse(listResponse);
         return rs;
     }
-
-
 }

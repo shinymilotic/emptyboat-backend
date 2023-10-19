@@ -1,11 +1,9 @@
-package overcloud.blog.application.role.core;
+package overcloud.blog.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import overcloud.blog.application.user.core.UserEntity;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Entity

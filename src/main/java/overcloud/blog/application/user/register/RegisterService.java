@@ -2,6 +2,7 @@ package overcloud.blog.application.user.register;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.user.core.*;
+import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;

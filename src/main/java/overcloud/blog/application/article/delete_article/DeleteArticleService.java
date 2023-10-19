@@ -2,11 +2,9 @@ package overcloud.blog.application.article.delete_article;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import overcloud.blog.application.article.core.repository.ArticleRepository;
-import overcloud.blog.application.article.comment.core.repository.CommentRepository;
-import overcloud.blog.application.article.favorite.core.repository.FavoriteRepository;
-
-import java.util.UUID;
+import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.CommentRepository;
+import overcloud.blog.repository.FavoriteRepository;
 
 @Service
 public class DeleteArticleService {

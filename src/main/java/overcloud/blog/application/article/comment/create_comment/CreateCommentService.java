@@ -1,14 +1,14 @@
 package overcloud.blog.application.article.comment.create_comment;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.article.comment.core.CommentEntity;
+import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.application.article.comment.core.CommentError;
-import overcloud.blog.application.article.comment.core.repository.CommentRepository;
-import overcloud.blog.application.article.core.ArticleEntity;
+import overcloud.blog.repository.CommentRepository;
+import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.application.article.core.AuthorResponse;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.application.article.core.repository.ArticleRepository;
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.entity.UserEntity;
 import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;

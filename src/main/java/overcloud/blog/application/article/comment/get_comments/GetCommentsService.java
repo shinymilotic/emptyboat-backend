@@ -2,9 +2,9 @@ package overcloud.blog.application.article.comment.get_comments;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.article.comment.core.AuthorResposne;
-import overcloud.blog.application.article.comment.core.CommentEntity;
-import overcloud.blog.application.article.comment.core.repository.CommentRepository;
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.entity.CommentEntity;
+import overcloud.blog.repository.CommentRepository;
+import overcloud.blog.entity.UserEntity;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

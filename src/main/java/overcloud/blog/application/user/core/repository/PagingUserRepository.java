@@ -1,6 +1,6 @@
 package overcloud.blog.application.user.core.repository;
 
-import overcloud.blog.application.user.core.UserEntity;
+import overcloud.blog.entity.UserEntity;
 
 import java.util.List;
 

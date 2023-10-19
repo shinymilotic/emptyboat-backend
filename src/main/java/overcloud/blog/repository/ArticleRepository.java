@@ -1,8 +1,8 @@
-package overcloud.blog.application.article.core.repository;
+package overcloud.blog.repository;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
-import overcloud.blog.application.article.core.ArticleEntity;
+import overcloud.blog.entity.ArticleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

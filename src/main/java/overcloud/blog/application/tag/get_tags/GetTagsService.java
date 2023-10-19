@@ -1,7 +1,7 @@
 package overcloud.blog.application.tag.get_tags;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.application.tag.core.TagEntity;
+import overcloud.blog.entity.TagEntity;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 
 import java.util.ArrayList;

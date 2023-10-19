@@ -2,10 +2,9 @@ package overcloud.blog.application.role.get_all_roles;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.role.RoleListResponse;
-import overcloud.blog.application.role.core.RoleEntity;
+import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.application.role.core.RoleMapper;
 import overcloud.blog.application.role.core.RoleRepository;
-import overcloud.blog.application.role.core.RoleResponse;
 
 import java.util.List;
 

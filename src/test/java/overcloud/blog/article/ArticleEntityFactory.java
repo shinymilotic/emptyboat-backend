@@ -1,6 +1,6 @@
 package overcloud.blog.article;
 
-import overcloud.blog.application.article.core.ArticleEntity;
+import overcloud.blog.entity.ArticleEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

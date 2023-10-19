@@ -1,12 +1,9 @@
 package overcloud.blog.application.user.get_profile;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.application.user.core.UserEntity;
-import overcloud.blog.application.user.core.UserError;
+import overcloud.blog.entity.UserEntity;
 import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
