@@ -23,16 +23,16 @@ public class FrontAuthStrategy implements AuthStrategy {
             Map.entry(ApiConst.USERS_LOGIN_ADMIN, Set.of("POST"))
     );
     @Override
-    public void auth(HttpServletRequest request) {
+    public boolean auth(HttpServletRequest request) {
         String urlTemplate = (String) request.getAttribute(
                 HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
         String method = request.getMethod();
 
         if (EXCLUDED_RESOURCE.containsKey(urlTemplate)) {
-            Set<String> u = EXCLUDED_RESOURCE.get(urlTemplate);
-            if(u != null && u.contains(method)) {
-                throw new InvalidDataException(ApiError.from(AuthError.AUTHORIZE_FAILED));
-            }
+            Set<String> excludedUrl = EXCLUDED_RESOURCE.get(urlTemplate);
+            return excludedUrl == null || !excludedUrl.contains(method);
         }
+
+        return true;
     }
 }

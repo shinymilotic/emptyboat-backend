@@ -15,6 +15,7 @@ public class AdminAuthStrategy implements AuthStrategy {
     );
 
     @Override
-    public void auth(HttpServletRequest request) {
+    public boolean auth(HttpServletRequest request) {
+        return true;
     }
 }
