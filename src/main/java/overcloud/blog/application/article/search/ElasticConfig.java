@@ -9,7 +9,7 @@ public class ElasticConfig extends ElasticsearchConfiguration {
     @Override
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
-                .connectedTo("192.168.1.6:9200")
+                .connectedTo("192.168.1.7:9200")
                 .build();
     }
 }

@@ -1,32 +1,11 @@
 package overcloud.blog.user;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.MessageSource;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import overcloud.blog.application.user.core.UserResponse;
-import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.application.user.core.UserEntity;
-import overcloud.blog.application.user.core.UserResponse;
-import overcloud.blog.application.user.core.repository.UserRepository;
-import overcloud.blog.application.user.register.RegisterRequest;
-import overcloud.blog.application.user.register.RegisterService;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
-import overcloud.blog.infrastructure.security.service.JwtUtils;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.validation.ObjectsValidator;
-
-import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 public class SignUpTest {
 
