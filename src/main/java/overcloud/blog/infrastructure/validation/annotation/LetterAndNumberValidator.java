@@ -5,7 +5,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LetterAndNumberValidator implements ConstraintValidator<LetterAndNumber, String> {

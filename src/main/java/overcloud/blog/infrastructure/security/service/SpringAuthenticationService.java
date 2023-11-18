@@ -23,7 +23,6 @@ public class SpringAuthenticationService {
 
   /** {@inheritDoc} */
   public Optional<SecurityUser> getCurrentUser() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
             .filter(auth -> !auth.getPrincipal().equals("anonymousUser"))
             .map(auth -> (SecurityUser) auth.getPrincipal());

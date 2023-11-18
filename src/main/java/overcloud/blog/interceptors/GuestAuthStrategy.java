@@ -3,10 +3,7 @@ package overcloud.blog.interceptors;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
-import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.ApiConst;
-import overcloud.blog.infrastructure.AuthError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 
 import java.util.Map;
 import java.util.Set;

@@ -2,8 +2,6 @@ package overcloud.blog.application.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import overcloud.blog.application.role.RoleListResponse;
-import overcloud.blog.application.role.core.RoleResponse;
 import overcloud.blog.application.user.core.AuthResponse;
 import overcloud.blog.application.user.core.UserListResponse;
 import overcloud.blog.application.user.core.UserResponse;

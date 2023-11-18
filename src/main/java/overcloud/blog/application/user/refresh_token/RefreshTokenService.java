@@ -1,8 +1,6 @@
 package overcloud.blog.application.user.refresh_token;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
-import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 
