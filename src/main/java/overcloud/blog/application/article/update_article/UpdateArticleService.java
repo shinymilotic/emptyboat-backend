@@ -7,7 +7,6 @@ import overcloud.blog.application.article.core.AuthorResponse;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.core.utils.FavoriteUtils;
-import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.application.user.core.UserError;
@@ -25,20 +24,16 @@ public class UpdateArticleService {
 
     private final ArticleRepository articleRepository;
 
-    private final TagRepository tagRepository;
-
     private final FavoriteUtils favoriteUtils;
 
     private final ObjectsValidator<UpdateArticleRequest> validator;
 
     public UpdateArticleService(SpringAuthenticationService authenticationService,
                                 ArticleRepository articleRepository,
-                                TagRepository tagRepository,
                                 FavoriteUtils favoriteUtils,
                                 ObjectsValidator<UpdateArticleRequest> validator) {
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
-        this.tagRepository = tagRepository;
         this.favoriteUtils = favoriteUtils;
         this.validator = validator;
     }

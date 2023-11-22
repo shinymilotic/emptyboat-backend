@@ -2,7 +2,6 @@ package overcloud.blog.application.article.get_article;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.repository.ArticleRepository;
-import overcloud.blog.repository.FavoriteRepository;
 import overcloud.blog.application.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
 import overcloud.blog.entity.ArticleTag;
@@ -25,18 +24,15 @@ public class GetArticleService {
 
     private final SpringAuthenticationService authenticationService;
 
-    private final FavoriteRepository favoriteRepository;
 
     public GetArticleService(FollowUtils followUtils,
                              FavoriteUtils favoriteUtils,
                              ArticleRepository articleRepository,
-                             SpringAuthenticationService authenticationService,
-                             FavoriteRepository favoriteRepository) {
+                             SpringAuthenticationService authenticationService) {
         this.followUtils = followUtils;
         this.favoriteUtils = favoriteUtils;
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
-        this.favoriteRepository = favoriteRepository;
     }
 
     public GetArticleResponse getArticle(String slug) {

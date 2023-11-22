@@ -28,16 +28,13 @@ public class MakeUnfavoriteService {
 
     private final ArticleRepository articleRepository;
 
-    private final FollowUtils followUtils;
 
     public MakeUnfavoriteService(FavoriteRepository favoriteRepository,
                            SpringAuthenticationService authenticationService,
-                           ArticleRepository articleRepository,
-                           FollowUtils followUtils) {
+                           ArticleRepository articleRepository) {
         this.favoriteRepository = favoriteRepository;
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
-        this.followUtils = followUtils;
     }
 
     @Transactional

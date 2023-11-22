@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.*;
 import overcloud.blog.application.article.core.AuthorResponse;
 
-import java.time.LocalDateTime;
-
 @JsonTypeName("article")
 @Getter
 @Setter

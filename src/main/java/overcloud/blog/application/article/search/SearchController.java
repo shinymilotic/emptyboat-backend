@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import overcloud.blog.application.article.get_article_list.GetArticlesResponse;
 import overcloud.blog.infrastructure.ApiConst;
 
-import java.util.List;
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class SearchController {

@@ -17,14 +17,11 @@ public class GetCurrentUserService {
 
     private final UserResponseMapper userResponseMapper;
 
-    private final JwtUtils jwtUtils;
 
     public GetCurrentUserService(SpringAuthenticationService authenticationService,
-                                 UserResponseMapper userResponseMapper,
-                                 JwtUtils jwtUtils) {
+                                 UserResponseMapper userResponseMapper) {
         this.authenticationService = authenticationService;
         this.userResponseMapper = userResponseMapper;
-        this.jwtUtils = jwtUtils;
     }
 
     public UserResponse getCurrentUser() {

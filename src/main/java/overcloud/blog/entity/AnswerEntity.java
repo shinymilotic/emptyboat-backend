@@ -18,7 +18,6 @@ public class AnswerEntity {
     @ManyToOne
     @JoinColumn(name = "question_id")
     private QuestionEntity question;
-
     @Column(name = "answer")
     private String answer;
 

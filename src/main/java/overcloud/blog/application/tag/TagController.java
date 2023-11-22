@@ -5,7 +5,6 @@ import overcloud.blog.application.tag.create_tag.CreateTagRequest;
 import overcloud.blog.application.tag.create_tag.CreateTagResponse;
 import overcloud.blog.application.tag.create_tag.CreateTagsService;
 import overcloud.blog.application.tag.get_tags.GetTagResponse;
-import jakarta.validation.Valid;
 import overcloud.blog.application.tag.get_tags.GetTagsService;
 import overcloud.blog.infrastructure.ApiConst;
 

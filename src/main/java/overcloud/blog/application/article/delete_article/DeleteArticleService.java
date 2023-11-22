@@ -3,23 +3,15 @@ package overcloud.blog.application.article.delete_article;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.repository.ArticleRepository;
-import overcloud.blog.repository.CommentRepository;
-import overcloud.blog.repository.FavoriteRepository;
 
 @Service
 public class DeleteArticleService {
 
-    private final CommentRepository commentRepository;
-
-    private final FavoriteRepository favoriteRepository;
 
     private final ArticleRepository articleRepository;
 
-    public DeleteArticleService(CommentRepository commentRepository,
-                                FavoriteRepository favoriteRepository,
+    public DeleteArticleService(
                                 ArticleRepository articleRepository) {
-        this.commentRepository = commentRepository;
-        this.favoriteRepository = favoriteRepository;
         this.articleRepository = articleRepository;
     }
 

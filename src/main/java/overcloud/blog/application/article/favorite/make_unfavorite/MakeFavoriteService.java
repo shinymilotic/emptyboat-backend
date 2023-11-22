@@ -30,16 +30,13 @@ public class MakeFavoriteService {
 
     private final ArticleRepository articleRepository;
 
-    private final FollowUtils followUtils;
 
     public MakeFavoriteService(FavoriteRepository favoriteRepository,
                            SpringAuthenticationService authenticationService,
-                           ArticleRepository articleRepository,
-                           FollowUtils followUtils) {
+                           ArticleRepository articleRepository) {
         this.favoriteRepository = favoriteRepository;
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
-        this.followUtils = followUtils;
     }
 
     @Transactional

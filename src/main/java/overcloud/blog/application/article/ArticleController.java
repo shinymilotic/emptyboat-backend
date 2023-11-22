@@ -2,12 +2,7 @@ package overcloud.blog.application.article;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.security.access.annotation.Secured;
-import org.testcontainers.shaded.com.google.common.util.concurrent.ListenableFuture;
 import overcloud.blog.application.article.create_article.CreateArticleService;
 import overcloud.blog.application.article.delete_article.DeleteArticleService;
 import overcloud.blog.application.article.create_article.ArticleRequest;
@@ -22,8 +17,6 @@ import overcloud.blog.application.article.get_article.GetArticleService;
 import overcloud.blog.application.article.get_article_list.GetArticleListService;
 import overcloud.blog.application.article.update_article.UpdateArticleService;
 import overcloud.blog.infrastructure.ApiConst;
-
-import java.util.concurrent.ExecutionException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

@@ -2,7 +2,6 @@ package overcloud.blog.application.article.comment.get_comments;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

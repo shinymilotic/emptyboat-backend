@@ -3,8 +3,6 @@ package overcloud.blog.application.article.search;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.shaded.gson.Gson;
-import jakarta.json.JsonObject;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
@@ -13,7 +11,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import overcloud.blog.application.article.search.json.ArticleBinLogKey;
 import overcloud.blog.application.article.search.json.ArticleBinLogValue;
 import overcloud.blog.application.article.search.json.ArticleSyncData;
 
