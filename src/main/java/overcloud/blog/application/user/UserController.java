@@ -89,7 +89,7 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.PROFILES_USERNAME)
-    public GetProfileResponse getProfile(@PathVariable("username") String username) throws Exception {
+    public GetProfileResponse getProfile(@PathVariable String username) throws Exception {
         return getProfileService.getProfile(username);
     }
 
@@ -104,7 +104,7 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.ROLES_USERNAME)
-    public UserRoleListResponse getRolesUser(@PathVariable("username") String username) {
+    public UserRoleListResponse getRolesUser(@PathVariable String username) {
         return getRolesUserService.getRolesUser(username);
     }
 }

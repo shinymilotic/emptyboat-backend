@@ -16,6 +16,9 @@ public class TestEntity {
     @Id
     private UUID id;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

@@ -35,4 +35,7 @@ public class ApiConst {
     public static final String ARTICLES_SEARCH = "/searchArticles";
 
     public static final String USER_LIST = "/userList";
+
+    public static final String TEST = "/test";
+
 }

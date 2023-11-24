@@ -58,21 +58,21 @@ public class ArticleController {
     }
     @Secured({"ADMIN", "USER"})
     @DeleteMapping(ApiConst.ARTICLES_SLUG)
-    public DeleteArticleResponse deleteArticle(@PathVariable("slug") String slug) {
+    public DeleteArticleResponse deleteArticle(@PathVariable String slug) {
         return deleteArticleService.deleteArticle(slug);
     }
 
     @GetMapping(ApiConst.ARTICLES_SLUG)
-    public GetArticleResponse getArticle(@PathVariable("slug") String slug) {
+    public GetArticleResponse getArticle(@PathVariable String slug) {
         return getArticleService.getArticle(slug);
     }
     
     @GetMapping(ApiConst.ARTICLES)
-    public GetArticlesResponse getArticles(@RequestParam(value = "tag", required = false) String tag,
-                                           @RequestParam(value = "author", required = false) String author,
-                                           @RequestParam(value = "favorited", required = false) String favorited,
+    public GetArticlesResponse getArticles(@RequestParam(required = false) String tag,
+                                           @RequestParam(required = false) String author,
+                                           @RequestParam(required = false) String favorited,
                                            @RequestParam(value = "size", defaultValue = "20") int limit,
-                                           @RequestParam(value = "page", defaultValue = "1") int page) {
+                                           @RequestParam(defaultValue = "1") int page) {
         return getArticleListService.getArticles(tag, author, favorited, limit, page);
     }
 }

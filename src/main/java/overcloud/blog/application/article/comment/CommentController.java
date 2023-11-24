@@ -29,18 +29,18 @@ public class CommentController {
     }
 
     @PostMapping(ApiConst.ARTICLES_SLUG_COMMENTS)
-    public CreateCommentResponse createComment(@PathVariable("slug") String slug,
+    public CreateCommentResponse createComment(@PathVariable String slug,
                                                @RequestBody CreateCommentRequest createCommentRequest) {
         return createCommentService.createComment(createCommentRequest, slug);
     }
 
     @GetMapping(ApiConst.ARTICLES_SLUG_COMMENTS)
-    public GetCommentsResponse getComments(@PathVariable("slug") String slug) {
+    public GetCommentsResponse getComments(@PathVariable String slug) {
         return getCommentsService.getComments(slug);
     }
 
     @DeleteMapping(ApiConst.ARTICLES_SLUG_COMMENTS_ID)
-    public boolean deleteComment(@PathVariable("slug") String slug, @PathVariable("id") String commendId) {
+    public boolean deleteComment(@PathVariable String slug, @PathVariable("id") String commendId) {
         return deleteCommentService.deleteComment(slug, commendId);
     }
 }

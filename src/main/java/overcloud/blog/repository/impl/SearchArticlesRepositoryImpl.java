@@ -34,8 +34,10 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         resultList = fetchArticlesFavorite(resultList, favorited);
 
         resultList = entityManager
-                .createQuery("SELECT articles FROM ArticleEntity articles" +
-                                " WHERE articles IN :articles ",
+                .createQuery("""
+                                SELECT articles FROM ArticleEntity articles\
+                                 WHERE articles IN :articles \
+                                """,
                         ArticleEntity.class)
                 .setParameter("articles", resultList)
                 .setFirstResult(plainQueryBuilder.getOffset(page, limit))
@@ -112,9 +114,11 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
 
     private TypedQuery<TagEntity> fetchTagList(String tag) {
         TypedQuery<TagEntity> tagQuery = entityManager
-                .createQuery("SELECT distinct tags FROM TagEntity tags" +
-                                " LEFT JOIN fetch tags.articleTags articleTags " +
-                                " WHERE (tags.name = :tag )",
+                .createQuery("""
+                                SELECT distinct tags FROM TagEntity tags\
+                                 LEFT JOIN fetch tags.articleTags articleTags \
+                                 WHERE (tags.name = :tag )\
+                                """,
                         TagEntity.class)
                 .setParameter("tag", tag);
 

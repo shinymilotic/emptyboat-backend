@@ -12,8 +12,10 @@ import java.util.List;
 @Repository
 public interface FollowRepository extends JpaRepository<FollowEntity, FollowId> {
 
-    @Query(" SELECT f FROM FollowEntity f WHERE" +
-            " f.follower.username = :currentUsername" +
-            " AND f.followee.username = :followingUsername ")
+    @Query("""
+             SELECT f FROM FollowEntity f WHERE\
+             f.follower.username = :currentUsername\
+             AND f.followee.username = :followingUsername \
+            """)
     List<FollowEntity> getFollowing(String currentUsername, String followingUsername);
 }

@@ -21,12 +21,12 @@ public class FollowController {
     }
 
     @PostMapping(ApiConst.PROFILES_USERNAME_FOLLOW)
-    public FollowResponse followUser(@PathVariable("username") String username) {
+    public FollowResponse followUser(@PathVariable String username) {
         return followService.followUser(username);
     }
 
     @DeleteMapping(ApiConst.PROFILES_USERNAME_FOLLOW)
-    public UnfollowResponse unfollowUser(@PathVariable("username") String username) {
+    public UnfollowResponse unfollowUser(@PathVariable String username) {
         return unfollowService.unfollowUser(username);
     }
 }

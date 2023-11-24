@@ -36,7 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -134,7 +135,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticle() throws Exception {
+    void testCreateArticle() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequest();
 
         ArticleResponse articleResponse = null;
@@ -147,11 +148,11 @@ public class CreateArticleTest {
 
         assertEquals(articleResponse.getBody(), articleRequest.getBody());
         assertEquals(articleResponse.getTitle(), articleRequest.getTitle());
-        assertEquals(articleResponse.getSlug(), "testa-dsadcreaatdasdas-earticle");
-        assertEquals(articleResponse.getFavoritesCount(), 0);
-        assertEquals(articleResponse.getAuthor().getUsername(), "thepianist00");
-        assertEquals(articleResponse.getAuthor().getBio(), "A pragmatddsdsadsaic programmerss");
-        assertEquals(articleResponse.getAuthor().getImage(), "https://avatars.githubusercontent.com/u/19252712?s=100&v=100");
+        assertEquals("testa-dsadcreaatdasdas-earticle", articleResponse.getSlug());
+        assertEquals(0, articleResponse.getFavoritesCount());
+        assertEquals("thepianist00", articleResponse.getAuthor().getUsername());
+        assertEquals("A pragmatddsdsadsaic programmerss", articleResponse.getAuthor().getBio());
+        assertEquals("https://avatars.githubusercontent.com/u/19252712?s=100&v=100", articleResponse.getAuthor().getImage());
     }
 
     public void assertApiError(ApiError apiError, String id, String message) {
@@ -168,7 +169,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleEmptyTitle() throws Exception {
+    void testCreateArticleEmptyTitle() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestEmptyTitle();
 
         ArticleResponse articleResponse = null;
@@ -183,7 +184,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleNullTitle() throws Exception {
+    void testCreateArticleNullTitle() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNullTitle();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -197,7 +198,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleNotFitSizeTitle() throws Exception {
+    void testCreateArticleNotFitSizeTitle() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNotFitSizeTitle();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -211,7 +212,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleNullDescription() throws Exception {
+    void testCreateArticleNullDescription() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNullDescription();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -225,7 +226,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleEmptyDescription() throws Exception {
+    void testCreateArticleEmptyDescription() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestEmptyDescription();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -239,7 +240,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleNotFitDescription() throws Exception {
+    void testCreateArticleNotFitDescription() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNotFitDescription();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -253,7 +254,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleNullBody() throws Exception {
+    void testCreateArticleNullBody() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNullBody();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -267,7 +268,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleBlankBody() throws Exception {
+    void testCreateArticleBlankBody() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestBlankBody();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -281,7 +282,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleNullTag() throws Exception {
+    void testCreateArticleNullTag() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNullTag();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -295,7 +296,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleEmptyTag() throws Exception {
+    void testCreateArticleEmptyTag() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestEmptyTag();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -309,7 +310,7 @@ public class CreateArticleTest {
     }
 
     @Test
-    public void testCreateArticleDuplicateTag() throws Exception {
+    void testCreateArticleDuplicateTag() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestDuplicateTag();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;
@@ -321,15 +322,15 @@ public class CreateArticleTest {
 
         assertEquals(articleResponse.getBody(), articleRequest.getBody());
         assertEquals(articleResponse.getTitle(), articleRequest.getTitle());
-        assertEquals(articleResponse.getSlug(), "titlecss");
-        assertEquals(articleResponse.getFavoritesCount(), 0);
-        assertEquals(articleResponse.getAuthor().getUsername(), "thepianist00");
-        assertEquals(articleResponse.getAuthor().getBio(), "A pragmatddsdsadsaic programmerss");
-        assertEquals(articleResponse.getAuthor().getImage(), "https://avatars.githubusercontent.com/u/19252712?s=100&v=100");
+        assertEquals("titlecss", articleResponse.getSlug());
+        assertEquals(0, articleResponse.getFavoritesCount());
+        assertEquals("thepianist00", articleResponse.getAuthor().getUsername());
+        assertEquals("A pragmatddsdsadsaic programmerss", articleResponse.getAuthor().getBio());
+        assertEquals("https://avatars.githubusercontent.com/u/19252712?s=100&v=100", articleResponse.getAuthor().getImage());
     }
 
     @Test
-    public void testCreateArticleNotExistTag() throws Exception {
+    void testCreateArticleNotExistTag() throws Exception {
         ArticleRequest articleRequest = ArticleRequestFactory.createNormalArticleRequestNotExistTag();
         ArticleResponse articleResponse = null;
         ApiError apiError = null;

@@ -23,7 +23,7 @@ spring:
   messages:
     always-use-message-format: false
     basename: messages
-    cache-seconds: '-1'
+    cache-duration: '-1'
     encoding: UTF-8
     fallback-to-system-locale: true
   jpa:
@@ -50,8 +50,8 @@ spring:
     elasticsearch:
       repositories:
         enabled: true
-      cluster-nodes: 192.168.1.7:9200
-      cluster-name:  elasticsearch
+      # cluster-nodes: 192.168.1.7:9200
+      # cluster-name:  elasticsearch
 
   elasticsearch:
     rest:
