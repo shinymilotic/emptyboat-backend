@@ -1,5 +1,6 @@
 package overcloud.blog.application.test.create_test.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import overcloud.blog.application.test.*;
@@ -25,6 +26,7 @@ public class CreateTestServiceImpl implements CreateTestService {
     }
 
     @Override
+    @Transactional
     public String createTest(TestRequest testRequest) {
         List<Question> questions = testRequest.getQuestions();
         LocalDateTime now = LocalDateTime.now();
@@ -34,7 +36,7 @@ public class CreateTestServiceImpl implements CreateTestService {
             String question = questionReq.getQuestion();
             QuestionEntity questionEntity = new QuestionEntity();
             questionEntity.setQuestion(question);
-            questionEntity.setAnswers(answerEntities(questionReq.getAnswers(), now));
+            questionEntity.setAnswers(answerEntities(questionReq.getAnswers(), questionEntity, now));
             questionEntity.setCreatedAt(now);
             questionEntity.setUpdatedAt(now);
             questionEntities.add(questionEntity);
@@ -43,12 +45,14 @@ public class CreateTestServiceImpl implements CreateTestService {
         TestEntity testEntity = new TestEntity();
         testEntity.setTitle(testRequest.getTitle());
         testEntity.setQuestions(questionEntities);
+        testEntity.setCreatedAt(now);
+        testEntity.setUpdatedAt(now);
         testRepository.save(testEntity);
 
         return testRequest.getTitle();
     }
 
-    public List<AnswerEntity> answerEntities(List<Answer> answers, LocalDateTime now) {
+    public List<AnswerEntity> answerEntities(List<Answer> answers, QuestionEntity question, LocalDateTime now) {
         List<AnswerEntity> answerEntities = new ArrayList<>();
 
         for (Answer answer: answers) {
@@ -62,6 +66,7 @@ public class CreateTestServiceImpl implements CreateTestService {
 
             AnswerEntity answerEntity = new AnswerEntity();
             answerEntity.setAnswer(answerContent);
+            answerEntity.setQuestion(question);
             answerEntity.setTruth(truth);
             answerEntity.setCreatedAt(now);
             answerEntity.setUpdatedAt(now);

@@ -1,9 +1,6 @@
 package overcloud.blog.application.test;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import overcloud.blog.application.test.create_test.CreateTestService;
 import overcloud.blog.infrastructure.ApiConst;
 
@@ -11,7 +8,7 @@ import overcloud.blog.infrastructure.ApiConst;
 @RestController
 public class TestController {
 
-    private CreateTestService createTestService;
+    private final CreateTestService createTestService;
 
     public TestController(CreateTestService createTestService) {
         this.createTestService = createTestService;
@@ -25,6 +22,11 @@ public class TestController {
 
     @PostMapping(ApiConst.TEST)
     public String createTest(@RequestBody TestRequest testRequest) {
+        return this.createTestService.createTest(testRequest);
+    }
+
+    @GetMapping(ApiConst.TESTS)
+    public String getTest(@RequestBody TestRequest testRequest) {
         return this.createTestService.createTest(testRequest);
     }
 }

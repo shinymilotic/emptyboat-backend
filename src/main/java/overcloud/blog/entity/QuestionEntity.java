@@ -14,12 +14,13 @@ import java.util.UUID;
 @Table(name = "question", schema = "public")
 public class QuestionEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "question")
     private String question;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<AnswerEntity> answers;
 
     @Column(name = "created_at")

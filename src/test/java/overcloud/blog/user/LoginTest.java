@@ -16,7 +16,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testLogin() throws Exception {
+    void testLogin() throws Exception {
         LoginRequest loginRequest = LoginRequest.builder()
                 .email("trungtin.mai1412@gmail.com")
                 .password("123123123")
@@ -25,7 +25,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testUsernameNotNull() throws Exception {
+    void testUsernameNotNull() throws Exception {
         LoginRequest loginRequest = LoginRequest.builder()
                 .password("123123123")
                 .build();
@@ -33,7 +33,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testUsernameNotEmpty() throws Exception {
+    void testUsernameNotEmpty() throws Exception {
         LoginRequest loginRequest = LoginRequest.builder()
                 .email("")
                 .password("123123123")

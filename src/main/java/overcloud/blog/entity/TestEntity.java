@@ -14,6 +14,7 @@ import java.util.UUID;
 @Table(name = "test", schema = "public")
 public class TestEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "title")
@@ -25,7 +26,7 @@ public class TestEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "test_question",
             joinColumns = @JoinColumn(name = "test_id"),

@@ -12,8 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-//@JsonTypeName("test")
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+@JsonTypeName("test")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class TestRequest {
 
     @JsonProperty("title")

@@ -13,6 +13,7 @@ import java.util.UUID;
 @Table(name = "answer", schema = "public")
 public class AnswerEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne
