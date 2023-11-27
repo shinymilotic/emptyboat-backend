@@ -1,4 +1,4 @@
-package overcloud.blog.application.test;
+package overcloud.blog.application.test.common;
 
 import overcloud.blog.infrastructure.validation.Error;
 

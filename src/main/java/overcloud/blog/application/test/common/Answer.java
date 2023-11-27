@@ -1,4 +1,4 @@
-package overcloud.blog.application.test;
+package overcloud.blog.application.test.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -15,4 +15,11 @@ public class Answer {
 
     @JsonProperty("truth")
     private boolean truth;
+
+    public static Answer answerFactory(String answer, boolean truth) {
+        return Answer.builder()
+                .answer(answer)
+                .truth(truth)
+                .build();
+    }
 }

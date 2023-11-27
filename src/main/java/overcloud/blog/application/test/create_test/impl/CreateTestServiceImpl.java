@@ -3,9 +3,11 @@ package overcloud.blog.application.test.create_test.impl;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import overcloud.blog.application.test.*;
+import overcloud.blog.application.test.common.Answer;
+import overcloud.blog.application.test.common.Question;
+import overcloud.blog.application.test.common.TestError;
+import overcloud.blog.application.test.common.TestRequest;
 import overcloud.blog.application.test.create_test.CreateTestService;
-import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
@@ -31,7 +33,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         List<Question> questions = testRequest.getQuestions();
         LocalDateTime now = LocalDateTime.now();
 
-        Set<QuestionEntity> questionEntities = new HashSet<>();
+        List<QuestionEntity> questionEntities = new ArrayList<>();
         for (Question questionReq: questions) {
             String question = questionReq.getQuestion();
             QuestionEntity questionEntity = new QuestionEntity();

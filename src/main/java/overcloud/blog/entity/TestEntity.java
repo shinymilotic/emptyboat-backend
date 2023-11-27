@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,6 +33,6 @@ public class TestEntity {
             joinColumns = @JoinColumn(name = "test_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id")
     )
-    private Set<QuestionEntity> questions;
+    private List<QuestionEntity> questions;
 
 }
