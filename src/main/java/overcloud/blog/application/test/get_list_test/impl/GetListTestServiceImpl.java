@@ -30,8 +30,9 @@ public class GetListTestServiceImpl implements GetListTestService {
         for (TestEntity testEntity: testEntities) {
             List<QuestionEntity> questionEntities = testEntity.getQuestions();
             String title = testEntity.getTitle();
+            String slug = testEntity.getSlug();
             List<Question> questions = getQuestions(questionEntities);
-            TestResponse testResponse = TestResponse.testResponseFactory(title, questions);
+            TestResponse testResponse = TestResponse.testResponseFactory(title, slug, questions);
             responses.add(testResponse);
         }
 

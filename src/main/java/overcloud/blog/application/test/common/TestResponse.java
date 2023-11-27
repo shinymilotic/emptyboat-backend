@@ -13,13 +13,15 @@ import java.util.List;
 public class TestResponse {
     @JsonProperty("title")
     private String title;
-
+    @JsonProperty("slug")
+    private String slug;
     @JsonProperty("questions")
     private List<Question> questions;
 
-    public static TestResponse testResponseFactory(String title, List<Question> questions) {
+    public static TestResponse testResponseFactory(String title, String slug, List<Question> questions) {
         return TestResponse.builder()
                 .title(title)
+                .slug(slug)
                 .questions(questions)
                 .build();
     }

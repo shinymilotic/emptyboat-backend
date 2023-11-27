@@ -3,6 +3,7 @@ package overcloud.blog.application.test.create_test.impl;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import overcloud.blog.application.article.core.utils.ArticleUtils;
 import overcloud.blog.application.test.common.Answer;
 import overcloud.blog.application.test.common.Question;
 import overcloud.blog.application.test.common.TestError;
@@ -47,6 +48,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         TestEntity testEntity = new TestEntity();
         testEntity.setTitle(testRequest.getTitle());
         testEntity.setQuestions(questionEntities);
+        testEntity.setSlug(ArticleUtils.toSlug(testRequest.getTitle()));
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);
         testRepository.save(testEntity);

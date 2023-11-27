@@ -33,7 +33,7 @@ public class TestController {
     }
 
     @GetMapping(ApiConst.TESTS)
-    public TestListResponse getTest(@RequestBody TestRequest testRequest) {
+    public TestListResponse getTest() {
         return this.getListTestService.getListTest();
     }
 }
