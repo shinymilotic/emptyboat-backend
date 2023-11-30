@@ -69,9 +69,12 @@ public class JwtUtils {
     }
 
     public String generateRefreshToken( String subject) {
+        Instant exp = Instant.now();
+
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(exp.toEpochMilli() + validRefreshTokenSeconds*1000))
                 .signWith(key).compact();
     }
 

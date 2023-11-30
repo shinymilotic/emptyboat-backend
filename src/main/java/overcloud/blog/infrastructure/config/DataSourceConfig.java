@@ -13,11 +13,10 @@ public class DataSourceConfig {
         StringBuilder connectionString = new StringBuilder();
         connectionString.append("jdbc:postgresql://192.168.1.7:5432/realworld");
 
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.postgresql.Driver");
-        dataSourceBuilder.url(connectionString.toString());
-        dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("123123");
-        return dataSourceBuilder.build();
+        return DataSourceBuilder.create()
+            .driverClassName("org.postgresql.Driver")
+            .url(connectionString.toString())
+            .username("postgres")
+            .password("123123").build();
     }
 }

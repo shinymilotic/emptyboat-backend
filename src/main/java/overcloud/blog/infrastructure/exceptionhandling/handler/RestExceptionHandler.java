@@ -2,7 +2,6 @@ package overcloud.blog.infrastructure.exceptionhandling.handler;
 
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
-@Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidDataException.class)
