@@ -14,7 +14,6 @@ import overcloud.blog.repository.FavoriteRepository;
 import overcloud.blog.entity.ArticleTag;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.application.user.core.UserError;
-import overcloud.blog.application.user.follow.core.utils.FollowUtils;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 

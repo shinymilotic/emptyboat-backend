@@ -7,7 +7,6 @@ import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.UserResponse;
 import overcloud.blog.application.user.core.UserResponseMapper;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.security.service.JwtUtils;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
 @Service
