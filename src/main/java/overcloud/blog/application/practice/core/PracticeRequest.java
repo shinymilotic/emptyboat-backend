@@ -1,7 +1,6 @@
 package overcloud.blog.application.practice.core;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

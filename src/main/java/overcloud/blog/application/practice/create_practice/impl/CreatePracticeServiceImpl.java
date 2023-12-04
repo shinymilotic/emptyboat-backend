@@ -69,7 +69,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
             choiceEntities.add(choiceEntity);
         }
 
-        practiceChoiceRepository.saveAll((Iterable)choiceEntities);
+        practiceChoiceRepository.saveAll((Iterable<PracticeChoiceEntity>)choiceEntities);
         practiceRepository.save(practiceEntity);
 
         return true;

@@ -1,7 +1,5 @@
 package overcloud.blog.article.update;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -11,33 +9,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.repository.ArticleRepository;
 import overcloud.blog.application.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.application.article.update_article.UpdateArticleRequest;
-import overcloud.blog.application.article.update_article.UpdateArticleResponse;
 import overcloud.blog.application.article.update_article.UpdateArticleService;
 import overcloud.blog.application.tag.core.repository.TagRepository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.application.user.core.repository.UserRepository;
-import overcloud.blog.article.ArticleEntityFactory;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateArticleTest {
