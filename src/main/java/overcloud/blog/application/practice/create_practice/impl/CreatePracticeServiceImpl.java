@@ -41,9 +41,9 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     }
 
     @Override
-    public boolean createPractice(PracticeRequest practiceRequest) {
+    public void createPractice(PracticeRequest practiceRequest) {
         List<String> answerIds = practiceRequest.getAnswerIds();
-        UUID testId = UUID.fromString(practiceRequest.getTestId());
+        String slug = practiceRequest.getSlug();
         List<String> choices = practiceRequest.getAnswerIds();
         if(answerIds == null || answerIds.isEmpty()) {
             throw new InvalidDataException(null);
@@ -53,10 +53,12 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
                 
-        Optional<TestEntity> testEntity = testRepository.findById(testId);
+        Optional<TestEntity> testEntity = testRepository.findBySlug(slug);
+
         if (!testEntity.isPresent()) {
             //throw exception
         }
+        
         PracticeEntity practiceEntity = new PracticeEntity();
         practiceEntity.setTest(testEntity.get());
         practiceEntity.setTester(currentUser);
@@ -71,8 +73,6 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
 
         practiceChoiceRepository.saveAll((Iterable<PracticeChoiceEntity>)choiceEntities);
         practiceRepository.save(practiceEntity);
-
-        return true;
     }
     
 }

@@ -15,9 +15,9 @@ import lombok.Setter;
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class PracticeRequest {
-    @JsonProperty("test_id")
-    private String testId;
+    @JsonProperty("slug")
+    private String slug;
 
-    @JsonProperty("choices")
+    @JsonProperty("answers")
     private List<String> answerIds;
 }

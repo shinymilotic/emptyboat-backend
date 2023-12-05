@@ -7,12 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.TestEntity;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface TestRepository extends JpaRepository<TestEntity, UUID> {
     @Query("SELECT t FROM TestEntity t WHERE t.slug = :slug")
-    TestEntity findBySlug(@Param("slug") String slug);
+    Optional<TestEntity> findBySlug(@Param("slug") String slug);
 
     @Modifying
     @Query("DELETE FROM TestEntity t WHERE t.slug = :slug")

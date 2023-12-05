@@ -12,6 +12,7 @@ import overcloud.blog.repository.TestRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GetTestServiceImpl implements GetTestService {
@@ -24,19 +25,19 @@ public class GetTestServiceImpl implements GetTestService {
 
     @Override
     public TestResponse getTest(String slug) {
-        TestEntity testEntity = this.testRepository.findBySlug(slug);
+        Optional<TestEntity> testEntity = this.testRepository.findBySlug(slug);
 
-        if(testEntity == null) {
+        if(!testEntity.isPresent()) {
             // do something...
         }
 
-        String titleDB = testEntity.getTitle();
-        String slugDB = testEntity.getSlug();
+        String titleDB = testEntity.get().getTitle();
+        String slugDB = testEntity.get().getSlug();
 
         return TestResponse.testResponseFactory(
                 titleDB,
                 slugDB,
-                getQuestions(testEntity.getQuestions()));
+                getQuestions(testEntity.get().getQuestions()));
     }
 
     public List<Question> getQuestions(List<QuestionEntity> questionEntities) {
