@@ -17,7 +17,7 @@ public class PracticeController {
 
     @PostMapping(ApiConst.PRACTICE)
     public void practice(PracticeRequest practiceRequest) {
-        return createPracticeService.createPractice(practiceRequest);
+        createPracticeService.createPractice(practiceRequest);
     }
     
 }
