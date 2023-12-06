@@ -1,5 +1,6 @@
 package overcloud.blog.application.practice.create_practice.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,8 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         List<String> answerIds = practiceRequest.getAnswerIds();
         String slug = practiceRequest.getSlug();
         List<String> choices = practiceRequest.getAnswerIds();
+        LocalDateTime now = LocalDateTime.now();
+
         if(answerIds == null || answerIds.isEmpty()) {
             throw new InvalidDataException(null);
         }
@@ -62,17 +65,17 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         PracticeEntity practiceEntity = new PracticeEntity();
         practiceEntity.setTest(testEntity.get());
         practiceEntity.setTester(currentUser);
+        practiceEntity.setCreatedAt(now);
+        practiceEntity = practiceRepository.save(practiceEntity);
 
         List<PracticeChoiceEntity> choiceEntities = new ArrayList<>();
         for (String choice : choices) {
             PracticeChoiceEntity choiceEntity = new PracticeChoiceEntity();
             choiceEntity.setAnswerId(UUID.fromString(choice));
-            choiceEntity.setPractice(practiceEntity);
+            choiceEntity.setPracticeId(practiceEntity.getId());
             choiceEntities.add(choiceEntity);
         }
-
         practiceChoiceRepository.saveAll((Iterable<PracticeChoiceEntity>)choiceEntities);
-        practiceRepository.save(practiceEntity);
     }
     
 }

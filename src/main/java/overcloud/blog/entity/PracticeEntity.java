@@ -1,5 +1,6 @@
 package overcloud.blog.entity;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -22,4 +23,7 @@ public class PracticeEntity {
     @ManyToOne
     @JoinColumn(name = "test_id")
     private TestEntity test;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }

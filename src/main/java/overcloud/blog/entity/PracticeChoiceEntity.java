@@ -19,7 +19,6 @@ public class PracticeChoiceEntity {
     @Column(name = "answer_id")
     private UUID answerId;
 
-    @ManyToOne
-    @JoinColumn(name = "practice_id")
-    private PracticeEntity practice;
+    @Column(name = "practice_id")
+    private UUID practiceId;
 }

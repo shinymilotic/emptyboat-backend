@@ -43,4 +43,6 @@ public class ApiConst {
     public static final String TESTS_SLUG = "/tests/{slug}";
 
     public static final String PRACTICE = "/practice";
+
+    public static final String USER_PRACTICES = "/practices/{username}";
 }

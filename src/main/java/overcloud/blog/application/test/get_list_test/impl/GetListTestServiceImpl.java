@@ -13,6 +13,7 @@ import overcloud.blog.repository.TestRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GetListTestServiceImpl implements GetListTestService {
@@ -42,9 +43,10 @@ public class GetListTestServiceImpl implements GetListTestService {
     public List<Answer> getAnswers(List<AnswerEntity> answerEntities) {
         List<Answer> answers = new ArrayList<>();
         for (AnswerEntity answerEntity : answerEntities) {
+            UUID id = answerEntity.getId();
             String answer = answerEntity.getAnswer();
             boolean truth = answerEntity.isTruth();
-            answers.add(Answer.answerFactory(answer, truth));
+            answers.add(Answer.answerFactory(id.toString(), answer, truth));
         }
 
         return answers;
