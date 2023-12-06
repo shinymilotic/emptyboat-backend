@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.kafka.common.Uuid;
 import org.springframework.stereotype.Service;
 
 import overcloud.blog.application.practice.core.PracticeRequest;
