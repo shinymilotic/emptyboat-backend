@@ -39,8 +39,8 @@ public class TestController {
     * */
 
     @PostMapping(ApiConst.TEST)
-    public String createTest(@RequestBody TestRequest testRequest) {
-        return this.createTestService.createTest(testRequest);
+    public void createTest(@RequestBody TestRequest testRequest) {
+        this.createTestService.createTest(testRequest);
     }
 
     @GetMapping(ApiConst.TESTS)

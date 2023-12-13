@@ -31,7 +31,7 @@ public class CreateTestServiceImpl implements CreateTestService {
 
     @Override
     @Transactional
-    public String createTest(TestRequest testRequest) {
+    public void createTest(TestRequest testRequest) {
         List<Question> questions = testRequest.getQuestions();
         LocalDateTime now = LocalDateTime.now();
 
@@ -56,8 +56,6 @@ public class CreateTestServiceImpl implements CreateTestService {
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);
         testRepository.save(testEntity);
-
-        return testRequest.getTitle();
     }
 
     public List<AnswerEntity> answerEntities(List<Answer> answers, QuestionEntity question, LocalDateTime now) {
