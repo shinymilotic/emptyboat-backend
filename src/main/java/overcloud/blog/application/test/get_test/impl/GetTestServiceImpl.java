@@ -3,6 +3,8 @@ package overcloud.blog.application.test.get_test.impl;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.test.common.Answer;
 import overcloud.blog.application.test.common.ChoiceQuestion;
+import overcloud.blog.application.test.common.EssayQuestion;
+import overcloud.blog.application.test.common.Question;
 import overcloud.blog.application.test.common.TestResponse;
 import overcloud.blog.application.test.get_test.GetTestService;
 import overcloud.blog.entity.AnswerEntity;
@@ -41,12 +43,23 @@ public class GetTestServiceImpl implements GetTestService {
                 getQuestions(testEntity.get().getQuestions()));
     }
 
-    public List<ChoiceQuestion> getQuestions(List<QuestionEntity> questionEntities) {
-        List<ChoiceQuestion> questions = new ArrayList<>();
+    public List<Question> getQuestions(List<QuestionEntity> questionEntities) {
+        List<Question> questions = new ArrayList<>();
 
         for (QuestionEntity questionEntity: questionEntities) {
-            ChoiceQuestion question = ChoiceQuestion.questionFactory(questionEntity.getQuestion(), getAnswers(questionEntity));
-            questions.add(question);
+            if (questionEntity.getQuestionType() == 1) {
+                ChoiceQuestion question = ChoiceQuestion.questionFactory(
+                    questionEntity.getId().toString(),
+                    questionEntity.getQuestion(),
+                    getAnswers(questionEntity));
+                questions.add(question);
+            } else if (questionEntity.getQuestionType() == 2) {
+                EssayQuestion question = EssayQuestion.questionFactory(
+                    questionEntity.getId().toString(),
+                    questionEntity.getQuestion());
+                questions.add(question);
+            }
+
         }
 
         return questions;

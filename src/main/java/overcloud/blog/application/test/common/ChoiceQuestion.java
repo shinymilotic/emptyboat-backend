@@ -18,6 +18,9 @@ import java.util.List;
 @NoArgsConstructor
 @JsonDeserialize(as = ChoiceQuestion.class)
 public class ChoiceQuestion implements Question {
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("question")
     private String question;
 
@@ -27,7 +30,7 @@ public class ChoiceQuestion implements Question {
     @JsonProperty("answers")
     private List<Answer> answers;
 
-    public static ChoiceQuestion questionFactory(String question, List<Answer> answers) {
-        return new ChoiceQuestion(question, 1, answers);
+    public static ChoiceQuestion questionFactory(String id, String question, List<Answer> answers) {
+        return new ChoiceQuestion(id, question, 1, answers);
     }
 }

@@ -3,6 +3,8 @@ package overcloud.blog.application.test.get_list_test.impl;
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.test.common.Answer;
 import overcloud.blog.application.test.common.ChoiceQuestion;
+import overcloud.blog.application.test.common.EssayQuestion;
+import overcloud.blog.application.test.common.Question;
 import overcloud.blog.application.test.common.TestListResponse;
 import overcloud.blog.application.test.common.TestResponse;
 import overcloud.blog.application.test.get_list_test.GetListTestService;
@@ -32,7 +34,7 @@ public class GetListTestServiceImpl implements GetListTestService {
             List<QuestionEntity> questionEntities = testEntity.getQuestions();
             String title = testEntity.getTitle();
             String slug = testEntity.getSlug();
-            List<ChoiceQuestion> questions = getQuestions(questionEntities);
+            List<Question> questions = getQuestions(questionEntities);
             TestResponse testResponse = TestResponse.testResponseFactory(title, slug, questions);
             responses.add(testResponse);
         }
@@ -52,13 +54,23 @@ public class GetListTestServiceImpl implements GetListTestService {
         return answers;
     }
 
-    public List<ChoiceQuestion> getQuestions(List<QuestionEntity> questionEntities) {
-        List<ChoiceQuestion> questions = new ArrayList<>();
+    public List<Question> getQuestions(List<QuestionEntity> questionEntities) {
+        List<Question> questions = new ArrayList<>();
 
         for (QuestionEntity questionEntity: questionEntities) {
-            ChoiceQuestion question = ChoiceQuestion.questionFactory(questionEntity.getQuestion(),
+            if (questionEntity.getQuestionType() == 1) {
+                ChoiceQuestion question = ChoiceQuestion.questionFactory(
+                    questionEntity.getId().toString(),
+                    questionEntity.getQuestion(),
                     getAnswers(questionEntity.getAnswers()));
-            questions.add(question);
+                questions.add(question);
+            } else if (questionEntity.getQuestionType() == 2) {
+                EssayQuestion question = EssayQuestion.questionFactory(
+                    questionEntity.getId().toString(),
+                    questionEntity.getQuestion());
+                questions.add(question);
+            }
+
         }
 
         return questions;

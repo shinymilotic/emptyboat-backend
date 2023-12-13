@@ -12,14 +12,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonDeserialize(as = EssayQuestion.class)
 public class EssayQuestion implements Question {
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("question")
     private String question;
 
     @JsonProperty("questionType")
     private int questionType;
 
-    public static EssayQuestion questionFactory(String question) {
-        return new EssayQuestion(question, 2);
+    public static EssayQuestion questionFactory(String id, String question) {
+        return new EssayQuestion(id, question, 2);
     }
-
 }

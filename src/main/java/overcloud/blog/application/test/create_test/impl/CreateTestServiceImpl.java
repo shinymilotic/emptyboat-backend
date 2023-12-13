@@ -44,6 +44,7 @@ public class CreateTestServiceImpl implements CreateTestService {
                 ChoiceQuestion choiceQuestion = (ChoiceQuestion) questionReq;
                 questionEntity.setAnswers(answerEntities(choiceQuestion.getAnswers(), questionEntity, now));
             }
+            questionEntity.setQuestionType(questionReq.getQuestionType());
             questionEntity.setCreatedAt(now);
             questionEntity.setUpdatedAt(now);
             questionEntities.add(questionEntity);
