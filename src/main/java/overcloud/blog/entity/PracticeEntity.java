@@ -1,6 +1,7 @@
 package overcloud.blog.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -16,14 +17,22 @@ public class PracticeEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "tester_id")
-    private UserEntity tester;
+    @Column(name = "tester_id")
+    private UUID testerId;
 
-    @ManyToOne
-    @JoinColumn(name = "test_id")
-    private TestEntity test;
+    @Column(name = "test_id")
+    private UUID testId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "score")
+    private int score;
+
+    @ManyToOne
+    @JoinColumn(name = "test_id", insertable =  false, updatable = false)
+    private TestEntity test;
+
+    @OneToMany(mappedBy = "practice", orphanRemoval = true)
+    private List<PracticeChoiceEntity> choices;
 }

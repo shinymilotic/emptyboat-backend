@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import overcloud.blog.application.article.core.utils.ArticleUtils;
 import overcloud.blog.application.test.common.Answer;
+import overcloud.blog.application.test.common.ChoiceQuestion;
 import overcloud.blog.application.test.common.Question;
 import overcloud.blog.application.test.common.TestError;
 import overcloud.blog.application.test.common.TestRequest;
@@ -39,7 +40,10 @@ public class CreateTestServiceImpl implements CreateTestService {
             String question = questionReq.getQuestion();
             QuestionEntity questionEntity = new QuestionEntity();
             questionEntity.setQuestion(question);
-            questionEntity.setAnswers(answerEntities(questionReq.getAnswers(), questionEntity, now));
+            if (questionReq.getQuestionType() == 1) {
+                ChoiceQuestion choiceQuestion = (ChoiceQuestion) questionReq;
+                questionEntity.setAnswers(answerEntities(choiceQuestion.getAnswers(), questionEntity, now));
+            }
             questionEntity.setCreatedAt(now);
             questionEntity.setUpdatedAt(now);
             questionEntities.add(questionEntity);

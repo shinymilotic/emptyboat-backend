@@ -7,15 +7,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import overcloud.blog.application.practice.core.PracticeRequest;
+import overcloud.blog.application.practice.core.UserPracticeResponse;
 import overcloud.blog.application.practice.create_practice.CreatePracticeService;
+import overcloud.blog.application.practice.get_practices.UserPracticeService;
 import overcloud.blog.infrastructure.ApiConst;
 
 @RestController
 public class PracticeController {
     private final CreatePracticeService createPracticeService;
 
-    PracticeController(CreatePracticeService createPracticeService) {
+    private final UserPracticeService userPracticeService;
+
+    PracticeController(CreatePracticeService createPracticeService, UserPracticeService userPracticeService) {
         this.createPracticeService = createPracticeService;
+        this.userPracticeService = userPracticeService;
     }
 
     @PostMapping(ApiConst.PRACTICE)
@@ -24,7 +29,7 @@ public class PracticeController {
     }
 
     @GetMapping(ApiConst.USER_PRACTICES)
-    public void practice(@PathVariable("username") String username) {
-        //createPracticeService.createPractice(practiceRequest);
+    public UserPracticeResponse getUserPractice(@PathVariable("username") String username) {
+        return userPracticeService.getUserPractice(username);
     }
 }

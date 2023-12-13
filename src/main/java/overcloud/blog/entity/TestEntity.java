@@ -37,4 +37,6 @@ public class TestEntity {
     )
     private List<QuestionEntity> questions;
 
+    @OneToMany(mappedBy = "test", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<PracticeEntity> practices;
 }

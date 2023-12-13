@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.TestEntity;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,6 +19,9 @@ public interface TestRepository extends JpaRepository<TestEntity, UUID> {
 
     @Modifying
     @Query("DELETE FROM TestEntity t WHERE t.slug = :slug")
-    void deleteBySlug(@Param("slug") String slug);
+    void deleteBySlug(@Param("slug") String slug); 
+
+    // @Query(" SELECT p.test FROM TestEntity t WHERE p.testId IN (:pIdList) ")
+    // List<TestEntity> findAllById(@Param("pIdList") List<UUID> pIdList);
 }
 

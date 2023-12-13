@@ -21,4 +21,8 @@ public class PracticeChoiceEntity {
 
     @Column(name = "practice_id")
     private UUID practiceId;
+
+    @ManyToOne
+    @JoinColumn(name = "practice_id", insertable = false, updatable = false)
+    private PracticeEntity practice;
 }

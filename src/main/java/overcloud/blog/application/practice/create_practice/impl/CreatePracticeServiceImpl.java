@@ -62,8 +62,8 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         }
         
         PracticeEntity practiceEntity = new PracticeEntity();
-        practiceEntity.setTest(testEntity.get());
-        practiceEntity.setTester(currentUser);
+        practiceEntity.setTestId(testEntity.get().getId());
+        practiceEntity.setTesterId(currentUser.getId());
         practiceEntity.setCreatedAt(now);
         practiceEntity = practiceRepository.save(practiceEntity);
 

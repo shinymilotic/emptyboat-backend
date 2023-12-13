@@ -1,26 +1,12 @@
 package overcloud.blog.application.test.common;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import java.util.List;
+@JsonDeserialize(using = QuestionDeserializer.class)
+public interface Question {
+    String getQuestion();
+    void setQuestion(String question);
 
-@Getter
-@Setter
-@Builder
-public class Question {
-    @JsonProperty("question")
-    private String question;
-
-    @JsonProperty("answers")
-    private List<Answer> answers;
-
-    public static Question questionFactory(String question, List<Answer> answers) {
-        return Question.builder()
-                .question(question)
-                .answers(answers)
-                .build();
-    }
+    int getQuestionType();
+    void setQuestionType(int questionType);
 }

@@ -16,9 +16,9 @@ public class TestResponse {
     @JsonProperty("slug")
     private String slug;
     @JsonProperty("questions")
-    private List<Question> questions;
+    private List<ChoiceQuestion> questions;
 
-    public static TestResponse testResponseFactory(String title, String slug, List<Question> questions) {
+    public static TestResponse testResponseFactory(String title, String slug, List<ChoiceQuestion> questions) {
         return TestResponse.builder()
                 .title(title)
                 .slug(slug)

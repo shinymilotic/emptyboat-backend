@@ -2,7 +2,7 @@ package overcloud.blog.application.test.get_list_test.impl;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.application.test.common.Answer;
-import overcloud.blog.application.test.common.Question;
+import overcloud.blog.application.test.common.ChoiceQuestion;
 import overcloud.blog.application.test.common.TestListResponse;
 import overcloud.blog.application.test.common.TestResponse;
 import overcloud.blog.application.test.get_list_test.GetListTestService;
@@ -32,7 +32,7 @@ public class GetListTestServiceImpl implements GetListTestService {
             List<QuestionEntity> questionEntities = testEntity.getQuestions();
             String title = testEntity.getTitle();
             String slug = testEntity.getSlug();
-            List<Question> questions = getQuestions(questionEntities);
+            List<ChoiceQuestion> questions = getQuestions(questionEntities);
             TestResponse testResponse = TestResponse.testResponseFactory(title, slug, questions);
             responses.add(testResponse);
         }
@@ -52,11 +52,11 @@ public class GetListTestServiceImpl implements GetListTestService {
         return answers;
     }
 
-    public List<Question> getQuestions(List<QuestionEntity> questionEntities) {
-        List<Question> questions = new ArrayList<>();
+    public List<ChoiceQuestion> getQuestions(List<QuestionEntity> questionEntities) {
+        List<ChoiceQuestion> questions = new ArrayList<>();
 
         for (QuestionEntity questionEntity: questionEntities) {
-            Question question = Question.questionFactory(questionEntity.getQuestion(),
+            ChoiceQuestion question = ChoiceQuestion.questionFactory(questionEntity.getQuestion(),
                     getAnswers(questionEntity.getAnswers()));
             questions.add(question);
         }
