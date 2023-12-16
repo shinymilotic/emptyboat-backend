@@ -18,6 +18,9 @@ public class PracticeRequest {
     @JsonProperty("slug")
     private String slug;
 
-    @JsonProperty("answers")
-    private List<String> answerIds;
+    @JsonProperty("choiceAnswers")
+    private List<String> choiceAnswers;
+
+    @JsonProperty("essayAnswers")
+    private List<EssayAnswer> essayAnswers;
 }
