@@ -24,8 +24,8 @@ public class PracticeController {
     }
 
     @PostMapping(ApiConst.PRACTICE)
-    public void practice(@RequestBody PracticeRequest practiceRequest) {
-        createPracticeService.createPractice(practiceRequest);
+    public String practice(@RequestBody PracticeRequest practiceRequest) {
+        return createPracticeService.createPractice(practiceRequest);
     }
 
     @GetMapping(ApiConst.USER_PRACTICES)

@@ -47,7 +47,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     }
 
     @Override
-    public void createPractice(PracticeRequest practiceRequest) {
+    public String createPractice(PracticeRequest practiceRequest) {
         String slug = practiceRequest.getSlug();
         List<String> choices = practiceRequest.getChoiceAnswers();
         List<EssayAnswer> essayAnswers = practiceRequest.getEssayAnswers();
@@ -92,5 +92,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         }
         practiceChoiceRepository.saveAll((Iterable<PracticeChoiceEntity>)choiceEntities);
         essayAnswerRepository.saveAll((Iterable<EssayAnswerEntity>) essayAnswerEntities);
+
+        return slug;
     }
 }
