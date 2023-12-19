@@ -12,10 +12,14 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.application.practice.core.PracticeResponse;
 import overcloud.blog.application.practice.core.UserPracticeResponse;
 import overcloud.blog.application.practice.get_practices.UserPracticeService;
+import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.repository.UserRepository;
+import overcloud.blog.datetime.DateTimeService;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.repository.PracticeRepository;
 import overcloud.blog.repository.TestRepository;
 
@@ -23,51 +27,44 @@ import overcloud.blog.repository.TestRepository;
 public class UserPraticeServiceImpl implements UserPracticeService{
 
     private final PracticeRepository practiceRepository;
-
     private final UserRepository userRepository;
-
     private final TestRepository testRepository;
+    private final DateTimeService dateTimeService;
 
     UserPraticeServiceImpl(PracticeRepository practiceRepository,
         UserRepository userRepository,
-        TestRepository testRepository) {
+        TestRepository testRepository,
+        DateTimeService dateTimeService) {
         this.practiceRepository = practiceRepository;
         this.userRepository = userRepository;
         this.testRepository = testRepository;
+        this.dateTimeService = dateTimeService;
     }
 
     @Override
     public UserPracticeResponse getUserPractice(String username) {
-        // UserEntity user = userRepository.findByUsername(username);
+        UserPracticeResponse response = new UserPracticeResponse();
+        UserEntity user = userRepository.findByUsername(username);
 
-        // if (user == null) {
-        //     // throw
-        // }
+        if (user == null) {
+            // throw
+            throw new InvalidDataException(UserError.USER_NOT_FOUND);
+        }
 
-        // List<PracticeEntity> practices = practiceRepository.findByTesterId(user.getId());
-        // List<UUID> pIdList = new ArrayList<UUID>();
-        // for (PracticeEntity practiceEntity : practices) {
-        //     pIdList.add(practiceEntity.getId());
-        // }
-        // List<TestEntity> tests = practiceRepository.findAllById(pIdList);
-        // tests,
+        List<PracticeEntity> practices = practiceRepository.findByTesterId(user.getId());
 
-        // UserPracticeResponse response = new UserPracticeResponse();
+        List<PracticeResponse> practiceResponseList = new ArrayList<>();
+        for (PracticeEntity practiceEntity : practices) {
+            TestEntity test = practiceEntity.getTest();
+            PracticeResponse practice = PracticeResponse.builder()
+                .testTitle(test.getTitle())
+                .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
+                .score(practiceEntity.getScore()).build();
+            practiceResponseList.add(practice);
+        }
+        response.setPractices(practiceResponseList);
 
-        // List<PracticeResponse> practiceResponseList = new ArrayList<>();
-        // for (PracticeEntity practiceEntity : practices) {
-        //     TestEntity test = testMap.get(practiceEntity.getId());
-        //     LocalDateTime createdAt = testMap.get(practiceEntity.getId()).getCreatedAt();
-        //     PracticeResponse practice = PracticeResponse.builder()
-        //         .testTitle(test.getTitle())
-        //         .date(createdAt)
-        //         .score(practiceEntity.getScore()).build();
-        //     practiceResponseList.add(practice);
-        // }
-        // response.setPractices(practiceResponseList);
-
-        // return response;
-        return null;
+        return response;
     }
     
 }

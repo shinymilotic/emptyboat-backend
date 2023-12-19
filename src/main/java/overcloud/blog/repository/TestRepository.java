@@ -20,8 +20,5 @@ public interface TestRepository extends JpaRepository<TestEntity, UUID> {
     @Modifying
     @Query("DELETE FROM TestEntity t WHERE t.slug = :slug")
     void deleteBySlug(@Param("slug") String slug); 
-
-    // @Query(" SELECT p.test FROM TestEntity t WHERE p.testId IN (:pIdList) ")
-    // List<TestEntity> findAllById(@Param("pIdList") List<UUID> pIdList);
 }
 

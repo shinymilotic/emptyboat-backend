@@ -54,11 +54,11 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         LocalDateTime now = LocalDateTime.now();
 
         if(choices == null || choices.isEmpty()) {
-            throw new InvalidDataException(null);
+            // throw new InvalidDataException(null);
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .orElseThrow(() -> new InvalidDataException(UserError.USER_NOT_FOUND))
                 .getUser();
                 
         Optional<TestEntity> testEntity = testRepository.findBySlug(slug);

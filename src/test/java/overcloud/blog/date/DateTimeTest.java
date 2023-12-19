@@ -12,6 +12,7 @@ public class DateTimeTest {
     @Test
     public void hello() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateTimeFormat.ddMMyyyyHHmm);
-        System.out.println(LocalDateTime.now().format(formatter).toString());
+        String date = LocalDateTime.now().format(formatter).toString();
+        System.out.println("fsafsafasfsa");
     }
 }

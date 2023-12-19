@@ -16,7 +16,7 @@ public class PracticeResponse {
     private String testTitle;
 
     @JsonProperty("date")
-    private LocalDateTime date;
+    private String date;
 
     @JsonProperty("score")
     private int score;
