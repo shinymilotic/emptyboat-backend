@@ -6,5 +6,5 @@ import overcloud.blog.application.practice.core.PracticeRequest;
 
 @Service
 public interface CreatePracticeService {
-    String createPractice(PracticeRequest practiceRequest);
+    void createPractice(PracticeRequest practiceRequest);
 }

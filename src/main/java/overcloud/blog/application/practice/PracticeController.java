@@ -1,5 +1,6 @@
 package overcloud.blog.application.practice;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import overcloud.blog.application.practice.create_practice.CreatePracticeService
 import overcloud.blog.application.practice.get_practices.UserPracticeService;
 import overcloud.blog.infrastructure.ApiConst;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class PracticeController {
     private final CreatePracticeService createPracticeService;
@@ -24,8 +26,8 @@ public class PracticeController {
     }
 
     @PostMapping(ApiConst.PRACTICE)
-    public String practice(@RequestBody PracticeRequest practiceRequest) {
-        return createPracticeService.createPractice(practiceRequest);
+    public void practice(@RequestBody PracticeRequest practiceRequest) {
+        createPracticeService.createPractice(practiceRequest);
     }
 
     @GetMapping(ApiConst.USER_PRACTICES)
