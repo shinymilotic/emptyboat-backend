@@ -1,7 +1,5 @@
 package overcloud.blog.application.practice.core;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;

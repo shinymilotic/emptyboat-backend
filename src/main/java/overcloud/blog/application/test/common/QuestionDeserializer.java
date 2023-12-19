@@ -1,9 +1,6 @@
 package overcloud.blog.application.test.common;
 
 import java.io.IOException;
-
-import org.apache.logging.log4j.CloseableThreadContext.Instance;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -21,7 +18,7 @@ public class QuestionDeserializer extends JsonDeserializer<Question>{
             instanceClass = ChoiceQuestion.class;
         } else if (root.get("questionType").asInt() == 2) { 
             instanceClass = EssayQuestion.class;
-        }   
+        }
         if (instanceClass == null){
             return null;
         }

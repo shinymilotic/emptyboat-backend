@@ -18,7 +18,6 @@ import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.repository.EssayAnswerRepository;
 import overcloud.blog.repository.PracticeChoiceRepository;

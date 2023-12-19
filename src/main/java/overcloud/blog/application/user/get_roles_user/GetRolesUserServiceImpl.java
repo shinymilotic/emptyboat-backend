@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.application.role.core.RoleRepository;
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.application.user.core.UserError;
 import overcloud.blog.application.user.core.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -17,12 +19,9 @@ public class GetRolesUserServiceImpl implements  GetRolesUserService {
 
     private final RoleRepository roleRepository;
 
-    private final UserRoleMapper mapper;
     public GetRolesUserServiceImpl(UserRepository userRepository,
-                                   UserRoleMapper mapper,
                                    RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.mapper = mapper;
         this.roleRepository = roleRepository;
     }
 
@@ -33,6 +32,7 @@ public class GetRolesUserServiceImpl implements  GetRolesUserService {
 
         if(user == null) {
             // do something
+            throw new InvalidDataException(UserError.USER_NOT_FOUND);
         }
         Set<RoleEntity> rolesUser =  user.getRoles();
 
