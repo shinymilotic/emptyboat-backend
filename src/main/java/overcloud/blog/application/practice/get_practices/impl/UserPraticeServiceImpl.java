@@ -34,9 +34,7 @@ public class UserPraticeServiceImpl implements UserPracticeService{
     public UserPracticeResponse getUserPractice(String username) {
         UserPracticeResponse response = new UserPracticeResponse();
         UserEntity user = userRepository.findByUsername(username);
-
         if (user == null) {
-            // throw
             throw new InvalidDataException(UserError.USER_NOT_FOUND);
         }
 
@@ -46,6 +44,7 @@ public class UserPraticeServiceImpl implements UserPracticeService{
         for (PracticeEntity practiceEntity : practices) {
             TestEntity test = practiceEntity.getTest();
             PracticeResponse practice = PracticeResponse.builder()
+                .id(practiceEntity.getId().toString())
                 .testTitle(test.getTitle())
                 .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
                 .score(practiceEntity.getScore()).build();

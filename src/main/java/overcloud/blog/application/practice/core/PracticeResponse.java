@@ -10,6 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PracticeResponse {
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("testTitle")
     private String testTitle;
 
