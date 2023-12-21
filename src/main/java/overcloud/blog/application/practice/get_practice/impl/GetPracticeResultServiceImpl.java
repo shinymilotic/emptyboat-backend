@@ -30,7 +30,7 @@ public class GetPracticeResultServiceImpl implements GetPracticeResultService{
         PracticeEntity practiceEntity = practiceRepository.findById(UUID.fromString(practiceId))
                 .orElseThrow(() -> new InvalidDataException(PracticeError.PRACTICE_NOT_FOUND));
         TestEntity testEntity = practiceEntity.getTest();
-        
+        List<Object> object = practiceRepository.getPracticeResult(practiceId);
         List<PracticeQuestion> questions = new ArrayList<>();
         List<QuestionEntity> questionEntities = testEntity.getQuestions();
         practiceEntity.getChoices();

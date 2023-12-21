@@ -5,8 +5,8 @@ import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.application.role.core.RoleRepository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.application.user.core.UserError;
-import overcloud.blog.application.user.core.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

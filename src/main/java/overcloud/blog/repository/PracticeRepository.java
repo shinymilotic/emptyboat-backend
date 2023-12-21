@@ -18,4 +18,8 @@ public interface PracticeRepository extends JpaRepository<PracticeEntity, UUID> 
     @Modifying
     @Query(" DELETE FROM PracticeEntity p WHERE p.testId = :testId ")
     void deleteByTestId(@Param("testId") UUID testId);
+
+    @Query(" SELECT * FROM (SELECT * FROM PracticeEntity p WHERE p.id = :practiceId) p " +
+     " JOIN FETCH PracticeChoiceEntity pc ")
+    List<Object> getPracticeResult(@Param("practiceId") String practiceId);
 }

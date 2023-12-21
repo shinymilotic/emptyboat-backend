@@ -4,12 +4,12 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.application.user.core.*;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
+import overcloud.blog.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

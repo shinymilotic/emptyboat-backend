@@ -1,4 +1,4 @@
-package overcloud.blog.application.user.core.repository;
+package overcloud.blog.repository;
 
 import overcloud.blog.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

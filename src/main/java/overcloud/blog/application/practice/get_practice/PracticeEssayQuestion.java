@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.application.test.common.EssayQuestion;
 
 @Getter
 @Setter

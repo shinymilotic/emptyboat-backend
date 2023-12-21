@@ -7,11 +7,11 @@ import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.application.role.RolesRequest;
 import overcloud.blog.application.role.core.*;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.entity.UserRole;
 import overcloud.blog.entity.UserRoleId;
 import overcloud.blog.infrastructure.UpdateFlg;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.repository.UserRepository;
 
 import java.util.List;
 import java.util.Map;

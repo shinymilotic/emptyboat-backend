@@ -7,13 +7,13 @@ import overcloud.blog.application.practice.core.PracticeResponse;
 import overcloud.blog.application.practice.core.UserPracticeResponse;
 import overcloud.blog.application.practice.get_practices.UserPracticeService;
 import overcloud.blog.application.user.core.UserError;
-import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.datetime.DateTimeService;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.repository.PracticeRepository;
+import overcloud.blog.repository.UserRepository;
 
 @Service
 public class UserPraticeServiceImpl implements UserPracticeService{

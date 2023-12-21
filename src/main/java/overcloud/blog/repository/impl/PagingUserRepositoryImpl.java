@@ -1,10 +1,10 @@
-package overcloud.blog.application.user.core.repository.impl;
+package overcloud.blog.repository.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.application.user.core.repository.PagingUserRepository;
 import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
+import overcloud.blog.repository.PagingUserRepository;
 
 import java.util.List;
 

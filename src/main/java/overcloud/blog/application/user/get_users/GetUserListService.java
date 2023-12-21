@@ -3,10 +3,10 @@ package overcloud.blog.application.user.get_users;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.application.user.core.UserListResponse;
 import overcloud.blog.application.user.core.UserResponse;
 import overcloud.blog.application.user.core.UserResponseMapper;
-import overcloud.blog.application.user.core.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

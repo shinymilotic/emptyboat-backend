@@ -4,13 +4,13 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.application.user.core.UserError;
-import overcloud.blog.application.user.core.repository.UserRepository;
 import overcloud.blog.application.user.follow.core.FollowEntity;
 import overcloud.blog.application.user.follow.core.FollowId;
 import overcloud.blog.application.user.follow.core.repository.FollowRepository;
 import overcloud.blog.application.user.follow.core.utils.FollowUtils;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.repository.UserRepository;
 
 @Service
 public class FollowService {
