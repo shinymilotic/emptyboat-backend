@@ -3,7 +3,8 @@ package overcloud.blog.user;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import overcloud.blog.application.user.login.LoginRequest;
+
+import overcloud.blog.usecase.user.login.LoginRequest;
 
 
 @SpringBootTest

@@ -1,11 +1,15 @@
 package overcloud.blog.infrastructure.config;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
 import javax.sql.DataSource;
 
 @Configuration
+@EnableJpaRepositories(basePackages = {"com.delivery.data.db.jpa.repositories"})
 public class DataSourceConfig {
 
     @Bean

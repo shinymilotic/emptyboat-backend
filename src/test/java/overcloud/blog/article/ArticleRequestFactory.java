@@ -1,10 +1,10 @@
 package overcloud.blog.article;
 
-import overcloud.blog.application.article.create_article.ArticleRequest;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import overcloud.blog.usecase.article.create_article.ArticleRequest;
 
 public class ArticleRequestFactory {
 
