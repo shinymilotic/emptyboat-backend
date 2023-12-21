@@ -35,4 +35,7 @@ public class PracticeEntity {
 
     @OneToMany(mappedBy = "practice", orphanRemoval = true)
     private List<PracticeChoiceEntity> choices;
+
+    @OneToMany(mappedBy = "practice", orphanRemoval = true)
+    private List<EssayAnswerEntity> essayAnswers;
 }
