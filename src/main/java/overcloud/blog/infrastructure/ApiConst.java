@@ -4,6 +4,7 @@ public class ApiConst {
 
     /* Articles */
     public static final String ARTICLES = "/articles";
+
     public static final String ARTICLES_SLUG = "/articles/{slug}";
 
     public static final String ARTICLES_SLUG_COMMENTS = "/articles/{slug}/comments";
@@ -11,6 +12,7 @@ public class ApiConst {
     public static final String ARTICLES_SLUG_COMMENTS_ID = "/articles/{slug}/comments/{id}";
 
     public static final String ARTICLES_SLUG_FAVORITE = "/articles/{slug}/favorite";
+
     public static final String ROLES_USERNAME = "/roles/{username}";
 
     public static final String ROLES = "/roles";
@@ -20,6 +22,7 @@ public class ApiConst {
     public static final String USERS = "/users";
 
     public static final String USERS_LOGIN = "/users/login";
+
     public static final String USERS_LOGIN_ADMIN = "/users/loginAdmin";
 
     public static final String USERS_LOGOUT = "/users/logout";
@@ -45,4 +48,6 @@ public class ApiConst {
     public static final String PRACTICE = "/practice";
 
     public static final String USER_PRACTICES = "/practices/{username}";
+
+    public static final String PRACTICE_ID = "/practice/{id}";
 }

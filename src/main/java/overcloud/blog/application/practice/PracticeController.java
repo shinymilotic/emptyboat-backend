@@ -34,4 +34,9 @@ public class PracticeController {
     public UserPracticeResponse getUserPractice(@PathVariable("username") String username) {
         return userPracticeService.getUserPractice(username);
     }
+
+    @GetMapping(ApiConst.PRACTICE_ID)
+    public UserPracticeResponse getPractice(@PathVariable("id") String id) {
+        return userPracticeService.getUserPractice(username);
+    }
 }
