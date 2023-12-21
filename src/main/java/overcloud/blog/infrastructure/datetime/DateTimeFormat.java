@@ -1,4 +1,4 @@
-package overcloud.blog.datetime;
+package overcloud.blog.infrastructure.datetime;
 
 public class DateTimeFormat {
     public static final String ddMMyyyyHHmm = "dd-MM-yyyy HH:mm";
