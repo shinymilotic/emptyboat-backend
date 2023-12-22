@@ -6,7 +6,7 @@ import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.usecase.article.get_article_list.AuthorResponse;
 import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
@@ -26,7 +26,7 @@ public class ArticleSearchService {
 
     private final ElasticsearchOperations elasticsearchOperations;
 
-    private final ArticleRepository articleRepository;
+    private final JpaArticleRepository articleRepository;
 
     private final SpringAuthenticationService authenticationService;
 
@@ -35,7 +35,7 @@ public class ArticleSearchService {
     private final FavoriteUtils favoriteUtils;
 
     public ArticleSearchService(ElasticsearchOperations elasticsearchOperations,
-                                ArticleRepository articleRepository,
+                                JpaArticleRepository articleRepository,
                                 SpringAuthenticationService authenticationService,
                                 FollowUtils followUtils,
                                 FavoriteUtils favoriteUtils) {

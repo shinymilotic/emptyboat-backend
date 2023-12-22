@@ -5,7 +5,7 @@ import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import overcloud.blog.repository.UserRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.core.UserError;
 import overcloud.blog.usecase.user.follow.core.FollowEntity;
 import overcloud.blog.usecase.user.follow.core.FollowId;
@@ -15,7 +15,7 @@ import overcloud.blog.usecase.user.follow.core.utils.FollowUtils;
 @Service
 public class FollowService {
 
-    private final UserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
     private final SpringAuthenticationService authenticationService;
 
@@ -23,10 +23,10 @@ public class FollowService {
 
     private final FollowUtils followUtils;
 
-    public FollowService(UserRepository userRepository,
-                           SpringAuthenticationService authenticationService,
-                           FollowRepository followRepository,
-                           FollowUtils followUtils) {
+    public FollowService(JpaUserRepository userRepository,
+                         SpringAuthenticationService authenticationService,
+                         FollowRepository followRepository,
+                         FollowUtils followUtils) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.followRepository = followRepository;

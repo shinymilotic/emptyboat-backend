@@ -2,7 +2,7 @@ package overcloud.blog.usecase.tag.get_tags;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.TagEntity;
-import overcloud.blog.repository.TagRepository;
+import overcloud.blog.repository.jparepository.JpaTagRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
 @Service
 public class GetTagsService {
 
-    private final TagRepository tagRepository;
+    private final JpaTagRepository tagRepository;
 
-    public GetTagsService(TagRepository tagRepository) {
+    public GetTagsService(JpaTagRepository tagRepository) {
         this.tagRepository = tagRepository;
     }
 

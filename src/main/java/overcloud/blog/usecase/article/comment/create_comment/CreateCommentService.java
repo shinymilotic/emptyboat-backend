@@ -2,13 +2,13 @@ package overcloud.blog.usecase.article.comment.create_comment;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.CommentEntity;
-import overcloud.blog.repository.CommentRepository;
+import overcloud.blog.repository.jparepository.JpaCommentRepository;
 import overcloud.blog.usecase.article.comment.core.CommentError;
 import overcloud.blog.usecase.article.core.AuthorResponse;
 import overcloud.blog.usecase.user.core.UserError;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
@@ -22,16 +22,16 @@ import java.util.Optional;
 @Service
 public class CreateCommentService {
 
-    private final ArticleRepository articleRepository;
+    private final JpaArticleRepository articleRepository;
 
-    private final CommentRepository commentRepository;
+    private final JpaCommentRepository commentRepository;
 
     private final SpringAuthenticationService authenticationService;
 
     private final ObjectsValidator<CreateCommentRequest> validator;
 
-    public CreateCommentService(ArticleRepository articleRepository,
-                                CommentRepository commentRepository,
+    public CreateCommentService(JpaArticleRepository articleRepository,
+                                JpaCommentRepository commentRepository,
                                 SpringAuthenticationService authenticationService,
                                 ObjectsValidator<CreateCommentRequest> validator) {
         this.articleRepository = articleRepository;

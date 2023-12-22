@@ -3,7 +3,7 @@ package overcloud.blog.usecase.article.comment.get_comments;
 import org.springframework.stereotype.Service;
 
 import overcloud.blog.entity.CommentEntity;
-import overcloud.blog.repository.CommentRepository;
+import overcloud.blog.repository.jparepository.JpaCommentRepository;
 import overcloud.blog.usecase.article.comment.core.AuthorResposne;
 import overcloud.blog.entity.UserEntity;
 
@@ -13,9 +13,9 @@ import java.util.List;
 
 @Service
 public class GetCommentsService {
-    private final CommentRepository commentRepository;
+    private final JpaCommentRepository commentRepository;
 
-    public GetCommentsService(CommentRepository commentRepository) {
+    public GetCommentsService(JpaCommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
 

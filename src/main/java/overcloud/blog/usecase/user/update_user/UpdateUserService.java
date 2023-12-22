@@ -6,7 +6,7 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
-import overcloud.blog.repository.UserRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.core.UserError;
 import overcloud.blog.usecase.user.core.UserResponse;
 import overcloud.blog.usecase.user.core.UserResponseMapper;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class UpdateUserService {
 
-    private final UserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
     private final SpringAuthenticationService authenticationService;
 
@@ -25,7 +25,7 @@ public class UpdateUserService {
     private final ObjectsValidator<UpdateUserRequest> validator;
 
 
-    public UpdateUserService(UserRepository userRepository,
+    public UpdateUserService(JpaUserRepository userRepository,
                              SpringAuthenticationService authenticationService,
                              UserResponseMapper userResponseMapper,
                              ObjectsValidator<UpdateUserRequest> validator) {

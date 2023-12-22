@@ -7,18 +7,18 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.repository.IPracticeRepository;
-import overcloud.blog.repository.TestRepository;
+import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.test.delete_test.DeleteTestService;
 
 @Service
 public class DeleteTestServiceImpl implements DeleteTestService{
 
-    private final TestRepository testRepository;
+    private final JpaTestRepository testRepository;
 
     private final IPracticeRepository practiceRepository;
 
     DeleteTestServiceImpl(
-        TestRepository testRepository,
+        JpaTestRepository testRepository,
         IPracticeRepository practiceRepository) {
         this.testRepository = testRepository;
         this.practiceRepository = practiceRepository;

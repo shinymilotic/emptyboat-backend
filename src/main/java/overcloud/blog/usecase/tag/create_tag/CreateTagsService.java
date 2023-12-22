@@ -7,17 +7,17 @@ import overcloud.blog.entity.TagEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.usecase.tag.core.TagError;
-import overcloud.blog.repository.TagRepository;
+import overcloud.blog.repository.jparepository.JpaTagRepository;
 
 import java.util.*;
 
 @Service
 public class CreateTagsService {
-    private final TagRepository tagRepository;
+    private final JpaTagRepository tagRepository;
 
     private final ObjectsValidator<CreateTagRequest> validator;
 
-    public CreateTagsService(TagRepository tagRepository, ObjectsValidator<CreateTagRequest> validator) {
+    public CreateTagsService(JpaTagRepository tagRepository, ObjectsValidator<CreateTagRequest> validator) {
         this.tagRepository = tagRepository;
         this.validator = validator;
     }

@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.practice;
+package overcloud.blog.repository.impl;
 
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;

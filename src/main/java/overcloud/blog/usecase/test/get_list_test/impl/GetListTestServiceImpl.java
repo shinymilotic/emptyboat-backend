@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
-import overcloud.blog.repository.TestRepository;
+import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.test.common.Answer;
 import overcloud.blog.usecase.test.common.ChoiceQuestion;
 import overcloud.blog.usecase.test.common.EssayQuestion;
@@ -21,9 +21,9 @@ import java.util.UUID;
 @Service
 public class GetListTestServiceImpl implements GetListTestService {
 
-    private final TestRepository testRepository;
+    private final JpaTestRepository testRepository;
 
-    public GetListTestServiceImpl(TestRepository testRepository) {
+    public GetListTestServiceImpl(JpaTestRepository testRepository) {
         this.testRepository = testRepository;
     }
 

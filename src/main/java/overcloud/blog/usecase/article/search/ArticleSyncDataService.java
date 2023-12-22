@@ -3,15 +3,15 @@ package overcloud.blog.usecase.article.search;
 
 import org.springframework.stereotype.Service;
 
-import overcloud.blog.repository.ArticleElasticRepository;
+import overcloud.blog.repository.jparepository.JpaArticleElasticRepository;
 import overcloud.blog.usecase.article.search.json.ArticleSyncData;
 
 @Service
 public class ArticleSyncDataService {
 
-    private final ArticleElasticRepository articleElasticRepository;
+    private final JpaArticleElasticRepository articleElasticRepository;
 
-    public ArticleSyncDataService(ArticleElasticRepository articleElasticRepository) {
+    public ArticleSyncDataService(JpaArticleElasticRepository articleElasticRepository) {
         this.articleElasticRepository = articleElasticRepository;
     }
 

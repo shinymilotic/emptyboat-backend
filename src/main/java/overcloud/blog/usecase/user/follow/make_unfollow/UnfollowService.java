@@ -5,7 +5,7 @@ import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import overcloud.blog.repository.UserRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.core.UserError;
 import overcloud.blog.usecase.user.follow.core.FollowEntity;
 import overcloud.blog.usecase.user.follow.core.repository.FollowRepository;
@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class UnfollowService {
 
-    private UserRepository userRepository;
+    private JpaUserRepository userRepository;
 
     private SpringAuthenticationService authenticationService;
 
@@ -24,7 +24,7 @@ public class UnfollowService {
 
     private FollowUtils followUtils;
 
-    public UnfollowService(UserRepository userRepository,
+    public UnfollowService(JpaUserRepository userRepository,
                            SpringAuthenticationService authenticationService,
                            FollowRepository followRepository,
                            FollowUtils followUtils) {

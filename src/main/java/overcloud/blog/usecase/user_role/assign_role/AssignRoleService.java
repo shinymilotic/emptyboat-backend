@@ -9,7 +9,7 @@ import overcloud.blog.entity.UserRole;
 import overcloud.blog.entity.UserRoleId;
 import overcloud.blog.infrastructure.UpdateFlg;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.repository.UserRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.role.RolesRequest;
 import overcloud.blog.usecase.role.core.*;
 
@@ -24,12 +24,12 @@ public class AssignRoleService {
 
     private final UserRoleRepository userRoleRepository;
 
-    private final UserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
     private final RoleRepository roleRepository;
 
     public AssignRoleService(UserRoleRepository userRoleRepository,
-                             UserRepository userRepository,
+                             JpaUserRepository userRepository,
                              RoleRepository roleRepository) {
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;

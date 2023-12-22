@@ -7,12 +7,12 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.repository.ArticleRepository;
-import overcloud.blog.repository.ArticleTagRepository;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
+import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
 import overcloud.blog.usecase.article.core.AuthorResponse;
 import overcloud.blog.usecase.article.core.utils.ArticleUtils;
 import overcloud.blog.usecase.tag.core.TagError;
-import overcloud.blog.repository.TagRepository;
+import overcloud.blog.repository.jparepository.JpaTagRepository;
 import overcloud.blog.usecase.user.core.UserError;
 import overcloud.blog.entity.ArticleTagId;
 import overcloud.blog.entity.ArticleTag;
@@ -34,22 +34,22 @@ public class CreateArticleService {
 
     private final SpringAuthenticationService authenticationService;
 
-    private final TagRepository tagRepository;
+    private final JpaTagRepository tagRepository;
 
-    private final ArticleRepository articleRepository;
+    private final JpaArticleRepository articleRepository;
 
     private final ObjectsValidator<ArticleRequest> validator;
 
-    private final ArticleTagRepository articleTagRepository;
+    private final JpaArticleTagRepository articleTagRepository;
 
     private KafkaTemplate<String, String> kafkaTemplate;
 
 
     public CreateArticleService(SpringAuthenticationService authenticationService,
-                                TagRepository tagRepository,
-                                ArticleRepository articleRepository,
+                                JpaTagRepository tagRepository,
+                                JpaArticleRepository articleRepository,
                                 ObjectsValidator<ArticleRequest> validator,
-                                ArticleTagRepository articleTagRepository,
+                                JpaArticleTagRepository articleTagRepository,
                                 KafkaTemplate<String, String> kafkaTemplate) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;

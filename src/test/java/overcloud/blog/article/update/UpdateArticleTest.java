@@ -9,12 +9,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import overcloud.blog.repository.ArticleRepository;
-import overcloud.blog.repository.UserRepository;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.usecase.article.update_article.UpdateArticleRequest;
 import overcloud.blog.usecase.article.update_article.UpdateArticleService;
-import overcloud.blog.repository.TagRepository;
+import overcloud.blog.repository.jparepository.JpaTagRepository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
@@ -29,11 +29,11 @@ public class UpdateArticleTest {
     @Mock
     private SpringAuthenticationService authenticationService;
     @Mock
-    private TagRepository tagRepository;
+    private JpaTagRepository tagRepository;
     @Mock
-    private ArticleRepository articleRepository;
+    private JpaArticleRepository articleRepository;
     @Mock
-    private UserRepository userRepository;
+    private JpaUserRepository userRepository;
     @Mock
     private FavoriteUtils favoriteUtils;
     @Mock

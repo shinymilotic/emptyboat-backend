@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.article.core.ArticleError;
 import overcloud.blog.usecase.article.core.AuthorResponse;
 import overcloud.blog.usecase.article.favorite.core.utils.FavoriteUtils;
@@ -23,14 +23,14 @@ import java.util.*;
 public class UpdateArticleService {
     private final SpringAuthenticationService authenticationService;
 
-    private final ArticleRepository articleRepository;
+    private final JpaArticleRepository articleRepository;
 
     private final FavoriteUtils favoriteUtils;
 
     private final ObjectsValidator<UpdateArticleRequest> validator;
 
     public UpdateArticleService(SpringAuthenticationService authenticationService,
-                                ArticleRepository articleRepository,
+                                JpaArticleRepository articleRepository,
                                 FavoriteUtils favoriteUtils,
                                 ObjectsValidator<UpdateArticleRequest> validator) {
         this.authenticationService = authenticationService;

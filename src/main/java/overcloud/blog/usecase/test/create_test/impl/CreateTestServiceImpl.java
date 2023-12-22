@@ -9,7 +9,7 @@ import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.repository.TestRepository;
+import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.article.core.utils.ArticleUtils;
 import overcloud.blog.usecase.test.common.Answer;
 import overcloud.blog.usecase.test.common.ChoiceQuestion;
@@ -24,9 +24,9 @@ import java.util.*;
 @Service
 public class CreateTestServiceImpl implements CreateTestService {
 
-    private final TestRepository testRepository;
+    private final JpaTestRepository testRepository;
 
-    public CreateTestServiceImpl(TestRepository testRepository) {
+    public CreateTestServiceImpl(JpaTestRepository testRepository) {
         this.testRepository = testRepository;
     }
 

@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.entity.FavoriteId;
-import overcloud.blog.repository.JpaFavoriteRepository;
+import overcloud.blog.repository.jparepository.JpaFavoriteRepository;
 import overcloud.blog.usecase.article.core.AuthorResponse;
 import overcloud.blog.usecase.article.create_article.ArticleResponse;
 import overcloud.blog.usecase.user.core.UserError;
@@ -25,12 +25,12 @@ public class MakeUnfavoriteService {
 
     private final SpringAuthenticationService authenticationService;
 
-    private final ArticleRepository articleRepository;
+    private final JpaArticleRepository articleRepository;
 
 
     public MakeUnfavoriteService(JpaFavoriteRepository favoriteRepository,
                            SpringAuthenticationService authenticationService,
-                           ArticleRepository articleRepository) {
+                           JpaArticleRepository articleRepository) {
         this.favoriteRepository = favoriteRepository;
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;

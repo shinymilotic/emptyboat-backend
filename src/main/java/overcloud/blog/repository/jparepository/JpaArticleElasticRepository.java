@@ -1,4 +1,4 @@
-package overcloud.blog.repository;
+package overcloud.blog.repository.jparepository;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import overcloud.blog.usecase.article.search.ArticleElastic;
 
 @Repository
-public interface ArticleElasticRepository extends ElasticsearchRepository<ArticleElastic, String> {
+public interface JpaArticleElasticRepository extends ElasticsearchRepository<ArticleElastic, String> {
 }

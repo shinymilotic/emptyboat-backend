@@ -1,4 +1,4 @@
-package overcloud.blog.repository;
+package overcloud.blog.repository.jparepository;
 
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import overcloud.blog.repository.UserRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.follow.core.utils.FollowUtils;
 
 import java.util.Optional;
@@ -12,15 +12,15 @@ import java.util.Optional;
 @Service
 public class GetProfileService {
 
-    private final UserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
     private final SpringAuthenticationService authenticationService;
 
     private final FollowUtils followUtils;
 
-    public GetProfileService(UserRepository userRepository,
-                           SpringAuthenticationService authenticationService,
-                           FollowUtils followUtils) {
+    public GetProfileService(JpaUserRepository userRepository,
+                             SpringAuthenticationService authenticationService,
+                             FollowUtils followUtils) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.followUtils = followUtils;

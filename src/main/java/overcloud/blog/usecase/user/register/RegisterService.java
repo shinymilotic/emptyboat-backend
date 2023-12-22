@@ -9,7 +9,7 @@ import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
-import overcloud.blog.repository.UserRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.core.*;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 public class RegisterService {
 
-    private final UserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
     private final SpringAuthenticationService authenticationService;
 
@@ -29,7 +29,7 @@ public class RegisterService {
 
     private final UserResponseMapper userResponseMapper;
 
-    public RegisterService(UserRepository userRepository,
+    public RegisterService(JpaUserRepository userRepository,
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
                            ObjectsValidator<RegisterRequest> validator,

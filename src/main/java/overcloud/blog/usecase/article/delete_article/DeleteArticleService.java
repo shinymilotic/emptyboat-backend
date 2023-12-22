@@ -2,16 +2,16 @@ package overcloud.blog.usecase.article.delete_article;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
 
 @Service
 public class DeleteArticleService {
 
 
-    private final ArticleRepository articleRepository;
+    private final JpaArticleRepository articleRepository;
 
     public DeleteArticleService(
-                                ArticleRepository articleRepository) {
+                                JpaArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 

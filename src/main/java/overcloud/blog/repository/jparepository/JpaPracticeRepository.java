@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
 import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
 
+@Repository
 public interface JpaPracticeRepository extends JpaRepository<PracticeEntity, UUID> {
     @Query(" SELECT * FROM PracticeEntity JOIN FETCH test p WHERE p.testerId = :testerId ORDER BY p.createdAt DESC ")
     List<PracticeEntity> findByTesterId(@Param("testerId") UUID testerId);

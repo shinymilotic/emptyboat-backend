@@ -1,4 +1,4 @@
-package overcloud.blog.repository;
+package overcloud.blog.repository.jparepository;
 
 import org.springframework.data.jpa.repository.Query;
 import overcloud.blog.entity.TagEntity;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface TagRepository extends JpaRepository<TagEntity, UUID> {
+public interface JpaTagRepository extends JpaRepository<TagEntity, UUID> {
 
 
     @Query("SELECT tag FROM TagEntity tag WHERE tag.name IN (:tagList)")

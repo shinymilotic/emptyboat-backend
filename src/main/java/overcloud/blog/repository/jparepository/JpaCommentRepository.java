@@ -1,4 +1,4 @@
-package overcloud.blog.repository;
+package overcloud.blog.repository.jparepository;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface CommentRepository extends JpaRepository<CommentEntity, UUID> {
+public interface JpaCommentRepository extends JpaRepository<CommentEntity, UUID> {
 
     @Query("SELECT cm FROM CommentEntity cm WHERE cm.article.slug = :articleSlug")
     List<CommentEntity> findByArticleSlug(String articleSlug);

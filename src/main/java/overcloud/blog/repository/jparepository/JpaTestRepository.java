@@ -1,4 +1,4 @@
-package overcloud.blog.repository;
+package overcloud.blog.repository.jparepository;
 
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface TestRepository extends JpaRepository<TestEntity, UUID> {
+public interface JpaTestRepository extends JpaRepository<TestEntity, UUID> {
     @Query("SELECT t FROM TestEntity t WHERE t.slug = :slug")
     Optional<TestEntity> findBySlug(@Param("slug") String slug);
 
