@@ -1,4 +1,4 @@
-package overcloud.blog.repository;
+package overcloud.blog.repository.a;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,7 +10,6 @@ import overcloud.blog.entity.FavoriteEntity;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
 public interface FavoriteRepository extends JpaRepository<FavoriteEntity, FavoriteId> {
 
     @Query("""

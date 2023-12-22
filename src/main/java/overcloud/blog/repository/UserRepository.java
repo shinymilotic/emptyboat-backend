@@ -1,14 +1,12 @@
-package overcloud.blog.repository;
+package overcloud.blog.repository.a;
 
 import overcloud.blog.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-@Repository
 public interface UserRepository extends JpaRepository<UserEntity, UUID>, PagingUserRepository {
 
     @Query("SELECT u FROM UserEntity u WHERE u.username = :username ")
