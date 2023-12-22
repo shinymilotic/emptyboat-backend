@@ -1,12 +1,10 @@
-package overcloud.blog.repository.impl;
+package overcloud.blog.usecase.practice;
 
-import org.springframework.context.annotation.Lazy;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.repository.IPracticeRepository;
-import overcloud.blog.repository.PracticeRepository;
+import overcloud.blog.repository.jparepository.JpaPracticeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,25 +13,25 @@ import java.util.UUID;
 
 @Repository
 public class PracticeRepositoryImpl implements IPracticeRepository {
-    private final PracticeRepository practiceRepository;
+    private final JpaPracticeRepository jpa;
 
-    public PracticeRepositoryImpl(PracticeRepository practiceRepository) {
-        this.practiceRepository = practiceRepository;
+    public PracticeRepositoryImpl(JpaPracticeRepository jpa) {
+        this.jpa = jpa;
     }
 
     @Override
     public List<PracticeEntity> findByTesterId(UUID testerId) {
-        return practiceRepository.findByTesterId(testerId);
+        return jpa.findByTesterId(testerId);
     }
 
     @Override
     public void deleteByTestId(UUID testId) {
-        practiceRepository.deleteByTestId(testId);
+        jpa.deleteByTestId(testId);
     }
 
     @Override
     public Optional<PracticeEntity> findById(UUID id) {
-        return practiceRepository.findById(id);
+        return jpa.findById(id);
     }
 
     @Override
@@ -43,6 +41,6 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
 
     @Override
     public PracticeEntity save(PracticeEntity entity) {
-        return practiceRepository.save(entity);
+        return jpa.save(entity);
     }
 }

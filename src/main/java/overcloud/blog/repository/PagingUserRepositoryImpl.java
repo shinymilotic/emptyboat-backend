@@ -1,13 +1,15 @@
-package overcloud.blog.repository.impl;
+package overcloud.blog.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
 import overcloud.blog.repository.PagingUserRepository;
 
 import java.util.List;
 
+@Repository
 public class PagingUserRepositoryImpl implements PagingUserRepository {
 
     @PersistenceContext

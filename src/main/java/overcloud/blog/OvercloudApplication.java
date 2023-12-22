@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"overcloud.blog.repository", "overcloud.blog.*"})
 public class OvercloudApplication {
     @Bean
     public MessageSource messageSource() {

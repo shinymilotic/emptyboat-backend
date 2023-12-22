@@ -7,7 +7,7 @@ import overcloud.blog.entity.TagEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.usecase.tag.core.TagError;
-import overcloud.blog.usecase.tag.core.repository.TagRepository;
+import overcloud.blog.repository.TagRepository;
 
 import java.util.*;
 

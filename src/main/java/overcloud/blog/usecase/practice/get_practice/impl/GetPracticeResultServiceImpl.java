@@ -10,7 +10,7 @@ import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.repository.PracticeRepository;
+import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.usecase.practice.core.PracticeError;
 import overcloud.blog.usecase.practice.get_practice.GetPracticeResultService;
 import overcloud.blog.usecase.practice.get_practice.PracticeQuestion;
@@ -19,9 +19,9 @@ import overcloud.blog.usecase.practice.get_practice.PracticeResult;
 @Service
 public class GetPracticeResultServiceImpl implements GetPracticeResultService{
 
-    private PracticeRepository practiceRepository;
+    private IPracticeRepository practiceRepository;
 
-    GetPracticeResultServiceImpl(PracticeRepository practiceRepository) {
+    GetPracticeResultServiceImpl(IPracticeRepository practiceRepository) {
         this.practiceRepository = practiceRepository;
     }
 

@@ -6,7 +6,7 @@ import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.repository.ArticleRepository;
 import overcloud.blog.entity.FavoriteId;
-import overcloud.blog.repository.FavoriteRepository;
+import overcloud.blog.repository.JpaFavoriteRepository;
 import overcloud.blog.usecase.article.core.AuthorResponse;
 import overcloud.blog.usecase.article.create_article.ArticleResponse;
 import overcloud.blog.usecase.user.core.UserError;
@@ -21,14 +21,14 @@ import java.util.List;
 @Service
 public class MakeUnfavoriteService {
 
-    private final FavoriteRepository favoriteRepository;
+    private final JpaFavoriteRepository favoriteRepository;
 
     private final SpringAuthenticationService authenticationService;
 
     private final ArticleRepository articleRepository;
 
 
-    public MakeUnfavoriteService(FavoriteRepository favoriteRepository,
+    public MakeUnfavoriteService(JpaFavoriteRepository favoriteRepository,
                            SpringAuthenticationService authenticationService,
                            ArticleRepository articleRepository) {
         this.favoriteRepository = favoriteRepository;

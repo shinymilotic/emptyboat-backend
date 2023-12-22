@@ -2,7 +2,7 @@ package overcloud.blog.usecase.tag.get_tags;
 
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.TagEntity;
-import overcloud.blog.usecase.tag.core.repository.TagRepository;
+import overcloud.blog.repository.TagRepository;
 
 import java.util.ArrayList;
 import java.util.List;

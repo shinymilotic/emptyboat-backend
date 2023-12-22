@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.tag.core.repository;
+package overcloud.blog.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import overcloud.blog.entity.TagEntity;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
+@Repository
 public interface TagRepository extends JpaRepository<TagEntity, UUID> {
 
 

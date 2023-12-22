@@ -1,8 +1,4 @@
-package overcloud.blog.repository.a;
-
-import io.lettuce.core.dynamic.annotation.Param;
-import org.springframework.data.elasticsearch.annotations.Query;
-import org.springframework.data.jpa.repository.Modifying;
+package overcloud.blog.repository;
 import overcloud.blog.entity.PracticeEntity;
 
 import java.util.List;

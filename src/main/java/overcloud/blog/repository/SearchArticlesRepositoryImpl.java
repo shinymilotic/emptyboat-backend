@@ -1,4 +1,4 @@
-package overcloud.blog.repository.impl;
+package overcloud.blog.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

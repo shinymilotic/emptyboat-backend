@@ -12,7 +12,7 @@ import overcloud.blog.repository.ArticleTagRepository;
 import overcloud.blog.usecase.article.core.AuthorResponse;
 import overcloud.blog.usecase.article.core.utils.ArticleUtils;
 import overcloud.blog.usecase.tag.core.TagError;
-import overcloud.blog.usecase.tag.core.repository.TagRepository;
+import overcloud.blog.repository.TagRepository;
 import overcloud.blog.usecase.user.core.UserError;
 import overcloud.blog.entity.ArticleTagId;
 import overcloud.blog.entity.ArticleTag;

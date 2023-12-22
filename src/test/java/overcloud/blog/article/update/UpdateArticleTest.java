@@ -14,7 +14,7 @@ import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.article.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.usecase.article.update_article.UpdateArticleRequest;
 import overcloud.blog.usecase.article.update_article.UpdateArticleService;
-import overcloud.blog.usecase.tag.core.repository.TagRepository;
+import overcloud.blog.repository.TagRepository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;

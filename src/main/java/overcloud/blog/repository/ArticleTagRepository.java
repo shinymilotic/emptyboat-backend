@@ -1,4 +1,4 @@
-package overcloud.blog.repository.a;
+package overcloud.blog.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,6 +9,7 @@ import overcloud.blog.entity.ArticleTagId;
 
 import java.util.UUID;
 
+@Repository
 public interface ArticleTagRepository extends JpaRepository<ArticleTag, ArticleTagId> {
     @Modifying
     @Query("""

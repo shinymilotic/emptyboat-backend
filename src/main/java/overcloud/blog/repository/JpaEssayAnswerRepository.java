@@ -1,11 +1,11 @@
-package overcloud.blog.repository.a;
+package overcloud.blog.repository;
 
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import overcloud.blog.entity.EssayAnswerEntity;
-
-public interface EssayAnswerRepository extends JpaRepository<EssayAnswerEntity, UUID> {
+@Repository
+public interface JpaEssayAnswerRepository extends JpaRepository<EssayAnswerEntity, UUID> {
     
 }
