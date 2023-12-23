@@ -10,8 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface JpaTagRepository extends JpaRepository<TagEntity, UUID> {
-
-
     @Query("SELECT tag FROM TagEntity tag WHERE tag.name IN (:tagList)")
     List<TagEntity> findByTagName(List<String> tagList);
 }

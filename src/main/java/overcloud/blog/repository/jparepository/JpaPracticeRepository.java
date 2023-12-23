@@ -12,7 +12,7 @@ import overcloud.blog.entity.PracticeEntity;
 
 @Repository
 public interface JpaPracticeRepository extends JpaRepository<PracticeEntity, UUID> {
-    @Query(" SELECT * FROM PracticeEntity JOIN FETCH test p WHERE p.testerId = :testerId ORDER BY p.createdAt DESC ")
+    @Query(" SELECT * FROM PracticeEntity p INNER JOIN p.test  WHERE p.testerId = :testerId ")
     List<PracticeEntity> findByTesterId(@Param("testerId") UUID testerId);
 
     @Modifying

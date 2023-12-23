@@ -9,6 +9,7 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.datetime.DateTimeService;
 import overcloud.blog.repository.IPracticeRepository;
+import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.practice.core.PracticeResponse;
 import overcloud.blog.usecase.practice.core.UserPracticeResponse;
@@ -19,11 +20,11 @@ import overcloud.blog.usecase.user.core.UserError;
 public class UserPraticeServiceImpl implements UserPracticeService{
 
     private final IPracticeRepository practiceRepository;
-    private final JpaUserRepository userRepository;
+    private final IUserRepository userRepository;
     private final DateTimeService dateTimeService;
 
     UserPraticeServiceImpl(IPracticeRepository practiceRepository,
-                           JpaUserRepository userRepository,
+                           IUserRepository userRepository,
                            DateTimeService dateTimeService) {
         this.practiceRepository = practiceRepository;
         this.userRepository = userRepository;

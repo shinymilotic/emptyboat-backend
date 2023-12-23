@@ -17,9 +17,8 @@ import overcloud.blog.usecase.practice.get_practice.PracticeQuestion;
 import overcloud.blog.usecase.practice.get_practice.PracticeResult;
 
 @Service
-public class GetPracticeResultServiceImpl implements GetPracticeResultService{
-
-    private IPracticeRepository practiceRepository;
+public class GetPracticeResultServiceImpl implements GetPracticeResultService {
+    private final IPracticeRepository practiceRepository;
 
     GetPracticeResultServiceImpl(IPracticeRepository practiceRepository) {
         this.practiceRepository = practiceRepository;

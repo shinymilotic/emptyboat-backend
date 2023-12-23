@@ -17,7 +17,7 @@ import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.repository.jparepository.JpaEssayAnswerRepository;
 import overcloud.blog.repository.IPracticeRepository;
-import overcloud.blog.repository.PracticeChoiceRepository;
+import overcloud.blog.repository.jparepository.JpaPracticeChoiceRepository;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.practice.core.EssayAnswer;
 import overcloud.blog.usecase.practice.core.PracticeRequest;
@@ -30,13 +30,13 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     private final IPracticeRepository practiceRepository;
     private final JpaTestRepository testRepository;
     private final SpringAuthenticationService authenticationService;
-    private final PracticeChoiceRepository practiceChoiceRepository;
+    private final JpaPracticeChoiceRepository practiceChoiceRepository;
     private final JpaEssayAnswerRepository essayAnswerRepository;
 
     CreatePracticeServiceImpl(IPracticeRepository practiceRepository,
             SpringAuthenticationService authenticationService,
             JpaTestRepository testRepository,
-            PracticeChoiceRepository practiceChoiceRepository,
+            JpaPracticeChoiceRepository practiceChoiceRepository,
             JpaEssayAnswerRepository essayAnswerRepository) {
         this.practiceRepository = practiceRepository;
         this.authenticationService = authenticationService;
