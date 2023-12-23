@@ -57,7 +57,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             throw new InvalidDataException(ApiError.from(AuthError.AUTHORIZE_FAILED));
         }
 
-        return HandlerInterceptor.super.preHandle(request, response, handler);
+        return isAuth;
     }
 
 }
