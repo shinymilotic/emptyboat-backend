@@ -1,5 +1,6 @@
 package overcloud.blog.usecase.user.register;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import overcloud.blog.entity.UserEntity;
@@ -9,17 +10,22 @@ import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
+import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.IUserRoleRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.core.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RegisterService {
 
-    private final JpaUserRepository userRepository;
+    private final IUserRepository userRepository;
+
+    private final IUserRoleRepository userRoleRepository;
 
     private final SpringAuthenticationService authenticationService;
 
@@ -29,18 +35,20 @@ public class RegisterService {
 
     private final UserResponseMapper userResponseMapper;
 
-    public RegisterService(JpaUserRepository userRepository,
+    public RegisterService(IUserRepository userRepository, IUserRoleRepository userRoleRepository,
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
                            ObjectsValidator<RegisterRequest> validator,
                            UserResponseMapper userResponseMapper) {
         this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
         this.userResponseMapper = userResponseMapper;
     }
 
+    @Transactional
     public AuthResponse registerUser(RegisterRequest registrationDto) {
         Optional<ApiError> apiError = validator.validate(registrationDto);
         if (apiError.isPresent()) {
@@ -71,6 +79,7 @@ public class RegisterService {
                 .build();
 
         UserEntity savedUser = userRepository.save(userEntity);
+        userRoleRepository.assignRole("USER", savedUser.getEmail());
 
         return userResponseMapper.toAuthResponse(savedUser,
                 jwtUtils.encode(savedUser.getEmail()),

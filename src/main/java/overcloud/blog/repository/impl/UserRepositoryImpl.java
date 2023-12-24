@@ -20,4 +20,14 @@ public class UserRepositoryImpl implements IUserRepository {
     public UserEntity findByUsername(String username) {
         return jpaUserRepository.findByUsername(username);
     }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        return jpaUserRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserEntity save(UserEntity entity) {
+        return jpaUserRepository.save(entity);
+    }
 }
