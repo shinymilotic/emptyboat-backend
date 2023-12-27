@@ -2,6 +2,7 @@ package overcloud.blog.repository.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -9,6 +10,7 @@ import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
 import overcloud.blog.repository.SearchArticlesRepository;
+import overcloud.blog.usecase.article.get_article_list.ArticleSummary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,35 +18,69 @@ import java.util.List;
 @Repository
 public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
 
-    @PersistenceContext
-    EntityManager entityManager;
+    private final EntityManager entityManager;
 
     private final PlainQueryBuilder plainQueryBuilder;
 
-    public SearchArticlesRepositoryImpl(PlainQueryBuilder plainQueryBuilder) {
+    public SearchArticlesRepositoryImpl(EntityManager entityManager, PlainQueryBuilder plainQueryBuilder) {
+        this.entityManager = entityManager;
         this.plainQueryBuilder = plainQueryBuilder;
     }
 
     @Override
-    public List<ArticleEntity> findByCriteria(String tag, String author, String favorited, int limit, int page) {
-        List<ArticleEntity> resultList = new ArrayList<>();
+    public List<ArticleSummary> findByCriteria(String tag, String author, String favorited, int limit, int page) {
 
-        resultList = fetchArticlesTagList(tag);
-        resultList = fetchArticlesAuthor(resultList, author);
-        resultList = fetchArticlesFavorite(resultList, favorited);
+        StringBuilder query = new StringBuilder("SELECT  ");
+        query.append(" a.id, a.slug, a.title, a.description, a.body, t.name , a.createdAt, a.updatedAt, ");
+        query.append(" author.username, author.bio, author.image , author.followersCount ");
+//        query.append(" favorited, favoritesCount, author.username, author.bio, author.image, following, followersCount) ");
+        query.append(" FROM ArticleEntity a ");
+        query.append(" INNER JOIN  ");
+        query.append(" (SELECT u.id as id, u.username as username, u.bio as bio, u.image as image, COUNT(follow.id.followerId) as followersCount ");
+        query.append(" FROM UserEntity u ");
+        query.append(" LEFT JOIN FollowEntity follow ON u.id = follow.id.followeeId ");
+        query.append(" GROUP BY u.id , u.username , u.bio , u.image) as author ");
 
-        resultList = entityManager
-                .createQuery("""
-                                SELECT articles FROM ArticleEntity articles\
-                                 WHERE articles IN :articles \
-                                """,
-                        ArticleEntity.class)
-                .setParameter("articles", resultList)
+        query.append(" ON a.author.id = author.id  ");
+
+        if(StringUtils.hasText(author)) {
+            query.append(" AND author.username = :author ");
+        }
+
+        query.append(" LEFT JOIN ArticleTag at ON a.id = at.id.articleId ");
+        query.append(" LEFT JOIN TagEntity t ON at.id.tagId = t.id ");
+
+        if(StringUtils.hasText(tag)) {
+            query.append(" AND t.name = :tag ");
+        }
+
+        query.append(" LEFT JOIN FavoriteEntity f ON f.id.articleId = a.id ");
+
+        if(StringUtils.hasText(favorited)) {
+            query.append(" LEFT JOIN UserEntity fu ON fu.id = f.id.userId ");
+            query.append(" AND fu.usernname = :favorited ) ");
+        }
+//        query.append(" GROUP BY   a.id, a.slug, a.title, a.description, a.body, a.createdAt, a.updatedAt  ");
+
+        Query resultList = entityManager
+                .createQuery(query.toString())
                 .setFirstResult(plainQueryBuilder.getOffset(page, limit))
-                .setMaxResults(limit)
-                .getResultList();
+                .setMaxResults(limit);
 
-        return resultList;
+        if(StringUtils.hasText(tag)) {
+            resultList.setParameter("author", author);
+        }
+
+        if(StringUtils.hasText(tag)) {
+            resultList.setParameter("tag", tag);
+        }
+
+        if(StringUtils.hasText(favorited)) {
+            resultList.setParameter("favorited", favorited);
+        }
+
+        List<Object> list = resultList.getResultList();
+        return null;
     }
 
     private List<ArticleEntity> fetchArticlesFavorite(List<ArticleEntity> resultList, String favorited) {

@@ -37,20 +37,20 @@ public class GetArticleListService {
     public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, int page) {
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleEntity> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page);
+        List<ArticleSummary> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page);
 
-        Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
-        UserEntity currentUser = null;
-        if (currentSecurityUser.isPresent()) {
-            currentUser = currentSecurityUser.get().getUser();
-        }
+//        Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
+//        UserEntity currentUser = null;
+//        if (currentSecurityUser.isPresent()) {
+//            currentUser = currentSecurityUser.get().getUser();
+//        }
+//
+//        for (ArticleEntity article: articleEntities) {
+//            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
+//            getArticlesResponse.getArticles().add(singleResponse);
+//        }
 
-        for (ArticleEntity article: articleEntities) {
-            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
-            getArticlesResponse.getArticles().add(singleResponse);
-        }
-
-        return getArticlesResponse;
+        return null;
     }
 
 
