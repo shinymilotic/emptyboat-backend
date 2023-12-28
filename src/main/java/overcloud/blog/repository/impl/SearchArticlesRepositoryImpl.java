@@ -14,6 +14,7 @@ import overcloud.blog.usecase.article.get_article_list.ArticleSummary;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
@@ -28,19 +29,18 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
     }
 
     @Override
-    public List<ArticleSummary> findByCriteria(String tag, String author, String favorited, int limit, int page) {
+    public List<ArticleSummary> findByCriteria(UUID currentUserId, String tag, String author, String favorited, int limit, int page) {
 
         StringBuilder query = new StringBuilder("SELECT  ");
-        query.append(" a.id, a.slug, a.title, a.description, a.body, t.name , a.createdAt, a.updatedAt, ");
-        query.append(" author.username, author.bio, author.image , author.followersCount ");
-//        query.append(" favorited, favoritesCount, author.username, author.bio, author.image, following, followersCount) ");
+        query.append(" new overcloud.blog.usecase.article.get_article_list.ArticleSummary(a.id, a.slug, a.title, a.description, a.body, t.name , a.createdAt, a.updatedAt, ");
+        query.append(" author.username, author.bio, author.image , author.following, author.followersCount) ");
+//        query.append(" favorited, favoritesCount, ) ");
         query.append(" FROM ArticleEntity a ");
         query.append(" INNER JOIN  ");
-        query.append(" (SELECT u.id as id, u.username as username, u.bio as bio, u.image as image, COUNT(follow.id.followerId) as followersCount ");
+        query.append(" (SELECT u.id as id, u.username as username, u.bio as bio, u.image as image, COUNT(follow.id.followerId = :currentUserId) as following,COUNT(follow.id.followerId) as followersCount ");
         query.append(" FROM UserEntity u ");
         query.append(" LEFT JOIN FollowEntity follow ON u.id = follow.id.followeeId ");
-        query.append(" GROUP BY u.id , u.username , u.bio , u.image) as author ");
-
+        query.append(" GROUP BY u.id) as author ");
         query.append(" ON a.author.id = author.id  ");
 
         if(StringUtils.hasText(author)) {
@@ -54,18 +54,20 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
             query.append(" AND t.name = :tag ");
         }
 
+//        query.append(" LEFT JOIN FavoriteEntity f ON f.id.articleId = a.id ");
         query.append(" LEFT JOIN FavoriteEntity f ON f.id.articleId = a.id ");
 
         if(StringUtils.hasText(favorited)) {
-            query.append(" LEFT JOIN UserEntity fu ON fu.id = f.id.userId ");
-            query.append(" AND fu.usernname = :favorited ) ");
+
         }
 //        query.append(" GROUP BY   a.id, a.slug, a.title, a.description, a.body, a.createdAt, a.updatedAt  ");
 
-        Query resultList = entityManager
-                .createQuery(query.toString())
+        TypedQuery<ArticleSummary> resultList = entityManager
+                .createQuery(query.toString(), ArticleSummary.class)
                 .setFirstResult(plainQueryBuilder.getOffset(page, limit))
                 .setMaxResults(limit);
+
+        resultList.setParameter("currentUserId", currentUserId);
 
         if(StringUtils.hasText(tag)) {
             resultList.setParameter("author", author);
@@ -79,7 +81,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
             resultList.setParameter("favorited", favorited);
         }
 
-        List<Object> list = resultList.getResultList();
+        List<ArticleSummary> list = resultList.getResultList();
         return null;
     }
 

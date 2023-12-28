@@ -12,6 +12,7 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class GetArticleListService {
@@ -35,9 +36,17 @@ public class GetArticleListService {
     }
 
     public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, int page) {
+        Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
+        UserEntity currentUser = null;
+        UUID currentUserId = null;
+        if (currentSecurityUser.isPresent()) {
+            currentUser = currentSecurityUser.get().getUser();
+            currentUserId = currentUser.getId();
+        }
+
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleSummary> articleEntities = articleRepository.findByCriteria(tag, author, favorited, limit, page);
+        List<ArticleSummary> articleEntities = articleRepository.findByCriteria(currentUserId, tag, author, favorited, limit, page);
 
 //        Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
 //        UserEntity currentUser = null;
