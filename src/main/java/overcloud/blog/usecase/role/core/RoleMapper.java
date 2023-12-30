@@ -3,7 +3,6 @@ package overcloud.blog.usecase.role.core;
 import org.springframework.stereotype.Component;
 
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.usecase.role.RoleListResponse;
 
 import java.util.Collection;
 import java.util.List;

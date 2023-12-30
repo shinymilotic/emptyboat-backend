@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.role;
+package overcloud.blog.usecase.role.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;

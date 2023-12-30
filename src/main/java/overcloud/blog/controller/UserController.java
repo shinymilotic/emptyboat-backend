@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.user;
+package overcloud.blog.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
