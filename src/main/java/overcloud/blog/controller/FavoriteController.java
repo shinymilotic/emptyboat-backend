@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.article.favorite;
+package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
 

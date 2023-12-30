@@ -3,7 +3,7 @@ package overcloud.blog.usecase.role.get_all_roles;
 import org.springframework.stereotype.Service;
 
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.usecase.role.RoleListResponse;
+import overcloud.blog.usecase.role.core.RoleListResponse;
 import overcloud.blog.usecase.role.core.RoleMapper;
 import overcloud.blog.usecase.role.core.RoleRepository;
 

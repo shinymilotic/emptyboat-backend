@@ -2,6 +2,7 @@ package overcloud.blog.usecase.article.create_article;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.f4b6a3.uuid.UuidCreator;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
@@ -119,6 +120,7 @@ public class CreateArticleService {
         LocalDateTime now = LocalDateTime.now();
 
         ArticleEntity articleEntity = new ArticleEntity();
+        articleEntity.setId(UuidCreator.getTimeOrderedEpoch());
         articleEntity.setAuthor(author);
         articleEntity.setBody(body);
         articleEntity.setDescription(description);

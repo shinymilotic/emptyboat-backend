@@ -3,7 +3,7 @@ package overcloud.blog.usecase.user_role;
 import org.springframework.web.bind.annotation.*;
 
 import overcloud.blog.infrastructure.ApiConst;
-import overcloud.blog.usecase.role.RolesRequest;
+import overcloud.blog.usecase.role.core.RolesRequest;
 import overcloud.blog.usecase.user_role.assign_role.AssignRoleService;
 import overcloud.blog.usecase.user_role.assign_role.RoleAssignmentResponse;
 

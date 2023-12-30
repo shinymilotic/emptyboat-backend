@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.usecase.role.RolesRequest;
+import overcloud.blog.usecase.role.core.RolesRequest;
 
 @Getter
 @Setter

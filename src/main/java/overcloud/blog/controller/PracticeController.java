@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.practice;
+package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

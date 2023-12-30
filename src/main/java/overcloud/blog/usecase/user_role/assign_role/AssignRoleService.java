@@ -11,7 +11,7 @@ import overcloud.blog.infrastructure.UpdateFlg;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRoleRepository;
-import overcloud.blog.usecase.role.RolesRequest;
+import overcloud.blog.usecase.role.core.RolesRequest;
 import overcloud.blog.usecase.role.core.*;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.article;
+package overcloud.blog.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,6 +18,8 @@ import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.article.update_article.UpdateArticleRequest;
 import overcloud.blog.usecase.article.update_article.UpdateArticleResponse;
 import overcloud.blog.usecase.article.update_article.UpdateArticleService;
+
+import java.time.LocalDateTime;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -73,7 +75,7 @@ public class ArticleController {
                                            @RequestParam(required = false) String author,
                                            @RequestParam(required = false) String favorited,
                                            @RequestParam(value = "size", defaultValue = "20") int limit,
-                                           @RequestParam(defaultValue = "1") int page) {
-        return getArticleListService.getArticles(tag, author, favorited, limit, page);
+                                           @RequestParam(defaultValue = "") String lastArticleId) {
+        return getArticleListService.getArticles(tag, author, favorited, limit, lastArticleId);
     }
 }

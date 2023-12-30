@@ -9,6 +9,7 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class GetArticleListService {
         this.authenticationService = authenticationService;
     }
 
-    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, int page) {
+    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
         UUID currentUserId = null;
@@ -46,7 +47,7 @@ public class GetArticleListService {
 
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleSummary> articleEntities = articleRepository.findByCriteria(currentUserId, tag, author, favorited, limit, page);
+        List<ArticleSummary> articleEntities = articleRepository.findByCriteria(currentUserId, tag, author, favorited, limit, lastArticleId);
 
 //        Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
 //        UserEntity currentUser = null;
