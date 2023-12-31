@@ -1,6 +1,8 @@
 package overcloud.blog.usecase.article.get_article_list;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class ArticleSummary {
@@ -14,15 +16,13 @@ public class ArticleSummary {
 
     private String body;
 
-    private String tag;
+    private List<String> tag;
 
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
-    private LocalDateTime updatedAt;
+    private Boolean favorited;
 
-    private boolean favorited;
-
-    private int favoritesCount;
+    private Long favoritesCount;
 
     private String username;
 
@@ -30,26 +30,12 @@ public class ArticleSummary {
 
     private String image;
 
-    private long following;
+    private Boolean following;
 
-    private long followersCount;
+    private Long followersCount;
+    public ArticleSummary() {
 
-    public ArticleSummary(UUID id, String slug, String title, String description, String body, String tag, LocalDateTime createdAt, LocalDateTime updatedAt, String username, String bio, String image, long following, long followersCount) {
-        this.id = id;
-        this.slug = slug;
-        this.title = title;
-        this.description = description;
-        this.body = body;
-        this.tag = tag;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.username = username;
-        this.bio = bio;
-        this.image = image;
-        this.following = following;
-        this.followersCount = followersCount;
     }
-
     public UUID getId() {
         return id;
     }
@@ -90,43 +76,39 @@ public class ArticleSummary {
         this.body = body;
     }
 
-    public String getTag() {
+    public List<String> getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(List<String> tag) {
         this.tag = tag;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public boolean isFavorited() {
+    public Boolean getFavorited() {
         return favorited;
     }
 
-    public void setFavorited(boolean favorited) {
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Boolean isFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(Boolean favorited) {
         this.favorited = favorited;
     }
 
-    public int getFavoritesCount() {
+    public Long getFavoritesCount() {
         return favoritesCount;
     }
 
-    public void setFavoritesCount(int favoritesCount) {
+    public void setFavoritesCount(Long favoritesCount) {
         this.favoritesCount = favoritesCount;
     }
 
@@ -154,19 +136,19 @@ public class ArticleSummary {
         this.image = image;
     }
 
-    public long getFollowing() {
+    public Boolean getFollowing() {
         return following;
     }
 
-    public void setFollowing(long following) {
+    public void setFollowing(Boolean following) {
         this.following = following;
     }
 
-    public long getFollowersCount() {
+    public Long getFollowersCount() {
         return followersCount;
     }
 
-    public void setFollowersCount(long followersCount) {
+    public void setFollowersCount(Long followersCount) {
         this.followersCount = followersCount;
     }
 }

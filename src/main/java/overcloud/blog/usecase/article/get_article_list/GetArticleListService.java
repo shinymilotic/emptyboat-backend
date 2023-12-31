@@ -47,46 +47,39 @@ public class GetArticleListService {
 
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleSummary> articleEntities = articleRepository.findByCriteria(currentUserId, tag, author, favorited, limit, lastArticleId);
+        List<ArticleSummary> articleSummaries = articleRepository.findByCriteria(currentUserId, tag, author, favorited, limit, lastArticleId);
 
-//        Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
-//        UserEntity currentUser = null;
-//        if (currentSecurityUser.isPresent()) {
-//            currentUser = currentSecurityUser.get().getUser();
-//        }
-//
-//        for (ArticleEntity article: articleEntities) {
-//            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
-//            getArticlesResponse.getArticles().add(singleResponse);
-//        }
+        for (ArticleSummary article : articleSummaries) {
+            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
+            getArticlesResponse.getArticles().add(singleResponse);
+        }
 
-        return null;
+        return getArticlesResponse;
     }
 
 
-    private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleEntity article, UserEntity currentUser) {
+    private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleSummary article, UserEntity currentUser) {
         return GetArticlesSingleResponse.builder()
                 .id(article.getId().toString())
                 .title(article.getTitle())
                 .body(article.getBody())
                 .description(article.getDescription())
                 .slug(article.getSlug())
-                .author(toGetArticleAuthorResponse(currentUser, article.getAuthor()))
-                .favorited(favoriteUtils.isFavorited(currentUser, article))
-                .favoritesCount(article.getFavorites().size())
-                .tagList(article.getTagNameList())
-                .createdAt(article.getCreatedAt())
-                .updatedAt(article.getUpdatedAt())
+                .author(toGetArticleAuthorResponse(currentUser, article))
+                .favorited(article.isFavorited())
+                .favoritesCount(article.getFavoritesCount())
+                .tagList(article.getTag())
+                .createdAt(article.getCreatedAt().toLocalDateTime())
                 .build();
     }
 
-    private AuthorResponse toGetArticleAuthorResponse(UserEntity currentUser, UserEntity author) {
+    private AuthorResponse toGetArticleAuthorResponse(UserEntity currentUser, ArticleSummary author) {
         return AuthorResponse.builder()
                 .username(author.getUsername())
                 .bio(author.getBio())
                 .image(author.getImage())
-                .following(followUtils.isFollowing(currentUser, author))
-                .followersCount(followUtils.getFollowingCount(author))
+                .following(author.getFollowing())
+                .followersCount(author.getFollowersCount())
                 .build();
     }
 }

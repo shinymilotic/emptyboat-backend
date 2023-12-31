@@ -1,20 +1,21 @@
 package overcloud.blog.repository.impl;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.TagEntity;
+import overcloud.blog.infrastructure.datetime.DateTimeFormat;
 import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
 import overcloud.blog.repository.SearchArticlesRepository;
 import overcloud.blog.usecase.article.get_article_list.ArticleSummary;
+import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
+import overcloud.blog.usecase.article.get_article_list.GetArticlesSingleResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Repository
 public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
@@ -29,137 +30,126 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
     }
 
     @Override
-    public List<ArticleSummary> findByCriteria(UUID currentUserId, String tag, String author, String favorited, int limit, int page) {
+    public List<ArticleSummary> findByCriteria(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId) {
+        StringBuilder query = new StringBuilder();
+        query.append("select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
+        query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
+        query.append("from ");
+        query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
+        query.append("from articles ");
+        query.append("limit :limit) a ");
+        query.append("left join users author on ");
+        query.append("author.id = a.author_id ");
+        query.append("left join ( ");
+        query.append("select ");
+        query.append("f.followee_id, ");
+        query.append("bool_or(f.follower_id = :currentUserId) as following, ");
+        query.append("COUNT(f.follower_id) followersCount ");
+        query.append("from ");
+        query.append("follows f ");
+        query.append("group by ");
+        query.append("f.followee_id) f1 on ");
+        query.append("f1.followee_id = author.id ");
+        query.append("left join ( ");
+        query.append("select ");
+        query.append("article_id , ");
+        query.append("bool_or(user_id = :currentUserId) as favorited, ");
+        query.append(ifFavorited("bool_or(fu.username = :favorited) as favoritedUser, ", favorited));
+        query.append("COUNT(user_id) favoritesCount ");
+        query.append("from ");
+        query.append("favorites ");
+        query.append(ifFavorited("left join (select id, username from users where username = :favorited) fu on fu.id = favorites.user_id ", favorited));
+        query.append("group by ");
+        query.append("article_id) fa on ");
+        query.append("fa.article_id = a.id ");
+        query.append("left join article_tag at2 on ");
+        query.append("a.id = at2.article_id ");
+        query.append("left join tags t on ");
+        query.append("t.id = at2.tag_id ");
 
-        StringBuilder query = new StringBuilder("SELECT  ");
-        query.append(" new overcloud.blog.usecase.article.get_article_list.ArticleSummary(a.id, a.slug, a.title, a.description, a.body, t.name , a.createdAt, a.updatedAt, ");
-        query.append(" author.username, author.bio, author.image , author.following, author.followersCount) ");
-//        query.append(" favorited, favoritesCount, ) ");
-        query.append(" FROM ArticleEntity a ");
-        query.append(" INNER JOIN  ");
-        query.append(" (SELECT u.id as id, u.username as username, u.bio as bio, u.image as image, COUNT(follow.id.followerId = :currentUserId) as following,COUNT(follow.id.followerId) as followersCount ");
-        query.append(" FROM UserEntity u ");
-        query.append(" LEFT JOIN FollowEntity follow ON u.id = follow.id.followeeId ");
-        query.append(" GROUP BY u.id) as author ");
-        query.append(" ON a.author.id = author.id  ");
+        StringBuilder whereStatement = new StringBuilder();
+        whereStatement.append(ifAuthor(" author.username = :author ", author));
+        whereStatement.append(ifFavorited(operator(whereStatement, " AND "), favorited));
+        whereStatement.append(ifFavorited(" fa.favoritedUser = true", favorited));
+        whereStatement.append(ifTag(operator(whereStatement, " AND "), tag));
+        whereStatement.append(ifTag(" t.name = :tag ", tag));
+        query.append(operator(whereStatement," WHERE "));
+        query.append(whereStatement);
 
-        if(StringUtils.hasText(author)) {
-            query.append(" AND author.username = :author ");
-        }
-
-        query.append(" LEFT JOIN ArticleTag at ON a.id = at.id.articleId ");
-        query.append(" LEFT JOIN TagEntity t ON at.id.tagId = t.id ");
-
-        if(StringUtils.hasText(tag)) {
-            query.append(" AND t.name = :tag ");
-        }
-
-//        query.append(" LEFT JOIN FavoriteEntity f ON f.id.articleId = a.id ");
-        query.append(" LEFT JOIN FavoriteEntity f ON f.id.articleId = a.id ");
-
-        if(StringUtils.hasText(favorited)) {
-
-        }
-//        query.append(" GROUP BY   a.id, a.slug, a.title, a.description, a.body, a.createdAt, a.updatedAt  ");
-
-        TypedQuery<ArticleSummary> resultList = entityManager
-                .createQuery(query.toString(), ArticleSummary.class)
-                .setFirstResult(plainQueryBuilder.getOffset(page, limit))
-                .setMaxResults(limit);
-
+        Query resultList = entityManager.createNativeQuery(query.toString(), Tuple.class);
         resultList.setParameter("currentUserId", currentUserId);
-
-        if(StringUtils.hasText(tag)) {
+        resultList.setParameter("limit", limit);
+        if(StringUtils.hasText(author)) {
             resultList.setParameter("author", author);
         }
-
         if(StringUtils.hasText(tag)) {
             resultList.setParameter("tag", tag);
         }
-
         if(StringUtils.hasText(favorited)) {
             resultList.setParameter("favorited", favorited);
         }
 
-        List<ArticleSummary> list = resultList.getResultList();
-        return null;
+        List<Tuple> articlesData = resultList.getResultList();
+        List<ArticleSummary> articleSummaries = new ArrayList<>();
+
+        UUID previousArticleId = null;
+        Map<UUID, ArticleSummary> articleSummaryMap = new HashMap<>();
+        for (Tuple data : articlesData) {
+            UUID articleId = (UUID) data.get("id");
+            String tagName = (String) data.get("tag");
+            if (articleId.equals(previousArticleId)) {
+                articleSummaryMap.get(articleId).getTag().add((String) data.get("tag"));
+            }
+
+            ArticleSummary summary = new ArticleSummary();
+            summary.setId((UUID) data.get("id"));
+            summary.setSlug((String) data.get("slug"));
+            summary.setTitle((String) data.get("title"));
+            summary.setDescription((String) data.get("description"));
+            summary.setBody((String) data.get("body"));
+            List<String> tagList = new ArrayList<>();
+            tagList.add(tagName);
+            summary.setTag(tagList);
+            summary.setCreatedAt((Timestamp) data.get("createdAt"));
+            summary.setFavorited((Boolean) data.get("favorited"));
+            summary.setFavoritesCount((Long) data.get("favoritesCount"));
+            summary.setUsername((String) data.get("username"));
+            summary.setBio((String) data.get("bio"));
+            summary.setImage((String) data.get("image"));
+            summary.setFollowing((Boolean)data.get("following"));
+            summary.setFollowersCount((Long)data.get("followersCount"));
+            articleSummaries.add(summary);
+            articleSummaryMap.put(articleId, summary);
+            previousArticleId = articleId;
+        }
+        return articleSummaries;
     }
 
-    private List<ArticleEntity> fetchArticlesFavorite(List<ArticleEntity> resultList, String favorited) {
-        StringBuilder favoritedCondition = new StringBuilder();
-
-        if(StringUtils.hasText(favorited)) {
-            favoritedCondition.append(" AND EXISTS (SELECT f FROM FavoriteEntity f WHERE f.user.username = :favorited AND f.id.articleId = articles.id) ");
+    private String ifFavorited(String query, String favorited) {
+        if (StringUtils.hasText(favorited)) {
+            return query;
         }
-
-        TypedQuery<ArticleEntity> articleQuery = entityManager
-                .createQuery("SELECT articles FROM ArticleEntity articles" +
-                                " WHERE articles IN :articles " +
-                                favoritedCondition,
-                        ArticleEntity.class)
-                .setParameter("articles", resultList);
-
-        if(StringUtils.hasText(favorited)) {
-            articleQuery.setParameter("favorited", favorited);
-        }
-
-        return articleQuery.getResultList();
+        return "";
     }
 
-    private List<ArticleEntity> fetchArticlesTagList(String tag) {
-        List<TagEntity> tagList = new ArrayList<>();
-        StringBuilder tagCondition = new StringBuilder("");
-
-        if(StringUtils.hasText(tag)) {
-            tagList = fetchTagList(tag).getResultList();
-            tagCondition.append(" WHERE articleTags.tag IN :tagList ");
+    private String ifAuthor(String query, String author) {
+        if (StringUtils.hasText(author)) {
+            return query;
         }
-
-        TypedQuery<ArticleEntity> results = entityManager
-                .createQuery("SELECT distinct articles FROM ArticleEntity articles" +
-                                " LEFT JOIN fetch articles.articleTags articleTags " +
-                                tagCondition,
-                        ArticleEntity.class);
-
-        if(!tagList.isEmpty()) {
-            results.setParameter("tagList", tagList);
-        }
-
-        return results.getResultList();
+        return "";
     }
 
-    private List<ArticleEntity> fetchArticlesAuthor(List<ArticleEntity> articles, String author) {
-        StringBuilder authorCondition = new StringBuilder();
-
-        if(StringUtils.hasText(author)) {
-            authorCondition.append(" AND (author.username = :author)");
+    private String ifTag(String query, String tag) {
+        if (StringUtils.hasText(tag)) {
+            return query;
         }
-
-        TypedQuery<ArticleEntity> articleQuery = entityManager
-               .createQuery("SELECT distinct articles FROM ArticleEntity articles" +
-                                " LEFT JOIN fetch articles.author author" +
-                               " WHERE articles IN :articles " +
-                                authorCondition,
-                        ArticleEntity.class)
-                .setParameter("articles", articles);
-
-        if(StringUtils.hasText(author)) {
-            articleQuery.setParameter("author", author);
-        }
-
-        return articleQuery.getResultList();
+        return "";
     }
 
-    private TypedQuery<TagEntity> fetchTagList(String tag) {
-        TypedQuery<TagEntity> tagQuery = entityManager
-                .createQuery("""
-                                SELECT distinct tags FROM TagEntity tags\
-                                 LEFT JOIN fetch tags.articleTags articleTags \
-                                 WHERE (tags.name = :tag )\
-                                """,
-                        TagEntity.class)
-                .setParameter("tag", tag);
-
-        return tagQuery;
+    private String operator(StringBuilder st, String operator) {
+        if (!st.isEmpty()) {
+            return operator;
+        }
+        return "";
     }
 }

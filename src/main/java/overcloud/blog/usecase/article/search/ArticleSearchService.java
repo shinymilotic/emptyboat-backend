@@ -88,10 +88,9 @@ public class ArticleSearchService {
                 .slug(article.getSlug())
                 .author(toGetArticleAuthorResponse(currentUser, article.getAuthor()))
                 .favorited(favoriteUtils.isFavorited(currentUser, article))
-                .favoritesCount(article.getFavorites().size())
+//                .favoritesCount(article.getFavorites().size())
                 .tagList(article.getTagNameList())
                 .createdAt(article.getCreatedAt())
-                .updatedAt(article.getUpdatedAt())
                 .build();
     }
 

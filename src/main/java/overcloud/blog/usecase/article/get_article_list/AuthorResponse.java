@@ -23,5 +23,5 @@ public class AuthorResponse {
     private boolean following;
 
     @JsonProperty("followersCount")
-    private int followersCount;
+    private long followersCount;
 }

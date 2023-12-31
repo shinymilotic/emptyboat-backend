@@ -34,14 +34,11 @@ public class GetArticlesSingleResponse {
     @JsonProperty("createdAt")
     private LocalDateTime createdAt;
 
-    @JsonProperty("updatedAt")
-    private LocalDateTime updatedAt;
-
     @JsonProperty("favorited")
-    private boolean favorited;
+    private Boolean favorited;
 
     @JsonProperty("favoritesCount")
-    private int favoritesCount;
+    private Long favoritesCount;
 
     @JsonProperty("author")
     private AuthorResponse author;
