@@ -37,7 +37,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         query.append("from ");
         query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
         query.append("from articles ");
-        query.append("limit :limit) a ");
+        query.append(" ORDER BY id DESC limit :limit) a ");
         query.append("left join users author on ");
         query.append("author.id = a.author_id ");
         query.append("left join ( ");

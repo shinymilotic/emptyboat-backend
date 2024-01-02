@@ -20,8 +20,8 @@ public class AuthorResponse {
     private String image;
 
     @JsonProperty("following")
-    private boolean following;
+    private Boolean following;
 
     @JsonProperty("followersCount")
-    private long followersCount;
+    private Long followersCount;
 }
