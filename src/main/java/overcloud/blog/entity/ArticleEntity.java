@@ -19,7 +19,6 @@ import java.util.UUID;
 @Table(name = "articles", schema = "public")
 public class ArticleEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne

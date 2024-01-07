@@ -37,6 +37,9 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         query.append("from ");
         query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
         query.append("from articles ");
+        if (StringUtils.hasText(lastArticleId)) {
+            query.append(" WHERE id < uuid(:lastArticleId) ");
+        }
         query.append(" ORDER BY id DESC limit :limit) a ");
         query.append("left join users author on ");
         query.append("author.id = a.author_id ");
@@ -75,9 +78,13 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         whereStatement.append(ifTag(" t.name = :tag ", tag));
         query.append(operator(whereStatement," WHERE "));
         query.append(whereStatement);
+        query.append(" ORDER BY a.id DESC  ");
 
         Query resultList = entityManager.createNativeQuery(query.toString(), Tuple.class);
         resultList.setParameter("currentUserId", currentUserId);
+        if (StringUtils.hasText(lastArticleId)) {
+            resultList.setParameter("lastArticleId", lastArticleId);
+        }
         resultList.setParameter("limit", limit);
         if(StringUtils.hasText(author)) {
             resultList.setParameter("author", author);

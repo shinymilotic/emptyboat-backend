@@ -52,6 +52,7 @@ public class GetArticleListService {
         for (ArticleSummary article : articleSummaries) {
             GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
             getArticlesResponse.getArticles().add(singleResponse);
+            getArticlesResponse.addArticleCount();
         }
 
         return getArticlesResponse;

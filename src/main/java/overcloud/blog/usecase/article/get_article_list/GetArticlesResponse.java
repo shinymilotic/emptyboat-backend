@@ -11,4 +11,12 @@ import java.util.List;
 public class GetArticlesResponse {
     @JsonProperty("articles")
     private List<GetArticlesSingleResponse> articles;
+
+    @JsonProperty("articlesCount")
+    private int articlesCount;
+
+    public void addArticleCount() {
+        this.articlesCount++;
+    }
+
 }

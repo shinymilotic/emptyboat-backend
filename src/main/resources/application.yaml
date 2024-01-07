@@ -33,7 +33,7 @@ spring:
         format_sql: false
     show-sql: true
   kafka:
-    bootstrap-servers: 192.168.1.7:29093
+    bootstrap-servers: 192.168.1.8:29093
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -50,17 +50,17 @@ spring:
     elasticsearch:
       repositories:
         enabled: true
-      # cluster-nodes: 192.168.1.7:9200
+      # cluster-nodes: 192.168.1.8:9200
       # cluster-name:  elasticsearch
 
   elasticsearch:
     rest:
-      uris: 192.168.1.7:9200
+      uris: 192.168.1.8:9200
       username: elastic
       password: nuE9TjbhqMTe-p4Z+fhB
 
 elasticsearch:
-  url: 192.168.1.7:9200
+  url: 192.168.1.8:9200
 
 logging:
   level:

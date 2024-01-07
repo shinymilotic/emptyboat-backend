@@ -100,7 +100,7 @@ public class ArticleSearchService {
                 .bio(author.getBio())
                 .image(author.getImage())
                 .following(followUtils.isFollowing(currentUser, author))
-                .followersCount(followUtils.getFollowingCount(author))
+                .followersCount((long)followUtils.getFollowingCount(author))
                 .build();
     }
 }

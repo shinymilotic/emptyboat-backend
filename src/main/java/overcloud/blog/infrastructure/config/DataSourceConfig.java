@@ -14,7 +14,7 @@ public class DataSourceConfig {
     @Bean
     public DataSource getDataSource() {
         StringBuilder connectionString = new StringBuilder();
-        connectionString.append("jdbc:postgresql://192.168.1.7:5432/realworld");
+        connectionString.append("jdbc:postgresql://192.168.1.8:5432/realworld");
 
         return DataSourceBuilder.create()
             .driverClassName("org.postgresql.Driver")
