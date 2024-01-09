@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.user_role;
+package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
 
