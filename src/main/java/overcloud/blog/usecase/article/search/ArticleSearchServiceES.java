@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.article.favorite.core.utils.FavoriteUtils;
+import overcloud.blog.usecase.article.get_article_list.ArticleSummary;
 import overcloud.blog.usecase.article.get_article_list.AuthorResponse;
 import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.article.get_article_list.GetArticlesSingleResponse;
@@ -46,13 +47,12 @@ public class ArticleSearchServiceES implements ArticleSearchService{
         this.favoriteUtils = favoriteUtils;
     }
 
-    public GetArticlesResponse searchArticles(String searchParam, int size, int page) {
+    public GetArticlesResponse searchArticles(String searchParam, int size, String lastArticleId) {
         NativeQuery matchQuery = NativeQuery.builder()
                 .withQuery(
                     query -> query.match(
                         mPP -> mPP.field("body").query(searchParam)
                     ))
-                .withPageable(PageRequest.of(page - 1, size))
                 .build();
 
         SearchHits<ArticleElastic> searchHitsResult = elasticsearchOperations.search(matchQuery, ArticleElastic.class);
@@ -64,16 +64,17 @@ public class ArticleSearchServiceES implements ArticleSearchService{
                     .toList();
         }
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
-
+        UUID currentUserId = null;
         UserEntity currentUser = null;
         if (currentSecurityUser.isPresent()) {
             currentUser = currentSecurityUser.get().getUser();
+            currentUserId = currentUser.getId();
         }
 
-        List<ArticleEntity> articleEntities = articleRepository.findAllById(articleElasticList);
+        List<ArticleSummary> articleSummaries = articleRepository.findByIds(articleElasticList, currentUserId, lastArticleId);
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        for (ArticleEntity article: articleEntities) {
+        for (ArticleSummary article : articleSummaries) {
             GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
             getArticlesResponse.getArticles().add(singleResponse);
             getArticlesResponse.addArticleCount();
@@ -82,28 +83,28 @@ public class ArticleSearchServiceES implements ArticleSearchService{
         return getArticlesResponse;
     }
 
-    private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleEntity article, UserEntity currentUser) {
+    private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleSummary article, UserEntity currentUser) {
         return GetArticlesSingleResponse.builder()
                 .id(article.getId().toString())
                 .title(article.getTitle())
                 .body(article.getBody())
                 .description(article.getDescription())
                 .slug(article.getSlug())
-                .author(toGetArticleAuthorResponse(currentUser, article.getAuthor()))
-                .favorited(favoriteUtils.isFavorited(currentUser, article))
-//                .favoritesCount(article.getFavorites().size())
-                .tagList(article.getTagNameList())
-                .createdAt(article.getCreatedAt())
+                .author(toGetArticleAuthorResponse(currentUser, article))
+                .favorited(article.isFavorited())
+                .favoritesCount(article.getFavoritesCount())
+                .tagList(article.getTag())
+                .createdAt(article.getCreatedAt().toLocalDateTime())
                 .build();
     }
 
-    private AuthorResponse toGetArticleAuthorResponse(UserEntity currentUser, UserEntity author) {
+    private AuthorResponse toGetArticleAuthorResponse(UserEntity currentUser, ArticleSummary author) {
         return AuthorResponse.builder()
                 .username(author.getUsername())
                 .bio(author.getBio())
                 .image(author.getImage())
-                .following(followUtils.isFollowing(currentUser, author))
-                .followersCount((long)followUtils.getFollowingCount(author))
+                .following(author.getFollowing())
+                .followersCount(author.getFollowersCount())
                 .build();
     }
 }

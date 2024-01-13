@@ -24,7 +24,7 @@ public class SearchController {
     @GetMapping(ApiConst.ARTICLES_SEARCH)
     public GetArticlesResponse searchArticles(@RequestParam(value = "q", defaultValue = "") String searchParam,
                                               @RequestParam(value = "size", defaultValue = "10") int size,
-                                              @RequestParam(value = "page", defaultValue = "1") int page) {
-        return articleSearchService.searchArticles(searchParam, size, page);
+                                              @RequestParam(value = "lastArticleId", defaultValue = "") String lastArticleId) {
+        return articleSearchService.searchArticles(searchParam, size, lastArticleId);
     }
 }
