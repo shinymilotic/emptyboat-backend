@@ -2,6 +2,8 @@ package overcloud.blog.usecase.article.search;
 
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.stereotype.Service;
@@ -31,20 +33,13 @@ public class ArticleSearchServiceES implements ArticleSearchService{
 
     private final SpringAuthenticationService authenticationService;
 
-    private final FollowUtils followUtils;
-
-    private final FavoriteUtils favoriteUtils;
 
     public ArticleSearchServiceES(ElasticsearchOperations elasticsearchOperations,
                                   JpaArticleRepository articleRepository,
-                                  SpringAuthenticationService authenticationService,
-                                  FollowUtils followUtils,
-                                  FavoriteUtils favoriteUtils) {
+                                  SpringAuthenticationService authenticationService) {
         this.elasticsearchOperations = elasticsearchOperations;
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
-        this.followUtils = followUtils;
-        this.favoriteUtils = favoriteUtils;
     }
 
     public GetArticlesResponse searchArticles(String searchParam, int size, String lastArticleId) {
@@ -53,6 +48,13 @@ public class ArticleSearchServiceES implements ArticleSearchService{
                     query -> query.match(
                         mPP -> mPP.field("body").query(searchParam)
                     ))
+                .withFilter( f ->
+                                f.range(r -> r
+                                        .field("id")
+                                        .from(!lastArticleId.equals("") ? lastArticleId : null)
+                                )
+                )
+                .withPageable(Pageable.ofSize(size))
                 .build();
 
         SearchHits<ArticleElastic> searchHitsResult = elasticsearchOperations.search(matchQuery, ArticleElastic.class);

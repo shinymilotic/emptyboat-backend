@@ -10,10 +10,10 @@ import lombok.Getter;
 import lombok.Setter;
 import overcloud.blog.infrastructure.validation.annotation.LetterAndNumber;
 
-@JsonTypeName("user")
+//@JsonTypeName("user")
 @Getter
 @Setter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class UpdateUserRequest {
     @JsonProperty("username")
     @NotBlank(message = "user.register.username.not-blank")
