@@ -10,6 +10,7 @@ import overcloud.blog.infrastructure.ApiConst;
 import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.article.search.ArticleSearchService;
 import overcloud.blog.usecase.article.search.ArticleSearchServiceES;
+import overcloud.blog.usecase.article.search.ArticleSearchServicePG;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -17,7 +18,7 @@ public class SearchController {
 
     private final ArticleSearchService articleSearchService;
 
-    public SearchController(ArticleSearchServiceES articleSearchService) {
+    public SearchController(ArticleSearchServicePG articleSearchService) {
         this.articleSearchService = articleSearchService;
     }
 

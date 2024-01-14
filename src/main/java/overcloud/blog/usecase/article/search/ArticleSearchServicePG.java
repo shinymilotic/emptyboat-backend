@@ -1,35 +1,33 @@
-package overcloud.blog.usecase.article.get_article_list;
+package overcloud.blog.usecase.article.search;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.repository.jparepository.JpaArticleRepository;
-import overcloud.blog.usecase.article.favorite.core.utils.FavoriteUtils;
-import overcloud.blog.usecase.user.follow.core.utils.FollowUtils;
-import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
+import overcloud.blog.usecase.article.get_article_list.ArticleSummary;
+import overcloud.blog.usecase.article.get_article_list.AuthorResponse;
+import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
+import overcloud.blog.usecase.article.get_article_list.GetArticlesSingleResponse;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class GetArticleListService {
-
-
+public class ArticleSearchServicePG implements  ArticleSearchService{
     private final JpaArticleRepository articleRepository;
 
     private final SpringAuthenticationService authenticationService;
 
-    public GetArticleListService(JpaArticleRepository articleRepository,
+    public ArticleSearchServicePG(JpaArticleRepository articleRepository,
                                  SpringAuthenticationService authenticationService) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
     }
-
-    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
+    @Override
+    public GetArticlesResponse searchArticles(String searchParam, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
         UUID currentUserId = null;
@@ -40,7 +38,7 @@ public class GetArticleListService {
 
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleSummary> articleSummaries = articleRepository.findByCriteria(currentUserId, tag, author, favorited, limit, lastArticleId);
+        List<ArticleSummary> articleSummaries = articleRepository.search(searchParam, currentUserId, limit, lastArticleId);
 
         for (ArticleSummary article : articleSummaries) {
             GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
@@ -50,7 +48,6 @@ public class GetArticleListService {
 
         return getArticlesResponse;
     }
-
 
     private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleSummary article, UserEntity currentUser) {
         return GetArticlesSingleResponse.builder()
