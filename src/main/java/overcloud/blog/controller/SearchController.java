@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import overcloud.blog.infrastructure.ApiConst;
 import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.article.search.ArticleSearchService;
-import overcloud.blog.usecase.article.search.ArticleSearchServiceES;
+//import overcloud.blog.usecase.article.search.ArticleSearchServiceES;
 import overcloud.blog.usecase.article.search.ArticleSearchServicePG;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
