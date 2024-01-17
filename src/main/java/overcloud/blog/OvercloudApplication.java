@@ -2,13 +2,15 @@ package overcloud.blog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @SpringBootApplication(scanBasePackages = {"overcloud.blog.repository", "overcloud.blog.*"})
-public class OvercloudApplication {
+public class OvercloudApplication extends SpringBootServletInitializer {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource
@@ -29,4 +31,8 @@ public class OvercloudApplication {
         SpringApplication.run(OvercloudApplication.class, args);
     }
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(OvercloudApplication.class);
+    }
 }
