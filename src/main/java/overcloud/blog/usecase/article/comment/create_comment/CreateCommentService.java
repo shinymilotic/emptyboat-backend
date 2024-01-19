@@ -1,5 +1,6 @@
 package overcloud.blog.usecase.article.comment.create_comment;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.repository.jparepository.JpaCommentRepository;
@@ -40,6 +41,7 @@ public class CreateCommentService {
         this.validator = validator;
     }
 
+    @Transactional
     public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest, String slug) {
         Optional<ApiError> apiError = validator.validate(createCommentRequest);
 
