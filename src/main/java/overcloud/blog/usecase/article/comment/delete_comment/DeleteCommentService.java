@@ -1,5 +1,6 @@
 package overcloud.blog.usecase.article.comment.delete_comment;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.repository.jparepository.JpaCommentRepository;
 
@@ -14,6 +15,7 @@ public class DeleteCommentService {
         this.commentRepository = commentRepository;
     }
 
+    @Transactional
     public boolean deleteComment(String slug, String commendId) {
         commentRepository.deleteById(UUID.fromString(commendId));
         return true;
