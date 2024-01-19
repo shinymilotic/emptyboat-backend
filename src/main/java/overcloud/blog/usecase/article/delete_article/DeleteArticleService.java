@@ -24,6 +24,7 @@ public class DeleteArticleService {
 */
         articleRepository.deleteBySlug(slug);
         deleteArticleResponse.setSlug(slug);
+        articleRepository.updateSearchVector();
         return deleteArticleResponse;
     }
 }

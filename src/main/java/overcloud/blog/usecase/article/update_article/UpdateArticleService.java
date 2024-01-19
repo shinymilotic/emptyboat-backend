@@ -65,7 +65,7 @@ public class UpdateArticleService {
         articleEntity.setBody(updateArticleRequest.getBody());
         articleEntity.setUpdatedAt(now);
         ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
-
+        articleRepository.updateSearchVector();
         return toUpdateArticleResponse(currentUser, savedArticleEntity);
     }
 

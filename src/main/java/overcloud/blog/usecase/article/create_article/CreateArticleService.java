@@ -3,6 +3,7 @@ package overcloud.blog.usecase.article.create_article;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.f4b6a3.uuid.UuidCreator;
+import jakarta.transaction.Transactional;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
@@ -43,23 +44,20 @@ public class CreateArticleService {
 
     private final JpaArticleTagRepository articleTagRepository;
 
-    private KafkaTemplate<String, String> kafkaTemplate;
-
 
     public CreateArticleService(SpringAuthenticationService authenticationService,
                                 JpaTagRepository tagRepository,
                                 JpaArticleRepository articleRepository,
                                 ObjectsValidator<ArticleRequest> validator,
-                                JpaArticleTagRepository articleTagRepository,
-                                KafkaTemplate<String, String> kafkaTemplate) {
+                                JpaArticleTagRepository articleTagRepository) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;
         this.articleRepository = articleRepository;
         this.validator = validator;
         this.articleTagRepository = articleTagRepository;
-        this.kafkaTemplate = kafkaTemplate;
     }
 
+    @Transactional
     public ArticleResponse createArticle(ArticleRequest articleRequest) throws JsonProcessingException {
         List<String> distinctTags = filterDistinctTags(articleRequest.getTagList());
         articleRequest.setTagList(distinctTags);
@@ -83,23 +81,8 @@ public class CreateArticleService {
         List<ArticleTag> articleTags = toArticleTag(tagEntities, savedArticleEntity);
         articleTagRepository.saveAll(articleTags);
         ArticleResponse response = toCreateArticleResponse(savedArticleEntity);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String message = objectMapper.writeValueAsString(response);
-        sendMessage(message);
+        articleRepository.updateSearchVector();
         return response;
-    }
-
-    public void sendMessage(String message) {
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send("notifications", message);
-        future.whenComplete((result, ex) -> {
-            if (ex == null) {
-                System.out.println("Sent message=[" + message +
-                        "] with offset=[" + result.getRecordMetadata().offset() + "]");
-            } else {
-                System.out.println("Unable to send message=[" +
-                        message + "] due to : " + ex.getMessage());
-            }
-        });
     }
 
     private List<String> filterDistinctTags(List<String> tags) {
