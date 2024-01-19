@@ -10,7 +10,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @SpringBootApplication(scanBasePackages = {"overcloud.blog.repository", "overcloud.blog.*"})
-public class OvercloudApplication extends SpringBootServletInitializer {
+public class OvercloudApplication {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource
@@ -29,10 +29,5 @@ public class OvercloudApplication extends SpringBootServletInitializer {
     }
     public static void main(String[] args) {
         SpringApplication.run(OvercloudApplication.class, args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(OvercloudApplication.class);
     }
 }
