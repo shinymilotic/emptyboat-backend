@@ -10,6 +10,7 @@
     </parent>
     <groupId>overcloud</groupId>
     <artifactId>blog</artifactId>
+    <packaging>jar</packaging>
     <version>1</version>
     <name>overcloud</name>
     <description>overcloud</description>
@@ -187,6 +188,7 @@
                     <executable>true</executable>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
