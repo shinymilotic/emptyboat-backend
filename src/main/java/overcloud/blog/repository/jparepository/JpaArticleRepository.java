@@ -17,8 +17,12 @@ public interface JpaArticleRepository extends JpaRepository<ArticleEntity, UUID>
     @Query("SELECT ar FROM ArticleEntity ar WHERE ar.slug = :slug ")
     List<ArticleEntity> findBySlug(@Param("slug") String slug);
 
-    @Query("SELECT ar FROM ArticleEntity ar WHERE ar.title = :title ")
-    List<ArticleEntity> findByTitle(String title);
+//    @Query("SELECT ar FROM ArticleEntity ar WHERE ar.title = :title ")
+//    List<ArticleEntity> findByTitle(String title);
+
+    @Modifying
+    @Query(value = "UPDATE articles SET search_vector = to_tsvector('english', title || ' ' || body)", nativeQuery = true)
+    void updateSearchVector();
 
     @Modifying
     @Query("")
