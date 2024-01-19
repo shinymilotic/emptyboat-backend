@@ -37,10 +37,17 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         query.append("from ");
         query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
         query.append("from articles ");
+        query.append(ifTag("left join article_tag on articles.id = article_tag.article_id left join tags on tags.id = article_tag.tag_id", tag));
+        StringBuilder articleWhereStatement = new StringBuilder();
         if (StringUtils.hasText(lastArticleId)) {
-            query.append(" WHERE id < uuid(:lastArticleId) ");
+            articleWhereStatement.append("  articles.id < uuid(:lastArticleId) ");
         }
-        query.append(" ORDER BY id DESC limit :limit) a ");
+        articleWhereStatement.append(ifTag(operator(articleWhereStatement, " AND "), tag));
+        articleWhereStatement.append(ifTag(" tags.name = :tag ", tag));
+        query.append(operator(articleWhereStatement," WHERE "));
+        query.append(articleWhereStatement);
+
+        query.append(" ORDER BY articles.id DESC limit :limit) a ");
         query.append("left join users author on ");
         query.append("author.id = a.author_id ");
         query.append("left join ( ");
