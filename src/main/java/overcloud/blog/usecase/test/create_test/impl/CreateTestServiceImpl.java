@@ -10,7 +10,7 @@ import overcloud.blog.entity.TestEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
-import overcloud.blog.usecase.article.core.utils.ArticleUtils;
+import overcloud.blog.usecase.blog.common.ArticleUtils;
 import overcloud.blog.usecase.test.common.Answer;
 import overcloud.blog.usecase.test.common.ChoiceQuestion;
 import overcloud.blog.usecase.test.common.Question;

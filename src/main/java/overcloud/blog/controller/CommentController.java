@@ -3,12 +3,12 @@ package overcloud.blog.controller;
 import org.springframework.web.bind.annotation.*;
 
 import overcloud.blog.infrastructure.ApiConst;
-import overcloud.blog.usecase.article.comment.create_comment.CreateCommentRequest;
-import overcloud.blog.usecase.article.comment.create_comment.CreateCommentResponse;
-import overcloud.blog.usecase.article.comment.create_comment.CreateCommentService;
-import overcloud.blog.usecase.article.comment.delete_comment.DeleteCommentService;
-import overcloud.blog.usecase.article.comment.get_comments.GetCommentsResponse;
-import overcloud.blog.usecase.article.comment.get_comments.GetCommentsService;
+import overcloud.blog.usecase.blog.create_comment.CreateCommentRequest;
+import overcloud.blog.usecase.blog.create_comment.CreateCommentResponse;
+import overcloud.blog.usecase.blog.create_comment.CreateCommentService;
+import overcloud.blog.usecase.blog.delete_comment.DeleteCommentService;
+import overcloud.blog.usecase.blog.get_comments.GetCommentsResponse;
+import overcloud.blog.usecase.blog.get_comments.GetCommentsService;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)

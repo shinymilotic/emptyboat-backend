@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import overcloud.blog.infrastructure.ApiConst;
-import overcloud.blog.usecase.practice.core.PracticeRequest;
-import overcloud.blog.usecase.practice.core.UserPracticeResponse;
-import overcloud.blog.usecase.practice.create_practice.CreatePracticeService;
-import overcloud.blog.usecase.practice.get_practice.GetPracticeResultService;
-import overcloud.blog.usecase.practice.get_practice.PracticeResult;
-import overcloud.blog.usecase.practice.get_practices.UserPracticeService;
+import overcloud.blog.usecase.test.common.PracticeRequest;
+import overcloud.blog.usecase.test.common.UserPracticeResponse;
+import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
+import overcloud.blog.usecase.test.get_practice.GetPracticeResultService;
+import overcloud.blog.usecase.test.get_practice.PracticeResult;
+import overcloud.blog.usecase.test.get_practices.UserPracticeService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

@@ -6,25 +6,25 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
 import overcloud.blog.infrastructure.ApiConst;
-import overcloud.blog.usecase.user.core.AuthResponse;
-import overcloud.blog.usecase.user.core.UserListResponse;
-import overcloud.blog.usecase.user.core.UserResponse;
-import overcloud.blog.usecase.user.get_current_user.GetCurrentUserService;
-import overcloud.blog.usecase.user.get_profile.GetProfileResponse;
-import overcloud.blog.usecase.user.get_profile.GetProfileService;
-import overcloud.blog.usecase.user.get_roles_user.GetRolesUserService;
-import overcloud.blog.usecase.user.get_roles_user.UserRoleListResponse;
-import overcloud.blog.usecase.user.get_users.GetUserListService;
-import overcloud.blog.usecase.user.login.LoginRequest;
-import overcloud.blog.usecase.user.login.LoginService;
-import overcloud.blog.usecase.user.logout.LogoutService;
-import overcloud.blog.usecase.user.refresh_token.RefreshTokenRequest;
-import overcloud.blog.usecase.user.refresh_token.RefreshTokenService;
-import overcloud.blog.usecase.user.refresh_token.TokenRefreshResponse;
-import overcloud.blog.usecase.user.register.RegisterRequest;
-import overcloud.blog.usecase.user.register.RegisterService;
-import overcloud.blog.usecase.user.update_user.UpdateUserRequest;
-import overcloud.blog.usecase.user.update_user.UpdateUserService;
+import overcloud.blog.usecase.auth.common.AuthResponse;
+import overcloud.blog.usecase.auth.common.UserListResponse;
+import overcloud.blog.usecase.auth.common.UserResponse;
+import overcloud.blog.usecase.auth.get_current_user.GetCurrentUserService;
+import overcloud.blog.usecase.auth.get_profile.GetProfileResponse;
+import overcloud.blog.usecase.auth.get_profile.GetProfileService;
+import overcloud.blog.usecase.auth.get_roles_user.GetRolesUserService;
+import overcloud.blog.usecase.auth.get_roles_user.UserRoleListResponse;
+import overcloud.blog.usecase.auth.get_users.GetUserListService;
+import overcloud.blog.usecase.auth.login.LoginRequest;
+import overcloud.blog.usecase.auth.login.LoginService;
+import overcloud.blog.usecase.auth.logout.LogoutService;
+import overcloud.blog.usecase.auth.refresh_token.RefreshTokenRequest;
+import overcloud.blog.usecase.auth.refresh_token.RefreshTokenService;
+import overcloud.blog.usecase.auth.refresh_token.TokenRefreshResponse;
+import overcloud.blog.usecase.auth.register.RegisterRequest;
+import overcloud.blog.usecase.auth.register.RegisterService;
+import overcloud.blog.usecase.auth.update_user.UpdateUserRequest;
+import overcloud.blog.usecase.auth.update_user.UpdateUserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

@@ -3,9 +3,9 @@ package overcloud.blog.controller;
 import org.springframework.web.bind.annotation.*;
 
 import overcloud.blog.infrastructure.ApiConst;
-import overcloud.blog.usecase.role.core.RolesRequest;
-import overcloud.blog.usecase.user_role.assign_role.AssignRoleService;
-import overcloud.blog.usecase.user_role.assign_role.RoleAssignmentResponse;
+import overcloud.blog.usecase.auth.common.RolesRequest;
+import overcloud.blog.usecase.auth.assign_role.AssignRoleService;
+import overcloud.blog.usecase.auth.assign_role.RoleAssignmentResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

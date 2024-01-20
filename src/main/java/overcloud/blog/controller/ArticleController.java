@@ -6,20 +6,18 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import overcloud.blog.infrastructure.ApiConst;
-import overcloud.blog.usecase.article.create_article.ArticleRequest;
-import overcloud.blog.usecase.article.create_article.ArticleResponse;
-import overcloud.blog.usecase.article.create_article.CreateArticleService;
-import overcloud.blog.usecase.article.delete_article.DeleteArticleResponse;
-import overcloud.blog.usecase.article.delete_article.DeleteArticleService;
-import overcloud.blog.usecase.article.get_article.GetArticleResponse;
-import overcloud.blog.usecase.article.get_article.GetArticleService;
-import overcloud.blog.usecase.article.get_article_list.GetArticleListService;
-import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
-import overcloud.blog.usecase.article.update_article.UpdateArticleRequest;
-import overcloud.blog.usecase.article.update_article.UpdateArticleResponse;
-import overcloud.blog.usecase.article.update_article.UpdateArticleService;
-
-import java.time.LocalDateTime;
+import overcloud.blog.usecase.blog.create_article.ArticleRequest;
+import overcloud.blog.usecase.blog.create_article.ArticleResponse;
+import overcloud.blog.usecase.blog.create_article.CreateArticleService;
+import overcloud.blog.usecase.blog.delete_article.DeleteArticleResponse;
+import overcloud.blog.usecase.blog.delete_article.DeleteArticleService;
+import overcloud.blog.usecase.blog.get_article.GetArticleResponse;
+import overcloud.blog.usecase.blog.get_article.GetArticleService;
+import overcloud.blog.usecase.blog.get_article_list.GetArticleListService;
+import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
+import overcloud.blog.usecase.blog.update_article.UpdateArticleRequest;
+import overcloud.blog.usecase.blog.update_article.UpdateArticleResponse;
+import overcloud.blog.usecase.blog.update_article.UpdateArticleService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

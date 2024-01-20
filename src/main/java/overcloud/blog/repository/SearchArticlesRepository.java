@@ -1,9 +1,7 @@
 package overcloud.blog.repository;
 
-import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.usecase.article.get_article_list.ArticleSummary;
+import overcloud.blog.usecase.blog.get_article_list.ArticleSummary;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

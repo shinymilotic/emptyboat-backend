@@ -3,18 +3,11 @@ package overcloud.blog.repository.impl;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.entity.TagEntity;
-import overcloud.blog.infrastructure.datetime.DateTimeFormat;
 import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
 import overcloud.blog.repository.SearchArticlesRepository;
-import overcloud.blog.usecase.article.get_article_list.ArticleSummary;
-import overcloud.blog.usecase.article.get_article_list.GetArticlesResponse;
-import overcloud.blog.usecase.article.get_article_list.GetArticlesSingleResponse;
+import overcloud.blog.usecase.blog.get_article_list.ArticleSummary;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Repository

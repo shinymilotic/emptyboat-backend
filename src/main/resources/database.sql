@@ -308,3 +308,10 @@ CREATE TABLE public.essay_answer (
 	CONSTRAINT essay_answer_question_id_fk FOREIGN KEY (question_id) REFERENCES public.question(id)
 );
 CREATE UNIQUE INDEX essay_answer_question_id_practice_id_uindex ON public.essay_answer USING btree (question_id, practice_id);
+
+INSERT INTO public.roles
+(id, "name")
+VALUES('56f9e88c-0066-4e3e-8793-119f6f2012d6'::uuid, 'ADMIN');
+INSERT INTO public.roles
+(id, "name")
+VALUES('80e1e7af-0f80-4a5f-ab42-bfbfa6513da9'::uuid, 'USER');
