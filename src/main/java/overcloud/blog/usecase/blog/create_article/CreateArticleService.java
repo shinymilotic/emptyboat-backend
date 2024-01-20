@@ -2,7 +2,7 @@ package overcloud.blog.usecase.blog.create_article;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.f4b6a3.uuid.UuidCreator;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import overcloud.blog.infrastructure.InvalidDataException;

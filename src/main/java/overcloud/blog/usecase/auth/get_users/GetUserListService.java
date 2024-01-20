@@ -1,6 +1,6 @@
 package overcloud.blog.usecase.auth.get_users;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.jparepository.JpaUserRepository;

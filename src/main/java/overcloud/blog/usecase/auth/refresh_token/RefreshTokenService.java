@@ -1,6 +1,6 @@
 package overcloud.blog.usecase.auth.refresh_token;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 

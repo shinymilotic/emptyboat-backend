@@ -1,6 +1,6 @@
 package overcloud.blog.usecase.blog.create_comment;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.repository.jparepository.JpaCommentRepository;

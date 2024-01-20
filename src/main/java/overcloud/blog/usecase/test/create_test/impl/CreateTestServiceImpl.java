@@ -1,6 +1,6 @@
 package overcloud.blog.usecase.test.create_test.impl;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 

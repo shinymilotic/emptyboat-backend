@@ -1,6 +1,6 @@
 package overcloud.blog.usecase.auth.manage_role;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.entity.RoleEntity;

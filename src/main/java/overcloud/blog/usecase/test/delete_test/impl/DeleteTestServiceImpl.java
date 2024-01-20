@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.jparepository.JpaTestRepository;

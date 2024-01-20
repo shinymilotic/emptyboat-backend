@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.blog.get_article;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.usecase.auth.follow.core.utils.FollowUtils;
@@ -35,6 +36,7 @@ public class GetArticleService {
         this.authenticationService = authenticationService;
     }
 
+    @Transactional(readOnly = true)
     public GetArticleResponse getArticle(String slug) {
         ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
         SecurityUser securityUser = authenticationService.getCurrentUser()
