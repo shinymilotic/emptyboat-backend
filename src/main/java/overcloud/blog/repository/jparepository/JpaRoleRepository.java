@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.auth.common;
+package overcloud.blog.repository.jparepository;
 
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,7 @@ import overcloud.blog.entity.RoleEntity;
 import java.util.List;
 import java.util.UUID;
 
-public interface RoleRepository extends JpaRepository<RoleEntity, UUID> {
+public interface JpaRoleRepository extends JpaRepository<RoleEntity, UUID> {
     @Query("SELECT r FROM RoleEntity r WHERE r.name IN (:roleNames)")
     List<RoleEntity> findAllByNames(@Param("roleNames") List<String> roleNames);
 

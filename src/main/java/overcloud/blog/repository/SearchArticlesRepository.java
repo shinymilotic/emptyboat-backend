@@ -1,7 +1,6 @@
 package overcloud.blog.repository;
 
 import overcloud.blog.usecase.blog.get_article_list.ArticleSummary;
-
 import java.util.List;
 import java.util.UUID;
 

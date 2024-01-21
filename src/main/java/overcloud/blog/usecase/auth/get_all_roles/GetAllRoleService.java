@@ -5,18 +5,18 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.usecase.auth.common.RoleListResponse;
 import overcloud.blog.usecase.auth.common.RoleMapper;
-import overcloud.blog.usecase.auth.common.RoleRepository;
+import overcloud.blog.repository.jparepository.JpaRoleRepository;
 
 import java.util.List;
 
 @Service
 public class GetAllRoleService {
 
-    private final RoleRepository roleRepository;
+    private final JpaRoleRepository roleRepository;
 
     private final RoleMapper roleMapper;
 
-    public GetAllRoleService(RoleRepository roleRepository, RoleMapper roleMapper) {
+    public GetAllRoleService(JpaRoleRepository roleRepository, RoleMapper roleMapper) {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
     }

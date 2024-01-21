@@ -13,7 +13,7 @@ import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRoleRepository;
 import overcloud.blog.usecase.auth.common.RoleDto;
 import overcloud.blog.usecase.auth.common.RoleError;
-import overcloud.blog.usecase.auth.common.RoleRepository;
+import overcloud.blog.repository.jparepository.JpaRoleRepository;
 import overcloud.blog.usecase.auth.common.RolesRequest;
 
 import java.util.List;
@@ -29,11 +29,11 @@ public class AssignRoleService {
 
     private final JpaUserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    private final JpaRoleRepository roleRepository;
 
     public AssignRoleService(JpaUserRoleRepository userRoleRepository,
                              JpaUserRepository userRepository,
-                             RoleRepository roleRepository) {
+                             JpaRoleRepository roleRepository) {
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;

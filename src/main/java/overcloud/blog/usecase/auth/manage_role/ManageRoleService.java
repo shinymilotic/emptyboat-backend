@@ -7,7 +7,7 @@ import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.infrastructure.UpdateFlg;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.usecase.auth.common.RoleError;
-import overcloud.blog.usecase.auth.common.RoleRepository;
+import overcloud.blog.repository.jparepository.JpaRoleRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +15,9 @@ import java.util.Optional;
 @Service
 public class ManageRoleService {
 
-    private final RoleRepository roleRepository;
+    private final JpaRoleRepository roleRepository;
 
-    public ManageRoleService(RoleRepository roleRepository) {
+    public ManageRoleService(JpaRoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 

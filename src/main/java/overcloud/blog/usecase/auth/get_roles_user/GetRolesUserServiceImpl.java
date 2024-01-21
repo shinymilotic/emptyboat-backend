@@ -5,7 +5,7 @@ import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
-import overcloud.blog.usecase.auth.common.RoleRepository;
+import overcloud.blog.repository.jparepository.JpaRoleRepository;
 import overcloud.blog.usecase.auth.common.UserError;
 
 import java.util.ArrayList;
@@ -17,10 +17,10 @@ public class GetRolesUserServiceImpl implements  GetRolesUserService {
 
     private final JpaUserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    private final JpaRoleRepository roleRepository;
 
     public GetRolesUserServiceImpl(JpaUserRepository userRepository,
-                                   RoleRepository roleRepository) {
+                                   JpaRoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
