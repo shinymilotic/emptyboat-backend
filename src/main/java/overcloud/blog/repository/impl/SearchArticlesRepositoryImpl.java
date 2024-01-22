@@ -20,7 +20,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
     }
 
     @Override
-    public List<ArticleSummary> findByCriteria(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId) {
+    public List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId) {
         StringBuilder query = new StringBuilder();
         query.append("select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
         query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");

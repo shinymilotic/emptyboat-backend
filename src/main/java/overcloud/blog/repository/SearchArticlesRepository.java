@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface SearchArticlesRepository {
-    List<ArticleSummary> findByCriteria(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId);
+    List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId);
 
     ArticleSummary findArticleBySlug(String slug, UUID currentUserId);
 

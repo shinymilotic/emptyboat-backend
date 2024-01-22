@@ -37,7 +37,7 @@ public class GetArticleListService {
         }
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleSummary> articleSummaries = articleRepository.findByCriteria(currentUserId, tag, author, favorited, limit, lastArticleId);
+        List<ArticleSummary> articleSummaries = articleRepository.findBy(currentUserId, tag, author, favorited, limit, lastArticleId);
 
         for (ArticleSummary article : articleSummaries) {
             GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
