@@ -3,9 +3,8 @@ package overcloud.blog.repository.impl;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
 import overcloud.blog.repository.SearchArticlesRepository;
-import overcloud.blog.usecase.blog.get_article_list.ArticleSummary;
+import overcloud.blog.usecase.blog.common.ArticleSummary;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -39,6 +38,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         query.append(operator(articleWhereStatement," WHERE "));
         query.append(articleWhereStatement);
 
+        query.append(" ORDER BY articles.id DESC ");
         query.append(" limit :limit) a ");
         query.append("left join users author on ");
         query.append("author.id = a.author_id ");
@@ -101,8 +101,49 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
     }
 
     @Override
-    public ArticleSummary findArticleBySlug(String slug) {
-        return null;
+    public ArticleSummary findArticleBySlug(String slug, UUID currentUserId) {
+        StringBuilder query = new StringBuilder();
+        query.append("select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
+        query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
+        query.append("from ");
+        query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
+        query.append("from articles ");
+        query.append(" WHERE slug = :slug ) a ");
+        query.append("left join users author on ");
+        query.append("author.id = a.author_id ");
+        query.append("left join ( ");
+        query.append("select ");
+        query.append("f.followee_id, ");
+        query.append("bool_or(f.follower_id = :currentUserId) as following, ");
+        query.append("COUNT(f.follower_id) followersCount ");
+        query.append("from ");
+        query.append("follows f ");
+        query.append("group by ");
+        query.append("f.followee_id) f1 on ");
+        query.append("f1.followee_id = author.id ");
+        query.append("left join ( ");
+        query.append("select ");
+        query.append("article_id , ");
+        query.append("bool_or(user_id = :currentUserId) as favorited, ");
+        query.append("COUNT(user_id) favoritesCount ");
+        query.append("from ");
+        query.append("favorites ");
+        query.append("group by ");
+        query.append("article_id) fa on ");
+        query.append("fa.article_id = a.id ");
+        query.append("left join article_tag at2 on ");
+        query.append("a.id = at2.article_id ");
+        query.append("left join tags t on ");
+        query.append("t.id = at2.tag_id ");
+        query.append(" ORDER BY a.id DESC  ");
+
+        Query resultList = entityManager.createNativeQuery(query.toString(), Tuple.class);
+        resultList.setParameter("slug", slug);
+        resultList.setParameter("currentUserId", currentUserId);
+
+        List<Tuple> articlesData = resultList.getResultList();
+
+        return toArticleSummary(articlesData);
     }
 
     @Override
@@ -117,7 +158,8 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         if(StringUtils.hasText(lastArticleId)) {
             query.append(" AND id < uuid(:lastArticleId) ");
         }
-        query.append(" ORDER BY id DESC ) a ");
+        query.append(" ORDER BY id DESC  ");
+        query.append(" limit :limit ) a ");
         query.append("left join users author on ");
         query.append("author.id = a.author_id ");
         query.append("left join ( ");
@@ -150,12 +192,47 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         if(StringUtils.hasText(lastArticleId)) {
             resultList.setParameter("lastArticleId", lastArticleId);
         }
+        resultList.setParameter("limit", limit);
         resultList.setParameter("keyword", keyword);
         resultList.setParameter("currentUserId", currentUserId);
 
         List<Tuple> articlesData = resultList.getResultList();
 
         return toArticleSummaryList(articlesData);
+    }
+
+    private ArticleSummary toArticleSummary(List<Tuple> articlesData) {
+        ArticleSummary summary = new ArticleSummary();
+        UUID previousArticleId = null;
+        Map<UUID, ArticleSummary> articleSummaryMap = new HashMap<>();
+        for (Tuple data : articlesData) {
+            UUID articleId = (UUID) data.get("id");
+            String tagName = (String) data.get("tag");
+            if (articleId.equals(previousArticleId)) {
+                articleSummaryMap.get(articleId).getTag().add((String) data.get("tag"));
+                continue;
+            }
+
+            summary.setId((UUID) data.get("id"));
+            summary.setSlug((String) data.get("slug"));
+            summary.setTitle((String) data.get("title"));
+            summary.setDescription((String) data.get("description"));
+            summary.setBody((String) data.get("body"));
+            List<String> tagList = new ArrayList<>();
+            tagList.add(tagName);
+            summary.setTag(tagList);
+            summary.setCreatedAt((Timestamp) data.get("createdAt"));
+            summary.setFavorited((Boolean) data.get("favorited"));
+            summary.setFavoritesCount((Long) data.get("favoritesCount"));
+            summary.setUsername((String) data.get("username"));
+            summary.setBio((String) data.get("bio"));
+            summary.setImage((String) data.get("image"));
+            summary.setFollowing((Boolean)data.get("following"));
+            summary.setFollowersCount((Long)data.get("followersCount"));
+            articleSummaryMap.put(articleId, summary);
+            previousArticleId = articleId;
+        }
+        return summary;
     }
 
     private List<ArticleSummary> toArticleSummaryList(List<Tuple> articlesData) {

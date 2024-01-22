@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.blog.get_article_list;
+package overcloud.blog.usecase.blog.common;
 
 import java.sql.Timestamp;
 import java.util.List;

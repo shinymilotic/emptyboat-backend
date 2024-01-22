@@ -3,6 +3,7 @@ package overcloud.blog.usecase.blog.get_article;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
+import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.usecase.auth.follow.core.utils.FollowUtils;
 import overcloud.blog.entity.ArticleTag;
@@ -10,6 +11,8 @@ import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
+import overcloud.blog.usecase.blog.get_article_list.GetArticlesSingleResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,6 @@ public class GetArticleService {
 
     @Transactional(readOnly = true)
     public GetArticleResponse getArticle(String slug) {
-        ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
         SecurityUser securityUser = authenticationService.getCurrentUser()
                 .orElse(null);
 
@@ -46,41 +48,33 @@ public class GetArticleService {
         if(securityUser != null) {
             currentUser = securityUser.getUser();
         }
+        ArticleSummary articleSummary = articleRepository.findArticleBySlug(slug, currentUser.getId());
 
-        GetArticleResponse articleResponse = new GetArticleResponse();
-        articleResponse.setId(articleEntity.getId().toString());
-        articleResponse.setBody(articleEntity.getBody());
-        articleResponse.setDescription(articleEntity.getDescription());
-        articleResponse.setSlug(articleEntity.getSlug());
+        return toGetArticlesingleResponse(articleSummary, currentUser);
+    }
 
-        if (currentUser != null) {
-            articleResponse.setFavorited(favoriteUtils.isFavorited(currentUser, articleEntity));
-        }
+    private GetArticleResponse toGetArticlesingleResponse(ArticleSummary article, UserEntity currentUser) {
+        return GetArticleResponse.builder()
+                .id(article.getId().toString())
+                .title(article.getTitle())
+                .body(article.getBody())
+                .description(article.getDescription())
+                .slug(article.getSlug())
+                .author(toGetArticleAuthorResponse(currentUser, article))
+                .favorited(article.isFavorited())
+                .favoritesCount(article.getFavoritesCount())
+                .tagList(article.getTag())
+                .createdAt(article.getCreatedAt().toLocalDateTime())
+                .build();
+    }
 
-        articleResponse.setFavoritesCount(articleEntity.getFavorites().size());
-        articleResponse.setTitle(articleEntity.getTitle());
-        articleResponse.setCreatedAt(articleEntity.getCreatedAt());
-        articleResponse.setUpdatedAt(articleEntity.getUpdatedAt());
-
-        List<ArticleTag> articleTagList = articleEntity.getArticleTags();
-        List<String> tagList = new ArrayList<>();
-        for (ArticleTag articleTag : articleTagList) {
-            tagList.add(articleTag.getTag().getName());
-        }
-        articleResponse.setTagList(tagList);
-
-        AuthorResponse articleAuthorResponse = new AuthorResponse();
-        UserEntity authorEntity = articleEntity.getAuthor();
-        articleAuthorResponse.setUsername(authorEntity.getUsername());
-        if(currentUser != null) {
-            articleAuthorResponse.setFollowing(followUtils.isFollowing(currentUser, authorEntity));
-        }
-        articleAuthorResponse.setFollowersCount(followUtils.getFollowingCount(authorEntity));
-        articleAuthorResponse.setBio(authorEntity.getBio());
-        articleAuthorResponse.setImage(authorEntity.getImage());
-
-        articleResponse.setAuthor(articleAuthorResponse);
-
-        return articleResponse;
+    private AuthorResponse toGetArticleAuthorResponse(UserEntity currentUser, ArticleSummary author) {
+        return AuthorResponse.builder()
+                .username(author.getUsername())
+                .bio(author.getBio())
+                .image(author.getImage())
+                .following(author.getFollowing())
+                .followersCount(author.getFollowersCount())
+                .build();
     }
 }

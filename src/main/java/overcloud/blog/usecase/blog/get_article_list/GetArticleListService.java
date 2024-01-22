@@ -1,12 +1,12 @@
 package overcloud.blog.usecase.blog.get_article_list;
 
-import com.zaxxer.hikari.HikariConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.usecase.blog.common.ArticleSummary;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,6 +3,7 @@ package overcloud.blog.usecase.blog.get_article;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @JsonTypeName("article")
 @Getter
 @Setter
+@Builder
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class GetArticleResponse {
     @JsonProperty("id")
@@ -39,10 +41,10 @@ public class GetArticleResponse {
     private LocalDateTime updatedAt;
 
     @JsonProperty("favorited")
-    private boolean favorited;
+    private Boolean favorited;
 
     @JsonProperty("favoritesCount")
-    private int favoritesCount;
+    private Long favoritesCount;
 
     @JsonProperty("author")
     private AuthorResponse author;

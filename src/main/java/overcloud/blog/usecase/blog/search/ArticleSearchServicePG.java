@@ -6,7 +6,7 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
-import overcloud.blog.usecase.blog.get_article_list.ArticleSummary;
+import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.blog.get_article_list.AuthorResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesSingleResponse;

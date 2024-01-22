@@ -1,11 +1,13 @@
 package overcloud.blog.usecase.blog.get_article;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class AuthorResponse {
     @JsonProperty("username")
     private String username;
@@ -17,8 +19,8 @@ public class AuthorResponse {
     private String image;
 
     @JsonProperty("following")
-    private boolean following;
+    private Boolean following;
 
     @JsonProperty("followersCount")
-    private int followersCount;
+    private Long followersCount;
 }
