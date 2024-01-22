@@ -2,6 +2,7 @@ package overcloud.blog.usecase.blog.get_comments;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.repository.jparepository.JpaCommentRepository;
 import overcloud.blog.usecase.blog.common.AuthorResposne;
@@ -19,6 +20,7 @@ public class GetCommentsService {
         this.commentRepository = commentRepository;
     }
 
+    @Transactional(readOnly = true)
     public GetCommentsResponse getComments(String articleSlug) {
         List<CommentEntity> commentEntities = commentRepository.findByArticleSlug(articleSlug);
         List<CommentResponse> commentResponses = new ArrayList<>();

@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.EssayAnswerEntity;
 import overcloud.blog.entity.PracticeChoiceEntity;
 import overcloud.blog.entity.PracticeEntity;
@@ -46,6 +47,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     }
 
     @Override
+    @Transactional
     public void createPractice(PracticeRequest practiceRequest) {
         String slug = practiceRequest.getSlug();
         List<String> choices = practiceRequest.getChoiceAnswers();

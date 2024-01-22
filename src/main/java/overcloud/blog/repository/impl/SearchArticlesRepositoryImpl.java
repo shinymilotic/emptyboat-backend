@@ -35,10 +35,11 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         }
         articleWhereStatement.append(ifTag(operator(articleWhereStatement, " AND "), tag));
         articleWhereStatement.append(ifTag(" tags.name = :tag ", tag));
+        articleWhereStatement.append(ifTag(" GROUP BY articles.id ", tag));
         query.append(operator(articleWhereStatement," WHERE "));
         query.append(articleWhereStatement);
 
-        query.append(" ORDER BY articles.id DESC limit :limit) a ");
+        query.append(" limit :limit) a ");
         query.append("left join users author on ");
         query.append("author.id = a.author_id ");
         query.append("left join ( ");
@@ -97,6 +98,11 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         List<Tuple> articlesData = resultList.getResultList();
 
         return toArticleSummaryList(articlesData);
+    }
+
+    @Override
+    public ArticleSummary findArticleBySlug(String slug) {
+        return null;
     }
 
     @Override

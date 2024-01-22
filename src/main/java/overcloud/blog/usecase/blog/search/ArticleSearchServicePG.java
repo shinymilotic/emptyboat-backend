@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.blog.search;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
@@ -27,6 +28,7 @@ public class ArticleSearchServicePG implements  ArticleSearchService{
         this.authenticationService = authenticationService;
     }
     @Override
+    @Transactional(readOnly = true)
     public GetArticlesResponse searchArticles(String searchParam, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;

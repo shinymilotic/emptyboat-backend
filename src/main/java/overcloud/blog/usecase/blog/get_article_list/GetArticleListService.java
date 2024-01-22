@@ -1,6 +1,8 @@
 package overcloud.blog.usecase.blog.get_article_list;
 
+import com.zaxxer.hikari.HikariConfig;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
@@ -14,7 +16,6 @@ import java.util.UUID;
 @Service
 public class GetArticleListService {
 
-
     private final JpaArticleRepository articleRepository;
 
     private final SpringAuthenticationService authenticationService;
@@ -25,6 +26,7 @@ public class GetArticleListService {
         this.authenticationService = authenticationService;
     }
 
+    @Transactional(readOnly = true)
     public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
@@ -33,7 +35,6 @@ public class GetArticleListService {
             currentUser = currentSecurityUser.get().getUser();
             currentUserId = currentUser.getId();
         }
-
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
         List<ArticleSummary> articleSummaries = articleRepository.findByCriteria(currentUserId, tag, author, favorited, limit, lastArticleId);

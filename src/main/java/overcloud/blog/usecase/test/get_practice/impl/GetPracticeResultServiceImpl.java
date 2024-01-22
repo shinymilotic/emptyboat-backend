@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
@@ -25,6 +26,7 @@ public class GetPracticeResultServiceImpl implements GetPracticeResultService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PracticeResult getPracticeResult(String practiceId) {
         PracticeEntity practiceEntity = practiceRepository.findById(UUID.fromString(practiceId))
                 .orElseThrow(() -> new InvalidDataException(PracticeError.PRACTICE_NOT_FOUND));

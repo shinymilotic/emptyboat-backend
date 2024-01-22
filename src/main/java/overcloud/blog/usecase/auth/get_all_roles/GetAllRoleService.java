@@ -2,6 +2,7 @@ package overcloud.blog.usecase.auth.get_all_roles;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.usecase.auth.common.RoleListResponse;
 import overcloud.blog.usecase.auth.common.RoleMapper;
@@ -21,6 +22,7 @@ public class GetAllRoleService {
         this.roleMapper = roleMapper;
     }
 
+    @Transactional(readOnly = true)
     public RoleListResponse getRoles() {
          List<RoleEntity> roles = roleRepository.findAll();
 

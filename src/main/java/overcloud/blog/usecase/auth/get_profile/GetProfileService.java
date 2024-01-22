@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.auth.get_profile;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
@@ -26,6 +27,7 @@ public class GetProfileService {
         this.followUtils = followUtils;
     }
 
+    @Transactional(readOnly = true)
     public GetProfileResponse getProfile(String username) {
         GetProfileResponse profileResponse = new GetProfileResponse();
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();

@@ -2,6 +2,7 @@ package overcloud.blog.usecase.auth.logout;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.usecase.auth.refresh_token.RefreshTokenRepository;
 
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ public class LogoutService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
+    @Transactional
     public boolean logout(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){

@@ -2,6 +2,7 @@ package overcloud.blog.usecase.auth.login;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
@@ -41,6 +42,7 @@ public class LoginService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
+    @Transactional
     public AuthResponse login(LoginRequest loginRequest) {
         Optional<ApiError> apiError = validator.validate(loginRequest);
 

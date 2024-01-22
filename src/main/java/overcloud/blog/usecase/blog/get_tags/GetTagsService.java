@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.blog.get_tags;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
 
@@ -16,6 +17,7 @@ public class GetTagsService {
         this.tagRepository = tagRepository;
     }
 
+    @Transactional(readOnly = true)
     public GetTagResponse getTags() {
         List<String> tags = new ArrayList<>();
         List<TagEntity> tagEntities = tagRepository.findAll();

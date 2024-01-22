@@ -23,7 +23,7 @@ public class GetUserListService {
         this.userResponseMapper = userResponseMapper;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserListResponse getUsers(int page, int size) {
         List<UserEntity> users = userRepository.findAll(page, size);
         List<UserResponse> userResponses =  users.stream()

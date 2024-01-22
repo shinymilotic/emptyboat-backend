@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.auth.get_roles_user;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.InvalidDataException;
@@ -26,6 +27,7 @@ public class GetRolesUserServiceImpl implements  GetRolesUserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserRoleListResponse getRolesUser(String username) {
         UserEntity user = userRepository.findRolesByUsernname(username);
         List<RoleEntity> roles = roleRepository.findAll();
