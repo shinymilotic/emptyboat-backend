@@ -3,6 +3,7 @@ package overcloud.blog.usecase.test.get_practices.impl;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
@@ -31,6 +32,7 @@ public class UserPraticeServiceImpl implements UserPracticeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserPracticeResponse getUserPractice(String username) {
         UserPracticeResponse response = new UserPracticeResponse();
         UserEntity user = userRepository.findByUsername(username);
