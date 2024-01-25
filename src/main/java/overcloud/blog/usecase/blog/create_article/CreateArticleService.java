@@ -5,9 +5,11 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import org.springframework.util.StringUtils;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
+import overcloud.blog.usecase.blog.common.ArticleError;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.common.ArticleUtils;
 import overcloud.blog.usecase.blog.common.TagError;
@@ -54,23 +56,30 @@ public class CreateArticleService {
     }
 
     @Transactional
-    public ArticleResponse createArticle(ArticleRequest articleRequest) throws JsonProcessingException {
+    public ArticleResponse createArticle(ArticleRequest articleRequest) {
+        String title = articleRequest.getTitle();
         List<String> distinctTags = filterDistinctTags(articleRequest.getTagList());
         articleRequest.setTagList(distinctTags);
         Optional<ApiError> apiError = validator.validate(articleRequest);
 
-        if(apiError.isPresent()) {
+        if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
 
-        UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
-                .getUser();
+        boolean isExist = articleRepository.isTitleExist(title);
+
+        if (isExist) {
+            throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_TITLE_EXISTS));
+        }
 
         List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
         if(distinctTags.size() > tagEntities.size()) {
             throw new InvalidDataException(ApiError.from(TagError.TAG_NO_EXISTS));
         }
+
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
 
         ArticleEntity articleEntity = initArticleEntity(articleRequest, currentUser, tagEntities);
         ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);

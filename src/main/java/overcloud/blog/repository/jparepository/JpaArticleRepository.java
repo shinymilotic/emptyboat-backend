@@ -27,4 +27,7 @@ public interface JpaArticleRepository extends JpaRepository<ArticleEntity, UUID>
     @Modifying
     @Query("")
     void deleteBySlug(String slug);
+
+    @Query(value = "SELECT true  FROM articles a WHERE a.title = :title limit 1 ", nativeQuery = true)
+    boolean isTitleExist(@Param("title") String title);
 }

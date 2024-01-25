@@ -4,7 +4,8 @@ import overcloud.blog.infrastructure.validation.Error;
 
 public enum ArticleError implements Error {
     ARTICLE_UPDATE_NO_AUTHORIZATION("article.update.no-authorization", "You don't have authorization to update this article!"),
-    ARTICLE_NO_EXISTS("article.no-exists", "Article doesn't exist");
+    ARTICLE_NO_EXISTS("article.no-exists", "Article doesn't exist"),
+    ARTICLE_TITLE_EXISTS("article.title-exist", "Tiêu đề đã tồn tại!");
 
     private String id;
 

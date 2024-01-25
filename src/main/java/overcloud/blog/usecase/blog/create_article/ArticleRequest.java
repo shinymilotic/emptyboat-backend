@@ -30,6 +30,7 @@ public class ArticleRequest {
 
     @JsonProperty("body")
     @NotBlank(message = "article.body.not-blank")
+    @Size(min = 1, message ="article.create.size")
     private String body;
 
     @JsonProperty("tagList")

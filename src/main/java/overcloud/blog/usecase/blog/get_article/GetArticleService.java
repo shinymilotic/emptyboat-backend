@@ -16,6 +16,7 @@ import overcloud.blog.usecase.blog.get_article_list.GetArticlesSingleResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GetArticleService {
@@ -45,10 +46,13 @@ public class GetArticleService {
                 .orElse(null);
 
         UserEntity currentUser = null;
-        if(securityUser != null) {
+        UUID articleId = null;
+        if(securityUser != null && securityUser.getUser() != null) {
             currentUser = securityUser.getUser();
+            articleId = currentUser.getId();
         }
-        ArticleSummary articleSummary = articleRepository.findArticleBySlug(slug, currentUser.getId());
+
+        ArticleSummary articleSummary = articleRepository.findArticleBySlug(slug, articleId);
 
         return toGetArticlesingleResponse(articleSummary, currentUser);
     }
