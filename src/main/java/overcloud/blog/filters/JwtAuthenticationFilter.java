@@ -4,7 +4,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import overcloud.blog.infrastructure.AuthError;
 import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.cache.RedisUtils;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.AuthenticationProvider;
 import overcloud.blog.infrastructure.security.service.JwtUtils;
 import jakarta.servlet.FilterChain;
@@ -23,10 +25,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String TOKEN_PREFIX = "";
     private final JwtUtils jwtUtils;
     private final AuthenticationProvider authenticationProvider;
+
+    private final RedisUtils redisUtils;
     public JwtAuthenticationFilter(JwtUtils jwtUtils,
-                                   AuthenticationProvider authenticationProvider) {
+                                   AuthenticationProvider authenticationProvider,
+                                   RedisUtils redisUtils) {
         this.jwtUtils = jwtUtils;
         this.authenticationProvider = authenticationProvider;
+        this.redisUtils = redisUtils;
     }
     @Override
     protected void doFilterInternal(
@@ -40,11 +46,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (tokenOptional.isPresent()) {
             String token = tokenOptional.get();
-            if (!jwtUtils.validateToken(token)) {
-                throw new InvalidDataException(ApiError.from(AuthError.TOKEN_TIMEOUT));
+            boolean isValid;
+
+            try {
+                isValid = jwtUtils.validateToken(token);
+            } catch (Exception e) {
+                throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
+            }
+
+            if (!isValid) {
+                throw new InvalidDataException(AuthError.TOKEN_TIMEOUT);
             }
             String email = jwtUtils.getSub(token);
-            Authentication auth = authenticationProvider.getAuthentication(email);
+            Authentication auth = authenticationProvider.getCachedAuthentication(email);
+
+            if (auth == null) {
+                auth = authenticationProvider.getAuthentication(email);
+            }
+
+            if (auth != null) {
+                redisUtils.set(email, auth);
+            }
+
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import overcloud.blog.repository.SearchArticlesRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -29,5 +30,5 @@ public interface JpaArticleRepository extends JpaRepository<ArticleEntity, UUID>
     void deleteBySlug(String slug);
 
     @Query(value = "SELECT true  FROM articles a WHERE a.title = :title limit 1 ", nativeQuery = true)
-    boolean isTitleExist(@Param("title") String title);
+    Optional<Boolean> isTitleExist(@Param("title") String title);
 }

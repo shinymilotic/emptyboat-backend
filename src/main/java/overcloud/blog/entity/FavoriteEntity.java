@@ -4,12 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 
 @Entity
 @Getter
 @Setter
 @Table(name = "favorites", schema = "public")
-public class FavoriteEntity {
+public class FavoriteEntity implements Serializable {
     @EmbeddedId
     private FavoriteId id;
 

@@ -39,19 +39,15 @@ public class JwtUtils {
                 .compact();
     }
 
-    public boolean validateToken(String jwt)  {
-        try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(jwt)
-                    .getBody();
-            Instant now = Instant.now();
-            Date exp = claims.getExpiration();
-            return exp.after(Date.from(now));
-        } catch (JwtException e) {
-            return false;
-        }
+    public boolean validateToken(String jwt) throws JwtException {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody();
+        Instant now = Instant.now();
+        Date exp = claims.getExpiration();
+        return exp.after(Date.from(now));
     }
 
     public String getSub(String jwt) {
@@ -68,7 +64,7 @@ public class JwtUtils {
         }
     }
 
-    public String generateRefreshToken( String subject) {
+    public String generateRefreshToken(String subject) {
         Instant exp = Instant.now();
 
         return Jwts.builder()

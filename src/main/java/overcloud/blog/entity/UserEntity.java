@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserEntity {
+public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -44,9 +45,6 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "follower_id")
     )
     private Set<UserEntity> followers;
-
-    @OneToMany(mappedBy = "user")
-    private List<FavoriteEntity> favorites;
 
     @ManyToMany
     @JoinTable(
