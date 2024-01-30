@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.auth.follow.core.repository;
+package overcloud.blog.repository.jparepository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +11,7 @@ import overcloud.blog.usecase.auth.follow.core.FollowId;
 import java.util.List;
 
 @Repository
-public interface FollowRepository extends JpaRepository<FollowEntity, FollowId> {
+public interface JpaFollowRepository extends JpaRepository<FollowEntity, FollowId> {
 
     @Query("""
              SELECT f FROM FollowEntity f WHERE\

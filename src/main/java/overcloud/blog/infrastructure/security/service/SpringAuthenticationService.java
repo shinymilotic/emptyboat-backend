@@ -30,8 +30,7 @@ public class SpringAuthenticationService {
 
   /** {@inheritDoc} */
   public Optional<SecurityUser> authenticate(String email, String password) {
-    return Optional.ofNullable(userRepository
-        .findByEmail(email))
+    return Optional.ofNullable(userRepository.findByEmail(email))
         .flatMap(
             userEntity -> {
               if (passwordEncoder.matches(password, userEntity.getPassword())) {

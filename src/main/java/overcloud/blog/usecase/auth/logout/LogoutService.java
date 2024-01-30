@@ -3,8 +3,10 @@ package overcloud.blog.usecase.auth.logout;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.transaction.annotation.Transactional;
+import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.infrastructure.cache.RedisUtils;
 import overcloud.blog.infrastructure.security.bean.SecurityUser;
+import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.usecase.auth.refresh_token.RefreshTokenRepository;
 
 import org.springframework.security.core.Authentication;
@@ -12,13 +14,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class LogoutService {
 
+    private final JpaRefreshTokenRepository refreshTokenRepository;
 
     private final RedisUtils redisUtils;
 
-    public LogoutService(RedisUtils redisUtils) {
+    public LogoutService(JpaRefreshTokenRepository refreshTokenRepository, RedisUtils redisUtils) {
+        this.refreshTokenRepository = refreshTokenRepository;
         this.redisUtils = redisUtils;
     }
 
@@ -30,6 +36,7 @@ public class LogoutService {
             if (user != null) {
                 redisUtils.delete(user.getUser().getEmail());
             }
+            refreshTokenRepository.deleteByRefreshToken(refreshToken);
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return true;

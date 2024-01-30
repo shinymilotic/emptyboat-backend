@@ -8,7 +8,7 @@ import overcloud.blog.infrastructure.security.service.SpringAuthenticationServic
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.auth.follow.core.FollowEntity;
-import overcloud.blog.usecase.auth.follow.core.repository.FollowRepository;
+import overcloud.blog.repository.jparepository.JpaFollowRepository;
 import overcloud.blog.usecase.auth.follow.core.utils.FollowUtils;
 
 import java.util.List;
@@ -20,13 +20,13 @@ public class UnfollowService {
 
     private SpringAuthenticationService authenticationService;
 
-    private FollowRepository followRepository;
+    private JpaFollowRepository followRepository;
 
     private FollowUtils followUtils;
 
     public UnfollowService(JpaUserRepository userRepository,
                            SpringAuthenticationService authenticationService,
-                           FollowRepository followRepository,
+                           JpaFollowRepository followRepository,
                            FollowUtils followUtils) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;

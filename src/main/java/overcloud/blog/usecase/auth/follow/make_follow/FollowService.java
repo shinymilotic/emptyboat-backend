@@ -9,7 +9,7 @@ import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.auth.follow.core.FollowEntity;
 import overcloud.blog.usecase.auth.follow.core.FollowId;
-import overcloud.blog.usecase.auth.follow.core.repository.FollowRepository;
+import overcloud.blog.repository.jparepository.JpaFollowRepository;
 import overcloud.blog.usecase.auth.follow.core.utils.FollowUtils;
 
 @Service
@@ -19,13 +19,13 @@ public class FollowService {
 
     private final SpringAuthenticationService authenticationService;
 
-    private final FollowRepository followRepository;
+    private final JpaFollowRepository followRepository;
 
     private final FollowUtils followUtils;
 
     public FollowService(JpaUserRepository userRepository,
                          SpringAuthenticationService authenticationService,
-                         FollowRepository followRepository,
+                         JpaFollowRepository followRepository,
                          FollowUtils followUtils) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
