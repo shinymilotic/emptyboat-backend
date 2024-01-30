@@ -1,10 +1,13 @@
 package overcloud.blog.usecase.auth.update_user;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.infrastructure.cache.RedisUtils;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.infrastructure.security.bean.SecurityUser;
 import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
@@ -25,15 +28,18 @@ public class UpdateUserService {
 
     private final ObjectsValidator<UpdateUserRequest> validator;
 
+    private final RedisUtils redisUtils;
 
     public UpdateUserService(JpaUserRepository userRepository,
                              SpringAuthenticationService authenticationService,
                              UserResponseMapper userResponseMapper,
-                             ObjectsValidator<UpdateUserRequest> validator) {
+                             ObjectsValidator<UpdateUserRequest> validator,
+                             RedisUtils redisUtils) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.userResponseMapper = userResponseMapper;
         this.validator = validator;
+        this.redisUtils = redisUtils;
     }
 
     @Transactional
@@ -53,9 +59,14 @@ public class UpdateUserService {
 
         currentUser.setBio(updateBio);
         currentUser.setImage(updateImage);
-        currentUser.setEmail(email);
+//        currentUser.setEmail(email);
         UserEntity updateUserEntity = userRepository.save(currentUser);
-
+        cacheAuthUser(updateUserEntity);
         return userResponseMapper.toUserResponse(updateUserEntity);
+    }
+
+    private void cacheAuthUser(UserEntity user) {
+        SecurityUser securityUser = new SecurityUser(user);
+        redisUtils.set(user.getEmail(), new UsernamePasswordAuthenticationToken(securityUser, securityUser.getPassword(), securityUser.getAuthorities()));
     }
 }

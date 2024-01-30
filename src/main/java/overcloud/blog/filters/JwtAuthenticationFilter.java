@@ -61,13 +61,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Authentication auth = authenticationProvider.getCachedAuthentication(email);
 
             if (auth == null) {
-                auth = authenticationProvider.getAuthentication(email);
+                throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
+//                auth = authenticationProvider.getAuthentication(email);
             }
 
-            if (auth != null) {
-                redisUtils.set(email, auth);
-            }
-
+//            if (auth != null) {
+//                redisUtils.set(email, auth);
+//            }
+//
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

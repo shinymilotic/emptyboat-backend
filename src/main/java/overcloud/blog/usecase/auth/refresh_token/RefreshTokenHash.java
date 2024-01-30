@@ -1,10 +1,14 @@
 package overcloud.blog.usecase.auth.refresh_token;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
+import overcloud.blog.entity.RoleEntity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @RedisHash
@@ -15,4 +19,12 @@ public class RefreshTokenHash implements Serializable {
     private String id;
 
     private String email;
+
+    private Set<RoleEntity> roles;
+
+    private boolean enable;
+
+    private LocalDateTime expiredTime;
+
+    private LocalDateTime credentialsExpiredTime;
 }

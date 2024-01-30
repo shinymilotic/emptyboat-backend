@@ -1,6 +1,8 @@
 package overcloud.blog.repository;
 
+import overcloud.blog.entity.UserRole;
+
 public interface IUserRoleRepository {
-    void assignRole(String roleName, String email);
+    UserRole assignRole(String roleName, String email);
 
 }
