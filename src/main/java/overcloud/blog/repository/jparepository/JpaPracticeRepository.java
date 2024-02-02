@@ -1,15 +1,14 @@
 package overcloud.blog.repository.jparepository;
 
-import java.util.List;
-import java.util.UUID;
-
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-
-import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
+
+import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface JpaPracticeRepository extends JpaRepository<PracticeEntity, UUID> {

@@ -18,22 +18,22 @@ public enum PracticeError implements Error {
     }
 
     @Override
-    public void setMessageId(String id) {
-        this.id = id;
-    }
-
-    @Override
     public String getMessageId() {
         return id;
     }
 
     @Override
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessageId(String id) {
+        this.id = id;
     }
 
     @Override
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    @Override
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

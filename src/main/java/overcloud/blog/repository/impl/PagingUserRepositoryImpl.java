@@ -12,10 +12,9 @@ import java.util.List;
 @Repository
 public class PagingUserRepositoryImpl implements PagingUserRepository {
 
+    private final PlainQueryBuilder queryBuilder;
     @PersistenceContext
     EntityManager entityManager;
-
-    private final PlainQueryBuilder queryBuilder;
 
     public PagingUserRepositoryImpl(PlainQueryBuilder plainQueryBuilder) {
         this.queryBuilder = plainQueryBuilder;

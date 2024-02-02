@@ -1,8 +1,8 @@
 package overcloud.blog.infrastructure.auth.bean;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
 

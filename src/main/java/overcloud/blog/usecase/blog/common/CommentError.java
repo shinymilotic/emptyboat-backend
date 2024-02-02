@@ -15,22 +15,22 @@ public enum CommentError implements Error {
     }
 
     @Override
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
-    }
-
-    @Override
     public String getMessageId() {
         return messageId;
     }
 
     @Override
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
     @Override
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    @Override
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

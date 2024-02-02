@@ -17,22 +17,22 @@ public enum TagError implements Error {
     }
 
     @Override
-    public void setMessageId(String id) {
-        this.messageId = id;
-    }
-
-    @Override
     public String getMessageId() {
         return messageId;
     }
 
     @Override
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessageId(String id) {
+        this.messageId = id;
     }
 
     @Override
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    @Override
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

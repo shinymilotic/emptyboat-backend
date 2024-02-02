@@ -89,6 +89,10 @@ public class ArticleSummary {
         return favorited;
     }
 
+    public void setFavorited(Boolean favorited) {
+        this.favorited = favorited;
+    }
+
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -99,10 +103,6 @@ public class ArticleSummary {
 
     public Boolean isFavorited() {
         return favorited;
-    }
-
-    public void setFavorited(Boolean favorited) {
-        this.favorited = favorited;
     }
 
     public Long getFavoritesCount() {

@@ -18,22 +18,22 @@ public enum AuthError implements Error {
     }
 
     @Override
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
-    }
-
-    @Override
     public String getMessageId() {
         return this.messageId;
     }
 
     @Override
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
     @Override
     public String getErrorMessage() {
         return this.errorMessage;
+    }
+
+    @Override
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

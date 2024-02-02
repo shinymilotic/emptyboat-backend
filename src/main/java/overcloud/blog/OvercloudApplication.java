@@ -9,6 +9,10 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @SpringBootApplication(scanBasePackages = {"overcloud.blog.repository", "overcloud.blog.*"})
 public class OvercloudApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OvercloudApplication.class, args);
+    }
+
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource
@@ -24,9 +28,5 @@ public class OvercloudApplication {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource);
         return bean;
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(OvercloudApplication.class, args);
     }
 }

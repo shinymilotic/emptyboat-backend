@@ -62,6 +62,9 @@ public class UserEntity implements Serializable {
     @Column(name = "credentials_expired_time")
     private LocalDateTime credentialsExpiredTime;
 
+    public UserEntity() {
+    }
+
     @Override
     public boolean equals(Object o) {
         UserEntity that = (UserEntity) o;
@@ -76,8 +79,5 @@ public class UserEntity implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    public UserEntity() {
     }
 }

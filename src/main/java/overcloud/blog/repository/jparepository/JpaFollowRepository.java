@@ -4,7 +4,6 @@ package overcloud.blog.repository.jparepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import overcloud.blog.usecase.auth.follow.core.FollowEntity;
 import overcloud.blog.usecase.auth.follow.core.FollowId;
 

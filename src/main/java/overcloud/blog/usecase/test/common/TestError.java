@@ -15,22 +15,22 @@ public enum TestError implements Error {
     }
 
     @Override
-    public void setMessageId(String id) {
-        this.id = id;
-    }
-
-    @Override
     public String getMessageId() {
         return id;
     }
 
     @Override
-    public void setErrorMessage(String message) {
-        this.message = message;
+    public void setMessageId(String id) {
+        this.id = id;
     }
 
     @Override
     public String getErrorMessage() {
         return message;
+    }
+
+    @Override
+    public void setErrorMessage(String message) {
+        this.message = message;
     }
 }

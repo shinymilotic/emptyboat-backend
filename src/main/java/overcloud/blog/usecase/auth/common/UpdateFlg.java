@@ -13,14 +13,6 @@ public enum UpdateFlg {
         this.value = i;
     }
 
-    public int getValue() {
-        return this.value;
-    }
-
-    public void setValue(int i) {
-        this.value = i;
-    }
-
     public static UpdateFlg fromInt(int i) {
         for (UpdateFlg e : UpdateFlg.values()) {
             if (e.value == i) {
@@ -28,5 +20,13 @@ public enum UpdateFlg {
             }
         }
         throw new IllegalArgumentException("Invalid integer value: " + i);
+    }
+
+    public int getValue() {
+        return this.value;
+    }
+
+    public void setValue(int i) {
+        this.value = i;
     }
 }
