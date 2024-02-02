@@ -7,8 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.infrastructure.AuthError;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.auth.AuthError;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 
 import java.util.List;

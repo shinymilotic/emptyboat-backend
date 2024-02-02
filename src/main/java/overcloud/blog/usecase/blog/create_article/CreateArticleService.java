@@ -4,7 +4,7 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
 import overcloud.blog.usecase.blog.common.ArticleError;

@@ -2,9 +2,9 @@ package overcloud.blog.usecase.auth.manage_role;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.infrastructure.UpdateFlg;
+import overcloud.blog.usecase.auth.common.UpdateFlg;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.usecase.auth.common.RoleError;
 import overcloud.blog.repository.jparepository.JpaRoleRepository;

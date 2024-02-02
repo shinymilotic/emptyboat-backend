@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import overcloud.blog.infrastructure.ApiConst;
 import overcloud.blog.usecase.test.common.PracticeRequest;
 import overcloud.blog.usecase.test.common.UserPracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;

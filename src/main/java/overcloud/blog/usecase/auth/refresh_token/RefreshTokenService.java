@@ -4,8 +4,8 @@ import io.jsonwebtoken.JwtException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import overcloud.blog.entity.RefreshTokenEntity;
-import overcloud.blog.infrastructure.AuthError;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.auth.AuthError;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.auth.service.JwtUtils;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 

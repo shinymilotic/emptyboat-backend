@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
 package overcloud.blog.infrastructure.exceptionhandling.handler;
 
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

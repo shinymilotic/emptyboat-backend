@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure;
+package overcloud.blog.infrastructure.auth;
 
 import overcloud.blog.infrastructure.validation.Error;
 

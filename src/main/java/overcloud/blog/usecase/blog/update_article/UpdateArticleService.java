@@ -3,7 +3,7 @@ package overcloud.blog.usecase.blog.update_article;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleError;
 import overcloud.blog.usecase.blog.common.AuthorResponse;

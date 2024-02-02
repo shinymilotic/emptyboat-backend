@@ -8,7 +8,7 @@ import overcloud.blog.usecase.blog.common.CommentError;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;

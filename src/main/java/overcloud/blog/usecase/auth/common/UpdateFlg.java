@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure;
+package overcloud.blog.usecase.auth.common;
 
 
 public enum UpdateFlg {

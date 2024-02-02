@@ -2,7 +2,6 @@ package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import overcloud.blog.infrastructure.ApiConst;
 import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.blog.create_tag.CreateTagResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;

@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.blog.common.ArticleUtils;

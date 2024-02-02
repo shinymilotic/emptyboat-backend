@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.usecase.test.common.PracticeError;
 import overcloud.blog.usecase.test.get_practice.GetPracticeResultService;

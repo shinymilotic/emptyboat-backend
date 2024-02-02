@@ -2,8 +2,8 @@ package overcloud.blog.filters;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import overcloud.blog.infrastructure.AuthError;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.auth.AuthError;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.cache.RedisUtils;
 import overcloud.blog.infrastructure.auth.service.AuthenticationProvider;
 import overcloud.blog.infrastructure.auth.service.JwtUtils;

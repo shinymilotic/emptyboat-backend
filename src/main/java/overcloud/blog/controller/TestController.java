@@ -2,7 +2,6 @@ package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import overcloud.blog.infrastructure.ApiConst;
 import overcloud.blog.usecase.test.get_list_test.TestListResponse;
 import overcloud.blog.usecase.test.common.TestRequest;
 import overcloud.blog.usecase.test.common.TestResponse;

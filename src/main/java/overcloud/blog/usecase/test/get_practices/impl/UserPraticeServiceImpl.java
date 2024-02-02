@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.InvalidDataException;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.datetime.DateTimeService;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.IUserRepository;

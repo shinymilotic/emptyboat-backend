@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure;
+package overcloud.blog.controller;
 
 public class ApiConst {
 

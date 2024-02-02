@@ -2,7 +2,6 @@ package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import overcloud.blog.infrastructure.ApiConst;
 import overcloud.blog.usecase.blog.create_comment.CreateCommentRequest;
 import overcloud.blog.usecase.blog.create_comment.CreateCommentResponse;
 import overcloud.blog.usecase.blog.create_comment.CreateCommentService;

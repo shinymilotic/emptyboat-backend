@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
-import overcloud.blog.infrastructure.ApiConst;
+import overcloud.blog.controller.ApiConst;
 
 import java.util.Map;
 import java.util.Set;

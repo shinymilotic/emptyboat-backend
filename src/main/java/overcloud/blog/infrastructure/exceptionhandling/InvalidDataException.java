@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure;
+package overcloud.blog.infrastructure.exceptionhandling;
 
 
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
