@@ -11,9 +11,9 @@ import java.io.IOException;
 
 public class QuestionDeserializer extends JsonDeserializer<Question> {
     @Override
-    public Question deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Question deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
-        ObjectNode root = (ObjectNode) mapper.readTree(jp);
+        ObjectNode root = mapper.readTree(jp);
         Class<? extends Question> instanceClass = null;
         if (root.get("questionType").asInt() == 1) {
             instanceClass = ChoiceQuestion.class;

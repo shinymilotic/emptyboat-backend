@@ -7,7 +7,7 @@ public enum UserError implements Error {
     USER_NOT_FOUND("user.get-current-user.not-found", "Bạn phải đăng nhập trước!"),
     USER_USERNAME_EXIST("user.username.exists", "Tên tài khoản đã tồn tại!"),
     USER_EMAIL_EXIST("user.email.exists", "Email này đã được sử dụng!"),
-    USER_EMAIL_NO_EXIST("user.email.no-exists", "Tên đăng nhập hoặc mật khẩu không tồn tại!");;
+    USER_EMAIL_NO_EXIST("user.email.no-exists", "Tên đăng nhập hoặc mật khẩu không tồn tại!");
 
     private String id;
 

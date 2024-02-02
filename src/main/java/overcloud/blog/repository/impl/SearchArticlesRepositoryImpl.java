@@ -104,42 +104,41 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
 
     @Override
     public ArticleSummary findArticleBySlug(String slug, UUID currentUserId) {
-        StringBuilder query = new StringBuilder();
-        query.append("select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
-        query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
-        query.append("from ");
-        query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
-        query.append("from articles ");
-        query.append(" WHERE slug = :slug ) a ");
-        query.append("left join users author on ");
-        query.append("author.id = a.author_id ");
-        query.append("left join ( ");
-        query.append("select ");
-        query.append("f.followee_id, ");
-        query.append("bool_or(f.follower_id = :currentUserId) as following, ");
-        query.append("COUNT(f.follower_id) followersCount ");
-        query.append("from ");
-        query.append("follows f ");
-        query.append("group by ");
-        query.append("f.followee_id) f1 on ");
-        query.append("f1.followee_id = author.id ");
-        query.append("left join ( ");
-        query.append("select ");
-        query.append("article_id , ");
-        query.append("bool_or(user_id = :currentUserId) as favorited, ");
-        query.append("COUNT(user_id) favoritesCount ");
-        query.append("from ");
-        query.append("favorites ");
-        query.append("group by ");
-        query.append("article_id) fa on ");
-        query.append("fa.article_id = a.id ");
-        query.append("left join article_tag at2 on ");
-        query.append("a.id = at2.article_id ");
-        query.append("left join tags t on ");
-        query.append("t.id = at2.tag_id ");
-        query.append(" ORDER BY a.id DESC  ");
+        String query = "select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, " +
+                " fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount " +
+                "from " +
+                "(select articles.id, slug, body, title, description, created_at, author_id " +
+                "from articles " +
+                " WHERE slug = :slug ) a " +
+                "left join users author on " +
+                "author.id = a.author_id " +
+                "left join ( " +
+                "select " +
+                "f.followee_id, " +
+                "bool_or(f.follower_id = :currentUserId) as following, " +
+                "COUNT(f.follower_id) followersCount " +
+                "from " +
+                "follows f " +
+                "group by " +
+                "f.followee_id) f1 on " +
+                "f1.followee_id = author.id " +
+                "left join ( " +
+                "select " +
+                "article_id , " +
+                "bool_or(user_id = :currentUserId) as favorited, " +
+                "COUNT(user_id) favoritesCount " +
+                "from " +
+                "favorites " +
+                "group by " +
+                "article_id) fa on " +
+                "fa.article_id = a.id " +
+                "left join article_tag at2 on " +
+                "a.id = at2.article_id " +
+                "left join tags t on " +
+                "t.id = at2.tag_id " +
+                " ORDER BY a.id DESC  ";
 
-        Query resultList = entityManager.createNativeQuery(query.toString(), Tuple.class);
+        Query resultList = entityManager.createNativeQuery(query, Tuple.class);
         resultList.setParameter("slug", slug);
         resultList.setParameter("currentUserId", currentUserId);
 

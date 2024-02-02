@@ -16,13 +16,13 @@ import java.util.List;
 @Service
 public class UnfollowService {
 
-    private JpaUserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
-    private SpringAuthenticationService authenticationService;
+    private final SpringAuthenticationService authenticationService;
 
-    private JpaFollowRepository followRepository;
+    private final JpaFollowRepository followRepository;
 
-    private FollowUtils followUtils;
+    private final FollowUtils followUtils;
 
     public UnfollowService(JpaUserRepository userRepository,
                            SpringAuthenticationService authenticationService,

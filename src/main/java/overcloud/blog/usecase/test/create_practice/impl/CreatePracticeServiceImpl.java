@@ -86,7 +86,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
             essayAnswerEntity.setCreatedAt(now);
             essayAnswerEntities.add(essayAnswerEntity);
         }
-        practiceChoiceRepository.saveAll((Iterable<PracticeChoiceEntity>) choiceEntities);
-        essayAnswerRepository.saveAll((Iterable<EssayAnswerEntity>) essayAnswerEntities);
+        practiceChoiceRepository.saveAll(choiceEntities);
+        essayAnswerRepository.saveAll(essayAnswerEntities);
     }
 }

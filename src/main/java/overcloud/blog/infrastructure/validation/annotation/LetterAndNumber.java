@@ -10,9 +10,9 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = LetterAndNumberValidator.class)
 public @interface LetterAndNumber {
-    public String message() default "The Integer value is invalid";
+    String message() default "The Integer value is invalid";
 
-    public Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-    public Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }
