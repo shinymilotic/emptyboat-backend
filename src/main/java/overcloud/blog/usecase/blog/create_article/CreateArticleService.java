@@ -1,11 +1,9 @@
 package overcloud.blog.usecase.blog.create_article;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
-import org.springframework.util.StringUtils;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
@@ -21,7 +19,7 @@ import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
 import java.time.LocalDateTime;

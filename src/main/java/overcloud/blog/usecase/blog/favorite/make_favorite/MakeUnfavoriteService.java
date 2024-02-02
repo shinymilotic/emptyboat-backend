@@ -13,7 +13,7 @@ import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.entity.ArticleTag;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,16 +6,10 @@ import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.usecase.auth.follow.core.utils.FollowUtils;
-import overcloud.blog.entity.ArticleTag;
-import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
-import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
-import overcloud.blog.usecase.blog.get_article_list.GetArticlesSingleResponse;
+import overcloud.blog.infrastructure.auth.bean.SecurityUser;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service

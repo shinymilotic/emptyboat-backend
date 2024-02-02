@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.auth.bean.SecurityUser;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 
 import java.util.ArrayList;

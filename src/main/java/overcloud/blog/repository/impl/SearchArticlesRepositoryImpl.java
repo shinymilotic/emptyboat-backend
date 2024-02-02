@@ -2,6 +2,7 @@ package overcloud.blog.repository.impl;
 
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import overcloud.blog.repository.SearchArticlesRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;

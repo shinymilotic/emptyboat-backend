@@ -3,8 +3,8 @@ package overcloud.blog.usecase.auth.get_profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.auth.bean.SecurityUser;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.auth.follow.core.utils.FollowUtils;
 

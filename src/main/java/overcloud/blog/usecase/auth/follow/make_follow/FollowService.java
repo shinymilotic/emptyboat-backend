@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.infrastructure.InvalidDataException;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.auth.follow.core.FollowEntity;

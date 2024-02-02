@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.security.service;
+package overcloud.blog.infrastructure.auth.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.security.bean;
+package overcloud.blog.infrastructure.auth.bean;
 
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;

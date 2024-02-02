@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.infrastructure.AuthError;
 import overcloud.blog.infrastructure.InvalidDataException;
-import overcloud.blog.infrastructure.security.service.JwtUtils;
+import overcloud.blog.infrastructure.auth.service.JwtUtils;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.config;
+package overcloud.blog.infrastructure.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

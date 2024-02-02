@@ -1,14 +1,11 @@
-package overcloud.blog.infrastructure.security.service;
+package overcloud.blog.infrastructure.auth.service;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import overcloud.blog.infrastructure.cache.RedisUtils;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import java.util.Optional;
 

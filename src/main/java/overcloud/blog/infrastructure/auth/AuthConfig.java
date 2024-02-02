@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.security;
+package overcloud.blog.infrastructure.auth;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,7 +26,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig implements WebMvcConfigurer {
+public class AuthConfig implements WebMvcConfigurer {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -34,9 +34,9 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private final ExceptionHandlerFilter exceptionHandlerFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                          AuthInterceptor authInterceptor,
-                          ExceptionHandlerFilter exceptionHandlerFilter) {
+    public AuthConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                      AuthInterceptor authInterceptor,
+                      ExceptionHandlerFilter exceptionHandlerFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authInterceptor = authInterceptor;
         this.exceptionHandlerFilter = exceptionHandlerFilter;

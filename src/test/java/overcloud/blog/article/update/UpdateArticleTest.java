@@ -16,8 +16,8 @@ import overcloud.blog.usecase.blog.update_article.UpdateArticleRequest;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleService;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.security.bean.SecurityUser;
-import overcloud.blog.infrastructure.security.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.auth.bean.SecurityUser;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
 import java.util.UUID;
