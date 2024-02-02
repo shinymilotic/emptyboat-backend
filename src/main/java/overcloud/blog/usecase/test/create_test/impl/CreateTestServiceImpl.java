@@ -64,7 +64,6 @@ public class CreateTestServiceImpl implements CreateTestService {
             boolean truth = answer.isTruth();
 
             if (!StringUtils.hasText(answerContent)) {
-                // error
                 throw new InvalidDataException(ApiError.from(TestError.ANSWER_EMPTY));
             }
 
