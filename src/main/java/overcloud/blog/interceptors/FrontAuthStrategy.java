@@ -19,6 +19,7 @@ public class FrontAuthStrategy implements AuthStrategy {
             Map.entry(ApiConst.USERS_USERNAME_ASSIGNMENT, Set.of("POST", "PUT", "GET", "DELETE")),
             Map.entry(ApiConst.USERS_LOGIN_ADMIN, Set.of("POST"))
     );
+
     @Override
     public boolean auth(HttpServletRequest request) {
         String urlTemplate = (String) request.getAttribute(

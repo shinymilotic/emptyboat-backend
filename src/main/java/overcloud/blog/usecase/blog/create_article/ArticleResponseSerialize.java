@@ -16,7 +16,7 @@ public class ArticleResponseSerialize implements Serializer<ArticleResponse> {
     @Override
     public byte[] serialize(String topic, ArticleResponse data) {
         try {
-            if (data == null){
+            if (data == null) {
                 System.out.println("Null received at serializing");
                 return null;
             }

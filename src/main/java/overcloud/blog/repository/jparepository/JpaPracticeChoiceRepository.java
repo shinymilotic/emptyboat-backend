@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeChoiceEntity;
 
 @Repository
-public interface JpaPracticeChoiceRepository extends JpaRepository<PracticeChoiceEntity, UUID>{
-    
+public interface JpaPracticeChoiceRepository extends JpaRepository<PracticeChoiceEntity, UUID> {
+
 }

@@ -1,11 +1,10 @@
 package overcloud.blog.usecase.blog.create_article;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.*;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonTypeName("article")
 @Getter

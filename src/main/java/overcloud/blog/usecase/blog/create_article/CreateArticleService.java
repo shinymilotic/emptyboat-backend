@@ -1,30 +1,27 @@
 package overcloud.blog.usecase.blog.create_article;
 
 import com.github.f4b6a3.uuid.UuidCreator;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+import overcloud.blog.entity.*;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
+import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
-import overcloud.blog.usecase.blog.common.ArticleError;
-import overcloud.blog.usecase.blog.common.AuthorResponse;
-import overcloud.blog.usecase.blog.common.ArticleUtils;
-import overcloud.blog.usecase.blog.common.TagError;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
 import overcloud.blog.usecase.auth.common.UserError;
-import overcloud.blog.entity.ArticleTagId;
-import overcloud.blog.entity.ArticleTag;
-import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.entity.TagEntity;
-import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.validation.ObjectsValidator;
+import overcloud.blog.usecase.blog.common.ArticleError;
+import overcloud.blog.usecase.blog.common.ArticleUtils;
+import overcloud.blog.usecase.blog.common.AuthorResponse;
+import overcloud.blog.usecase.blog.common.TagError;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,7 +68,7 @@ public class CreateArticleService {
         }
 
         List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
-        if(distinctTags.size() > tagEntities.size()) {
+        if (distinctTags.size() > tagEntities.size()) {
             throw new InvalidDataException(TagError.TAG_NO_EXISTS);
         }
 
@@ -89,7 +86,7 @@ public class CreateArticleService {
     }
 
     private List<String> filterDistinctTags(List<String> tags) {
-        if(tags != null) {
+        if (tags != null) {
             tags = tags.stream().distinct().toList();
         } else {
             tags = new ArrayList<>();
@@ -128,7 +125,8 @@ public class CreateArticleService {
                             .id(articleTagId)
                             .tag(tagEntity)
                             .article(articleEntity)
-                            .build();})
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -149,9 +147,9 @@ public class CreateArticleService {
 
     private AuthorResponse toAuthorResponse(UserEntity userEntity) {
         return AuthorResponse.builder()
-              .bio(userEntity.getBio())
-              .username(userEntity.getUsername())
-              .image(userEntity.getImage())
-              .build();
+                .bio(userEntity.getBio())
+                .username(userEntity.getUsername())
+                .image(userEntity.getImage())
+                .build();
     }
 }

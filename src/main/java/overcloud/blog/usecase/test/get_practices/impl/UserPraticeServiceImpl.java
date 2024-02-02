@@ -1,20 +1,21 @@
 package overcloud.blog.usecase.test.get_practices.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.datetime.DateTimeService;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.test.common.PracticeResponse;
 import overcloud.blog.usecase.test.common.UserPracticeResponse;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
-import overcloud.blog.usecase.auth.common.UserError;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserPraticeServiceImpl implements UserPracticeService {
@@ -46,15 +47,15 @@ public class UserPraticeServiceImpl implements UserPracticeService {
         for (PracticeEntity practiceEntity : practices) {
             TestEntity test = practiceEntity.getTest();
             PracticeResponse practice = PracticeResponse.builder()
-                .id(practiceEntity.getId().toString())
-                .testTitle(test.getTitle())
-                .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
-                .score(practiceEntity.getScore()).build();
+                    .id(practiceEntity.getId().toString())
+                    .testTitle(test.getTitle())
+                    .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
+                    .score(practiceEntity.getScore()).build();
             practiceResponseList.add(practice);
         }
         response.setPractices(practiceResponseList);
 
         return response;
     }
-    
+
 }

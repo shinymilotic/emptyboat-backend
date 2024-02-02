@@ -1,19 +1,19 @@
 package overcloud.blog.usecase.blog.create_comment;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import overcloud.blog.entity.CommentEntity;
-import overcloud.blog.repository.jparepository.JpaCommentRepository;
-import overcloud.blog.usecase.blog.common.CommentError;
-import overcloud.blog.usecase.blog.common.AuthorResponse;
-import overcloud.blog.usecase.auth.common.UserError;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
-import overcloud.blog.repository.jparepository.JpaArticleRepository;
+import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
+import overcloud.blog.repository.jparepository.JpaArticleRepository;
+import overcloud.blog.repository.jparepository.JpaCommentRepository;
+import overcloud.blog.usecase.auth.common.UserError;
+import overcloud.blog.usecase.blog.common.AuthorResponse;
+import overcloud.blog.usecase.blog.common.CommentError;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -50,7 +50,7 @@ public class CreateCommentService {
         }
 
         List<ArticleEntity> articleEntities = articleRepository.findBySlug(slug);
-        if(articleEntities.isEmpty()) {
+        if (articleEntities.isEmpty()) {
             throw new InvalidDataException(ApiError.from(CommentError.COMMENT_ARTICLE_NOT_EXIST));
         }
 
@@ -64,7 +64,7 @@ public class CreateCommentService {
         return toCreateCommentResponse(savedCommentEntity, currentUser);
     }
 
-    public CommentEntity saveComment(CreateCommentRequest createCommentRequest,ArticleEntity articleEntity, UserEntity author ) {
+    public CommentEntity saveComment(CreateCommentRequest createCommentRequest, ArticleEntity articleEntity, UserEntity author) {
         String body = createCommentRequest.getBody();
         LocalDateTime now = LocalDateTime.now();
         CommentEntity commentEntity = new CommentEntity();
@@ -76,7 +76,7 @@ public class CreateCommentService {
         return commentRepository.save(commentEntity);
     }
 
-    public CreateCommentResponse toCreateCommentResponse(CommentEntity commentEntity, UserEntity userEntity){
+    public CreateCommentResponse toCreateCommentResponse(CommentEntity commentEntity, UserEntity userEntity) {
         return CreateCommentResponse.builder()
                 .id(commentEntity.getId())
                 .body(commentEntity.getBody())

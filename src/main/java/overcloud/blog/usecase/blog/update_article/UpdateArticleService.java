@@ -2,22 +2,22 @@ package overcloud.blog.usecase.blog.update_article;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import overcloud.blog.entity.ArticleEntity;
+import overcloud.blog.entity.UserEntity;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
+import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
+import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.blog.common.ArticleError;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
-import overcloud.blog.usecase.auth.common.UserError;
-import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.validation.ObjectsValidator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UpdateArticleService {
@@ -42,12 +42,12 @@ public class UpdateArticleService {
     @Transactional
     public UpdateArticleResponse updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
         Optional<ApiError> apiError = validator.validate(updateArticleRequest);
-        if(apiError.isPresent()) {
+        if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
 
         List<ArticleEntity> articleEntities = articleRepository.findBySlug(currentSlug);
-        if(articleEntities.isEmpty()) {
+        if (articleEntities.isEmpty()) {
             throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_NO_EXISTS));
         }
         ArticleEntity articleEntity = articleEntities.get(0);

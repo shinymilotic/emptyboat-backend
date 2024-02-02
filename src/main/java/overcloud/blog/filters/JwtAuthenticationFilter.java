@@ -1,19 +1,19 @@
 package overcloud.blog.filters;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import overcloud.blog.infrastructure.auth.AuthError;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
-import overcloud.blog.infrastructure.cache.RedisUtils;
-import overcloud.blog.infrastructure.auth.service.AuthenticationProvider;
-import overcloud.blog.infrastructure.auth.service.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import overcloud.blog.infrastructure.auth.AuthError;
+import overcloud.blog.infrastructure.auth.service.AuthenticationProvider;
+import overcloud.blog.infrastructure.auth.service.JwtUtils;
+import overcloud.blog.infrastructure.cache.RedisUtils;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthenticationProvider authenticationProvider;
 
     private final RedisUtils redisUtils;
+
     public JwtAuthenticationFilter(JwtUtils jwtUtils,
                                    AuthenticationProvider authenticationProvider,
                                    RedisUtils redisUtils) {
@@ -32,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.authenticationProvider = authenticationProvider;
         this.redisUtils = redisUtils;
     }
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,

@@ -32,7 +32,7 @@ public class GetProfileService {
         GetProfileResponse profileResponse = new GetProfileResponse();
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
-        if(currentSecurityUser.isPresent()) {
+        if (currentSecurityUser.isPresent()) {
             currentUser = currentSecurityUser.get().getUser();
         }
 

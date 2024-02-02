@@ -1,20 +1,20 @@
 package overcloud.blog.usecase.auth.assign_role;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.entity.UserRole;
 import overcloud.blog.entity.UserRoleId;
-import overcloud.blog.usecase.auth.common.UpdateFlg;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
+import overcloud.blog.repository.jparepository.JpaRoleRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRoleRepository;
 import overcloud.blog.usecase.auth.common.RoleDto;
 import overcloud.blog.usecase.auth.common.RoleError;
-import overcloud.blog.repository.jparepository.JpaRoleRepository;
 import overcloud.blog.usecase.auth.common.RolesRequest;
+import overcloud.blog.usecase.auth.common.UpdateFlg;
 
 import java.util.List;
 import java.util.Map;
@@ -50,7 +50,7 @@ public class AssignRoleService {
         Map<String, RoleEntity> roleEntitiesMap = roleEntities.stream()
                 .collect(Collectors.toMap(RoleEntity::getName, Function.identity()));
 
-        for (RoleDto role: roles) {
+        for (RoleDto role : roles) {
             UpdateFlg updateFlg = UpdateFlg.fromInt(role.getUpdateFlg());
             RoleEntity roleEntity = roleEntitiesMap.get(role.getRoleName());
 
@@ -64,7 +64,8 @@ public class AssignRoleService {
                 case DELETE -> {
                     deleteAssigedRole(roleEntity, userEntity);
                 }
-                default -> {}
+                default -> {
+                }
             }
         }
 

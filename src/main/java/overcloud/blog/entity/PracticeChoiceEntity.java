@@ -1,11 +1,11 @@
 package overcloud.blog.entity;
 
 
-import java.util.UUID;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Entity
 @Getter

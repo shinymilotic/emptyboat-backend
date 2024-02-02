@@ -1,12 +1,11 @@
 package overcloud.blog.infrastructure.auth.service;
 
-import overcloud.blog.infrastructure.auth.bean.SecurityUser;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
-
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import overcloud.blog.infrastructure.auth.bean.SecurityUser;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 
 import java.util.Optional;
 

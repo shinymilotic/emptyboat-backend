@@ -10,7 +10,7 @@ public class FollowUtils {
     public boolean isFollowing(UserEntity currentUser, UserEntity author) {
         Set<UserEntity> authorFollows = author.getFollowers();
 
-        if(currentUser != null && authorFollows.contains(currentUser)) {
+        if (currentUser != null && authorFollows.contains(currentUser)) {
             return true;
         }
 

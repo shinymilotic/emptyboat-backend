@@ -1,8 +1,9 @@
 package overcloud.blog.usecase.auth.refresh_token;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.redis.core.RedisHash;
 import overcloud.blog.entity.RoleEntity;
 

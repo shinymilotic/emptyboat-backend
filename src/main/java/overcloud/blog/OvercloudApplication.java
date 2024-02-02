@@ -2,8 +2,6 @@ package overcloud.blog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -27,6 +25,7 @@ public class OvercloudApplication {
         bean.setValidationMessageSource(messageSource);
         return bean;
     }
+
     public static void main(String[] args) {
         SpringApplication.run(OvercloudApplication.class, args);
     }

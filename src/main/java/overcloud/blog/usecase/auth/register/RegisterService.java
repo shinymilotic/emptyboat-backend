@@ -1,20 +1,19 @@
 package overcloud.blog.usecase.auth.register;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.auth.AuthError;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
-import overcloud.blog.infrastructure.cache.RedisUtils;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.auth.bean.SecurityUser;
 import overcloud.blog.infrastructure.auth.service.JwtUtils;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.cache.RedisUtils;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
@@ -72,15 +71,15 @@ public class RegisterService {
         String hashedPassword = authenticationService.encodePassword(registrationDto.getPassword());
         List<ApiErrorDetail> errors = new ArrayList<>();
 
-        if(userRepository.findByUsername(username) != null) {
+        if (userRepository.findByUsername(username) != null) {
             errors.add(ApiErrorDetail.from(UserError.USER_USERNAME_EXIST));
         }
 
-        if(userRepository.findByEmail(email) != null) {
+        if (userRepository.findByEmail(email) != null) {
             errors.add(ApiErrorDetail.from(UserError.USER_EMAIL_EXIST));
         }
 
-        if(!errors.isEmpty()) {
+        if (!errors.isEmpty()) {
             throw new InvalidDataException(ApiError.from(errors));
         }
 

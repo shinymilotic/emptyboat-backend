@@ -1,10 +1,10 @@
 package overcloud.blog.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

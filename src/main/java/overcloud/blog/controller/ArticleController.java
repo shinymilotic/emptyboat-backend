@@ -4,7 +4,6 @@ package overcloud.blog.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
 import overcloud.blog.usecase.blog.create_article.ArticleRequest;
 import overcloud.blog.usecase.blog.create_article.ArticleResponse;
 import overcloud.blog.usecase.blog.create_article.CreateArticleService;
@@ -56,6 +55,7 @@ public class ArticleController {
                                                @PathVariable("slug") String currentSlug) {
         return updateArticleService.updateArticle(updateArticleRequest, currentSlug);
     }
+
     @Secured({"ADMIN", "USER"})
     @DeleteMapping(ApiConst.ARTICLES_SLUG)
     public DeleteArticleResponse deleteArticle(@PathVariable String slug) {
@@ -66,7 +66,7 @@ public class ArticleController {
     public GetArticleResponse getArticle(@PathVariable String slug) {
         return getArticleService.getArticle(slug);
     }
-    
+
     @GetMapping(ApiConst.ARTICLES)
     public GetArticlesResponse getArticles(@RequestParam(required = false) String tag,
                                            @RequestParam(required = false) String author,

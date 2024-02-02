@@ -1,7 +1,6 @@
 package overcloud.blog.usecase.auth.common;
 
 import org.springframework.stereotype.Component;
-
 import overcloud.blog.entity.RoleEntity;
 
 import java.util.Collection;

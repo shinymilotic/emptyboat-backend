@@ -1,7 +1,15 @@
 package overcloud.blog.infrastructure.auth;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -10,14 +18,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import overcloud.blog.filters.ExceptionHandlerFilter;
 import overcloud.blog.filters.JwtAuthenticationFilter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import overcloud.blog.interceptors.AuthInterceptor;
 
 import java.util.Arrays;
@@ -63,7 +63,7 @@ public class AuthConfig implements WebMvcConfigurer {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("**", "http://14.225.207.12/","http://14.225.207.12:4200/","http://192.168.1.8", "http://192.168.1.8:4200/", "http://localhost:4200/","http://localhost:4200/"));
+        configuration.setAllowedOrigins(Arrays.asList("**", "http://14.225.207.12/", "http://14.225.207.12:4200/", "http://192.168.1.8", "http://192.168.1.8:4200/", "http://localhost:4200/", "http://localhost:4200/"));
         configuration.setAllowedMethods(Arrays.asList("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         // setAllowCredentials(true) is important, otherwise:

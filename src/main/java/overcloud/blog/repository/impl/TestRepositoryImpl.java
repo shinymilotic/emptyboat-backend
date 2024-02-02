@@ -7,7 +7,7 @@ import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
 
-import java.util.*;
+import java.util.List;
 
 @Repository
 public class TestRepositoryImpl implements ITestRepository {

@@ -1,14 +1,14 @@
 package overcloud.blog.usecase.auth.follow.make_unfollow;
 
 import org.springframework.stereotype.Service;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.exceptionhandling.ApiError;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
+import overcloud.blog.repository.jparepository.JpaFollowRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.auth.follow.core.FollowEntity;
-import overcloud.blog.repository.jparepository.JpaFollowRepository;
 import overcloud.blog.usecase.auth.follow.core.utils.FollowUtils;
 
 import java.util.List;

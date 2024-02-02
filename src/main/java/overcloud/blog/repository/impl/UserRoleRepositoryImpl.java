@@ -1,8 +1,6 @@
 package overcloud.blog.repository.impl;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
@@ -26,7 +24,7 @@ public class UserRoleRepositoryImpl implements IUserRoleRepository {
     }
 
     public UserRole assignRole(String roleName, String email) {
-        UUID userId = entityManager.createQuery("SELECT u.id FROM UserEntity u WHERE u.email = :email ",UUID.class)
+        UUID userId = entityManager.createQuery("SELECT u.id FROM UserEntity u WHERE u.email = :email ", UUID.class)
                 .setParameter("email", email)
                 .getSingleResult();
 

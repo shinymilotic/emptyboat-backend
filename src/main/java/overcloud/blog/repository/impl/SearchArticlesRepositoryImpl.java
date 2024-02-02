@@ -36,7 +36,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         articleWhereStatement.append(ifTag(operator(articleWhereStatement, " AND "), tag));
         articleWhereStatement.append(ifTag(" tags.name = :tag ", tag));
         articleWhereStatement.append(ifTag(" GROUP BY articles.id ", tag));
-        query.append(operator(articleWhereStatement," WHERE "));
+        query.append(operator(articleWhereStatement, " WHERE "));
         query.append(articleWhereStatement);
 
         query.append(" ORDER BY articles.id DESC ");
@@ -76,7 +76,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         whereStatement.append(ifFavorited(" fa.favoritedUser = true", favorited));
         whereStatement.append(ifTag(operator(whereStatement, " AND "), tag));
         whereStatement.append(ifTag(" t.name = :tag ", tag));
-        query.append(operator(whereStatement," WHERE "));
+        query.append(operator(whereStatement, " WHERE "));
         query.append(whereStatement);
         query.append(" ORDER BY a.id DESC  ");
 
@@ -86,13 +86,13 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
             resultList.setParameter("lastArticleId", lastArticleId);
         }
         resultList.setParameter("limit", limit);
-        if(StringUtils.hasText(author)) {
+        if (StringUtils.hasText(author)) {
             resultList.setParameter("author", author);
         }
-        if(StringUtils.hasText(tag)) {
+        if (StringUtils.hasText(tag)) {
             resultList.setParameter("tag", tag);
         }
-        if(StringUtils.hasText(favorited)) {
+        if (StringUtils.hasText(favorited)) {
             resultList.setParameter("favorited", favorited);
         }
 
@@ -156,7 +156,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
         query.append("from articles ");
         query.append(" WHERE search_vector @@ to_tsquery('english', :keyword) ");
-        if(StringUtils.hasText(lastArticleId)) {
+        if (StringUtils.hasText(lastArticleId)) {
             query.append(" AND id < uuid(:lastArticleId) ");
         }
         query.append(" ORDER BY id DESC  ");
@@ -190,7 +190,7 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
         query.append(" ORDER BY a.id DESC  ");
 
         Query resultList = entityManager.createNativeQuery(query.toString(), Tuple.class);
-        if(StringUtils.hasText(lastArticleId)) {
+        if (StringUtils.hasText(lastArticleId)) {
             resultList.setParameter("lastArticleId", lastArticleId);
         }
         resultList.setParameter("limit", limit);
@@ -228,8 +228,8 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
             summary.setUsername((String) data.get("username"));
             summary.setBio((String) data.get("bio"));
             summary.setImage((String) data.get("image"));
-            summary.setFollowing((Boolean)data.get("following"));
-            summary.setFollowersCount((Long)data.get("followersCount"));
+            summary.setFollowing((Boolean) data.get("following"));
+            summary.setFollowersCount((Long) data.get("followersCount"));
             articleSummaryMap.put(articleId, summary);
             previousArticleId = articleId;
         }
@@ -262,8 +262,8 @@ public class SearchArticlesRepositoryImpl implements SearchArticlesRepository {
             summary.setUsername((String) data.get("username"));
             summary.setBio((String) data.get("bio"));
             summary.setImage((String) data.get("image"));
-            summary.setFollowing((Boolean)data.get("following"));
-            summary.setFollowersCount((Long)data.get("followersCount"));
+            summary.setFollowing((Boolean) data.get("following"));
+            summary.setFollowersCount((Long) data.get("followersCount"));
             articleSummaries.add(summary);
             articleSummaryMap.put(articleId, summary);
             previousArticleId = articleId;

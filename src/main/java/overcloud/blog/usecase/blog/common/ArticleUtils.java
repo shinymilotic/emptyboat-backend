@@ -6,7 +6,7 @@ public class ArticleUtils {
     public static String toSlug(String title) {
         String slug = "";
 
-        if(StringUtils.hasText(title)) {
+        if (StringUtils.hasText(title)) {
             slug = title.toLowerCase();
             slug = slug.replaceAll("[^a-z0-9\\s-]", "");
             slug = slug.replaceAll("\\s+", "-");

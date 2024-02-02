@@ -1,11 +1,6 @@
 package overcloud.blog.usecase.test.get_practice.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.QuestionEntity;
@@ -16,6 +11,10 @@ import overcloud.blog.usecase.test.common.PracticeError;
 import overcloud.blog.usecase.test.get_practice.GetPracticeResultService;
 import overcloud.blog.usecase.test.get_practice.PracticeQuestion;
 import overcloud.blog.usecase.test.get_practice.PracticeResult;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GetPracticeResultServiceImpl implements GetPracticeResultService {
@@ -37,10 +36,10 @@ public class GetPracticeResultServiceImpl implements GetPracticeResultService {
         practiceEntity.getChoices();
         practiceEntity.getEssayAnswers();
         return PracticeResult.builder()
-            .practiceId(practiceId)
-            .testTitle(testEntity.getTitle())
-            .questions(questions)
-            .build();
+                .practiceId(practiceId)
+                .testTitle(testEntity.getTitle())
+                .questions(questions)
+                .build();
     }
-    
+
 }

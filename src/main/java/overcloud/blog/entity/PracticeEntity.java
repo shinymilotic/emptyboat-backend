@@ -1,12 +1,12 @@
 package overcloud.blog.entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -30,7 +30,7 @@ public class PracticeEntity {
     private int score;
 
     @ManyToOne
-    @JoinColumn(name = "test_id", insertable =  false, updatable = false)
+    @JoinColumn(name = "test_id", insertable = false, updatable = false)
     private TestEntity test;
 
     @OneToMany(mappedBy = "practice", orphanRemoval = true)

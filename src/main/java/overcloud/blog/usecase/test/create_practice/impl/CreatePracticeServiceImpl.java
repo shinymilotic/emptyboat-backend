@@ -1,29 +1,24 @@
 package overcloud.blog.usecase.test.create_practice.impl;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import overcloud.blog.entity.*;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
+import overcloud.blog.repository.IPracticeRepository;
+import overcloud.blog.repository.jparepository.JpaEssayAnswerRepository;
+import overcloud.blog.repository.jparepository.JpaPracticeChoiceRepository;
+import overcloud.blog.repository.jparepository.JpaTestRepository;
+import overcloud.blog.usecase.auth.common.UserError;
+import overcloud.blog.usecase.test.common.EssayAnswer;
+import overcloud.blog.usecase.test.common.PracticeRequest;
+import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-
-import org.springframework.transaction.annotation.Transactional;
-import overcloud.blog.entity.EssayAnswerEntity;
-import overcloud.blog.entity.PracticeChoiceEntity;
-import overcloud.blog.entity.PracticeEntity;
-import overcloud.blog.entity.TestEntity;
-import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.repository.jparepository.JpaEssayAnswerRepository;
-import overcloud.blog.repository.IPracticeRepository;
-import overcloud.blog.repository.jparepository.JpaPracticeChoiceRepository;
-import overcloud.blog.repository.jparepository.JpaTestRepository;
-import overcloud.blog.usecase.test.common.EssayAnswer;
-import overcloud.blog.usecase.test.common.PracticeRequest;
-import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
-import overcloud.blog.usecase.auth.common.UserError;
 
 @Service
 public class CreatePracticeServiceImpl implements CreatePracticeService {
@@ -35,10 +30,10 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     private final JpaEssayAnswerRepository essayAnswerRepository;
 
     CreatePracticeServiceImpl(IPracticeRepository practiceRepository,
-            SpringAuthenticationService authenticationService,
-            JpaTestRepository testRepository,
-            JpaPracticeChoiceRepository practiceChoiceRepository,
-            JpaEssayAnswerRepository essayAnswerRepository) {
+                              SpringAuthenticationService authenticationService,
+                              JpaTestRepository testRepository,
+                              JpaPracticeChoiceRepository practiceChoiceRepository,
+                              JpaEssayAnswerRepository essayAnswerRepository) {
         this.practiceRepository = practiceRepository;
         this.authenticationService = authenticationService;
         this.testRepository = testRepository;
@@ -54,20 +49,20 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         List<EssayAnswer> essayAnswers = practiceRequest.getEssayAnswers();
         LocalDateTime now = LocalDateTime.now();
 
-        if(choices == null || choices.isEmpty()) {
+        if (choices == null || choices.isEmpty()) {
             // throw new InvalidDataException(null);
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(UserError.USER_NOT_FOUND))
                 .getUser();
-                
+
         Optional<TestEntity> testEntity = testRepository.findBySlug(slug);
 
         if (!testEntity.isPresent()) {
             //throw exception
         }
-        
+
         PracticeEntity practiceEntity = new PracticeEntity();
         practiceEntity.setTestId(testEntity.get().getId());
         practiceEntity.setTesterId(currentUser.getId());
@@ -91,7 +86,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
             essayAnswerEntity.setCreatedAt(now);
             essayAnswerEntities.add(essayAnswerEntity);
         }
-        practiceChoiceRepository.saveAll((Iterable<PracticeChoiceEntity>)choiceEntities);
+        practiceChoiceRepository.saveAll((Iterable<PracticeChoiceEntity>) choiceEntities);
         essayAnswerRepository.saveAll((Iterable<EssayAnswerEntity>) essayAnswerEntities);
     }
 }

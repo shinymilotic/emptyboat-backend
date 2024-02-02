@@ -5,7 +5,7 @@ import overcloud.blog.infrastructure.validation.Error;
 
 
 public enum PracticeError implements Error {
-    PRACTICE_NOT_FOUND("practice.not-found","Không tồn tại phần thực hành này!"),
+    PRACTICE_NOT_FOUND("practice.not-found", "Không tồn tại phần thực hành này!"),
     ;
 
     private String id;

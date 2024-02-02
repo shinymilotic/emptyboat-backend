@@ -2,9 +2,7 @@ package overcloud.blog.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.web.bind.annotation.*;
-
 import overcloud.blog.usecase.auth.common.AuthResponse;
 import overcloud.blog.usecase.auth.common.UserListResponse;
 import overcloud.blog.usecase.auth.common.UserResponse;
@@ -65,17 +63,17 @@ public class UserController {
     }
 
     @PutMapping(ApiConst.USERS)
-    public UserResponse update(@RequestBody UpdateUserRequest updateUserDto)  {
+    public UserResponse update(@RequestBody UpdateUserRequest updateUserDto) {
         return updateUserService.updateUser(updateUserDto);
     }
 
     @PostMapping(ApiConst.USERS_LOGIN)
-    public AuthResponse login(@RequestBody LoginRequest loginDto)  {
+    public AuthResponse login(@RequestBody LoginRequest loginDto) {
         return loginService.login(loginDto);
     }
 
     @PostMapping(ApiConst.USERS_LOGIN_ADMIN)
-    public AuthResponse loginAdmin(@RequestBody LoginRequest loginDto)  {
+    public AuthResponse loginAdmin(@RequestBody LoginRequest loginDto) {
         return loginService.login(loginDto);
     }
 

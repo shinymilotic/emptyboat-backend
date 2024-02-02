@@ -1,7 +1,6 @@
 package overcloud.blog.usecase.auth.register;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import overcloud.blog.usecase.auth.common.UserResponse;
 
 public class RegisterResponse {
@@ -11,6 +10,7 @@ public class RegisterResponse {
     public UserResponse getUserResponse() {
         return userResponse;
     }
+
     public void setUserResponse(UserResponse userResponse) {
         this.userResponse = userResponse;
     }

@@ -25,6 +25,7 @@ public class GuestAuthStrategy implements AuthStrategy {
             Map.entry(ApiConst.PROFILES_USERNAME_FOLLOW, Set.of("POST", "DELETE")),
             Map.entry(ApiConst.PROFILES_USERNAME, Set.of("GET"))
     );
+
     @Override
     public boolean auth(HttpServletRequest request) {
         String urlTemplate = (String) request.getAttribute(

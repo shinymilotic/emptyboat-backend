@@ -1,13 +1,13 @@
 package overcloud.blog.usecase.auth.manage_role;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.usecase.auth.common.UpdateFlg;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.usecase.auth.common.RoleError;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaRoleRepository;
+import overcloud.blog.usecase.auth.common.RoleError;
+import overcloud.blog.usecase.auth.common.UpdateFlg;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +31,9 @@ public class ManageRoleService {
             UpdateFlg updateFlg = UpdateFlg.fromInt(role.getUpdateFlg());
 
             switch (updateFlg) {
-                case NEW ->  {
+                case NEW -> {
                     Optional<RoleEntity> savedRole = saveRole(role);
-                    if(savedRole.isPresent()) {
+                    if (savedRole.isPresent()) {
                         rowAffected++;
                     }
                 }
@@ -45,7 +45,8 @@ public class ManageRoleService {
                     int deleteRowsCount = deleteRole(role);
                     rowAffected += deleteRowsCount;
                 }
-                case NO_CHANGE -> {}
+                case NO_CHANGE -> {
+                }
             }
         }
 
@@ -56,7 +57,7 @@ public class ManageRoleService {
         try {
             RoleEntity roleEntity = RoleEntity.builder()
                     .name(role.getRoleName()).build();
-                return Optional.of(roleRepository.saveAndFlush(roleEntity));
+            return Optional.of(roleRepository.saveAndFlush(roleEntity));
         } catch (Exception e) {
             throw new InvalidDataException(ApiError.from(RoleError.ROLE_EXISTED));
         }
@@ -78,12 +79,12 @@ public class ManageRoleService {
     }
 
     private void validate(ManageRoleRequest request) {
-        if(request.getRoles() == null) {
+        if (request.getRoles() == null) {
             throw new InvalidDataException(ApiError.from(RoleError.ROLE_LIST_NOT_EMPTY));
         }
 
         for (ManageRoleDto role : request.getRoles()) {
-            if(role == null) {
+            if (role == null) {
                 throw new InvalidDataException(ApiError.from(RoleError.ROLENAME_SIZE));
             }
         }

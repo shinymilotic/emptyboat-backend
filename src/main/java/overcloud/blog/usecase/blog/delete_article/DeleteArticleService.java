@@ -11,7 +11,7 @@ public class DeleteArticleService {
     private final JpaArticleRepository articleRepository;
 
     public DeleteArticleService(
-                                JpaArticleRepository articleRepository) {
+            JpaArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 

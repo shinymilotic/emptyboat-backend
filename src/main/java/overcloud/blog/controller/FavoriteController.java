@@ -1,7 +1,6 @@
 package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
-
 import overcloud.blog.usecase.blog.create_article.ArticleResponse;
 import overcloud.blog.usecase.blog.favorite.make_favorite.MakeUnfavoriteService;
 import overcloud.blog.usecase.blog.favorite.make_unfavorite.MakeFavoriteService;

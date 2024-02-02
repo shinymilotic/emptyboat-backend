@@ -32,9 +32,11 @@ public class ArticleSummary {
     private Boolean following;
 
     private Long followersCount;
+
     public ArticleSummary() {
 
     }
+
     public UUID getId() {
         return id;
     }

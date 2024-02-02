@@ -17,16 +17,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class ArticleSearchServicePG implements  ArticleSearchService{
+public class ArticleSearchServicePG implements ArticleSearchService {
     private final JpaArticleRepository articleRepository;
 
     private final SpringAuthenticationService authenticationService;
 
     public ArticleSearchServicePG(JpaArticleRepository articleRepository,
-                                 SpringAuthenticationService authenticationService) {
+                                  SpringAuthenticationService authenticationService) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
     }
+
     @Override
     @Transactional(readOnly = true)
     public GetArticlesResponse searchArticles(String searchParam, int limit, String lastArticleId) {

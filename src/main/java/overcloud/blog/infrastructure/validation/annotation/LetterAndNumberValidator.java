@@ -13,7 +13,7 @@ public class LetterAndNumberValidator implements ConstraintValidator<LetterAndNu
         boolean isValid = false;
         String regex = "[A-Za-z0-9]+";
         Pattern pattern = Pattern.compile(regex);
-        if(StringUtils.hasText(value)) {
+        if (StringUtils.hasText(value)) {
             isValid = pattern.matcher(value).matches();
         }
 

@@ -1,10 +1,10 @@
 package overcloud.blog.infrastructure.auth.service;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.infrastructure.cache.RedisUtils;
 
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class AuthenticationProvider {
         return Optional.ofNullable(email)
                 .map(userDetailsService::loadUserByUsername)
                 .map(userDetails ->
-                    new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities()))
+                        new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities()))
                 .orElse(null);
     }
 

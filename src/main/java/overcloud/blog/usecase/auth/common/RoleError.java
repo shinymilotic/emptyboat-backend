@@ -7,7 +7,7 @@ public enum RoleError implements Error {
     ROLENAME_SIZE("role.rolename.size", "Role name length must between 1 to 20 characters"),
 
     ROLE_LIST_NOT_EMPTY("role.rolelist.not-empty", "Role list must not be empty"),
-    UPDATE_ROLE_NOT_EXIST("role.rolelist.not-exist", "Update role not exist!" ),
+    UPDATE_ROLE_NOT_EXIST("role.rolelist.not-exist", "Update role not exist!"),
     ROLE_EXISTED("role.existed", "Role is existed!"),
     UPDATE_ROLE_FAILED("role.update-fail", "Updating role failed!"),
     ROLE_ASSIGNMENT_FAILED("role.assignment", "Role assignment failed!");

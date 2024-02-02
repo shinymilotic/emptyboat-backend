@@ -16,7 +16,7 @@ public class TestResponse {
 
     @JsonProperty("slug")
     private String slug;
-    
+
     @JsonProperty("questions")
     private List<Question> questions;
 

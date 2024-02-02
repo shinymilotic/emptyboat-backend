@@ -8,6 +8,7 @@ public enum UpdateFlg {
     DELETE(3);
 
     private int value;
+
     UpdateFlg(int i) {
         this.value = i;
     }

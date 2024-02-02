@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
@@ -18,9 +19,9 @@ public class JwtUtils {
     private final Long validRefreshTokenSeconds;
     private final Key key;
 
-    public JwtUtils( @Value("${blog.auth.token.sign-key}") String signKey,
-                     @Value("${blog.auth.token.valid-access-time}") Long validAccessTokenTime,
-                     @Value("${blog.auth.token.valid-refresh-time}") Long validRefreshTokenSeconds) {
+    public JwtUtils(@Value("${blog.auth.token.sign-key}") String signKey,
+                    @Value("${blog.auth.token.valid-access-time}") Long validAccessTokenTime,
+                    @Value("${blog.auth.token.valid-refresh-time}") Long validRefreshTokenSeconds) {
         this.validAccessTokenTime = validAccessTokenTime;
         this.validRefreshTokenSeconds = validRefreshTokenSeconds;
         this.key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
@@ -34,7 +35,7 @@ public class JwtUtils {
         Instant exp = Instant.now();
         return Jwts.builder().setSubject(sub)
                 .setIssuedAt(new Date(exp.toEpochMilli()))
-                .setExpiration(new Date(exp.toEpochMilli() + validAccessTokenTime*1000))
+                .setExpiration(new Date(exp.toEpochMilli() + validAccessTokenTime * 1000))
                 .signWith(key)
                 .compact();
     }
@@ -70,7 +71,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(exp.toEpochMilli() + validRefreshTokenSeconds*1000))
+                .setExpiration(new Date(exp.toEpochMilli() + validRefreshTokenSeconds * 1000))
                 .signWith(key).compact();
     }
 

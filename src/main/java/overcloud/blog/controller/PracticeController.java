@@ -1,12 +1,6 @@
 package overcloud.blog.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import overcloud.blog.usecase.test.common.PracticeRequest;
 import overcloud.blog.usecase.test.common.UserPracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
@@ -23,8 +17,8 @@ public class PracticeController {
     private final GetPracticeResultService getPracticeResultService;
 
     PracticeController(CreatePracticeService createPracticeService,
-        UserPracticeService userPracticeService,
-        GetPracticeResultService getPracticeResultService) {
+                       UserPracticeService userPracticeService,
+                       GetPracticeResultService getPracticeResultService) {
         this.createPracticeService = createPracticeService;
         this.userPracticeService = userPracticeService;
         this.getPracticeResultService = getPracticeResultService;

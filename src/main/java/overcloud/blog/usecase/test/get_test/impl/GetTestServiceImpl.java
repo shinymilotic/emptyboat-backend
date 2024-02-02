@@ -1,16 +1,11 @@
 package overcloud.blog.usecase.test.get_test.impl;
 
 import org.springframework.stereotype.Service;
-
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
-import overcloud.blog.usecase.test.common.Answer;
-import overcloud.blog.usecase.test.common.ChoiceQuestion;
-import overcloud.blog.usecase.test.common.EssayQuestion;
-import overcloud.blog.usecase.test.common.Question;
-import overcloud.blog.usecase.test.common.TestResponse;
+import overcloud.blog.usecase.test.common.*;
 import overcloud.blog.usecase.test.get_test.GetTestService;
 
 import java.util.ArrayList;
@@ -31,7 +26,7 @@ public class GetTestServiceImpl implements GetTestService {
     public TestResponse getTest(String slug) {
         Optional<TestEntity> testEntity = this.testRepository.findBySlug(slug);
 
-        if(!testEntity.isPresent()) {
+        if (!testEntity.isPresent()) {
             // do something...
         }
 
@@ -47,17 +42,17 @@ public class GetTestServiceImpl implements GetTestService {
     public List<Question> getQuestions(List<QuestionEntity> questionEntities) {
         List<Question> questions = new ArrayList<>();
 
-        for (QuestionEntity questionEntity: questionEntities) {
+        for (QuestionEntity questionEntity : questionEntities) {
             if (questionEntity.getQuestionType() == 1) {
                 ChoiceQuestion question = ChoiceQuestion.questionFactory(
-                    questionEntity.getId().toString(),
-                    questionEntity.getQuestion(),
-                    getAnswers(questionEntity));
+                        questionEntity.getId().toString(),
+                        questionEntity.getQuestion(),
+                        getAnswers(questionEntity));
                 questions.add(question);
             } else if (questionEntity.getQuestionType() == 2) {
                 EssayQuestion question = EssayQuestion.questionFactory(
-                    questionEntity.getId().toString(),
-                    questionEntity.getQuestion());
+                        questionEntity.getId().toString(),
+                        questionEntity.getQuestion());
                 questions.add(question);
             }
 
@@ -70,7 +65,7 @@ public class GetTestServiceImpl implements GetTestService {
     public List<Answer> getAnswers(QuestionEntity questionEntity) {
         List<AnswerEntity> answerEntities = questionEntity.getAnswers();
         List<Answer> answers = new ArrayList<>();
-        for (AnswerEntity answerEntity: answerEntities) {
+        for (AnswerEntity answerEntity : answerEntities) {
             UUID id = answerEntity.getId();
             String answerString = answerEntity.getAnswer();
             boolean truth = answerEntity.isTruth();

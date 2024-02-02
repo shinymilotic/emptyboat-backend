@@ -1,8 +1,8 @@
 package overcloud.blog.infrastructure.exceptionhandling;
 
 
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.validation.Error;
+
 public class InvalidDataException extends RuntimeException {
 
     private ApiError apiError;

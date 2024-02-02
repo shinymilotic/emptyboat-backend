@@ -1,12 +1,12 @@
 package overcloud.blog.usecase.auth.refresh_token;
 
 import io.jsonwebtoken.JwtException;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.infrastructure.auth.AuthError;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.auth.service.JwtUtils;
+import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 
 import java.util.Optional;
@@ -25,7 +25,7 @@ public class RefreshTokenService {
     @Transactional
     public TokenRefreshResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         String refreshToken = refreshTokenRequest.getRefreshToken();
-        Optional<RefreshTokenEntity> refreshTokenEntity =  refreshTokenRepository.findByRefreshToken(refreshToken);
+        Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken);
 
         if (refreshTokenEntity.isPresent()) {
             String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();

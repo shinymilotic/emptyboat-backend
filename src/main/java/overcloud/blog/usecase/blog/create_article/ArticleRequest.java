@@ -20,7 +20,7 @@ import java.util.List;
 public class ArticleRequest {
     @JsonProperty("title")
     @NotBlank(message = "article.create.not-blank")
-    @Size(min = 1, max = 60, message ="article.create.size")
+    @Size(min = 1, max = 60, message = "article.create.size")
     private String title;
 
     @JsonProperty("description")
@@ -30,7 +30,7 @@ public class ArticleRequest {
 
     @JsonProperty("body")
     @NotBlank(message = "article.body.not-blank")
-    @Size(min = 1, message ="article.create.size")
+    @Size(min = 1, message = "article.create.size")
     private String body;
 
     @JsonProperty("tagList")

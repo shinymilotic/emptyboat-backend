@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -67,7 +66,7 @@ public class UserEntity implements Serializable {
     public boolean equals(Object o) {
         UserEntity that = (UserEntity) o;
 
-        if(that == null) {
+        if (that == null) {
             return false;
         }
 

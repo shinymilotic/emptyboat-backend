@@ -13,9 +13,9 @@ public class FavoriteUtils {
     public boolean isFavorited(UserEntity user, ArticleEntity article) {
         List<FavoriteEntity> favorites = article.getFavorites();
 
-        for (FavoriteEntity favorite: favorites) {
+        for (FavoriteEntity favorite : favorites) {
             UserEntity u = favorite.getUser();
-            if(user != null && user.equals(u)) {
+            if (user != null && user.equals(u)) {
                 return true;
             }
         }

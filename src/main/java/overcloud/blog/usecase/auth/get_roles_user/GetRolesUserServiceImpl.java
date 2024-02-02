@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.repository.jparepository.JpaRoleRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.auth.common.UserError;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class GetRolesUserServiceImpl implements  GetRolesUserService {
+public class GetRolesUserServiceImpl implements GetRolesUserService {
 
     private final JpaUserRepository userRepository;
 
@@ -32,14 +32,14 @@ public class GetRolesUserServiceImpl implements  GetRolesUserService {
         UserEntity user = userRepository.findRolesByUsernname(username);
         List<RoleEntity> roles = roleRepository.findAll();
 
-        if(user == null) {
+        if (user == null) {
             // do something
             throw new InvalidDataException(UserError.USER_NOT_FOUND);
         }
-        Set<RoleEntity> rolesUser =  user.getRoles();
+        Set<RoleEntity> rolesUser = user.getRoles();
 
         List<UserRoleResponse> listResponse = new ArrayList<>();
-        for (RoleEntity role: roles) {
+        for (RoleEntity role : roles) {
             UserRoleResponse userRoleResponse =
                     new UserRoleResponse(role.getId().toString(), role.getName(), false);
             if (rolesUser.contains(role)) {
@@ -48,7 +48,7 @@ public class GetRolesUserServiceImpl implements  GetRolesUserService {
             listResponse.add(userRoleResponse);
         }
 
-        UserRoleListResponse rs =  new UserRoleListResponse(listResponse);
+        UserRoleListResponse rs = new UserRoleListResponse(listResponse);
         return rs;
     }
 }
