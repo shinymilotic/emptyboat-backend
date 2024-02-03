@@ -10,6 +10,7 @@ import overcloud.blog.repository.jparepository.JpaEssayAnswerRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeChoiceRepository;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.auth.common.UserError;
+import overcloud.blog.usecase.test.common.ChoiceAnswer;
 import overcloud.blog.usecase.test.common.EssayAnswer;
 import overcloud.blog.usecase.test.common.PracticeRequest;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
@@ -45,7 +46,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     @Transactional
     public void createPractice(PracticeRequest practiceRequest) {
         String slug = practiceRequest.getSlug();
-        List<String> choices = practiceRequest.getChoiceAnswers();
+        List<ChoiceAnswer> choices = practiceRequest.getChoiceAnswers();
         List<EssayAnswer> essayAnswers = practiceRequest.getEssayAnswers();
         LocalDateTime now = LocalDateTime.now();
 
@@ -70,11 +71,13 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         practiceEntity = practiceRepository.save(practiceEntity);
 
         List<PracticeChoiceEntity> choiceEntities = new ArrayList<>();
-        for (String choice : choices) {
-            PracticeChoiceEntity choiceEntity = new PracticeChoiceEntity();
-            choiceEntity.setAnswerId(UUID.fromString(choice));
-            choiceEntity.setPracticeId(practiceEntity.getId());
-            choiceEntities.add(choiceEntity);
+        for (ChoiceAnswer choice : choices) {
+            for (String answerId : choice.getAnswer()) {
+                PracticeChoiceEntity choiceEntity = new PracticeChoiceEntity();
+                choiceEntity.setAnswerId(UUID.fromString(answerId));
+                choiceEntity.setPracticeId(practiceEntity.getId());
+                choiceEntities.add(choiceEntity);
+            }
         }
 
         List<EssayAnswerEntity> essayAnswerEntities = new ArrayList<>();

@@ -5,7 +5,11 @@ import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
-import overcloud.blog.usecase.test.common.*;
+import overcloud.blog.usecase.test.common.Answer;
+import overcloud.blog.usecase.test.common.EssayQuestion;
+import overcloud.blog.usecase.test.common.Question;
+import overcloud.blog.usecase.test.common.TestResponse;
+import overcloud.blog.usecase.test.get_test.ChoiceQuestion;
 import overcloud.blog.usecase.test.get_test.GetTestService;
 
 import java.util.ArrayList;
@@ -44,18 +48,30 @@ public class GetTestServiceImpl implements GetTestService {
 
         for (QuestionEntity questionEntity : questionEntities) {
             if (questionEntity.getQuestionType() == 1) {
-                ChoiceQuestion question = ChoiceQuestion.questionFactory(
-                        questionEntity.getId().toString(),
-                        questionEntity.getQuestion(),
-                        getAnswers(questionEntity));
-                questions.add(question);
+                List<AnswerEntity> answers = questionEntity.getAnswers();
+                long countRightAnswers = answers.stream().filter(e -> e.isTruth()).count();
+                if (countRightAnswers > 1) {
+                    questions.add(ChoiceQuestion.questionFactory(
+                            questionEntity.getId().toString(),
+                            questionEntity.getQuestion(),
+                            getAnswers(questionEntity),
+                            true));
+                } else if (countRightAnswers == 1) {
+                    questions.add(ChoiceQuestion.questionFactory(
+                            questionEntity.getId().toString(),
+                            questionEntity.getQuestion(),
+                            getAnswers(questionEntity),
+                            false));
+                } else {
+                    // throw err...
+                }
+//                questions.add(question);
             } else if (questionEntity.getQuestionType() == 2) {
                 EssayQuestion question = EssayQuestion.questionFactory(
                         questionEntity.getId().toString(),
                         questionEntity.getQuestion());
                 questions.add(question);
             }
-
         }
 
         return questions;

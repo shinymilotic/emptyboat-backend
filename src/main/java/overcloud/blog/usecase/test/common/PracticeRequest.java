@@ -19,7 +19,7 @@ public class PracticeRequest {
     private String slug;
 
     @JsonProperty("choiceAnswers")
-    private List<String> choiceAnswers;
+    private List<ChoiceAnswer> choiceAnswers;
 
     @JsonProperty("essayAnswers")
     private List<EssayAnswer> essayAnswers;
