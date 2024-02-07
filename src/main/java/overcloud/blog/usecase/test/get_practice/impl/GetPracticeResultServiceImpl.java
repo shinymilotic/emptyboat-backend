@@ -3,7 +3,6 @@ package overcloud.blog.usecase.test.get_practice.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.PracticeEntity;
-import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.IPracticeRepository;
@@ -32,14 +31,19 @@ public class GetPracticeResultServiceImpl implements GetPracticeResultService {
         TestEntity testEntity = practiceEntity.getTest();
         List<Object> object = practiceRepository.getPracticeResult(practiceId);
         List<PracticeQuestion> questions = new ArrayList<>();
-        List<QuestionEntity> questionEntities = testEntity.getQuestions();
-        practiceEntity.getChoices();
-        practiceEntity.getEssayAnswers();
-        return PracticeResult.builder()
-                .practiceId(practiceId)
-                .testTitle(testEntity.getTitle())
-                .questions(questions)
-                .build();
+//        List<QuestionEntity> questionEntities = testEntity.getQuestions();
+//        for (QuestionEntity question : questionEntities) {
+//            question.getQuestion();
+//            question.getQuestionType();
+//            List<AnswerEntity> answerEntities = question.getAnswers();
+//            for (AnswerEntity answerEntity : answerEntities) {
+////                answerEntity.get
+//            }
+//
+//        }
+//        practiceEntity.getChoices();
+//        practiceEntity.getEssayAnswers();
+        return null;
     }
 
 }

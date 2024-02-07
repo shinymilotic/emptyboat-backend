@@ -21,4 +21,7 @@ public class TestQuestion {
     @ManyToOne
     @MapsId(value = "questionId")
     private QuestionEntity question;
+
+    @Column(name = "question_order")
+    private int questionOrder;
 }

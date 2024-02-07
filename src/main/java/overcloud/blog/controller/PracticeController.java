@@ -35,7 +35,7 @@ public class PracticeController {
     }
 
     @GetMapping(ApiConst.PRACTICE_ID)
-    public PracticeResult getPracticeResult(@PathVariable("practiceId") String practiceId) {
+    public PracticeResult getPracticeResult(@PathVariable("id") String practiceId) {
         return getPracticeResultService.getPracticeResult(practiceId);
     }
 }

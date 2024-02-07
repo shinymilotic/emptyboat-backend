@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.auth.follow.make_unfollow;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
@@ -34,6 +35,7 @@ public class UnfollowService {
         this.followUtils = followUtils;
     }
 
+    @Transactional
     public UnfollowResponse unfollowUser(String username) {
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))

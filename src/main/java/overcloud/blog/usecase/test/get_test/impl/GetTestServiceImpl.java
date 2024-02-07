@@ -1,9 +1,11 @@
 package overcloud.blog.usecase.test.get_test.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
+import overcloud.blog.entity.TestQuestion;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.test.common.Answer;
 import overcloud.blog.usecase.test.common.EssayQuestion;
@@ -27,6 +29,7 @@ public class GetTestServiceImpl implements GetTestService {
     }
 
     @Override
+    @Transactional
     public TestResponse getTest(String slug) {
         Optional<TestEntity> testEntity = this.testRepository.findBySlug(slug);
 
@@ -43,10 +46,11 @@ public class GetTestServiceImpl implements GetTestService {
                 getQuestions(testEntity.get().getQuestions()));
     }
 
-    public List<Question> getQuestions(List<QuestionEntity> questionEntities) {
+    public List<Question> getQuestions(List<TestQuestion> testQuestions) {
         List<Question> questions = new ArrayList<>();
 
-        for (QuestionEntity questionEntity : questionEntities) {
+        for (TestQuestion testQuestion : testQuestions) {
+            QuestionEntity questionEntity = testQuestion.getQuestion();
             if (questionEntity.getQuestionType() == 1) {
                 List<AnswerEntity> answers = questionEntity.getAnswers();
                 long countRightAnswers = answers.stream().filter(e -> e.isTruth()).count();

@@ -2,7 +2,9 @@ package overcloud.blog.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Embeddable
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TestQuestionId implements Serializable {
     @Column(name = "test_id")
     private UUID testId;

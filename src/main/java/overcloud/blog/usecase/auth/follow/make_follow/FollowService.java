@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.auth.follow.make_follow;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
@@ -33,6 +34,7 @@ public class FollowService {
         this.followUtils = followUtils;
     }
 
+    @Transactional
     public FollowResponse followUser(String username) {
         FollowEntity followEntity = new FollowEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()

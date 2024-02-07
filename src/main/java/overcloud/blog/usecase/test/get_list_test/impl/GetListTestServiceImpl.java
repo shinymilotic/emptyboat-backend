@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.test.get_list_test.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.get_list_test.GetListTestService;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
@@ -20,6 +21,7 @@ public class GetListTestServiceImpl implements GetListTestService {
     }
 
     @Override
+    @Transactional
     public TestListResponse getListTest() {
         List<TestListRecord> testList = testRepository.findAll();
         TestListResponse responses = new TestListResponse(new ArrayList<>());

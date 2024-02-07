@@ -29,13 +29,8 @@ public class TestEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "test_question",
-            joinColumns = @JoinColumn(name = "test_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id")
-    )
-    private List<QuestionEntity> questions;
+    @OneToMany(mappedBy = "test", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<TestQuestion> questions;
 
     @OneToMany(mappedBy = "test", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<PracticeEntity> practices;
