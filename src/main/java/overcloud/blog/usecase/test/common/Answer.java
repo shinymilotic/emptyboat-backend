@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
 public class Answer {
     @JsonProperty("id")
-    private String id;
+    private UUID id;
 
     @JsonProperty("answer")
     private String answer;
@@ -18,7 +20,7 @@ public class Answer {
     @JsonProperty("truth")
     private boolean truth;
 
-    public static Answer answerFactory(String id, String answer, boolean truth) {
+    public static Answer answerFactory(UUID id, String answer, boolean truth) {
         return Answer.builder()
                 .id(id)
                 .answer(answer)
