@@ -13,7 +13,7 @@ public interface IPracticeRepository {
 
     Optional<PracticeEntity> findById(UUID id);
 
-    List<Object> getPracticeResult(String id);
+    List<Object> getPracticeResult(UUID id);
 
     PracticeEntity save(PracticeEntity entity);
 }

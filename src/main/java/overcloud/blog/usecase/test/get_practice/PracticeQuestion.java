@@ -2,11 +2,13 @@ package overcloud.blog.usecase.test.get_practice;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.util.UUID;
+
 @JsonDeserialize(using = PracticeQuestionDeserializer.class)
 public interface PracticeQuestion {
-    String getId();
+    UUID getId();
 
-    void setId(String id);
+    void setId(UUID id);
 
     String getQuestion();
 

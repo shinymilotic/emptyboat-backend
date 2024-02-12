@@ -34,9 +34,10 @@ public class DataSourceConfig {
 
         dataSource.setConnectionTimeout(30000);
         dataSource.setAutoCommit(true);
-        dataSource.setIdleTimeout(60000);
-        dataSource.setMaxLifetime(1800000);
+        dataSource.setMaxLifetime(60000);
         dataSource.setLeakDetectionThreshold(15000);
+        dataSource.setMinimumIdle(5);
+        dataSource.setIdleTimeout(0);
         dataSource.setMaximumPoolSize(20);
         dataSource.setPoolName("_DBPool");
         dataSource.setRegisterMbeans(true);

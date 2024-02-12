@@ -6,13 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @JsonDeserialize(as = PracticeEssayQuestion.class)
 public class PracticeEssayQuestion implements PracticeQuestion {
     @JsonProperty("id")
-    private String id;
+    private UUID id;
 
     @JsonProperty("question")
     private String question;
@@ -23,7 +25,7 @@ public class PracticeEssayQuestion implements PracticeQuestion {
     @JsonProperty("answer")
     private String answer;
 
-    public static PracticeEssayQuestion questionFactory(String id, String question, String answer) {
+    public static PracticeEssayQuestion questionFactory(UUID id, String question, String answer) {
         return new PracticeEssayQuestion(id, question, 2, answer);
     }
 }

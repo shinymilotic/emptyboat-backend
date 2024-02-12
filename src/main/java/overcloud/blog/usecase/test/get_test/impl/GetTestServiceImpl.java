@@ -89,7 +89,7 @@ public class GetTestServiceImpl implements GetTestService {
             UUID id = answerEntity.getId();
             String answerString = answerEntity.getAnswer();
             boolean truth = answerEntity.isTruth();
-            Answer answer = Answer.answerFactory(id.toString(), answerString, truth);
+            Answer answer = Answer.answerFactory(id, answerString, truth);
             answers.add(answer);
         }
 

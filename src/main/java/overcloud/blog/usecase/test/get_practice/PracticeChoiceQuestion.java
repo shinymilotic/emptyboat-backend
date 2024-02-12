@@ -7,13 +7,16 @@ import lombok.Getter;
 import lombok.Setter;
 import overcloud.blog.usecase.test.common.Answer;
 
+import java.util.List;
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @JsonDeserialize(as = PracticeChoiceQuestion.class)
 public class PracticeChoiceQuestion implements PracticeQuestion {
     @JsonProperty("id")
-    private String id;
+    private UUID id;
 
     @JsonProperty("question")
     private String question;
@@ -21,10 +24,10 @@ public class PracticeChoiceQuestion implements PracticeQuestion {
     @JsonProperty("questionType")
     private int questionType;
 
-    @JsonProperty("answer")
-    private Answer answer;
+    @JsonProperty("answers")
+    private List<Answer> answers;
 
-    public static PracticeChoiceQuestion questionFactory(String id, String question, Answer answer) {
-        return new PracticeChoiceQuestion(id, question, 1, answer);
+    public static PracticeChoiceQuestion questionFactory(UUID id, String question, List<Answer> answers) {
+        return new PracticeChoiceQuestion(id, question, 1, answers);
     }
 }

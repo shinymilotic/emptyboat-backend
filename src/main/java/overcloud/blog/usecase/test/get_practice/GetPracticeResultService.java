@@ -1,5 +1,7 @@
 package overcloud.blog.usecase.test.get_practice;
 
+import java.util.UUID;
+
 public interface GetPracticeResultService {
-    PracticeResult getPracticeResult(String practiceId);
+    PracticeResult getPracticeResult(UUID practiceId);
 }

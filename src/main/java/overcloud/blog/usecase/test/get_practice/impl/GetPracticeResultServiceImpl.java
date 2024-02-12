@@ -25,8 +25,8 @@ public class GetPracticeResultServiceImpl implements GetPracticeResultService {
 
     @Override
     @Transactional(readOnly = true)
-    public PracticeResult getPracticeResult(String practiceId) {
-        PracticeEntity practiceEntity = practiceRepository.findById(UUID.fromString(practiceId))
+    public PracticeResult getPracticeResult(UUID practiceId) {
+        PracticeEntity practiceEntity = practiceRepository.findById(practiceId)
                 .orElseThrow(() -> new InvalidDataException(PracticeError.PRACTICE_NOT_FOUND));
         TestEntity testEntity = practiceEntity.getTest();
         List<Object> object = practiceRepository.getPracticeResult(practiceId);

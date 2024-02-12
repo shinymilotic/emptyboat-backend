@@ -8,6 +8,8 @@ import overcloud.blog.usecase.test.get_practice.GetPracticeResultService;
 import overcloud.blog.usecase.test.get_practice.PracticeResult;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
 
+import java.util.UUID;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class PracticeController {
@@ -35,7 +37,7 @@ public class PracticeController {
     }
 
     @GetMapping(ApiConst.PRACTICE_ID)
-    public PracticeResult getPracticeResult(@PathVariable("id") String practiceId) {
+    public PracticeResult getPracticeResult(@PathVariable("id") UUID practiceId) {
         return getPracticeResultService.getPracticeResult(practiceId);
     }
 }

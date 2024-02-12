@@ -16,10 +16,19 @@ web:
     max-age: 3600
     allowed-headers: "Requestor-Type"
     exposed-headers: "X-Get-Header"
-spring:
-  datasource:
-    hikari:
-      maxLifeTime: '600000'
+#spring:
+#  datasource:
+#    hikari:
+#      minimumIdle: 2
+#      maximumPoolSize: 10
+#      idleTimeout: 120000
+#      connectionTimeout: 300000
+#      leakDetectionThreshold: 300000
+#      maxLifeTime: 600000
+#      testWhileIdle: true
+#      test-on-borrow: true
+#      leakDetectionThreshold: 2000
+
   messages:
     always-use-message-format: false
     basename: messages
@@ -33,7 +42,7 @@ spring:
         format_sql: false
     show-sql: true
   kafka:
-    bootstrap-servers: 192.168.1.8:29093
+    bootstrap-servers: 14.225.207.12:29093
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -55,12 +64,12 @@ spring:
 
   elasticsearch:
     rest:
-      uris: 192.168.1.8:9200
+      uris: 14.225.207.12:9200
       username: elastic
       password: nuE9TjbhqMTe-p4Z+fhB
 
 elasticsearch:
-  url: 192.168.1.8:9200
+  url: 14.225.207.12:9200
 
 logging:
   level:
