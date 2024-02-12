@@ -315,3 +315,11 @@ VALUES('56f9e88c-0066-4e3e-8793-119f6f2012d6'::uuid, 'ADMIN');
 INSERT INTO public.roles
 (id, "name")
 VALUES('80e1e7af-0f80-4a5f-ab42-bfbfa6513da9'::uuid, 'USER');
+
+
+CREATE TABLE public.refresh_token (
+	id uuid primary key,
+	refresh_token text unique,
+    user_id uuid,
+    CONSTRAINT refresh_token_fk FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
