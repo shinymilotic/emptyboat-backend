@@ -27,10 +27,6 @@ public class LogoutService {
     public boolean logout(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
-            SecurityUser user = (SecurityUser) auth.getPrincipal();
-            if (user != null) {
-                redisUtils.delete(user.getUser().getEmail());
-            }
             refreshTokenRepository.deleteByRefreshToken(refreshToken);
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }

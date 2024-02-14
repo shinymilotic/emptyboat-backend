@@ -103,7 +103,6 @@ public class RegisterService {
         String accessToken = jwtUtils.encode(savedUser.getEmail());
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
         saveDBRefreshToken(refreshToken, savedUser.getId());
-        cacheAuthUser(savedUser);
 
         return userResponseMapper.toAuthResponse(savedUser,
                 accessToken,
@@ -117,8 +116,4 @@ public class RegisterService {
         refreshTokenRepository.save(refreshTokenEntity);
     }
 
-    private void cacheAuthUser(UserEntity user) {
-        SecurityUser securityUser = new SecurityUser(user);
-        redisUtils.set(user.getEmail(), new UsernamePasswordAuthenticationToken(securityUser, securityUser.getPassword(), securityUser.getAuthorities()));
-    }
 }

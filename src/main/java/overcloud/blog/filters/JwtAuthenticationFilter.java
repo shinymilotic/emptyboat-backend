@@ -59,11 +59,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             String email = jwtUtils.getSub(token);
             Authentication auth = authenticationProvider.getAuthentication(email);
-
-//            if (auth != null) {
-//                redisUtils.set(email, auth);
-//            }
-//
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

@@ -64,8 +64,8 @@ public class LoginService {
         String accessToken = jwtUtils.encode(user.getEmail());
         String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());
 
+        // If login on a strange device/browser and ip -> send email confirm  else ->
         saveDBRefreshToken(refreshToken, user.getId());
-        cacheAuthUser(user);
 
         return userResponseMapper.toAuthResponse(user,
                 accessToken,
@@ -77,10 +77,5 @@ public class LoginService {
         refreshTokenEntity.setRefreshToken(refreshToken);
         refreshTokenEntity.setUserId(userId);
         refreshTokenRepository.save(refreshTokenEntity);
-    }
-
-    private void cacheAuthUser(UserEntity user) {
-        SecurityUser securityUser = new SecurityUser(user);
-        redisUtils.set(user.getEmail(), new UsernamePasswordAuthenticationToken(securityUser, securityUser.getPassword(), securityUser.getAuthorities()));
     }
 }
