@@ -42,7 +42,7 @@ web:
         format_sql: false
     show-sql: true
   kafka:
-    bootstrap-servers: 14.225.207.12:29093
+    bootstrap-servers: localhost:29092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -64,12 +64,12 @@ web:
 
   elasticsearch:
     rest:
-      uris: 14.225.207.12:9200
+      uris: localhost:9200
       username: elastic
       password: nuE9TjbhqMTe-p4Z+fhB
 
 elasticsearch:
-  url: 14.225.207.12:9200
+  url: localhost:9200
 
 logging:
   level:

@@ -63,7 +63,7 @@ public class AuthConfig implements WebMvcConfigurer {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("**", "http://14.225.207.12/", "http://14.225.207.12:4200/", "http://192.168.1.8", "http://192.168.1.8:4200/", "http://localhost:4200/", "http://localhost:4200/"));
+        configuration.setAllowedOrigins(Arrays.asList("**", "http://localhost/", "http://localhost:4200/", "http://192.168.1.8", "http://192.168.1.8:4200/", "http://localhost:4200/", "http://localhost:4200/"));
         configuration.setAllowedMethods(Arrays.asList("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         // setAllowCredentials(true) is important, otherwise:

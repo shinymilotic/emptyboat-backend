@@ -12,7 +12,7 @@ public class DataSourceConfig {
 //    @Bean
 //    public DataSource getDataSource() {
 //        StringBuilder connectionString = new StringBuilder();
-//        connectionString.append("jdbc:postgresql://14.225.207.12:5432/realworld");
+//        connectionString.append("jdbc:postgresql://localhost:5432/realworld");
 //
 //        return DataSourceBuilder.create()
 //            .driverClassName("org.postgresql.Driver")
@@ -27,7 +27,7 @@ public class DataSourceConfig {
         dataSource.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
         dataSource.addDataSourceProperty("user","postgres");
         dataSource.addDataSourceProperty("password","123123");
-        dataSource.addDataSourceProperty("serverName", "14.225.207.12");
+        dataSource.addDataSourceProperty("serverName", "localhost");
         dataSource.addDataSourceProperty("portNumber","5432");
         dataSource.addDataSourceProperty("databaseName", "realworld");
 //        dataSource.addDataSourceProperty("hibernate.connection.provider_class", "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
