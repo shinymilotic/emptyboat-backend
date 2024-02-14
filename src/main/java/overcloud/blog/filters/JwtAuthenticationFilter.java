@@ -58,12 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 throw new InvalidDataException(AuthError.TOKEN_TIMEOUT);
             }
             String email = jwtUtils.getSub(token);
-            Authentication auth = authenticationProvider.getCachedAuthentication(email);
-
-            if (auth == null) {
-                throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
-//                auth = authenticationProvider.getAuthentication(email);
-            }
+            Authentication auth = authenticationProvider.getAuthentication(email);
 
 //            if (auth != null) {
 //                redisUtils.set(email, auth);

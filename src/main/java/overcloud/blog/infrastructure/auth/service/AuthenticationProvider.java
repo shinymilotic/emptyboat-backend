@@ -29,11 +29,4 @@ public class AuthenticationProvider {
                         new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities()))
                 .orElse(null);
     }
-
-    @Transactional
-    public Authentication getCachedAuthentication(String email) {
-        Authentication authentication = (Authentication) redisUtils.get(email);
-
-        return authentication;
-    }
 }
