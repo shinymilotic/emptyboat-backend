@@ -27,20 +27,19 @@ public class DataSourceConfig {
         dataSource.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
         dataSource.addDataSourceProperty("user","postgres");
         dataSource.addDataSourceProperty("password","123123");
-        dataSource.addDataSourceProperty("serverName", "localhost");
+        dataSource.addDataSourceProperty("serverName", "172.17.0.1");
         dataSource.addDataSourceProperty("portNumber","5432");
         dataSource.addDataSourceProperty("databaseName", "realworld");
 //        dataSource.addDataSourceProperty("hibernate.connection.provider_class", "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
 
-        dataSource.setConnectionTimeout(30000);
-        dataSource.setAutoCommit(true);
-        dataSource.setMaxLifetime(60000);
-        dataSource.setLeakDetectionThreshold(15000);
-        dataSource.setMinimumIdle(5);
-        dataSource.setIdleTimeout(0);
-        dataSource.setMaximumPoolSize(20);
-        dataSource.setPoolName("_DBPool");
-        dataSource.setRegisterMbeans(true);
+//        dataSource.setConnectionTimeout(30000);
+//        dataSource.setAutoCommit(true);
+//        dataSource.setMaxLifetime(60000);
+//        dataSource.setLeakDetectionThreshold(15000);
+//        dataSource.setMinimumIdle(5);
+//        dataSource.setIdleTimeout(0);
+//        dataSource.setMaximumPoolSize(20);
+//        dataSource.setRegisterMbeans(true);
         dataSource.setUsername("postgres");
         dataSource.setPassword("123123");
 

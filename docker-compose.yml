@@ -1,0 +1,114 @@
+version: '3.7'
+
+services:
+  overcloud-backend:
+    container_name: overcloud-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: overcloud-backend:latest
+    ports:
+      - 8080:8080
+#    networks:
+#      - overcloud_network
+    depends_on:
+      - postgres
+      - redis
+      - nginx
+
+  nginx:
+    image: nginx:latest
+#    networks:
+#      - overcloud_network
+    ports:
+      - 80:80
+    volumes:
+      - /var/www/html:/usr/share/nginx/html
+    restart: always
+  kafka:
+    image: confluentinc/cp-kafka:latest
+#    networks:
+#      - overcloud_network
+    ports:
+      - 29092:29092
+      - 29093:29093
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: EXTERNAL_SAME_HOST://:29092,INTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL_SAME_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL_SAME_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  debezium:
+    image: debezium/connect:2.2
+#    networks:
+#      - overcloud_network
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: connect_configs
+      OFFSET_STORAGE_TOPIC: connect_offsets
+    depends_on: [kafka]
+    ports:
+      - 8083:8083
+
+  redis:
+    image: redis
+    container_name: redis
+#    networks:
+#      - overcloud_network
+    restart: always
+    volumes:
+      - redis_volume_data:/data
+    env_file:
+      - redis.env
+    ports:
+      - 6379:6379
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
+    container_name: elasticsearch
+#    networks:
+#      - overcloud_network
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=changeme
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data-volume:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+  postgres:
+    image: 'postgres:latest'
+#    networks:
+#      - overcloud_network
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=123123
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=realworld
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+
+volumes:
+  redis_volume_data:
+  elasticsearch-data-volume:
+    driver: local
+
+#networks:
+#  overcloud_network:
+#    driver: bridge
+
