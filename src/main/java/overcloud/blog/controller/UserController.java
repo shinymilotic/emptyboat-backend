@@ -92,8 +92,8 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS_REFRESHTOKEN)
-    public TokenRefreshResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return refreshTokenService.refreshToken(refreshTokenRequest);
+    public boolean refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        return refreshTokenService.refreshToken(request, response);
     }
 
     @GetMapping(ApiConst.USER_LIST)

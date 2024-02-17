@@ -48,15 +48,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         Cookie[] cookies = request.getCookies();
         Optional<String> jwtToken = Optional.empty();
+        Optional<String> userId = Optional.empty();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("jwtToken")) {
                     jwtToken = Optional.of(cookie.getValue());
                 }
+                if (cookie.getName().equals("userId")) {
+                    userId = Optional.of(cookie.getValue());
+                }
             }
         }
 
-        if (jwtToken.isPresent()) {
+        if (jwtToken.isPresent() && userId.isPresent()) {
             String token = jwtToken.get();
             boolean isValid;
 
