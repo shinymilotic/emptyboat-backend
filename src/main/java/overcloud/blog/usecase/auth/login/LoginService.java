@@ -13,8 +13,8 @@ import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
-import overcloud.blog.usecase.auth.common.AuthResponse;
 import overcloud.blog.usecase.auth.common.UserError;
+import overcloud.blog.usecase.auth.common.UserResponse;
 import overcloud.blog.usecase.auth.common.UserResponseMapper;
 
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class LoginService {
     }
 
     @Transactional
-    public AuthResponse login(LoginRequest loginRequest, HttpServletResponse response) {
+    public UserResponse login(LoginRequest loginRequest, HttpServletResponse response) {
         Optional<ApiError> apiError = validator.validate(loginRequest);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -73,7 +73,6 @@ public class LoginService {
         jwtTokenCookie.setPath("/");
         jwtTokenCookie.setDomain("localhost");
 //      jwtTokenCookie.setSecure(true);
-      jwtTokenCookie.setAttribute("secureCookie", "false");
         Cookie jwtRefreshTokenCookie = new Cookie("refreshToken", refreshToken);
         jwtRefreshTokenCookie.setMaxAge(86400);
         jwtRefreshTokenCookie.setSecure(false);
@@ -82,14 +81,11 @@ public class LoginService {
         jwtRefreshTokenCookie.setDomain("localhost");
 //        jwtRefreshTokenCookie.setSecure(true);
 //        jwtRefreshTokenCookie.setAttribute("SameSite", "None");
-        jwtRefreshTokenCookie.setAttribute("secureCookie", "false");
 
         response.addCookie(jwtTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
 
-        return userResponseMapper.toAuthResponse(user,
-                accessToken,
-                refreshToken);
+        return userResponseMapper.toUserResponse(user);
     }
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {

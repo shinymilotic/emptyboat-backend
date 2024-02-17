@@ -1,13 +1,11 @@
 package overcloud.blog.usecase.auth.register;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.auth.AuthError;
-import overcloud.blog.infrastructure.auth.bean.SecurityUser;
 import overcloud.blog.infrastructure.auth.service.JwtUtils;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.cache.RedisUtils;
@@ -18,8 +16,8 @@ import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.repository.jparepository.JpaRoleRepository;
-import overcloud.blog.usecase.auth.common.AuthResponse;
 import overcloud.blog.usecase.auth.common.UserError;
+import overcloud.blog.usecase.auth.common.UserResponse;
 import overcloud.blog.usecase.auth.common.UserResponseMapper;
 
 import java.util.*;
@@ -60,7 +58,7 @@ public class RegisterService {
     }
 
     @Transactional
-    public AuthResponse registerUser(RegisterRequest registrationDto) {
+    public UserResponse registerUser(RegisterRequest registrationDto) {
         Optional<ApiError> apiError = validator.validate(registrationDto);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -104,9 +102,7 @@ public class RegisterService {
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
         saveDBRefreshToken(refreshToken, savedUser.getId());
 
-        return userResponseMapper.toAuthResponse(savedUser,
-                accessToken,
-                refreshToken);
+        return userResponseMapper.toUserResponse(savedUser);
     }
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {

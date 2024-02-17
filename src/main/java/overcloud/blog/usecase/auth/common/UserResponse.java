@@ -5,10 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Builder
 @Setter
 @Getter
 public class UserResponse {
+    @JsonProperty("id")
+    private UUID id;
+
     @JsonProperty("email")
     private String email;
 
