@@ -2,6 +2,7 @@ package overcloud.blog.filters;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import overcloud.blog.infrastructure.cache.RedisUtils;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Component
@@ -44,8 +46,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .filter(authHeader -> authHeader.startsWith(TOKEN_PREFIX))
                 .map(authHeader -> authHeader.substring(TOKEN_PREFIX.length()));
 
-        if (tokenOptional.isPresent()) {
-            String token = tokenOptional.get();
+        Cookie[] cookies = request.getCookies();
+        Optional<String> jwtToken = Optional.empty();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("jwtToken")) {
+                    jwtToken = Optional.of(cookie.getValue());
+                }
+            }
+        }
+
+        if (jwtToken.isPresent()) {
+            String token = jwtToken.get();
             boolean isValid;
 
             try {
@@ -60,6 +72,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String email = jwtUtils.getSub(token);
             Authentication auth = authenticationProvider.getAuthentication(email);
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+//            if (tempCookie != null) {
+//                response.addCookie(tempCookie);
+//            }
         }
 
         chain.doFilter(request, response);

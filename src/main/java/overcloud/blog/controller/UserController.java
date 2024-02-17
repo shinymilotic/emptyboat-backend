@@ -1,5 +1,6 @@
 package overcloud.blog.controller;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
@@ -68,13 +69,14 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS_LOGIN)
-    public AuthResponse login(@RequestBody LoginRequest loginDto) {
-        return loginService.login(loginDto);
+    public AuthResponse login(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
+
+        return loginService.login(loginDto, response);
     }
 
     @PostMapping(ApiConst.USERS_LOGIN_ADMIN)
-    public AuthResponse loginAdmin(@RequestBody LoginRequest loginDto) {
-        return loginService.login(loginDto);
+    public AuthResponse loginAdmin(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
+        return loginService.login(loginDto, response);
     }
 
     @PostMapping(ApiConst.USERS_LOGOUT)

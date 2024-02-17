@@ -1,11 +1,11 @@
 package overcloud.blog.usecase.auth.login;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.auth.bean.SecurityUser;
 import overcloud.blog.infrastructure.auth.service.JwtUtils;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.cache.RedisUtils;
@@ -50,7 +50,7 @@ public class LoginService {
     }
 
     @Transactional
-    public AuthResponse login(LoginRequest loginRequest) {
+    public AuthResponse login(LoginRequest loginRequest, HttpServletResponse response) {
         Optional<ApiError> apiError = validator.validate(loginRequest);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -64,8 +64,28 @@ public class LoginService {
         String accessToken = jwtUtils.encode(user.getEmail());
         String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());
 
-        // If login on a strange device/browser and ip -> send email confirm  else ->
         saveDBRefreshToken(refreshToken, user.getId());
+
+        Cookie jwtTokenCookie = new Cookie("jwtToken", accessToken);
+        jwtTokenCookie.setMaxAge(86400);
+        jwtTokenCookie.setSecure(false);
+        jwtTokenCookie.setHttpOnly(true);
+        jwtTokenCookie.setPath("/");
+        jwtTokenCookie.setDomain("localhost");
+//      jwtTokenCookie.setSecure(true);
+      jwtTokenCookie.setAttribute("secureCookie", "false");
+        Cookie jwtRefreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        jwtRefreshTokenCookie.setMaxAge(86400);
+        jwtRefreshTokenCookie.setSecure(false);
+        jwtRefreshTokenCookie.setHttpOnly(true);
+        jwtRefreshTokenCookie.setPath("/");
+        jwtRefreshTokenCookie.setDomain("localhost");
+//        jwtRefreshTokenCookie.setSecure(true);
+//        jwtRefreshTokenCookie.setAttribute("SameSite", "None");
+        jwtRefreshTokenCookie.setAttribute("secureCookie", "false");
+
+        response.addCookie(jwtTokenCookie);
+        response.addCookie(jwtRefreshTokenCookie);
 
         return userResponseMapper.toAuthResponse(user,
                 accessToken,
