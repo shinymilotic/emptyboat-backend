@@ -11,9 +11,11 @@ import overcloud.blog.infrastructure.auth.AuthError;
 import overcloud.blog.infrastructure.auth.service.JwtUtils;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
+import overcloud.blog.usecase.auth.common.UserResponseMapper;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
@@ -21,43 +23,55 @@ public class RefreshTokenService {
 
     private final JpaRefreshTokenRepository refreshTokenRepository;
 
-    public RefreshTokenService(JwtUtils jwtUtils, JpaRefreshTokenRepository refreshTokenRepository) {
+    private final UserResponseMapper userResponseMapper;
+
+
+    public RefreshTokenService(JwtUtils jwtUtils, JpaRefreshTokenRepository refreshTokenRepository, UserResponseMapper userResponseMapper) {
         this.jwtUtils = jwtUtils;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.userResponseMapper = userResponseMapper;
     }
 
     @Transactional
-    public boolean refreshToken(HttpServletRequest request, HttpServletResponse response) {
-
+    public RefreshTokenResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
         Optional<String> refreshToken = readServletCookie(request, "refreshToken");
-        Optional<RefreshTokenEntity> refreshTokenEntity = Optional.empty();
-        if (refreshToken.isPresent()) {
-            refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken.get());
-            if (refreshTokenEntity.isPresent()) {
-                String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();
-                try {
-                    jwtUtils.validateToken(gottenRefreshToken);
-                } catch (JwtException e) {
-                    throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
-                }
-            }
+        RefreshTokenResponse emptyResponse = RefreshTokenResponse.builder().userId("").build();
 
+        if (refreshToken.isEmpty()) {
+            return emptyResponse;
+        }
+
+        Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken.get());
+
+        if (refreshTokenEntity.isEmpty()) {
+            return emptyResponse;
+        }
+
+        String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();
+        try {
+            jwtUtils.validateToken(gottenRefreshToken);
             String email = jwtUtils.getSub(refreshToken.get());
             String accessToken = jwtUtils.encode(email);
-
             Cookie jwtTokenCookie = new Cookie("jwtToken", accessToken);
             jwtTokenCookie.setMaxAge(86400);
             jwtTokenCookie.setSecure(false);
             jwtTokenCookie.setHttpOnly(true);
             jwtTokenCookie.setPath("/");
             jwtTokenCookie.setDomain("localhost");
+
+            Cookie jwtRefreshTokenCookie = new Cookie("refreshToken", gottenRefreshToken);
+            jwtRefreshTokenCookie.setMaxAge(86400);
+            jwtRefreshTokenCookie.setSecure(false);
+            jwtRefreshTokenCookie.setHttpOnly(true);
+            jwtRefreshTokenCookie.setPath("/");
+            jwtRefreshTokenCookie.setDomain("localhost");
             response.addCookie(jwtTokenCookie);
-
-            return true;
+            response.addCookie(jwtRefreshTokenCookie);
+            String userId = refreshTokenEntity.get().getUserId().toString();
+            return RefreshTokenResponse.builder().userId(userId).build();
+        } catch (JwtException e) {
+            throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
         }
-
-
-        return false;
     }
 
     public Optional<String> readServletCookie(HttpServletRequest request, String name){

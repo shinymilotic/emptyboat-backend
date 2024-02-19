@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-public class RefreshTokenRequest {
-    @JsonProperty("refreshToken")
-    private String refreshToken;
+public class RefreshTokenResponse {
+    @JsonProperty("userId")
+    private String userId;
 }

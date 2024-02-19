@@ -14,9 +14,8 @@ import overcloud.blog.usecase.auth.get_users.GetUserListService;
 import overcloud.blog.usecase.auth.login.LoginRequest;
 import overcloud.blog.usecase.auth.login.LoginService;
 import overcloud.blog.usecase.auth.logout.LogoutService;
-import overcloud.blog.usecase.auth.refresh_token.RefreshTokenRequest;
+import overcloud.blog.usecase.auth.refresh_token.RefreshTokenResponse;
 import overcloud.blog.usecase.auth.refresh_token.RefreshTokenService;
-import overcloud.blog.usecase.auth.refresh_token.TokenRefreshResponse;
 import overcloud.blog.usecase.auth.register.RegisterRequest;
 import overcloud.blog.usecase.auth.register.RegisterService;
 import overcloud.blog.usecase.auth.update_user.UpdateUserRequest;
@@ -92,7 +91,7 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS_REFRESHTOKEN)
-    public boolean refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public RefreshTokenResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
         return refreshTokenService.refreshToken(request, response);
     }
 
