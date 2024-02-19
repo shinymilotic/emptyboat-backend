@@ -59,8 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
-
-        if (jwtToken.isPresent() && userId.isPresent()) {
+        String url = request.getRequestURI();
+        if (jwtToken.isPresent() && userId.isPresent() && !url.equals("/api/users/refreshToken")) {
             String token = jwtToken.get();
             boolean isValid;
 
