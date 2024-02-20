@@ -1,5 +1,7 @@
 package overcloud.blog.usecase.auth.register;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RefreshTokenEntity;
@@ -12,6 +14,7 @@ import overcloud.blog.infrastructure.cache.RedisUtils;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
+import overcloud.blog.infrastructure.validation.Error;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
@@ -58,7 +61,7 @@ public class RegisterService {
     }
 
     @Transactional
-    public UserResponse registerUser(RegisterRequest registrationDto) {
+    public UserResponse registerUser(RegisterRequest registrationDto, HttpServletResponse response) {
         Optional<ApiError> apiError = validator.validate(registrationDto);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -67,18 +70,18 @@ public class RegisterService {
         String username = registrationDto.getUsername();
         String email = registrationDto.getEmail();
         String hashedPassword = authenticationService.encodePassword(registrationDto.getPassword());
-        List<ApiErrorDetail> errors = new ArrayList<>();
+        List<Error> errors = new ArrayList<>();
 
         if (userRepository.findByUsername(username) != null) {
-            errors.add(ApiErrorDetail.from(UserError.USER_USERNAME_EXIST));
+            errors.add(UserError.USER_USERNAME_EXIST);
         }
 
         if (userRepository.findByEmail(email) != null) {
-            errors.add(ApiErrorDetail.from(UserError.USER_EMAIL_EXIST));
+            errors.add(UserError.USER_EMAIL_EXIST);
         }
 
         if (!errors.isEmpty()) {
-            throw new InvalidDataException(ApiError.from(errors));
+            throw new InvalidDataException(errors);
         }
 
         UserEntity userEntity = UserEntity.builder()
@@ -101,6 +104,22 @@ public class RegisterService {
         String accessToken = jwtUtils.encode(savedUser.getEmail());
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
         saveDBRefreshToken(refreshToken, savedUser.getId());
+
+        Cookie jwtTokenCookie = new Cookie("jwtToken", accessToken);
+        jwtTokenCookie.setMaxAge(86400);
+        jwtTokenCookie.setSecure(false);
+        jwtTokenCookie.setHttpOnly(true);
+        jwtTokenCookie.setPath("/");
+        jwtTokenCookie.setDomain("localhost");
+        Cookie jwtRefreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        jwtRefreshTokenCookie.setMaxAge(86400);
+        jwtRefreshTokenCookie.setSecure(false);
+        jwtRefreshTokenCookie.setHttpOnly(true);
+        jwtRefreshTokenCookie.setPath("/");
+        jwtRefreshTokenCookie.setDomain("localhost");
+
+        response.addCookie(jwtTokenCookie);
+        response.addCookie(jwtRefreshTokenCookie);
 
         return userResponseMapper.toUserResponse(savedUser);
     }

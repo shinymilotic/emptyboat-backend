@@ -56,8 +56,8 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS)
-    public UserResponse register(@RequestBody RegisterRequest registrationDto) throws Exception {
-        return registerService.registerUser(registrationDto);
+    public UserResponse register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) throws Exception {
+        return registerService.registerUser(registrationDto, response);
     }
 
     @PutMapping(ApiConst.USERS)
