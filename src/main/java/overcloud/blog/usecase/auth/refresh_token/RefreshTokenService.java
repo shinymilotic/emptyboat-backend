@@ -15,7 +15,6 @@ import overcloud.blog.usecase.auth.common.UserResponseMapper;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RefreshTokenService {

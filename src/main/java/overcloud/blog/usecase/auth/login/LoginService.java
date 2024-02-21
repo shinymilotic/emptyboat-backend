@@ -59,8 +59,13 @@ public class LoginService {
         String email = loginRequest.getEmail();
         String hashedPassword = loginRequest.getPassword();
         UserEntity user = authenticationService.authenticate(email, hashedPassword)
-                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_EMAIL_NO_EXIST)))
+                .orElseThrow(() -> new InvalidDataException(UserError.USER_EMAIL_NO_EXIST))
                 .getUser();
+
+        if (!user.isEnable()) {
+            throw new InvalidDataException(UserError.USER_NON_ENABLED);
+        }
+
         String accessToken = jwtUtils.encode(user.getEmail());
         String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());
 

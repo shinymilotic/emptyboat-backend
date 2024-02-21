@@ -10,9 +10,7 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.auth.AuthError;
 import overcloud.blog.infrastructure.auth.service.JwtUtils;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.cache.RedisUtils;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.ApiErrorDetail;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.validation.Error;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
@@ -22,6 +20,7 @@ import overcloud.blog.repository.jparepository.JpaRoleRepository;
 import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.auth.common.UserResponse;
 import overcloud.blog.usecase.auth.common.UserResponseMapper;
+import overcloud.blog.usecase.email.EmailService;
 
 import java.util.*;
 
@@ -40,7 +39,7 @@ public class RegisterService {
 
     private final UserResponseMapper userResponseMapper;
 
-    private final RedisUtils redisUtils;
+    private final EmailService emailService;
 
     private final JpaRefreshTokenRepository refreshTokenRepository;
 
@@ -48,7 +47,7 @@ public class RegisterService {
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
                            ObjectsValidator<RegisterRequest> validator,
-                           UserResponseMapper userResponseMapper, RedisUtils redisUtils,
+                           UserResponseMapper userResponseMapper, EmailService emailService,
                            JpaRefreshTokenRepository refreshTokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -56,7 +55,7 @@ public class RegisterService {
         this.jwtUtils = jwtUtils;
         this.validator = validator;
         this.userResponseMapper = userResponseMapper;
-        this.redisUtils = redisUtils;
+        this.emailService = emailService;
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
@@ -101,25 +100,11 @@ public class RegisterService {
             throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
         }
 
-        String accessToken = jwtUtils.encode(savedUser.getEmail());
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
         saveDBRefreshToken(refreshToken, savedUser.getId());
 
-        Cookie jwtTokenCookie = new Cookie("jwtToken", accessToken);
-        jwtTokenCookie.setMaxAge(86400);
-        jwtTokenCookie.setSecure(false);
-        jwtTokenCookie.setHttpOnly(true);
-        jwtTokenCookie.setPath("/");
-        jwtTokenCookie.setDomain("localhost");
-        Cookie jwtRefreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        jwtRefreshTokenCookie.setMaxAge(86400);
-        jwtRefreshTokenCookie.setSecure(false);
-        jwtRefreshTokenCookie.setHttpOnly(true);
-        jwtRefreshTokenCookie.setPath("/");
-        jwtRefreshTokenCookie.setDomain("localhost");
-
-        response.addCookie(jwtTokenCookie);
-        response.addCookie(jwtRefreshTokenCookie);
+        emailService.sendSimpleMessage(savedUser.getEmail(), "Registration email confirm!",
+                "Please click on the confirmation link: http://localhost:4200/confirmEmail/" + refreshToken);
 
         return userResponseMapper.toUserResponse(savedUser);
     }
