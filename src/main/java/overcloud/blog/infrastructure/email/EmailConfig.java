@@ -2,6 +2,7 @@ package overcloud.blog.infrastructure.email;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -15,8 +16,8 @@ public class EmailConfig {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("my.gmail@gmail.com");
-        mailSender.setPassword("password");
+        mailSender.setUsername("trungtin.mai1412@gmail.com");
+        mailSender.setPassword("zobt zufy zhrb zgpw");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.usecase.auth.common.UserListResponse;
 import overcloud.blog.usecase.auth.common.UserResponse;
+import overcloud.blog.usecase.auth.confirm_email.ConfirmEmailRequest;
+import overcloud.blog.usecase.auth.confirm_email.ConfirmEmailService;
 import overcloud.blog.usecase.auth.get_current_user.GetCurrentUserService;
 import overcloud.blog.usecase.auth.get_profile.GetProfileResponse;
 import overcloud.blog.usecase.auth.get_profile.GetProfileService;
@@ -35,6 +37,8 @@ public class UserController {
     private final GetUserListService getUserListService;
     private final GetRolesUserService getRolesUserService;
 
+    private final ConfirmEmailService confirmEmailService;
+
     public UserController(RegisterService registerService,
                           UpdateUserService updateUserService,
                           LogoutService logoutService,
@@ -43,7 +47,7 @@ public class UserController {
                           GetCurrentUserService getCurrentUserService,
                           RefreshTokenService refreshTokenService,
                           GetUserListService getUserListService,
-                          GetRolesUserService getRolesUserService) {
+                          GetRolesUserService getRolesUserService, ConfirmEmailService confirmEmailService) {
         this.registerService = registerService;
         this.updateUserService = updateUserService;
         this.logoutService = logoutService;
@@ -53,6 +57,7 @@ public class UserController {
         this.refreshTokenService = refreshTokenService;
         this.getUserListService = getUserListService;
         this.getRolesUserService = getRolesUserService;
+        this.confirmEmailService = confirmEmailService;
     }
 
     @PostMapping(ApiConst.USERS)
@@ -103,5 +108,10 @@ public class UserController {
     @GetMapping(ApiConst.ROLES_USERNAME)
     public UserRoleListResponse getRolesUser(@PathVariable String username) {
         return getRolesUserService.getRolesUser(username);
+    }
+
+    @PostMapping(ApiConst.CONFIRM_EMAIL)
+    public boolean confirmEmail(@RequestBody  ConfirmEmailRequest confirmToken) {
+        return confirmEmailService.confirmEmail(confirmToken);
     }
 }

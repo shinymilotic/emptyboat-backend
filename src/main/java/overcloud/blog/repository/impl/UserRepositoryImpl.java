@@ -27,4 +27,9 @@ public class UserRepositoryImpl implements IUserRepository {
     public UserEntity save(UserEntity entity) {
         return jpaUserRepository.save(entity);
     }
+
+    @Override
+    public void enableUser(String confirmToken) {
+        jpaUserRepository.enableUser(confirmToken);
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.RefreshTokenEntity;
+import overcloud.blog.entity.UserEntity;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -19,4 +20,8 @@ public interface JpaRefreshTokenRepository extends JpaRepository<RefreshTokenEnt
 
     @Query(" SELECT r FROM RefreshTokenEntity r WHERE r.refreshToken = :refreshToken")
     Optional<RefreshTokenEntity> findByRefreshToken(@Param("refreshToken") String refreshToken);
+
+    @Query(" SELECT u FROM RefreshTokenEntity r INNER JOIN  UserEntity u ON r.userId = u.id" +
+            " WHERE r.refreshToken = :refreshToken")
+    Optional<UserEntity> findUserByToken(@Param("refreshToken") String refreshToken);
 }

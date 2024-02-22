@@ -8,4 +8,6 @@ public interface IUserRepository {
     UserEntity findByEmail(String email);
 
     UserEntity save(UserEntity entity);
+
+    void enableUser(String confirmToken);
 }

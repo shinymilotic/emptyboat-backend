@@ -41,11 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException, InvalidDataException {
-
-        Optional<String> tokenOptional = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
-                .filter(authHeader -> authHeader.startsWith(TOKEN_PREFIX))
-                .map(authHeader -> authHeader.substring(TOKEN_PREFIX.length()));
-
         Cookie[] cookies = request.getCookies();
         Optional<String> jwtToken = Optional.empty();
         Optional<String> userId = Optional.empty();
