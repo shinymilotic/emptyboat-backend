@@ -18,6 +18,9 @@ public class TestRequest {
     @JsonProperty("title")
     private String title;
 
+    @JsonProperty("description")
+    private String description;
+
     @JsonProperty("questions")
     private List<Question> questions;
 }

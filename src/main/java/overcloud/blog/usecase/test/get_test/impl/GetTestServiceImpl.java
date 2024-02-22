@@ -39,9 +39,11 @@ public class GetTestServiceImpl implements GetTestService {
 
         String titleDB = testEntity.get().getTitle();
         String slugDB = testEntity.get().getSlug();
+        String descriptionDB = testEntity.get().getDescription();
 
         return TestResponse.testResponseFactory(
                 titleDB,
+                descriptionDB,
                 slugDB,
                 getQuestions(testEntity.get().getQuestions()));
     }

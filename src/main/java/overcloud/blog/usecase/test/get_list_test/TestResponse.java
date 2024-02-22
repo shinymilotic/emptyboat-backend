@@ -13,7 +13,8 @@ import lombok.Setter;
 public class TestResponse {
     @JsonProperty("title")
     private String title;
-
+    @JsonProperty("description")
+    private String description;
     @JsonProperty("slug")
     private String slug;
 }

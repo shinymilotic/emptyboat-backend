@@ -36,6 +36,7 @@ public class CreateTestServiceImpl implements CreateTestService {
 
         TestEntity testEntity = new TestEntity();
         testEntity.setTitle(testRequest.getTitle());
+        testEntity.setDescription(testRequest.getDescription());
         testEntity.setSlug(ArticleUtils.toSlug(testRequest.getTitle()));
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);

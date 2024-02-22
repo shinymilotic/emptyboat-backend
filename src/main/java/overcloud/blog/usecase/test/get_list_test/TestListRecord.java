@@ -9,5 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TestListRecord {
     private String title;
+    private String description;
     private String slug;
 }
