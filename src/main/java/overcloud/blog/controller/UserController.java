@@ -8,6 +8,8 @@ import overcloud.blog.usecase.auth.common.UserResponse;
 import overcloud.blog.usecase.auth.confirm_email.ConfirmEmailRequest;
 import overcloud.blog.usecase.auth.confirm_email.ConfirmEmailService;
 import overcloud.blog.usecase.auth.get_current_user.GetCurrentUserService;
+import overcloud.blog.usecase.auth.get_followers.FollowerListResposne;
+import overcloud.blog.usecase.auth.get_followers.GetFollowers;
 import overcloud.blog.usecase.auth.get_profile.GetProfileResponse;
 import overcloud.blog.usecase.auth.get_profile.GetProfileService;
 import overcloud.blog.usecase.auth.get_roles_user.GetRolesUserService;
@@ -22,6 +24,8 @@ import overcloud.blog.usecase.auth.register.RegisterRequest;
 import overcloud.blog.usecase.auth.register.RegisterService;
 import overcloud.blog.usecase.auth.update_user.UpdateUserRequest;
 import overcloud.blog.usecase.auth.update_user.UpdateUserService;
+
+import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -39,6 +43,9 @@ public class UserController {
 
     private final ConfirmEmailService confirmEmailService;
 
+    private final GetFollowers getFollowers;
+
+
     public UserController(RegisterService registerService,
                           UpdateUserService updateUserService,
                           LogoutService logoutService,
@@ -47,7 +54,8 @@ public class UserController {
                           GetCurrentUserService getCurrentUserService,
                           RefreshTokenService refreshTokenService,
                           GetUserListService getUserListService,
-                          GetRolesUserService getRolesUserService, ConfirmEmailService confirmEmailService) {
+                          GetRolesUserService getRolesUserService, ConfirmEmailService confirmEmailService,
+                          GetFollowers getFollowers) {
         this.registerService = registerService;
         this.updateUserService = updateUserService;
         this.logoutService = logoutService;
@@ -58,6 +66,7 @@ public class UserController {
         this.getUserListService = getUserListService;
         this.getRolesUserService = getRolesUserService;
         this.confirmEmailService = confirmEmailService;
+        this.getFollowers = getFollowers;
     }
 
     @PostMapping(ApiConst.USERS)
@@ -113,5 +122,10 @@ public class UserController {
     @PostMapping(ApiConst.CONFIRM_EMAIL)
     public boolean confirmEmail(@RequestBody  ConfirmEmailRequest confirmToken) {
         return confirmEmailService.confirmEmail(confirmToken);
+    }
+
+    @GetMapping(ApiConst.FOLLOWERS)
+    public FollowerListResposne getFollowers(@PathVariable UUID userId) {
+        return getFollowers.getFollowers(userId);
     }
 }
