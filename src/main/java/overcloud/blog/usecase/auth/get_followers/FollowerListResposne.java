@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -11,4 +12,8 @@ import java.util.List;
 public class FollowerListResposne {
     @JsonProperty("followers")
     List<FollowerResponse> followers;
+
+    public FollowerListResposne() {
+        followers = new ArrayList<>();
+    }
 }

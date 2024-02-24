@@ -15,6 +15,6 @@ public class GetFollowersImpl implements GetFollowers {
 
     @Override
     public FollowerListResposne getFollowers(UUID userId) {
-        return null;
+        return userRepository.getFollowers(userId);
     }
 }
