@@ -47,7 +47,7 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
     }
 
     @Override
-    public List<Object> getPracticeResult(UUID practiceId) {
+    public PracticeResult getPracticeResult(UUID practiceId) {
         Query practiceResult = entityManager
                 .createNativeQuery("select q.id as questionId, q.question, q.question_type , " +
                         " a.id as answerId, a.answer as choiceAnswer , a.truth , ea.answer as essayAnswer" +
@@ -62,11 +62,10 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
 
         List<Tuple> results = practiceResult.getResultList();
 
-        getResults(results);
-        return new ArrayList<>();
+        return getResults(results);
     }
 
-    List<Tuple> getResults(List<Tuple> results) {
+    PracticeResult getResults(List<Tuple> results) {
         PracticeResult practiceResult = new PracticeResult();
         List<PracticeQuestion> questions = new ArrayList<>();
         Map<UUID, PracticeQuestion> cachedQuestions = new HashMap<>();
@@ -100,7 +99,7 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
 
         practiceResult.setQuestions(questions);
 
-        return new ArrayList<>();
+        return practiceResult;
     }
 
     @Override
