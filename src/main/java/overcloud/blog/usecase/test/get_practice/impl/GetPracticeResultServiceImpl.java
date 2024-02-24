@@ -26,11 +26,11 @@ public class GetPracticeResultServiceImpl implements GetPracticeResultService {
     @Override
     @Transactional(readOnly = true)
     public PracticeResult getPracticeResult(UUID practiceId) {
-        PracticeEntity practiceEntity = practiceRepository.findById(practiceId)
-                .orElseThrow(() -> new InvalidDataException(PracticeError.PRACTICE_NOT_FOUND));
-        TestEntity testEntity = practiceEntity.getTest();
-        List<Object> object = practiceRepository.getPracticeResult(practiceId);
-        List<PracticeQuestion> questions = new ArrayList<>();
+//        PracticeEntity practiceEntity = practiceRepository.findById(practiceId)
+//                .orElseThrow(() -> new InvalidDataException(PracticeError.PRACTICE_NOT_FOUND));
+//        TestEntity testEntity = practiceEntity.getTest();
+        return practiceRepository.getPracticeResult(practiceId);
+//        List<PracticeQuestion> questions = new ArrayList<>();
 //        List<QuestionEntity> questionEntities = testEntity.getQuestions();
 //        for (QuestionEntity question : questionEntities) {
 //            question.getQuestion();
@@ -43,7 +43,7 @@ public class GetPracticeResultServiceImpl implements GetPracticeResultService {
 //        }
 //        practiceEntity.getChoices();
 //        practiceEntity.getEssayAnswers();
-        return null;
+//        return null;
     }
 
 }

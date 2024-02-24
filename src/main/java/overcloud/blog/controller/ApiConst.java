@@ -27,6 +27,8 @@ public class ApiConst {
 
     public static final String USERS_LOGOUT = "/users/logout";
 
+    public static final String FOLLOWERS = "/followers/{userId}";
+
     public static final String USERS_REFRESHTOKEN = "/users/refreshToken";
 
     public static final String PROFILES_USERNAME = "/profiles/{username}";

@@ -1,6 +1,7 @@
 package overcloud.blog.repository;
 
 import overcloud.blog.entity.PracticeEntity;
+import overcloud.blog.usecase.test.get_practice.PracticeResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ public interface IPracticeRepository {
 
     Optional<PracticeEntity> findById(UUID id);
 
-    List<Object> getPracticeResult(UUID id);
+    PracticeResult getPracticeResult(UUID id);
 
     PracticeEntity save(PracticeEntity entity);
 }
