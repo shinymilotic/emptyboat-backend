@@ -9,6 +9,7 @@ import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
+import overcloud.blog.usecase.auth.common.UserResponse;
 import overcloud.blog.usecase.auth.get_followers.FollowerListResposne;
 import overcloud.blog.usecase.auth.get_followers.FollowerResponse;
 
@@ -49,21 +50,23 @@ public class UserRepositoryImpl implements IUserRepository {
     public FollowerListResposne getFollowers(UUID userId) {
         FollowerListResposne resposne = new FollowerListResposne();
         Query query = entityManager
-                .createNativeQuery("select u.id, u.image, u.username " +
+                .createNativeQuery("select u.id, u.email, u.username, u.bio, u.image  " +
                                 "from users u " +
                                 "inner join follows f " +
                                 "on u.id = f.followee_id " +
-                                "where u.id = :userId ",
+                                "where f.follower_id = :userId ",
                         Tuple.class)
                 .setParameter("userId", userId);
 
         List<Tuple> results =  query.getResultList();
 
         for (Tuple row : results) {
-            FollowerResponse follower = new FollowerResponse(
+            UserResponse follower = new UserResponse(
                     (UUID) row.get("id"),
-                    (String) row.get("image"),
-                    (String) row.get("username"));
+                    (String) row.get("email"),
+                    (String) row.get("username"),
+                    (String) row.get("bio"),
+                    (String) row.get("image"));
             resposne.getFollowers().add(follower);
         }
 
