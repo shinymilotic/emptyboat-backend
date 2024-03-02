@@ -9,10 +9,7 @@ import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeRepository;
 import overcloud.blog.usecase.test.common.Answer;
-import overcloud.blog.usecase.test.get_practice.PracticeChoiceQuestion;
-import overcloud.blog.usecase.test.get_practice.PracticeEssayQuestion;
-import overcloud.blog.usecase.test.get_practice.PracticeQuestion;
-import overcloud.blog.usecase.test.get_practice.PracticeResult;
+import overcloud.blog.usecase.test.get_practice.*;
 
 import java.util.*;
 
@@ -50,13 +47,13 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
     public PracticeResult getPracticeResult(UUID practiceId) {
         Query practiceResult = entityManager
                 .createNativeQuery("select q.id as questionId, q.question, q.question_type , " +
-                        " a.id as answerId, a.answer as choiceAnswer , a.truth , ea.answer as essayAnswer" +
+                        " a.id as answerId, a.answer as answer , a.truth , ea.answer as essayAnswer, pc.answer_id = a.id as isRightChoice" +
                         " from practice p" +
                         " inner join test t on p.test_id = t.id and p.id = :practiceId " +
                         " inner join test_question tq on tq.test_id = t.id " +
                         " inner join question q ON tq.question_id = q.id " +
+                        " inner join answer a on a.question_id  = q.id " +
                         " left join practice_choices pc on pc.practice_id = p.id " +
-                        " inner join answer a on pc.answer_id = a.id " +
                         " left join essay_answer ea on ea.practice_id = p.id", Tuple.class)
                 .setParameter("practiceId", practiceId);
 
@@ -75,13 +72,14 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
             String question = (String) data.get("question");
             Integer questionType = (Integer) data.get("question_type");
             UUID answerId = (UUID) data.get("answerId");
-            String choiceAnswer = (String) data.get("choiceAnswer");
+            String choiceAnswer = (String) data.get("answer");
             Boolean truth = (Boolean) data.get("truth");
             String essayAnswer = (String) data.get("essayAnswer");
+            Boolean isRightChoice = (Boolean) data.get("isRightChoice");
 
             if (questionType != null && questionType.equals(1) && !cachedQuestions.containsKey(questionId)) {
-                List<Answer> answers = new ArrayList<>();
-                answers.add(Answer.answerFactory(answerId, choiceAnswer, truth));
+                List<PracticeAnswer> answers = new ArrayList<>();
+                answers.add(PracticeAnswer.answerFactory(answerId, choiceAnswer, truth, isRightChoice));
                 PracticeChoiceQuestion practiceChoiceQuestion = PracticeChoiceQuestion.questionFactory(questionId, question, answers);
                 cachedQuestions.put(questionId, practiceChoiceQuestion);
                 questions.add(practiceChoiceQuestion);
@@ -93,7 +91,7 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
 
             if (cachedQuestions.containsKey(questionId)) {
                 PracticeChoiceQuestion practiceChoiceQuestion = (PracticeChoiceQuestion) cachedQuestions.get(questionId);
-                practiceChoiceQuestion.getAnswers().add(Answer.answerFactory(answerId, choiceAnswer, truth));
+                practiceChoiceQuestion.getAnswers().add(PracticeAnswer.answerFactory(answerId, choiceAnswer, truth, isRightChoice));
             }
         }
 

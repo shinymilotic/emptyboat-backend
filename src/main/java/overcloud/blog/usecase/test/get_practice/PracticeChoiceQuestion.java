@@ -25,9 +25,9 @@ public class PracticeChoiceQuestion implements PracticeQuestion {
     private int questionType;
 
     @JsonProperty("answers")
-    private List<Answer> answers;
+    private List<PracticeAnswer> answers;
 
-    public static PracticeChoiceQuestion questionFactory(UUID id, String question, List<Answer> answers) {
+    public static PracticeChoiceQuestion questionFactory(UUID id, String question, List<PracticeAnswer> answers) {
         return new PracticeChoiceQuestion(id, question, 1, answers);
     }
 }
