@@ -47,7 +47,8 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
     public PracticeResult getPracticeResult(UUID practiceId) {
         Query practiceResult = entityManager
                 .createNativeQuery("select q.id as questionId, q.question, q.question_type , " +
-                        " a.id as answerId, a.answer as answer , a.truth , ea.answer as essayAnswer, pc.answer_id = a.id as isRightChoice" +
+                        " a.id as answerId, a.answer as answer , a.truth , ea.answer as essayAnswer, " +
+                        " pc.answer_id = a.id as choice" +
                         " from practice p" +
                         " inner join test t on p.test_id = t.id and p.id = :practiceId " +
                         " inner join test_question tq on tq.test_id = t.id " +
@@ -75,24 +76,25 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
             String choiceAnswer = (String) data.get("answer");
             Boolean truth = (Boolean) data.get("truth");
             String essayAnswer = (String) data.get("essayAnswer");
-            Boolean isRightChoice = (Boolean) data.get("isRightChoice");
+            Boolean choice = (Boolean) data.get("choice");
 
             if (questionType != null && questionType.equals(1) && !cachedQuestions.containsKey(questionId)) {
                 List<PracticeAnswer> answers = new ArrayList<>();
-                answers.add(PracticeAnswer.answerFactory(answerId, choiceAnswer, truth, isRightChoice));
+                answers.add(PracticeAnswer.answerFactory(answerId, choiceAnswer, truth, choice));
                 PracticeChoiceQuestion practiceChoiceQuestion = PracticeChoiceQuestion.questionFactory(questionId, question, answers);
                 cachedQuestions.put(questionId, practiceChoiceQuestion);
                 questions.add(practiceChoiceQuestion);
+            } else if (cachedQuestions.containsKey(questionId)) {
+                PracticeChoiceQuestion practiceChoiceQuestion = (PracticeChoiceQuestion) cachedQuestions.get(questionId);
+                practiceChoiceQuestion.getAnswers()
+                    .add(PracticeAnswer.answerFactory(answerId, choiceAnswer, truth, choice));
             }
 
             if (questionType != null && questionType.equals(2) && !cachedQuestions.containsKey(questionId)) {
                 questions.add(PracticeEssayQuestion.questionFactory(questionId, question, essayAnswer));
             }
 
-            if (cachedQuestions.containsKey(questionId)) {
-                PracticeChoiceQuestion practiceChoiceQuestion = (PracticeChoiceQuestion) cachedQuestions.get(questionId);
-                practiceChoiceQuestion.getAnswers().add(PracticeAnswer.answerFactory(answerId, choiceAnswer, truth, isRightChoice));
-            }
+            
         }
 
         practiceResult.setQuestions(questions);
