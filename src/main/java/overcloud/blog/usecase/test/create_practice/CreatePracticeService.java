@@ -5,5 +5,5 @@ import overcloud.blog.usecase.test.common.PracticeRequest;
 
 @Service
 public interface CreatePracticeService {
-    void createPractice(PracticeRequest practiceRequest);
+    CreatePracticeResponse createPractice(PracticeRequest practiceRequest);
 }

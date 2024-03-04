@@ -13,6 +13,7 @@ import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.test.common.ChoiceAnswer;
 import overcloud.blog.usecase.test.common.EssayAnswer;
 import overcloud.blog.usecase.test.common.PracticeRequest;
+import overcloud.blog.usecase.test.create_practice.CreatePracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
 
 import java.time.LocalDateTime;
@@ -44,7 +45,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
 
     @Override
     @Transactional
-    public void createPractice(PracticeRequest practiceRequest) {
+    public CreatePracticeResponse createPractice(PracticeRequest practiceRequest) {
         String slug = practiceRequest.getSlug();
         List<ChoiceAnswer> choices = practiceRequest.getChoiceAnswers();
         List<EssayAnswer> essayAnswers = practiceRequest.getEssayAnswers();
@@ -91,5 +92,10 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         }
         practiceChoiceRepository.saveAll(choiceEntities);
         essayAnswerRepository.saveAll(essayAnswerEntities);
+
+        CreatePracticeResponse response = new CreatePracticeResponse();
+        response.setPracticeId(practiceEntity.getId());
+
+        return response;
     }
 }

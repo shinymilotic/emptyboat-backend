@@ -49,13 +49,13 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
                 .createNativeQuery("select q.id as questionId, q.question, q.question_type , " +
                         " a.id as answerId, a.answer as answer , a.truth , ea.answer as essayAnswer, " +
                         " pc.answer_id = a.id as choice" +
-                        " from practice p" +
-                        " inner join test t on p.test_id = t.id and p.id = :practiceId " +
-                        " inner join test_question tq on tq.test_id = t.id " +
-                        " inner join question q ON tq.question_id = q.id " +
-                        " inner join answer a on a.question_id  = q.id " +
-                        " left join practice_choices pc on pc.practice_id = p.id " +
-                        " left join essay_answer ea on ea.practice_id = p.id", Tuple.class)
+                        " FROM practice p" +
+                        " INNER JOIN test t ON p.test_id = t.id and p.id = :practiceId " +
+                        " INNER JOIN test_question tq ON tq.test_id = t.id " +
+                        " INNER JOIN question q ON tq.question_id = q.id " +
+                        " INNER JOIN answer a ON a.question_id  = q.id " +
+                        " LEFT JOIN practice_choices pc ON pc.practice_id = p.id " +
+                        " LEFT JOIN essay_answer ea ON ea.practice_id = p.id", Tuple.class)
                 .setParameter("practiceId", practiceId);
 
         List<Tuple> results = practiceResult.getResultList();

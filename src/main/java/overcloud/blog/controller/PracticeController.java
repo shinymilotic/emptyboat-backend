@@ -3,6 +3,7 @@ package overcloud.blog.controller;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.usecase.test.common.PracticeRequest;
 import overcloud.blog.usecase.test.common.UserPracticeResponse;
+import overcloud.blog.usecase.test.create_practice.CreatePracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
 import overcloud.blog.usecase.test.get_practice.GetPracticeResultService;
 import overcloud.blog.usecase.test.get_practice.PracticeResult;
@@ -27,8 +28,8 @@ public class PracticeController {
     }
 
     @PostMapping(ApiConst.PRACTICE)
-    public void practice(@RequestBody PracticeRequest practiceRequest) {
-        createPracticeService.createPractice(practiceRequest);
+    public CreatePracticeResponse practice(@RequestBody PracticeRequest practiceRequest) {
+        return createPracticeService.createPractice(practiceRequest);
     }
 
     @GetMapping(ApiConst.USER_PRACTICES)
