@@ -50,7 +50,7 @@ public class UserPraticeServiceImpl implements UserPracticeService {
                     .id(practiceEntity.getId().toString())
                     .testTitle(test.getTitle())
                     .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
-                    .score(practiceEntity.getScore()).build();
+                    .build();
             practiceResponseList.add(practice);
         }
         response.setPractices(practiceResponseList);

@@ -26,9 +26,6 @@ public class PracticeEntity {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "score")
-    private int score;
-
     @ManyToOne
     @JoinColumn(name = "test_id", insertable = false, updatable = false)
     private TestEntity test;

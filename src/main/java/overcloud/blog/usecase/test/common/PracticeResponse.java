@@ -17,7 +17,4 @@ public class PracticeResponse {
 
     @JsonProperty("date")
     private String date;
-
-    @JsonProperty("score")
-    private int score;
 }
