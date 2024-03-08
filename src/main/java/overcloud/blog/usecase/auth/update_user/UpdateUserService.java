@@ -50,7 +50,6 @@ public class UpdateUserService {
             throw new InvalidDataException(apiError.get());
         }
 
-        String email = updateUserDto.getEmail();
         String updateBio = updateUserDto.getBio();
         String updateImage = updateUserDto.getImage();
         UserEntity currentUser = authenticationService.getCurrentUser()
@@ -61,12 +60,7 @@ public class UpdateUserService {
         currentUser.setImage(updateImage);
 //        currentUser.setEmail(email);
         UserEntity updateUserEntity = userRepository.save(currentUser);
-        cacheAuthUser(updateUserEntity);
         return userResponseMapper.toUserResponse(updateUserEntity);
     }
 
-    private void cacheAuthUser(UserEntity user) {
-        SecurityUser securityUser = new SecurityUser(user);
-        redisUtils.set(user.getEmail(), new UsernamePasswordAuthenticationToken(securityUser, securityUser.getPassword(), securityUser.getAuthorities()));
-    }
 }
