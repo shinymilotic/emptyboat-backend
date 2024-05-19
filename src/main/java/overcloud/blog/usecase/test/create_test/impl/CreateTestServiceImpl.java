@@ -4,10 +4,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import overcloud.blog.entity.*;
+import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
+import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.blog.common.ArticleUtils;
 import overcloud.blog.usecase.test.common.*;
 import overcloud.blog.usecase.test.create_test.CreateTestService;
@@ -23,9 +25,14 @@ public class CreateTestServiceImpl implements CreateTestService {
 
     private final IQuestionRepository questionRepository;
 
-    public CreateTestServiceImpl(JpaTestRepository testRepository, IQuestionRepository questionRepository) {
+    private final SpringAuthenticationService authenticationService;
+
+    public CreateTestServiceImpl(JpaTestRepository testRepository,
+                                 IQuestionRepository questionRepository,
+                                 SpringAuthenticationService authenticationService) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
+        this.authenticationService = authenticationService;
     }
 
     @Override
@@ -34,10 +41,15 @@ public class CreateTestServiceImpl implements CreateTestService {
         List<Question> questions = testRequest.getQuestions();
         LocalDateTime now = LocalDateTime.now();
 
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .getUser();
+
         TestEntity testEntity = new TestEntity();
         testEntity.setTitle(testRequest.getTitle());
         testEntity.setDescription(testRequest.getDescription());
         testEntity.setSlug(ArticleUtils.toSlug(testRequest.getTitle()));
+        testEntity.setAuthorId(currentUser.getId());
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);
         TestEntity savedTest = testRepository.save(testEntity);

@@ -26,6 +26,9 @@ public class TestEntity {
     @Column(name = "slug")
     private String slug;
 
+    @Column(name = "author_id")
+    private UUID authorId;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
