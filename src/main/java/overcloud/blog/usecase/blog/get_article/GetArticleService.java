@@ -5,31 +5,21 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.infrastructure.auth.bean.SecurityUser;
 import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.repository.jparepository.JpaArticleRepository;
-import overcloud.blog.usecase.auth.follow.core.utils.FollowUtils;
+import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
-import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
 
 import java.util.UUID;
 
 @Service
 public class GetArticleService {
 
-    private final FollowUtils followUtils;
-
-    private final FavoriteUtils favoriteUtils;
-
-    private final JpaArticleRepository articleRepository;
+    private final IArticleRepository articleRepository;
 
     private final SpringAuthenticationService authenticationService;
 
 
-    public GetArticleService(FollowUtils followUtils,
-                             FavoriteUtils favoriteUtils,
-                             JpaArticleRepository articleRepository,
+    public GetArticleService(IArticleRepository articleRepository,
                              SpringAuthenticationService authenticationService) {
-        this.followUtils = followUtils;
-        this.favoriteUtils = favoriteUtils;
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
     }

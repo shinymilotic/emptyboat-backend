@@ -3,6 +3,7 @@ package overcloud.blog.usecase.auth.get_users;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.auth.common.UserListResponse;
 import overcloud.blog.usecase.auth.common.UserResponse;
@@ -14,11 +15,11 @@ import java.util.stream.Collectors;
 @Service
 public class GetUserListService {
 
-    private final JpaUserRepository userRepository;
+    private final IUserRepository userRepository;
 
     private final UserResponseMapper userResponseMapper;
 
-    public GetUserListService(JpaUserRepository userRepository,
+    public GetUserListService(IUserRepository userRepository,
                               UserResponseMapper userResponseMapper) {
         this.userRepository = userRepository;
         this.userResponseMapper = userResponseMapper;
