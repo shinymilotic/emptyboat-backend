@@ -1,12 +1,10 @@
 package overcloud.blog.repository.impl;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.Tuple;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.auth.common.UserResponse;
@@ -18,12 +16,14 @@ import java.util.UUID;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository {
-    private final JpaUserRepository jpaUserRepository;
+    private final IUserRepository jpaUserRepository;
     private final EntityManager entityManager;
+    private final PlainQueryBuilder queryBuilder;
 
-    public UserRepositoryImpl(JpaUserRepository jpaUserRepository, EntityManager entityManager) {
+    public UserRepositoryImpl(IUserRepository jpaUserRepository, EntityManager entityManager, PlainQueryBuilder queryBuilder) {
         this.jpaUserRepository = jpaUserRepository;
         this.entityManager = entityManager;
+        this.queryBuilder = queryBuilder;
     }
 
     @Override
@@ -71,5 +71,15 @@ public class UserRepositoryImpl implements IUserRepository {
         }
 
         return resposne;
+    }
+
+    @Override
+    public List<UserEntity> findAll(int page, int size) {
+        return entityManager
+                .createQuery("SELECT users FROM UserEntity users", UserEntity.class)
+                .setFirstResult(queryBuilder.getOffset(page, size))
+                .setMaxResults(size)
+                .getResultList();
+
     }
 }

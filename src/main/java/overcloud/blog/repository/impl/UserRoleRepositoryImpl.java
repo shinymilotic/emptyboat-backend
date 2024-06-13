@@ -14,12 +14,12 @@ import java.util.UUID;
 @Repository
 public class UserRoleRepositoryImpl implements IUserRoleRepository {
 
-    private final JpaUserRoleRepository jpaUserRoleRepository;
+    private final JpaUserRoleRepository jpa;
 
     private final EntityManager entityManager;
 
-    public UserRoleRepositoryImpl(JpaUserRoleRepository jpaUserRoleRepository, EntityManager entityManager) {
-        this.jpaUserRoleRepository = jpaUserRoleRepository;
+    public UserRoleRepositoryImpl(JpaUserRoleRepository jpa, EntityManager entityManager) {
+        this.jpa = jpa;
         this.entityManager = entityManager;
     }
 
@@ -36,6 +36,16 @@ public class UserRoleRepositoryImpl implements IUserRoleRepository {
                 .role(RoleEntity.builder().id(roleId).build())
                 .user(UserEntity.builder().id(userId).build())
                 .build();
-        return jpaUserRoleRepository.save(userRole);
+        return jpa.save(userRole);
+    }
+
+    @Override
+    public UserRole saveAndFlush(UserRole userRole) {
+        return jpa.saveAndFlush(userRole);
+    }
+
+    @Override
+    public void delete(UserRole userRole) {
+        jpa.delete(userRole);
     }
 }

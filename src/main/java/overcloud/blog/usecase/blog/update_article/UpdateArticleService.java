@@ -16,6 +16,7 @@ import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,27 +57,28 @@ public class UpdateArticleService {
                 .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
                 .getUser();
 
-        // Update authorization
-        if (!currentUser.getId().equals(articleEntity.getAuthor().getId())) {
-            throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_UPDATE_NO_AUTHORIZATION));
-        }
+//        // Update authorization
+//        if (!currentUser.getId().equals(articleEntity.getAuthor().getId())) {
+//            throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_UPDATE_NO_AUTHORIZATION));
+//        }
 
         LocalDateTime now = LocalDateTime.now();
         articleEntity.setBody(updateArticleRequest.getBody());
         articleEntity.setUpdatedAt(now);
-        ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
+        articleRepository.save(articleEntity);
         articleRepository.updateSearchVector();
-        return toUpdateArticleResponse(currentUser, savedArticleEntity);
+
+        return toUpdateArticleResponse(currentUser, articleEntity, new ArrayList<String>());
     }
 
-    private UpdateArticleResponse toUpdateArticleResponse(UserEntity currentUser, ArticleEntity articleEntity) {
+    private UpdateArticleResponse toUpdateArticleResponse(UserEntity currentUser, ArticleEntity articleEntity, List<String> tagNames) {
         return UpdateArticleResponse.builder()
                 .id(articleEntity.getId().toString())
                 .title(articleEntity.getTitle())
                 .body(articleEntity.getBody())
                 .description(articleEntity.getDescription())
-                .tagList(articleEntity.getTagNameList())
-                .author(toAuthorResponse(articleEntity.getAuthor()))
+                .tagList(tagNames)
+                .author(toAuthorResponse(currentUser))
                 .slug(articleEntity.getSlug())
                 .createdAt(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
                 .updatedAt(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
