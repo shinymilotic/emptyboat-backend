@@ -21,9 +21,11 @@ public class ArticleEntity {
     @Id
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private UserEntity author;
+//    @ManyToOne
+//    @JoinColumn(name = "author_id")
+//    private UserEntity author;
+    @Column(name = "author_id")
+    private UUID authorId;
 
     @Column(name = "slug")
     private String slug;
@@ -37,14 +39,14 @@ public class ArticleEntity {
     @Column(name = "body")
     private String body;
 
-    @OneToMany(mappedBy = "article", orphanRemoval = true)
-    private List<ArticleTag> articleTags;
+//    @OneToMany(mappedBy = "article", orphanRemoval = true)
+//    private List<ArticleTag> articleTags;
 
-    @OneToMany(mappedBy = "article", orphanRemoval = true)
-    private List<CommentEntity> comments;
-
-    @OneToMany(mappedBy = "article", orphanRemoval = true)
-    private List<FavoriteEntity> favorites;
+//    @OneToMany(mappedBy = "article", orphanRemoval = true)
+//    private List<CommentEntity> comments;
+//
+//    @OneToMany(mappedBy = "article", orphanRemoval = true)
+//    private List<FavoriteEntity> favorites;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -71,15 +73,4 @@ public class ArticleEntity {
         return id.hashCode();
     }
 
-    public List<String> getTagNameList() {
-        List<String> list = new ArrayList<>();
-
-        if (articleTags != null && articleTags.size() > 0) {
-            list = articleTags.stream()
-                    .map(ArticleTag::getTag)
-                    .map(TagEntity::getName).toList();
-        }
-
-        return list;
-    }
 }
