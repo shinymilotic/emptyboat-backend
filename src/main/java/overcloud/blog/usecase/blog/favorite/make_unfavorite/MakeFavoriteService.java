@@ -45,12 +45,16 @@ public class MakeFavoriteService {
         if (articleList.isEmpty()) {
             throw new InvalidDataException(ApiError.from(ArticleError.ARTICLE_NO_EXISTS));
         }
-        ArticleEntity articleEntity = articleList.get(0);
+        ArticleEntity articleEntity = articleList.getFirst();
         favoriteEntity.setId(new FavoriteId());
         favoriteEntity.setArticle(articleEntity);
         favoriteEntity.setUser(currentUser);
         favoriteRepository.save(favoriteEntity);
 
+        return getArticleResponse(articleEntity);
+    }
+
+    private static ArticleResponse getArticleResponse(ArticleEntity articleEntity) {
         UserEntity author = articleEntity.getAuthor();
 
         ArticleResponse articleResponse = new ArticleResponse();
@@ -74,7 +78,6 @@ public class MakeFavoriteService {
         articleResponse.setId(articleEntity.getId().toString());
         articleResponse.setSlug(articleEntity.getSlug());
         articleResponse.setTitle(articleEntity.getTitle());
-
         return articleResponse;
     }
 }
