@@ -8,6 +8,8 @@ import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.infrastructure.exceptionhandling.ApiError;
 import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.infrastructure.validation.ObjectsValidator;
+import overcloud.blog.repository.IArticleRepository;
+import overcloud.blog.repository.IArticleTagRepository;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
@@ -31,16 +33,16 @@ public class CreateArticleService {
 
     private final JpaTagRepository tagRepository;
 
-    private final JpaArticleRepository articleRepository;
+    private final IArticleRepository articleRepository;
 
     private final ObjectsValidator<ArticleRequest> validator;
 
-    private final JpaArticleTagRepository articleTagRepository;
+    private final IArticleTagRepository articleTagRepository;
 
 
     public CreateArticleService(SpringAuthenticationService authenticationService,
                                 JpaTagRepository tagRepository,
-                                JpaArticleRepository articleRepository,
+                                IArticleRepository articleRepository,
                                 ObjectsValidator<ArticleRequest> validator,
                                 JpaArticleTagRepository articleTagRepository) {
         this.authenticationService = authenticationService;
@@ -75,14 +77,13 @@ public class CreateArticleService {
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(UserError.USER_NOT_FOUND))
                 .getUser();
-
-        ArticleEntity articleEntity = initArticleEntity(articleRequest, currentUser, tagEntities);
-        ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
-        List<ArticleTag> articleTags = toArticleTag(tagEntities, savedArticleEntity);
+        ArticleEntity articleEntity = toArticleEntity(articleRequest, currentUser, tagEntities);
+        List<ArticleTag> articleTags = toArticleTagEntity(tagEntities, articleEntity);
+        articleRepository.save(articleEntity);
         articleTagRepository.saveAll(articleTags);
-        ArticleResponse response = toCreateArticleResponse(savedArticleEntity);
         articleRepository.updateSearchVector();
-        return response;
+
+        return toCreateArticleResponse(articleEntity, currentUser, distinctTags);
     }
 
     private List<String> filterDistinctTags(List<String> tags) {
@@ -95,7 +96,7 @@ public class CreateArticleService {
         return tags;
     }
 
-    public ArticleEntity initArticleEntity(ArticleRequest articleRequest, UserEntity author, List<TagEntity> tagEntities) {
+    public ArticleEntity toArticleEntity(ArticleRequest articleRequest, UserEntity author, List<TagEntity> tagEntities) {
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();
@@ -104,7 +105,7 @@ public class CreateArticleService {
 
         ArticleEntity articleEntity = new ArticleEntity();
         articleEntity.setId(UuidCreator.getTimeOrderedEpoch());
-        articleEntity.setAuthor(author);
+        articleEntity.setAuthorId(author.getId());
         articleEntity.setBody(body);
         articleEntity.setDescription(description);
         articleEntity.setSlug(slug);
@@ -115,7 +116,7 @@ public class CreateArticleService {
         return articleEntity;
     }
 
-    public List<ArticleTag> toArticleTag(List<TagEntity> tagEntities, ArticleEntity articleEntity) {
+    public List<ArticleTag> toArticleTagEntity(List<TagEntity> tagEntities, ArticleEntity articleEntity) {
         return tagEntities.stream()
                 .map(tagEntity -> {
                     ArticleTagId articleTagId = new ArticleTagId();
@@ -123,21 +124,19 @@ public class CreateArticleService {
                     articleTagId.setTagId(tagEntity.getId());
                     return ArticleTag.builder()
                             .id(articleTagId)
-                            .tag(tagEntity)
-                            .article(articleEntity)
                             .build();
                 })
                 .collect(Collectors.toList());
     }
 
-    public ArticleResponse toCreateArticleResponse(ArticleEntity articleEntity) {
+    public ArticleResponse toCreateArticleResponse(ArticleEntity articleEntity, UserEntity author, List<String> tagNames) {
         return ArticleResponse.builder()
                 .id(articleEntity.getId().toString())
                 .title(articleEntity.getTitle())
                 .body(articleEntity.getBody())
                 .description(articleEntity.getDescription())
-                .tagList(articleEntity.getTagNameList())
-                .author(toAuthorResponse(articleEntity.getAuthor()))
+                .tagList(tagNames)
+                .author(toAuthorResponse(author))
                 .slug(articleEntity.getSlug())
                 .createdAt(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
                 .updatedAt(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
