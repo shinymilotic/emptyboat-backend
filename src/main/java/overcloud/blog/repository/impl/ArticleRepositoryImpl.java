@@ -329,4 +329,9 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     public List<UserEntity> findAllPaging(int page, int size) {
         return List.of();
     }
+
+    @Override
+    public void save(ArticleEntity articleEntity) {
+        this.jpa.save(articleEntity);
+    }
 }

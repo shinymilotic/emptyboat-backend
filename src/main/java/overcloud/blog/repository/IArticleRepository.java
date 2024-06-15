@@ -24,4 +24,6 @@ public interface IArticleRepository {
     List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId);
 
     List<UserEntity> findAllPaging(int page, int size);
+
+    void save(ArticleEntity articleEntity);
 }
