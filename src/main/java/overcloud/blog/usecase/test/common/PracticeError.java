@@ -1,10 +1,10 @@
 package overcloud.blog.usecase.test.common;
 
 
-import overcloud.blog.infrastructure.validation.Error;
+import overcloud.blog.core.validation.ResMsg;
 
 
-public enum PracticeError implements Error {
+public enum PracticeError implements ResMsg {
     PRACTICE_NOT_FOUND("practice.not-found", "Không tồn tại phần thực hành này!"),
     ;
 
@@ -28,12 +28,12 @@ public enum PracticeError implements Error {
     }
 
     @Override
-    public String getErrorMessage() {
+    public String getMessage() {
         return errorMessage;
     }
 
     @Override
-    public void setErrorMessage(String errorMessage) {
+    public void setMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

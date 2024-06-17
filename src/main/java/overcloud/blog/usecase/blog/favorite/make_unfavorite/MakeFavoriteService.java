@@ -2,16 +2,17 @@ package overcloud.blog.usecase.blog.favorite.make_unfavorite;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import overcloud.blog.entity.*;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaFavoriteRepository;
-import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.blog.common.ArticleError;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.create_article.ArticleResponse;
+import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
+import overcloud.blog.usecase.common.exceptionhandling.ApiError;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.user.common.UserError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +52,11 @@ public class MakeFavoriteService {
         favoriteEntity.setUser(currentUser);
         favoriteRepository.save(favoriteEntity);
 
-        return getArticleResponse(articleEntity);
+        return getArticleResponse(articleEntity, currentUser);
     }
 
-    private static ArticleResponse getArticleResponse(ArticleEntity articleEntity) {
-        UserEntity author = articleEntity.getAuthor();
+    private static ArticleResponse getArticleResponse(ArticleEntity articleEntity, UserEntity currentUser) {
+        UserEntity author = currentUser;
 
         ArticleResponse articleResponse = new ArticleResponse();
         AuthorResponse authorResponse = new AuthorResponse();

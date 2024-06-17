@@ -1,8 +1,8 @@
 package overcloud.blog.usecase.blog.common;
 
-import overcloud.blog.infrastructure.validation.Error;
+import overcloud.blog.core.validation.ResMsg;
 
-public enum CommentError implements Error {
+public enum CommentError implements ResMsg {
     COMMENT_ARTICLE_NOT_EXIST("comment.article.not-exist", "The article doesn't exist");
 
     private String messageId;
@@ -25,12 +25,12 @@ public enum CommentError implements Error {
     }
 
     @Override
-    public String getErrorMessage() {
+    public String getMessage() {
         return errorMessage;
     }
 
     @Override
-    public void setErrorMessage(String errorMessage) {
+    public void setMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

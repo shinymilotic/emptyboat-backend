@@ -2,17 +2,17 @@ package overcloud.blog.usecase.blog.update_article;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import overcloud.blog.core.validation.ObjectsValidator;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
-import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
-import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.blog.common.ArticleError;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
-import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
+import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
+import overcloud.blog.usecase.common.exceptionhandling.ApiError;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.user.common.UserError;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,17 +26,14 @@ public class UpdateArticleService {
 
     private final JpaArticleRepository articleRepository;
 
-    private final FavoriteUtils favoriteUtils;
 
     private final ObjectsValidator<UpdateArticleRequest> validator;
 
     public UpdateArticleService(SpringAuthenticationService authenticationService,
                                 JpaArticleRepository articleRepository,
-                                FavoriteUtils favoriteUtils,
                                 ObjectsValidator<UpdateArticleRequest> validator) {
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
-        this.favoriteUtils = favoriteUtils;
         this.validator = validator;
     }
 
@@ -82,7 +79,7 @@ public class UpdateArticleService {
                 .slug(articleEntity.getSlug())
                 .createdAt(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
                 .updatedAt(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
-                .favorited(favoriteUtils.isFavorited(currentUser, articleEntity))
+//                .favorited(favoriteUtils.isFavorited(currentUser, articleEntity))
                 .build();
     }
 

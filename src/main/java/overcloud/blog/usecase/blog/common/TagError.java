@@ -1,8 +1,8 @@
 package overcloud.blog.usecase.blog.common;
 
-import overcloud.blog.infrastructure.validation.Error;
+import overcloud.blog.core.validation.ResMsg;
 
-public enum TagError implements Error {
+public enum TagError implements ResMsg {
 
     TAG_EXISTS("tag.exists", "Tag existed!"),
     TAG_NO_EXISTS("tag.no-exists", "These tags doesn't exist: %s!");
@@ -27,12 +27,12 @@ public enum TagError implements Error {
     }
 
     @Override
-    public String getErrorMessage() {
+    public String getMessage() {
         return errorMessage;
     }
 
     @Override
-    public void setErrorMessage(String errorMessage) {
+    public void setMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

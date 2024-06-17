@@ -2,14 +2,15 @@ package overcloud.blog.usecase.blog.search;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.auth.bean.SecurityUser;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.blog.get_article_list.AuthorResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesSingleResponse;
+import overcloud.blog.usecase.common.auth.bean.SecurityUser;
+import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 
 import java.util.ArrayList;
 import java.util.List;

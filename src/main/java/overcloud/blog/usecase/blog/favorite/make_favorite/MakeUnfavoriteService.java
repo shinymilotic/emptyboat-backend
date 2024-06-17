@@ -1,19 +1,23 @@
 package overcloud.blog.usecase.blog.favorite.make_favorite;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.ArticleTag;
 import overcloud.blog.entity.FavoriteId;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
+import overcloud.blog.repository.IArticleRepository;
+import overcloud.blog.repository.IFavoriteRepository;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaFavoriteRepository;
-import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.create_article.ArticleResponse;
+import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
+import overcloud.blog.usecase.common.exceptionhandling.ApiError;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.user.common.UserError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +25,16 @@ import java.util.List;
 @Service
 public class MakeUnfavoriteService {
 
-    private final JpaFavoriteRepository favoriteRepository;
+    private final IFavoriteRepository favoriteRepository;
 
     private final SpringAuthenticationService authenticationService;
 
-    private final JpaArticleRepository articleRepository;
+    private final IArticleRepository articleRepository;
 
 
-    public MakeUnfavoriteService(JpaFavoriteRepository favoriteRepository,
+    public MakeUnfavoriteService(IFavoriteRepository favoriteRepository,
                                  SpringAuthenticationService authenticationService,
-                                 JpaArticleRepository articleRepository) {
+                                 IArticleRepository articleRepository) {
         this.favoriteRepository = favoriteRepository;
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
@@ -70,6 +74,7 @@ public class MakeUnfavoriteService {
         favoritePk.setUserId(currentUser.getId());
         favoritePk.setArticleId(articleEntity.getId());
         favoriteRepository.deleteById(favoritePk);
+        
         return articleResponse;
     }
 }

@@ -9,7 +9,7 @@ import overcloud.blog.entity.UserEntity;
 import java.util.UUID;
 
 @Repository
-public interface JpaUserRepository extends JpaRepository<UserEntity, UUID>, PagingUserRepository {
+public interface JpaUserRepository extends JpaRepository<UserEntity, UUID> {
     @Query("SELECT u FROM UserEntity u WHERE u.username = :username ")
     UserEntity findByUsername(@Param("username") String username);
 

@@ -2,17 +2,18 @@ package overcloud.blog.usecase.test.get_practices.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import overcloud.blog.core.datetime.DateTimeService;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.datetime.DateTimeService;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.IUserRepository;
-import overcloud.blog.usecase.auth.common.UserError;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.test.common.PracticeResponse;
 import overcloud.blog.usecase.test.common.UserPracticeResponse;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
+import overcloud.blog.usecase.user.common.UserError;
 
 import java.util.ArrayList;
 import java.util.List;

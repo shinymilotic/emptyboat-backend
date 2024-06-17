@@ -1,8 +1,8 @@
 package overcloud.blog.usecase.test.common;
 
-import overcloud.blog.infrastructure.validation.Error;
+import overcloud.blog.core.validation.ResMsg;
 
-public enum TestError implements Error {
+public enum TestError implements ResMsg {
     ANSWER_EMPTY("test.answer.empty", "Answer must not empty!"),
     ;
     private String id;
@@ -25,12 +25,12 @@ public enum TestError implements Error {
     }
 
     @Override
-    public String getErrorMessage() {
+    public String getMessage() {
         return message;
     }
 
     @Override
-    public void setErrorMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

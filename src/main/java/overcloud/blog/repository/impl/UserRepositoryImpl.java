@@ -2,14 +2,12 @@ package overcloud.blog.repository.impl;
 
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
-import overcloud.blog.entity.PracticeEntity;
+
+import overcloud.blog.core.sql.PlainQueryBuilder;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.sql.PlainQueryBuilder;
 import overcloud.blog.repository.IUserRepository;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
-import overcloud.blog.usecase.auth.common.UserResponse;
-import overcloud.blog.usecase.auth.get_followers.FollowerListResposne;
-import overcloud.blog.usecase.auth.get_followers.FollowerResponse;
+import overcloud.blog.usecase.user.common.UserResponse;
+import overcloud.blog.usecase.user.get_followers.FollowerListResposne;
 
 import java.util.List;
 import java.util.UUID;
@@ -58,17 +56,16 @@ public class UserRepositoryImpl implements IUserRepository {
                         Tuple.class)
                 .setParameter("userId", userId);
 
-        List<Tuple> results =  query.getResultList();
-
-        for (Tuple row : results) {
-            UserResponse follower = new UserResponse(
-                    (UUID) row.get("id"),
-                    (String) row.get("email"),
-                    (String) row.get("username"),
-                    (String) row.get("bio"),
-                    (String) row.get("image"));
-            resposne.getFollowers().add(follower);
-        }
+        
+        final List<?> list = (List<?>) query.getResultList();
+        
+        list.stream().map(row -> (Tuple) row)
+            .map(row -> resposne.getFollowers().add(new UserResponse(
+                (UUID) row.get("id"),
+                (String) row.get("email"),
+                (String) row.get("username"),
+                (String) row.get("bio"),
+                (String) row.get("image"))));
 
         return resposne;
     }

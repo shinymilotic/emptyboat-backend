@@ -1,8 +1,8 @@
 package overcloud.blog.usecase.blog.common;
 
-import overcloud.blog.infrastructure.validation.Error;
+import overcloud.blog.core.validation.ResMsg;
 
-public enum ArticleError implements Error {
+public enum ArticleError implements ResMsg {
     ARTICLE_UPDATE_NO_AUTHORIZATION("article.update.no-authorization", "You don't have authorization to update this article!"),
     ARTICLE_NO_EXISTS("article.no-exists", "Article doesn't exist"),
     ARTICLE_TITLE_EXISTS("article.title-exist", "Tiêu đề đã tồn tại!");
@@ -27,12 +27,12 @@ public enum ArticleError implements Error {
     }
 
     @Override
-    public String getErrorMessage() {
+    public String getMessage() {
         return message;
     }
 
     @Override
-    public void setErrorMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

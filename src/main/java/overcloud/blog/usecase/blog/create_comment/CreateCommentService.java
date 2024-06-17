@@ -2,18 +2,19 @@ package overcloud.blog.usecase.blog.create_comment;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import overcloud.blog.core.validation.ObjectsValidator;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
-import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaCommentRepository;
-import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.common.CommentError;
+import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
+import overcloud.blog.usecase.common.exceptionhandling.ApiError;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.user.common.UserError;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

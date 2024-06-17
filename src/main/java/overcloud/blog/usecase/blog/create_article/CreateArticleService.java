@@ -3,21 +3,22 @@ package overcloud.blog.usecase.blog.create_article;
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import overcloud.blog.core.validation.ObjectsValidator;
 import overcloud.blog.entity.*;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.exceptionhandling.ApiError;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
-import overcloud.blog.infrastructure.validation.ObjectsValidator;
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.IArticleTagRepository;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
-import overcloud.blog.usecase.auth.common.UserError;
 import overcloud.blog.usecase.blog.common.ArticleError;
 import overcloud.blog.usecase.blog.common.ArticleUtils;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.common.TagError;
+import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
+import overcloud.blog.usecase.common.exceptionhandling.ApiError;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.user.common.UserError;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,7 +45,7 @@ public class CreateArticleService {
                                 JpaTagRepository tagRepository,
                                 IArticleRepository articleRepository,
                                 ObjectsValidator<ArticleRequest> validator,
-                                JpaArticleTagRepository articleTagRepository) {
+                                IArticleTagRepository articleTagRepository) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;
         this.articleRepository = articleRepository;

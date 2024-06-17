@@ -2,10 +2,11 @@ package overcloud.blog.usecase.test.get_practice.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.entity.TestEntity;
-import overcloud.blog.infrastructure.exceptionhandling.InvalidDataException;
 import overcloud.blog.repository.IPracticeRepository;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.test.common.PracticeError;
 import overcloud.blog.usecase.test.get_practice.GetPracticeResultService;
 import overcloud.blog.usecase.test.get_practice.PracticeQuestion;

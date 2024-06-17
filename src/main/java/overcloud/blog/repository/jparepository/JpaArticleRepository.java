@@ -24,7 +24,7 @@ public interface JpaArticleRepository extends JpaRepository<ArticleEntity, UUID>
     void updateSearchVector();
 
     @Modifying
-    @Query("")
+    @Query("DELETE FROM ArticleEntity ar WHERE ar.slug = :slug ")
     void deleteBySlug(String slug);
 
     @Query(value = "SELECT true  FROM articles a WHERE a.title = :title limit 1 ", nativeQuery = true)
