@@ -73,6 +73,5 @@ public class GetArticleListService {
                 .following(author.getFollowing())
                 .followersCount(author.getFollowersCount())
                 .build();
-                edsadasdasddsa
     }
 }
