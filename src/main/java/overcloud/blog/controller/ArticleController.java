@@ -16,6 +16,7 @@ import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleRequest;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleResponse;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleService;
+import overcloud.blog.usecase.common.response.RestResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -45,30 +46,30 @@ public class ArticleController {
 
     @Secured({"ADMIN", "USER"})
     @PostMapping(ApiConst.ARTICLES)
-    public ArticleResponse createArticle(@RequestBody ArticleRequest createArticleRequest) throws JsonProcessingException {
+    public RestResponse<ArticleResponse> createArticle(@RequestBody ArticleRequest createArticleRequest) throws JsonProcessingException {
         return createArticleService.createArticle(createArticleRequest);
     }
 
     @Secured({"ADMIN", "USER"})
     @PutMapping(ApiConst.ARTICLES_SLUG)
-    public UpdateArticleResponse updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
+    public RestResponse<UpdateArticleResponse> updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
                                                @PathVariable("slug") String currentSlug) {
         return updateArticleService.updateArticle(updateArticleRequest, currentSlug);
     }
 
     @Secured({"ADMIN", "USER"})
     @DeleteMapping(ApiConst.ARTICLES_SLUG)
-    public DeleteArticleResponse deleteArticle(@PathVariable String slug) {
+    public RestResponse<DeleteArticleResponse> deleteArticle(@PathVariable String slug) {
         return deleteArticleService.deleteArticle(slug);
     }
 
     @GetMapping(ApiConst.ARTICLES_SLUG)
-    public GetArticleResponse getArticle(@PathVariable String slug) {
+    public RestResponse<GetArticleResponse> getArticle(@PathVariable String slug) {
         return getArticleService.getArticle(slug);
     }
 
     @GetMapping(ApiConst.ARTICLES)
-    public GetArticlesResponse getArticles(@RequestParam(required = false) String tag,
+    public RestResponse<GetArticlesResponse> getArticles(@RequestParam(required = false) String tag,
                                            @RequestParam(required = false) String author,
                                            @RequestParam(required = false) String favorited,
                                            @RequestParam(value = "size", defaultValue = "20") int limit,

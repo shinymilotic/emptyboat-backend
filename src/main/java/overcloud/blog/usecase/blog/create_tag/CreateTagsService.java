@@ -3,12 +3,12 @@ package overcloud.blog.usecase.blog.create_tag;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.core.validation.ObjectsValidator;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
-import overcloud.blog.usecase.blog.common.TagError;
+import overcloud.blog.usecase.blog.common.TagResMsg;
 import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.validation.ObjectsValidator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +37,7 @@ public class CreateTagsService {
 
         List<TagEntity> tagEntities = tagRepository.findByTagName(createTagRequest.getTags());
         if (tagEntities.size() >= tags.size()) {
-            throw new InvalidDataException(ApiError.from(TagError.TAG_EXISTS));
+            throw new InvalidDataException(ApiError.from(TagResMsg.TAG_EXISTS));
         }
 
         saveAllTags(tags);

@@ -6,10 +6,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import overcloud.blog.core.cache.RedisUtils;
-import overcloud.blog.usecase.common.auth.AuthError;
+import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.auth.service.AuthenticationProvider;
 import overcloud.blog.usecase.common.auth.service.JwtUtils;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.RestResponse;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -63,11 +64,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 isValid = jwtUtils.validateToken(token);
             } catch (Exception e) {
-                throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
+                RestResponse res = RestResponse.fail(AuthResMsg.AUTHORIZE_FAILED);
+                throw new InvalidDataException(AuthResMsg.AUTHORIZE_FAILED);
             }
 
             if (!isValid) {
-                throw new InvalidDataException(AuthError.TOKEN_TIMEOUT);
+                throw new InvalidDataException(AuthResMsg.TOKEN_TIMEOUT);
             }
             String email = jwtUtils.getSub(token);
             Authentication auth = authenticationProvider.getAuthentication(email);

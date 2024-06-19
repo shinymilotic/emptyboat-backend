@@ -1,4 +1,4 @@
-package overcloud.blog.core.validation.annotation;
+package overcloud.blog.usecase.common.validation.annotation;
 
 
 import jakarta.validation.ConstraintValidator;

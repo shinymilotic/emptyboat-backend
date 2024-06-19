@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.core.validation.annotation.LetterAndNumber;
+import overcloud.blog.usecase.common.validation.annotation.LetterAndNumber;
 
 @Builder
 @Setter

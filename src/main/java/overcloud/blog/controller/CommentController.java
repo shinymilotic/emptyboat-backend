@@ -7,6 +7,7 @@ import overcloud.blog.usecase.blog.create_comment.CreateCommentService;
 import overcloud.blog.usecase.blog.delete_comment.DeleteCommentService;
 import overcloud.blog.usecase.blog.get_comments.GetCommentsResponse;
 import overcloud.blog.usecase.blog.get_comments.GetCommentsService;
+import overcloud.blog.usecase.common.response.RestResponse;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -28,18 +29,18 @@ public class CommentController {
     }
 
     @PostMapping(ApiConst.ARTICLES_SLUG_COMMENTS)
-    public CreateCommentResponse createComment(@PathVariable String slug,
+    public RestResponse<CreateCommentResponse> createComment(@PathVariable String slug,
                                                @RequestBody CreateCommentRequest createCommentRequest) {
         return createCommentService.createComment(createCommentRequest, slug);
     }
 
     @GetMapping(ApiConst.ARTICLES_SLUG_COMMENTS)
-    public GetCommentsResponse getComments(@PathVariable String slug) {
+    public RestResponse<GetCommentsResponse> getComments(@PathVariable String slug) {
         return getCommentsService.getComments(slug);
     }
 
     @DeleteMapping(ApiConst.ARTICLES_SLUG_COMMENTS_ID)
-    public boolean deleteComment(@PathVariable String slug, @PathVariable("id") String commendId) {
+    public RestResponse<Boolean> deleteComment(@PathVariable String slug, @PathVariable("id") String commendId) {
         return deleteCommentService.deleteComment(slug, commendId);
     }
 }

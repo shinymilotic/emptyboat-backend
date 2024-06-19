@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.blog.get_article_list.AuthorResponse;
@@ -19,11 +20,11 @@ import java.util.UUID;
 
 @Service
 public class ArticleSearchServicePG implements ArticleSearchService {
-    private final JpaArticleRepository articleRepository;
+    private final IArticleRepository articleRepository;
 
     private final SpringAuthenticationService authenticationService;
 
-    public ArticleSearchServicePG(JpaArticleRepository articleRepository,
+    public ArticleSearchServicePG(IArticleRepository articleRepository,
                                   SpringAuthenticationService authenticationService) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;

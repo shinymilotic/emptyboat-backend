@@ -2,6 +2,7 @@ package overcloud.blog.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserListResponse;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailRequest;
@@ -71,62 +72,62 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS)
-    public UserResponse register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) throws Exception {
+    public RestResponse<UserResponse> register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) throws Exception {
         return registerService.registerUser(registrationDto, response);
     }
 
     @PutMapping(ApiConst.USERS)
-    public UserResponse update(@RequestBody UpdateUserRequest updateUserDto) {
+    public RestResponse<UserResponse> update(@RequestBody UpdateUserRequest updateUserDto) {
         return updateUserService.updateUser(updateUserDto);
     }
 
     @PostMapping(ApiConst.USERS_LOGIN)
-    public UserResponse login(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
+    public RestResponse<UserResponse> login(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
         return loginService.login(loginDto, response);
     }
 
     @PostMapping(ApiConst.USERS_LOGIN_ADMIN)
-    public UserResponse loginAdmin(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
+    public RestResponse<UserResponse> loginAdmin(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
         return loginService.login(loginDto, response);
     }
 
     @PostMapping(ApiConst.USERS_LOGOUT)
-    public boolean logout(HttpServletRequest request, HttpServletResponse response) {
+    public RestResponse<Boolean> logout(HttpServletRequest request, HttpServletResponse response) {
         return logoutService.logout(request, response);
     }
 
     @GetMapping(ApiConst.USERS)
-    public UserResponse getCurrentUser() {
+    public RestResponse<UserResponse> getCurrentUser() {
         return getCurrentUserService.getCurrentUser();
     }
 
     @GetMapping(ApiConst.PROFILES_USERNAME)
-    public GetProfileResponse getProfile(@PathVariable String username) throws Exception {
+    public RestResponse<GetProfileResponse> getProfile(@PathVariable String username) throws Exception {
         return getProfileService.getProfile(username);
     }
 
     @PostMapping(ApiConst.USERS_REFRESHTOKEN)
-    public RefreshTokenResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public RestResponse<RefreshTokenResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         return refreshTokenService.refreshToken(request, response);
     }
 
     @GetMapping(ApiConst.USER_LIST)
-    public UserListResponse getUsers(int page, int size) throws Exception {
+    public RestResponse<UserListResponse> getUsers(int page, int size) throws Exception {
         return getUserListService.getUsers(page, size);
     }
 
     @GetMapping(ApiConst.ROLES_USERNAME)
-    public UserRoleListResponse getRolesUser(@PathVariable String username) {
+    public RestResponse<UserRoleListResponse> getRolesUser(@PathVariable String username) {
         return getRolesUserService.getRolesUser(username);
     }
 
     @PostMapping(ApiConst.CONFIRM_EMAIL)
-    public boolean confirmEmail(@RequestBody  ConfirmEmailRequest confirmToken) {
+    public RestResponse<Boolean> confirmEmail(@RequestBody  ConfirmEmailRequest confirmToken) {
         return confirmEmailService.confirmEmail(confirmToken);
     }
 
     @GetMapping(ApiConst.FOLLOWERS)
-    public FollowerListResposne getFollowers(@PathVariable UUID userId) {
+    public RestResponse<FollowerListResposne> getFollowers(@PathVariable UUID userId) {
         return getFollowers.getFollowers(userId);
     }
 }

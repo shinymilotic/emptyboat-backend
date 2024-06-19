@@ -1,4 +1,4 @@
-package overcloud.blog.core.validation;
+package overcloud.blog.usecase.common.validation;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -6,10 +6,13 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.ApiErrorDetail;
+import overcloud.blog.usecase.common.response.ApiValidationError;
+import overcloud.blog.usecase.common.response.RestResponse;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
@@ -28,14 +31,14 @@ public class ObjectsValidator<T> {
         this.messageSource = messageSource;
     }
 
-    public Optional<ApiError> validate(T objectToValidate) {
+    public List<ApiValidationError> validate(T objectToValidate) {
         Set<ConstraintViolation<T>> violations = validator.validate(objectToValidate);
         if (!violations.isEmpty()) {
-            return Optional.of(ApiError.from(violations
+            return Optional.of(violations
                     .stream()
                     .map(ConstraintViolation::getMessage)
-                    .map((id) -> ApiErrorDetail.from(id, messageSource.getMessage(id, null, Locale.getDefault())))
-                    .collect(Collectors.toList())));
+                    .map((id) -> ApiValidationError.from(id, messageSource.getMessage(id, null, Locale.getDefault())))
+                    .collect(Collectors.toList()));
         }
 
         return Optional.empty();

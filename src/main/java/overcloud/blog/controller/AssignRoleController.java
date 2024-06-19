@@ -2,6 +2,7 @@ package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.assign_role.AssignRoleService;
 import overcloud.blog.usecase.user.assign_role.RoleAssignmentResponse;
 import overcloud.blog.usecase.user.common.RolesRequest;
@@ -17,7 +18,7 @@ public class AssignRoleController {
     }
 
     @PutMapping(ApiConst.USERS_USERNAME_ASSIGNMENT)
-    public RoleAssignmentResponse assignRole(@RequestBody RolesRequest request, @PathVariable String username) {
+    public RestResponse<RoleAssignmentResponse> assignRole(@RequestBody RolesRequest request, @PathVariable String username) {
         return assignRoleService.assignRole(request, username);
     }
 }

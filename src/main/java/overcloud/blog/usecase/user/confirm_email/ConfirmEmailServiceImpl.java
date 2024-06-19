@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
-import overcloud.blog.usecase.common.auth.AuthError;
+import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.user.refresh_token.RefreshTokenRepository;
 
@@ -29,7 +29,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
     @Transactional
     public boolean confirmEmail(ConfirmEmailRequest confirmToken) {
         if (confirmToken == null || !StringUtils.hasText(confirmToken.getConfirmToken())) {
-            throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
+            throw new InvalidDataException(AuthResMsg.AUTHORIZE_FAILED);
         }
 
         Optional<UserEntity> user = refreshTokenRepository.findUserByToken(confirmToken.getConfirmToken());
@@ -37,7 +37,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
         if (user.isPresent()) {
             this.userRepository.enableUser(confirmToken.getConfirmToken());
         } else {
-            throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
+            throw new InvalidDataException(AuthResMsg.AUTHORIZE_FAILED);
         }
         return true;
     }

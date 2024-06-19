@@ -6,6 +6,7 @@ import overcloud.blog.usecase.blog.create_tag.CreateTagResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
 import overcloud.blog.usecase.blog.get_tags.GetTagResponse;
 import overcloud.blog.usecase.blog.get_tags.GetTagsService;
+import overcloud.blog.usecase.common.response.RestResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -20,12 +21,12 @@ public class TagController {
     }
 
     @PostMapping(ApiConst.TAGS)
-    public CreateTagResponse createTags(@RequestBody CreateTagRequest createTagRequest) throws Exception {
+    public RestResponse<CreateTagResponse> createTags(@RequestBody CreateTagRequest createTagRequest) throws Exception {
         return createTagService.createTags(createTagRequest);
     }
 
     @GetMapping(ApiConst.TAGS)
-    public GetTagResponse getTags() {
+    public RestResponse<GetTagResponse> getTags() {
         return getTagsService.getTags();
     }
 }

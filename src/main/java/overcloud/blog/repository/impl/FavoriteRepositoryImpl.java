@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import overcloud.blog.entity.FavoriteEntity;
+import overcloud.blog.entity.FavoriteId;
 import overcloud.blog.repository.IFavoriteRepository;
 import overcloud.blog.repository.jparepository.JpaFavoriteRepository;
 
@@ -25,7 +26,11 @@ public class FavoriteRepositoryImpl implements IFavoriteRepository {
 
     @Override
     public void deleteByArticleSlug(String slug) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteByArticleSlug'");
+        this.jpa.deleteByArticleSlug(slug);
+    }
+
+    @Override
+    public void deleteById(FavoriteId favoritePk) {
+        this.jpa.deleteById(favoritePk);
     }
 }

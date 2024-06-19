@@ -1,6 +1,6 @@
 package overcloud.blog.usecase.user.common;
 
-import overcloud.blog.core.validation.ResMsg;
+import overcloud.blog.usecase.common.validation.ResMsg;
 
 
 public enum UserError implements ResMsg {

@@ -4,10 +4,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.common.auth.bean.SecurityUser;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
+import overcloud.blog.usecase.common.response.RestResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +19,18 @@ import java.util.UUID;
 @Service
 public class GetArticleListService {
 
-    private final JpaArticleRepository articleRepository;
+    private final IArticleRepository articleRepository;
 
     private final SpringAuthenticationService authenticationService;
 
-    public GetArticleListService(JpaArticleRepository articleRepository,
+    public GetArticleListService(IArticleRepository articleRepository,
                                  SpringAuthenticationService authenticationService) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
     }
 
     @Transactional(readOnly = true)
-    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
+    public RestResponse<GetArticlesResponse> getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
         UUID currentUserId = null;

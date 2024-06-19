@@ -5,19 +5,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.core.validation.ResMsg;
-import overcloud.blog.core.validation.ObjectsValidator;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.repository.jparepository.JpaRoleRepository;
-import overcloud.blog.usecase.common.auth.AuthError;
+import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.auth.service.JwtUtils;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.validation.ObjectsValidator;
+import overcloud.blog.usecase.common.validation.ResMsg;
 import overcloud.blog.usecase.email.EmailService;
 import overcloud.blog.usecase.user.common.UserError;
 import overcloud.blog.usecase.user.common.UserResponse;
@@ -99,7 +99,7 @@ public class RegisterService {
             roleEntitySet.add(role.get());
             savedUser.setRoles(roleEntitySet);
         } else {
-            throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
+            throw new InvalidDataException(AuthResMsg.AUTHORIZE_FAILED);
         }
 
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());

@@ -1,7 +1,7 @@
 package overcloud.blog.usecase.test.common;
 
 
-import overcloud.blog.core.validation.ResMsg;
+import overcloud.blog.usecase.common.validation.ResMsg;
 
 
 public enum PracticeError implements ResMsg {

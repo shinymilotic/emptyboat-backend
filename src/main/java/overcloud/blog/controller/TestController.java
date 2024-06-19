@@ -1,6 +1,8 @@
 package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
+
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.TestRequest;
 import overcloud.blog.usecase.test.common.TestResponse;
 import overcloud.blog.usecase.test.create_test.CreateTestService;
@@ -38,22 +40,22 @@ public class TestController {
      * */
 
     @PostMapping(ApiConst.TEST)
-    public void createTest(@RequestBody TestRequest testRequest) {
+    public RestResponse<Void> createTest(@RequestBody TestRequest testRequest) {
         this.createTestService.createTest(testRequest);
     }
 
     @GetMapping(ApiConst.TESTS)
-    public TestListResponse getTest() {
+    public RestResponse<TestListResponse> getTest() {
         return this.getListTestService.getListTest();
     }
 
     @GetMapping(ApiConst.TESTS_SLUG)
-    public TestResponse getTestBySlug(@PathVariable("slug") String slug) {
+    public RestResponse<TestResponse> getTestBySlug(@PathVariable("slug") String slug) {
         return this.getTestService.getTest(slug);
     }
 
     @DeleteMapping(ApiConst.TESTS_SLUG)
-    public void deleteTestBySlug(@PathVariable("slug") String slug) {
+    public RestResponse<Void> deleteTestBySlug(@PathVariable("slug") String slug) {
         this.deleteTestService.deleteTest(slug);
     }
 }

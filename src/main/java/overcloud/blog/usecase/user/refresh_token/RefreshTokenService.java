@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
-import overcloud.blog.usecase.common.auth.AuthError;
+import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.auth.service.JwtUtils;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
@@ -70,7 +70,7 @@ public class RefreshTokenService {
             String userId = refreshTokenEntity.get().getUserId().toString();
             return RefreshTokenResponse.builder().userId(userId).build();
         } catch (JwtException e) {
-            throw new InvalidDataException(AuthError.AUTHORIZE_FAILED);
+            throw new InvalidDataException(AuthResMsg.AUTHORIZE_FAILED);
         }
     }
 

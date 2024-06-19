@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.usecase.common.auth.AuthError;
+import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 
@@ -55,7 +55,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         if (!isAuth) {
-            throw new InvalidDataException(ApiError.from(AuthError.AUTHORIZE_FAILED));
+            throw new InvalidDataException(ApiError.from(AuthResMsg.AUTHORIZE_FAILED));
         }
 
         return isAuth;

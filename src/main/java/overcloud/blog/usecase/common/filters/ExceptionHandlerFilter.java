@@ -27,7 +27,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         } catch (InvalidDataException e) {
             response.setStatus(UNAUTHORIZED.value());
             response.setContentType("application/json");
-            response.getWriter().write(convertObjectToJson(e.getApiError()));
+            response.getWriter().write(convertObjectToJson(e.getResponse()));
         }
     }
 
