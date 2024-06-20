@@ -21,13 +21,13 @@ public class RoleController {
         this.getAllRoleService = getAllRoleService;
     }
 
-    @GetMapping(ApiConst.ROLES)
-    public RestResponse<RoleListResponse> getRoles() {
-        return getAllRoleService.getRoles();
-    }
+    // @GetMapping(ApiConst.ROLES)
+    // public RestResponse<RoleListResponse> getRoles() {
+    //     return getAllRoleService.getRoles();
+    // }
 
-    @PutMapping(ApiConst.ROLES)
-    public RestResponse<ManageRoleResponse> manageRole(@RequestBody ManageRoleRequest request) {
-        return manageRoleService.manageRole(request);
-    }
+    // @PutMapping(ApiConst.ROLES)
+    // public RestResponse<ManageRoleResponse> manageRole(@RequestBody ManageRoleRequest request) {
+    //     return manageRoleService.manageRole(request);
+    // }
 }

@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS_LOGOUT)
-    public RestResponse<Boolean> logout(HttpServletRequest request, HttpServletResponse response) {
+    public RestResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
         return logoutService.logout(request, response);
     }
 
@@ -122,7 +122,7 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.CONFIRM_EMAIL)
-    public RestResponse<Boolean> confirmEmail(@RequestBody  ConfirmEmailRequest confirmToken) {
+    public RestResponse<Void> confirmEmail(@RequestBody  ConfirmEmailRequest confirmToken) {
         return confirmEmailService.confirmEmail(confirmToken);
     }
 

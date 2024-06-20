@@ -41,7 +41,7 @@ public class TestController {
 
     @PostMapping(ApiConst.TEST)
     public RestResponse<Void> createTest(@RequestBody TestRequest testRequest) {
-        this.createTestService.createTest(testRequest);
+        return this.createTestService.createTest(testRequest);
     }
 
     @GetMapping(ApiConst.TESTS)
@@ -56,6 +56,6 @@ public class TestController {
 
     @DeleteMapping(ApiConst.TESTS_SLUG)
     public RestResponse<Void> deleteTestBySlug(@PathVariable("slug") String slug) {
-        this.deleteTestService.deleteTest(slug);
+        return this.deleteTestService.deleteTest(slug);
     }
 }
