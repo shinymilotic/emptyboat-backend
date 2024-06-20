@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import overcloud.blog.usecase.user.common.UserResMsg;
 
 @Builder
 @NoArgsConstructor
@@ -16,11 +17,11 @@ import lombok.*;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class LoginRequest {
     @JsonProperty("email")
-    @NotNull(message = "user.login.email.not-null")
-    @Size(min = 3, max = 256, message = "user.login.email.size")
+    @NotNull(message = UserResMsg.USER_LOGIN_PASSWORD_NOTNULL)
+    @Size(min = 3, max = 256, message = UserResMsg.USER_LOGIN_EMAIL_SIZE)
     private String email;
 
     @JsonProperty("password")
-    @NotNull(message = "user.login.password.not-null")
+    @NotNull(message = UserResMsg.USER_LOGIN_PASSWORD_NOTNULL)
     private String password;
 }

@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import overcloud.blog.usecase.common.validation.annotation.LetterAndNumber;
+import overcloud.blog.usecase.user.common.UserResMsg;
 
 @Builder
 @Setter
@@ -18,18 +19,18 @@ import overcloud.blog.usecase.common.validation.annotation.LetterAndNumber;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class RegisterRequest {
     @JsonProperty("username")
-    @NotBlank(message = "user.register.username.not-blank")
-    @Size(min = 6, max = 32, message = "user.register.username.size")
-    @LetterAndNumber(message = "user.register.username.letter-and-number")
+    @NotBlank(message = UserResMsg.USER_REGISTER_USERNAME_NOTBLANK)
+    @Size(min = 6, max = 32, message = UserResMsg.USER_REGISTER_USERNAME_SIZE)
+    @LetterAndNumber(message = UserResMsg.USER_REGISTER_USERNAME_LETTERANDNUMBER)
     private String username;
 
     @JsonProperty("email")
-    @NotBlank(message = "user.register.email.not-blank")
-    @Email(message = "user.register.email.valid")
+    @NotBlank(message = UserResMsg.USER_REGISTER_EMAIL_NOTBLANK)
+    @Email(message = UserResMsg.USER_REGISTER_EMAIL_VALID)
     private String email;
 
     @JsonProperty("password")
-    @NotBlank(message = "user.register.password.not-blank")
-    @Size(min = 8, max = 64, message = "user.register.password.size")
+    @NotBlank(message = UserResMsg.USER_REGISTER_PASSWORD_NOTBLANK)
+    @Size(min = 8, max = 64, message = UserResMsg.USER_REGISTER_PASSWORD_SIZE)
     private String password;
 }

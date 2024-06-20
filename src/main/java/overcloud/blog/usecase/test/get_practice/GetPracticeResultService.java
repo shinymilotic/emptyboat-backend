@@ -2,6 +2,8 @@ package overcloud.blog.usecase.test.get_practice;
 
 import java.util.UUID;
 
+import overcloud.blog.usecase.common.response.RestResponse;
+
 public interface GetPracticeResultService {
-    PracticeResult getPracticeResult(UUID practiceId);
+    RestResponse<PracticeResult> getPracticeResult(UUID practiceId);
 }
