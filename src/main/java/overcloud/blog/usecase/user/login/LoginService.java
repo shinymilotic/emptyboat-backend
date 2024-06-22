@@ -3,26 +3,22 @@ package overcloud.blog.usecase.user.login;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.hibernate.mapping.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.core.cache.RedisUtils;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.usecase.common.auth.service.JwtUtils;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
-import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.usecase.common.response.ApiValidationError;
-import overcloud.blog.usecase.common.response.ExceptionFactory;
+import overcloud.blog.usecase.common.response.ApiError;
+import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.common.validation.ObjectsValidator;
-import overcloud.blog.usecase.user.common.UserError;
+import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,7 +31,7 @@ public class LoginService {
     private final UserResponseMapper userResponseMapper;
     private final RedisUtils redisUtils;
     private final JpaRefreshTokenRepository refreshTokenRepository;
-    private final ExceptionFactory exceptionFactory;
+    private final ResFactory resFactory;
 
     public LoginService(SpringAuthenticationService authenticationService,
                         JwtUtils jwtUtils,
@@ -43,31 +39,32 @@ public class LoginService {
                         UserResponseMapper userResponseMapper,
                         RedisUtils redisUtils,
                         JpaRefreshTokenRepository refreshTokenRepository,
-                        ExceptionFactory exceptionFactory) {
+                        ResFactory resFactory) {
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
         this.userResponseMapper = userResponseMapper;
         this.redisUtils = redisUtils;
         this.refreshTokenRepository = refreshTokenRepository;
-        this.exceptionFactory = exceptionFactory;
+        this.resFactory = resFactory;
     }
 
     @Transactional
     public RestResponse<UserResponse> login(LoginRequest loginRequest, HttpServletResponse response) {
-        List<ApiValidationError> apiError = validator.validate(loginRequest);
+        Optional<ApiError> apiError = validator.validate(loginRequest);
         if (apiError.isPresent()) {
-            throw new InvalidDataException(apiError.get());
+            RestResponse<ApiError> res = resFactory.fail(UserResMsg.USER_LOGIN_FAILED, apiError.get());
+            throw new InvalidDataException(res);
         }
 
         String email = loginRequest.getEmail();
         String hashedPassword = loginRequest.getPassword();
         UserEntity user = authenticationService.authenticate(email, hashedPassword)
-                .orElseThrow(() -> new InvalidDataException(UserError.USER_EMAIL_NO_EXIST))
+                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_LOGIN_FAILED)))
                 .getUser();
 
         if (!user.isEnable()) {
-            throw new InvalidDataException(UserError.USER_NON_ENABLED);
+            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NON_ENABLED));
         }
 
         String accessToken = jwtUtils.encode(user.getEmail());
@@ -94,7 +91,10 @@ public class LoginService {
         response.addCookie(jwtTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
 
-        return userResponseMapper.toUserResponse(user);
+        return RestResponse.<UserResponse>builder()
+            .code(refreshToken)
+            .message(refreshToken)
+            .data(userResponseMapper.toUserResponse(user)).build();
     }
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {

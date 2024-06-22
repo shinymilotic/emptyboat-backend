@@ -21,11 +21,11 @@ public class GetAllRoleService {
         this.roleMapper = roleMapper;
     }
 
-    @Transactional(readOnly = true)
-    public RoleListResponse getRoles() {
-        List<RoleEntity> roles = roleRepository.findAll();
+    // @Transactional(readOnly = true)
+    // public RoleListResponse getRoles() {
+    //     List<RoleEntity> roles = roleRepository.findAll();
 
-        return roleMapper.toRoleListResponse(roles);
-    }
+    //     return roleMapper.toRoleListResponse(roles);
+    // }
 }
 

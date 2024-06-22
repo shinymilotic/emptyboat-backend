@@ -1,9 +1,10 @@
 package overcloud.blog.usecase.test.create_test;
 
 import org.springframework.stereotype.Service;
+
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.TestRequest;
 
-@Service
 public interface CreateTestService {
-    void createTest(TestRequest testRequest);
+    RestResponse<Void> createTest(TestRequest testRequest);
 }
