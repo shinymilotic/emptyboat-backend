@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.usecase.common.auth.AuthResMsg;
-import overcloud.blog.usecase.common.validation.ResMsg;
 
 @AllArgsConstructor
 @Getter
@@ -19,5 +17,5 @@ public class RestResponse<T> {
 
     private String message;
 
-    private Collection<T> data;
+    private T data;
 }
