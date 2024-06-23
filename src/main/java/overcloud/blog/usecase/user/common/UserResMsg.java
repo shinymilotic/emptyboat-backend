@@ -13,6 +13,7 @@ public class UserResMsg {
     public static final String USER_LOGIN_EMAIL_NOTNULL = "user.login.email.not-null";
     public static final String USER_LOGIN_PASSWORD_NOTNULL = "user.login.password.not-null";
     public static final String USER_REGISTER_SUCCESS = "user.register.success";
+    public static final String USER_REGISTER_FAILED = "user.register.failed";
     public static final String USER_REGISTER_USERNAME_NOTBLANK = "user.register.username.not-blank";
     public static final String USER_REGISTER_USERNAME_SIZE = "user.register.username.size";
     public static final String USER_REGISTER_USERNAME_LETTERANDNUMBER = "user.register.username.letter-and-number";

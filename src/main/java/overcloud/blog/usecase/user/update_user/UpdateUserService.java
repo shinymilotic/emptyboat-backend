@@ -1,17 +1,13 @@
 package overcloud.blog.usecase.user.update_user;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.core.cache.RedisUtils;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
-import overcloud.blog.usecase.common.auth.bean.SecurityUser;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ApiError;
-import overcloud.blog.usecase.common.response.ApiValidationError;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.common.validation.ObjectsValidator;
