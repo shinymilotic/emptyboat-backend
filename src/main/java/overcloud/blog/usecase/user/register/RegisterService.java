@@ -14,12 +14,15 @@ import overcloud.blog.repository.jparepository.JpaRoleRepository;
 import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.auth.service.JwtUtils;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
-import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ApiError;
+import overcloud.blog.usecase.common.response.ApiValidationError;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.common.validation.ObjectsValidator;
 import overcloud.blog.usecase.common.validation.ResMsg;
 import overcloud.blog.usecase.email.EmailService;
-import overcloud.blog.usecase.user.common.UserError;
+import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
 
@@ -29,27 +32,22 @@ import java.util.*;
 public class RegisterService {
 
     private final IUserRepository userRepository;
-
     private final JpaRoleRepository roleRepository;
-
     private final SpringAuthenticationService authenticationService;
-
     private final JwtUtils jwtUtils;
-
     private final ObjectsValidator<RegisterRequest> validator;
-
     private final UserResponseMapper userResponseMapper;
-
     private final EmailService emailService;
-
     private final JpaRefreshTokenRepository refreshTokenRepository;
+    private final ResFactory resFactory;
 
     public RegisterService(IUserRepository userRepository, JpaRoleRepository roleRepository,
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
                            ObjectsValidator<RegisterRequest> validator,
                            UserResponseMapper userResponseMapper, EmailService emailService,
-                           JpaRefreshTokenRepository refreshTokenRepository) {
+                           JpaRefreshTokenRepository refreshTokenRepository,
+                           ResFactory resFactory) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticationService = authenticationService;
@@ -58,13 +56,15 @@ public class RegisterService {
         this.userResponseMapper = userResponseMapper;
         this.emailService = emailService;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.resFactory = resFactory;
     }
 
     @Transactional
-    public UserResponse registerUser(RegisterRequest registrationDto, HttpServletResponse response) {
+    public RestResponse<UserResponse> registerUser(RegisterRequest registrationDto, HttpServletResponse response) {
         Optional<ApiError> apiError = validator.validate(registrationDto);
         if (apiError.isPresent()) {
-            throw new InvalidDataException(apiError.get());
+            RestResponse<ApiError> res = resFactory.fail(UserResMsg.USER_REGISTER_FAILED, apiError.get());
+            throw new InvalidDataException(res);
         }
 
         String username = registrationDto.getUsername();
@@ -73,15 +73,11 @@ public class RegisterService {
         List<ResMsg> errors = new ArrayList<>();
 
         if (userRepository.findByUsername(username) != null) {
-            errors.add(UserError.USER_USERNAME_EXIST);
+            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_USERNAME_EXIST));
         }
 
         if (userRepository.findByEmail(email) != null) {
-            errors.add(UserError.USER_EMAIL_EXIST);
-        }
-
-        if (!errors.isEmpty()) {
-            throw new InvalidDataException(errors);
+            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_EMAIL_EXIST));
         }
 
         UserEntity userEntity = UserEntity.builder()
@@ -99,7 +95,7 @@ public class RegisterService {
             roleEntitySet.add(role.get());
             savedUser.setRoles(roleEntitySet);
         } else {
-            throw new InvalidDataException(AuthResMsg.AUTHORIZE_FAILED);
+            throw new InvalidDataException(resFactory.fail(AuthResMsg.AUTHORIZE_FAILED));
         }
 
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
@@ -108,7 +104,7 @@ public class RegisterService {
         emailService.sendSimpleMessage(savedUser.getEmail(), "Registration email confirm!",
                 "Please click on the confirmation link: http://localhost:4200/confirmEmail/" + refreshToken);
 
-        return userResponseMapper.toUserResponse(savedUser);
+        return resFactory.success(UserResMsg.USER_REGISTER_SUCCESS, userResponseMapper.toUserResponse(savedUser));
     }
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {
