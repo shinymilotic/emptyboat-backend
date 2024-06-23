@@ -4,7 +4,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import overcloud.blog.core.cache.RedisUtils;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
@@ -86,10 +85,7 @@ public class LoginService {
         response.addCookie(jwtTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
 
-        return RestResponse.<UserResponse>builder()
-            .code(refreshToken)
-            .message(refreshToken)
-            .data(userResponseMapper.toUserResponse(user)).build();
+        return resFactory.success(UserResMsg.USER_LOGIN_SUCCESS, userResponseMapper.toUserResponse(user));
     }
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {
