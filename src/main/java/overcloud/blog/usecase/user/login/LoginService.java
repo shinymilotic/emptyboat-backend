@@ -2,7 +2,6 @@ package overcloud.blog.usecase.user.login;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.core.cache.RedisUtils;
@@ -24,12 +23,10 @@ import java.util.UUID;
 
 @Service
 public class LoginService {
-
     private final SpringAuthenticationService authenticationService;
     private final JwtUtils jwtUtils;
     private final ObjectsValidator<LoginRequest> validator;
     private final UserResponseMapper userResponseMapper;
-    private final RedisUtils redisUtils;
     private final JpaRefreshTokenRepository refreshTokenRepository;
     private final ResFactory resFactory;
 
@@ -37,14 +34,12 @@ public class LoginService {
                         JwtUtils jwtUtils,
                         ObjectsValidator<LoginRequest> validator,
                         UserResponseMapper userResponseMapper,
-                        RedisUtils redisUtils,
                         JpaRefreshTokenRepository refreshTokenRepository,
                         ResFactory resFactory) {
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
         this.userResponseMapper = userResponseMapper;
-        this.redisUtils = redisUtils;
         this.refreshTokenRepository = refreshTokenRepository;
         this.resFactory = resFactory;
     }

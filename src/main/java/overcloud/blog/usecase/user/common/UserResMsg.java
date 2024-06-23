@@ -23,4 +23,6 @@ public class UserResMsg {
     public static final String USER_REGISTER_PASSWORD_SIZE = "user.register.password.size";
     public static final String USER_UPDATE_FAILED = "user.update.failed";
     public static final String USER_UPDATE_SUCCESS = "user.update.success";
+    public static final String USER_FOLLOW_SUCCESS = "user.follow.success";
+    public static final String USER_UNFOLLOW_SUCCESS = "user.unfollow.success";
 }
