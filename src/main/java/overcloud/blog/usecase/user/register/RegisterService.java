@@ -6,10 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.repository.IRoleRepository;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
-import overcloud.blog.repository.jparepository.JpaRoleRepository;
-import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.auth.service.JwtUtils;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
@@ -25,9 +24,8 @@ import java.util.*;
 
 @Service
 public class RegisterService {
-
     private final IUserRepository userRepository;
-    private final JpaRoleRepository roleRepository;
+    private final IRoleRepository roleRepository;
     private final SpringAuthenticationService authenticationService;
     private final JwtUtils jwtUtils;
     private final ObjectsValidator<RegisterRequest> validator;
@@ -36,7 +34,7 @@ public class RegisterService {
     private final JpaRefreshTokenRepository refreshTokenRepository;
     private final ResFactory resFactory;
 
-    public RegisterService(IUserRepository userRepository, JpaRoleRepository roleRepository,
+    public RegisterService(IUserRepository userRepository, IRoleRepository roleRepository,
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
                            ObjectsValidator<RegisterRequest> validator,

@@ -2,35 +2,35 @@ package overcloud.blog.usecase.user.get_current_user;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
-import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.usecase.user.common.UserError;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
+import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
 
 @Service
 public class GetCurrentUserService {
-
     private final SpringAuthenticationService authenticationService;
-
     private final UserResponseMapper userResponseMapper;
-
+    private final ResFactory resFactory;
 
     public GetCurrentUserService(SpringAuthenticationService authenticationService,
-                                 UserResponseMapper userResponseMapper) {
+                                 UserResponseMapper userResponseMapper,
+                                 ResFactory resFactory) {
         this.authenticationService = authenticationService;
         this.userResponseMapper = userResponseMapper;
+        this.resFactory = resFactory;
     }
 
     @Transactional(readOnly = true)
-    public UserResponse getCurrentUser() {
+    public RestResponse<UserResponse> getCurrentUser() {
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
-        return userResponseMapper.toUserResponse(currentUser);
+        return resFactory.success(UserResMsg.USER_GET_CURRENT_USER, userResponseMapper.toUserResponse(currentUser));
     }
 }

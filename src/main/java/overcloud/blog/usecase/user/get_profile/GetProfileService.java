@@ -2,34 +2,36 @@ package overcloud.blog.usecase.user.get_profile;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
+import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.common.auth.bean.SecurityUser;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
+import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.follow.core.utils.FollowUtils;
-
 import java.util.Optional;
 
 @Service
 public class GetProfileService {
-
-    private final JpaUserRepository userRepository;
-
+    private final IUserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
-
     private final FollowUtils followUtils;
+    private final ResFactory resFactory;
 
-    public GetProfileService(JpaUserRepository userRepository,
+    public GetProfileService(IUserRepository userRepository,
                              SpringAuthenticationService authenticationService,
-                             FollowUtils followUtils) {
+                             FollowUtils followUtils,
+                             ResFactory resFactory) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.followUtils = followUtils;
+        this.resFactory = resFactory;
     }
 
     @Transactional(readOnly = true)
-    public GetProfileResponse getProfile(String username) {
+    public RestResponse<GetProfileResponse> getProfile(String username) {
         GetProfileResponse profileResponse = new GetProfileResponse();
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
@@ -38,6 +40,9 @@ public class GetProfileService {
         }
 
         UserEntity user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
+        }
 
         profileResponse.setUsername(user.getUsername());
         profileResponse.setEmail(user.getEmail());
@@ -46,6 +51,6 @@ public class GetProfileService {
         profileResponse.setImage(user.getImage());
         profileResponse.setFollowersCount(followUtils.getFollowingCount(user));
 
-        return profileResponse;
+        return resFactory.success(UserResMsg.USER_GET_PROFILE, profileResponse);
     }
 }
