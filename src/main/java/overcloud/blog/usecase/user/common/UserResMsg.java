@@ -1,6 +1,5 @@
 package overcloud.blog.usecase.user.common;
 
-
 public class UserResMsg {
     public static final String USER_NOT_FOUND = "user.get-current-user.not-found";
     public static final String USER_USERNAME_EXIST = "user.username.exists";
@@ -30,4 +29,11 @@ public class UserResMsg {
     public static final String TOKEN_TIMEOUT = "authorize.token.timeout";
     public static final String REFRESHTOKEN_FAILED = "refreshtoken.failed";
     public static final String REFRESHTOKEN_SUCCESS = "refreshtoken.success";
+    public static final String USER_LOGOUT_SUCCESS = "user.logout.success";
+    // get curren user
+    public static final String USER_GET_CURRENT_USER = "user.get-current-user";
+    // get followers
+    public static final String USER_GET_FOLLOWERS = "user.get-followers";
+    // get profile
+    public static final String USER_GET_PROFILE = "user.get-profile";
 }
