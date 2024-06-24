@@ -22,4 +22,19 @@ public class RoleRepositoryImpl implements IRoleRepository {
     public Optional<RoleEntity> findById(UUID fromString) {
         return jpa.findById(fromString);
     }
+
+    @Override
+    public RoleEntity saveAndFlush(RoleEntity roleEntity) {
+        return jpa.saveAndFlush(roleEntity);
+    }
+
+    @Override
+    public int updateRoleByName(String currentRoleName, String updateRoleName) {
+        return this.jpa.updateRoleByName(currentRoleName, updateRoleName);
+    }
+
+    @Override
+    public int deleteRoleByName(String deleteRoleName) {
+        return this.jpa.deleteRoleByName(deleteRoleName);
+    }
 }
