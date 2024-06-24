@@ -10,13 +10,17 @@ import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.auth.service.AuthenticationProvider;
 import overcloud.blog.usecase.common.auth.service.JwtUtils;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
+import overcloud.blog.usecase.user.common.UserResMsg;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import static org.mockito.Mockito.reset;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -27,15 +31,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String TOKEN_PREFIX = "";
     private final JwtUtils jwtUtils;
     private final AuthenticationProvider authenticationProvider;
-
-    private final RedisUtils redisUtils;
+    private final ResFactory resFactory;
 
     public JwtAuthenticationFilter(JwtUtils jwtUtils,
                                    AuthenticationProvider authenticationProvider,
-                                   RedisUtils redisUtils) {
+                                   ResFactory resFactory) {
         this.jwtUtils = jwtUtils;
         this.authenticationProvider = authenticationProvider;
-        this.redisUtils = redisUtils;
+        this.resFactory = resFactory;
     }
 
     @Override
@@ -64,12 +67,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 isValid = jwtUtils.validateToken(token);
             } catch (Exception e) {
-                RestResponse res = RestResponse.fail(AuthResMsg.AUTHORIZE_FAILED);
-                throw new InvalidDataException(AuthResMsg.AUTHORIZE_FAILED);
+                throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
             }
 
             if (!isValid) {
-                throw new InvalidDataException(AuthResMsg.TOKEN_TIMEOUT);
+                throw new InvalidDataException(resFactory.fail(UserResMsg.TOKEN_TIMEOUT));
             }
             String email = jwtUtils.getSub(token);
             Authentication auth = authenticationProvider.getAuthentication(email);

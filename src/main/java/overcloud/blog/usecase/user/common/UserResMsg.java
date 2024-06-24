@@ -25,4 +25,9 @@ public class UserResMsg {
     public static final String USER_UPDATE_SUCCESS = "user.update.success";
     public static final String USER_FOLLOW_SUCCESS = "user.follow.success";
     public static final String USER_UNFOLLOW_SUCCESS = "user.unfollow.success";
+    public static final String AUTHORIZE_SUCCESS = "authorize.success";
+    public static final String AUTHORIZE_FAILED = "authorize.failed";
+    public static final String TOKEN_TIMEOUT = "authorize.token.timeout";
+    public static final String REFRESHTOKEN_FAILED = "refreshtoken.failed";
+    public static final String REFRESHTOKEN_SUCCESS = "refreshtoken.success";
 }

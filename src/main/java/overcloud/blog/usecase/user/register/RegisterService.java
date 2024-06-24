@@ -89,7 +89,7 @@ public class RegisterService {
             roleEntitySet.add(role.get());
             savedUser.setRoles(roleEntitySet);
         } else {
-            throw new InvalidDataException(resFactory.fail(AuthResMsg.AUTHORIZE_FAILED));
+            throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
         }
 
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());

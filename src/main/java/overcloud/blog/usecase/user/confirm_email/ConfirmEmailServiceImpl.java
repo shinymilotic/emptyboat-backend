@@ -1,10 +1,8 @@
 package overcloud.blog.usecase.user.confirm_email;
 
-import io.netty.util.internal.StringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
@@ -12,7 +10,7 @@ import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
-import overcloud.blog.usecase.user.refresh_token.RefreshTokenRepository;
+import overcloud.blog.usecase.user.common.UserResMsg;
 
 import java.util.Optional;
 
@@ -34,7 +32,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
     @Transactional
     public RestResponse<Void> confirmEmail(ConfirmEmailRequest confirmToken) {
         if (confirmToken == null || !StringUtils.hasText(confirmToken.getConfirmToken())) {
-            throw new InvalidDataException(resFactory.fail(AuthResMsg.AUTHORIZE_FAILED));
+            throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
         }
 
         Optional<UserEntity> user = refreshTokenRepository.findUserByToken(confirmToken.getConfirmToken());
@@ -42,9 +40,9 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
         if (user.isPresent()) {
             this.userRepository.enableUser(confirmToken.getConfirmToken());
         } else {
-            throw new InvalidDataException(resFactory.fail(AuthResMsg.AUTHORIZE_FAILED));
+            throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
         }
-        
-        return resFactory.success(AuthResMsg.AUTHORIZE_SUCCESS, null);
+
+        return resFactory.success(UserResMsg.AUTHORIZE_SUCCESS, null);
     }
 }

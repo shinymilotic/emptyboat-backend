@@ -12,6 +12,9 @@ import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.usecase.common.auth.AuthResMsg;
 import overcloud.blog.usecase.common.auth.service.JwtUtils;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
+import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
 
 import java.util.Arrays;
@@ -20,31 +23,29 @@ import java.util.Optional;
 @Service
 public class RefreshTokenService {
     private final JwtUtils jwtUtils;
-
     private final JpaRefreshTokenRepository refreshTokenRepository;
+    private final ResFactory resFactory;
 
-    private final UserResponseMapper userResponseMapper;
-
-
-    public RefreshTokenService(JwtUtils jwtUtils, JpaRefreshTokenRepository refreshTokenRepository, UserResponseMapper userResponseMapper) {
+    public RefreshTokenService(JwtUtils jwtUtils,
+        JpaRefreshTokenRepository refreshTokenRepository,
+        ResFactory resFactory) {
+        this.resFactory = resFactory;
         this.jwtUtils = jwtUtils;
         this.refreshTokenRepository = refreshTokenRepository;
-        this.userResponseMapper = userResponseMapper;
     }
 
     @Transactional
-    public RefreshTokenResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public RestResponse<RefreshTokenResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         Optional<String> refreshToken = readServletCookie(request, "refreshToken");
-        RefreshTokenResponse emptyResponse = RefreshTokenResponse.builder().userId("").build();
 
         if (refreshToken.isEmpty()) {
-            return emptyResponse;
+            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESHTOKEN_FAILED));
         }
 
         Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken.get());
 
         if (refreshTokenEntity.isEmpty()) {
-            return emptyResponse;
+            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESHTOKEN_FAILED));
         }
 
         String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();
@@ -68,9 +69,10 @@ public class RefreshTokenService {
             response.addCookie(jwtTokenCookie);
             response.addCookie(jwtRefreshTokenCookie);
             String userId = refreshTokenEntity.get().getUserId().toString();
-            return RefreshTokenResponse.builder().userId(userId).build();
+            RefreshTokenResponse res = RefreshTokenResponse.builder().userId(userId).build();
+            return resFactory.success(UserResMsg.REFRESHTOKEN_SUCCESS, res);
         } catch (JwtException e) {
-            throw new InvalidDataException(AuthResMsg.AUTHORIZE_FAILED);
+            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESHTOKEN_FAILED));
         }
     }
 

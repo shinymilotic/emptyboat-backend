@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.usecase.common.auth.AuthResMsg;
-import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.user.common.UserResMsg;
 
 import java.util.List;
 import java.util.Map;
@@ -19,9 +19,11 @@ import java.util.Map;
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final Map<String, AuthStrategy> authStrategy;
+    private final ResFactory resFactory;
 
-    public AuthInterceptor(Map<String, AuthStrategy> authStrategy) {
+    public AuthInterceptor(Map<String, AuthStrategy> authStrategy, ResFactory resFactory) {
         this.authStrategy = authStrategy;
+        this.resFactory = resFactory;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         if (!isAuth) {
-            throw new InvalidDataException(ApiError.from(AuthResMsg.AUTHORIZE_FAILED));
+            throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
         }
 
         return isAuth;
