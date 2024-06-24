@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.repository.jparepository.JpaRoleRepository;
-import overcloud.blog.usecase.common.exceptionhandling.ApiError;
+import overcloud.blog.repository.IRoleRepository;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.usecase.user.common.RoleError;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.user.common.RoleResMsg;
 import overcloud.blog.usecase.user.common.UpdateFlg;
 
 import java.util.List;
@@ -15,11 +15,12 @@ import java.util.Optional;
 
 @Service
 public class ManageRoleService {
+    private final IRoleRepository roleRepository;
+    private final ResFactory resFactory;
 
-    private final JpaRoleRepository roleRepository;
-
-    public ManageRoleService(JpaRoleRepository roleRepository) {
+    public ManageRoleService(IRoleRepository roleRepository, ResFactory resFactory) {
         this.roleRepository = roleRepository;
+        this.resFactory = resFactory;
     }
 
     @Transactional
@@ -60,7 +61,7 @@ public class ManageRoleService {
                     .name(role.getRoleName()).build();
             return Optional.of(roleRepository.saveAndFlush(roleEntity));
         } catch (Exception e) {
-            throw new InvalidDataException(ApiError.from(RoleError.ROLE_EXISTED));
+            throw new InvalidDataException(resFactory.fail(RoleResMsg.ROLE_EXISTED));
         }
     }
 
@@ -70,7 +71,7 @@ public class ManageRoleService {
             String updateRoleName = role.getUpdateRoleName();
             return roleRepository.updateRoleByName(currentRoleName, updateRoleName);
         } catch (Exception e) {
-            throw new InvalidDataException(ApiError.from(RoleError.ROLE_EXISTED));
+            throw new InvalidDataException(resFactory.fail(RoleResMsg.ROLE_EXISTED));
         }
     }
 
@@ -81,12 +82,12 @@ public class ManageRoleService {
 
     private void validate(ManageRoleRequest request) {
         if (request.getRoles() == null) {
-            throw new InvalidDataException(ApiError.from(RoleError.ROLE_LIST_NOT_EMPTY));
+            throw new InvalidDataException(resFactory.fail(RoleResMsg.ROLE_LIST_NOT_EMPTY));
         }
 
         for (ManageRoleDto role : request.getRoles()) {
             if (role == null) {
-                throw new InvalidDataException(ApiError.from(RoleError.ROLENAME_SIZE));
+                throw new InvalidDataException(resFactory.fail(RoleResMsg.ROLENAME_SIZE));
             }
         }
     }
