@@ -1,17 +1,15 @@
 package overcloud.blog.repository.impl;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Repository;
-
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.repository.IRoleRepository;
 import overcloud.blog.repository.jparepository.JpaRoleRepository;
 
 @Repository
 public class RoleRepositoryImpl implements IRoleRepository {
-
     private final JpaRoleRepository jpa;
 
     public RoleRepositoryImpl(JpaRoleRepository jpa) {
@@ -36,5 +34,10 @@ public class RoleRepositoryImpl implements IRoleRepository {
     @Override
     public int deleteRoleByName(String deleteRoleName) {
         return this.jpa.deleteRoleByName(deleteRoleName);
+    }
+
+    @Override
+    public List<RoleEntity> findAll() {
+        return jpa.findAll();
     }
 }

@@ -1,9 +1,7 @@
 package overcloud.blog.repository.impl;
 
 import java.util.List;
-
 import org.springframework.stereotype.Repository;
-
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.repository.ITagRepository;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
@@ -19,5 +17,9 @@ public class TagRepositoryImpl implements ITagRepository {
     @Override
     public List<TagEntity> findByTagName(List<String> tagList) {
         return jpa.findByTagName(tagList);
+    }
+    @Override
+    public void saveAll(List<TagEntity> tagForSave) {
+        jpa.saveAll(tagForSave);
     }
 }
