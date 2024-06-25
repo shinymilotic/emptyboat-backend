@@ -3,26 +3,21 @@ package overcloud.blog.usecase.blog.create_article;
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.IArticleTagRepository;
-import overcloud.blog.repository.jparepository.JpaArticleRepository;
-import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
-import overcloud.blog.repository.jparepository.JpaTagRepository;
+import overcloud.blog.repository.ITagRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.blog.common.ArticleUtils;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.common.TagResMsg;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
-import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.usecase.common.response.ApiValidationError;
-import overcloud.blog.usecase.common.response.ExceptionFactory;
+import overcloud.blog.usecase.common.response.ApiError;
+import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.common.validation.ObjectsValidator;
-import overcloud.blog.usecase.user.common.UserError;
-
+import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,32 +27,25 @@ import java.util.stream.Collectors;
 
 @Service
 public class CreateArticleService {
-
     private final SpringAuthenticationService authenticationService;
-
-    private final JpaTagRepository tagRepository;
-
+    private final ITagRepository tagRepository;
     private final IArticleRepository articleRepository;
-
     private final ObjectsValidator<ArticleRequest> validator;
-
     private final IArticleTagRepository articleTagRepository;
-
-    private final ExceptionFactory exceptionFactory;
-
+    private final ResFactory resFactory;
 
     public CreateArticleService(SpringAuthenticationService authenticationService,
-                                JpaTagRepository tagRepository,
+                                ITagRepository tagRepository,
                                 IArticleRepository articleRepository,
                                 ObjectsValidator<ArticleRequest> validator,
                                 IArticleTagRepository articleTagRepository,
-                                ExceptionFactory exceptionFactory) {
+                                ResFactory resFactory) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;
         this.articleRepository = articleRepository;
         this.validator = validator;
         this.articleTagRepository = articleTagRepository;
-        this.exceptionFactory = exceptionFactory;
+        this.resFactory = resFactory;
     }
 
     @Transactional
@@ -65,33 +53,33 @@ public class CreateArticleService {
         String title = articleRequest.getTitle();
         List<String> distinctTags = filterDistinctTags(articleRequest.getTagList());
         articleRequest.setTagList(distinctTags);
-        List<ApiValidationError> apiError = validator.validate(articleRequest);
+        Optional<ApiError> apiError = validator.validate(articleRequest);
 
         if (apiError.isPresent()) {
-            throw exceptionFactory.invalidDataException(null, apiError);
+            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_CREATE_FAILED, apiError.get()));
         }
 
         Optional<Boolean> isExist = articleRepository.isTitleExist(title);
 
         if (isExist.isPresent()) {
-            throw new InvalidDataException(ArticleResMsg.ARTICLE_TITLE_EXISTS);
+            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_TITLE_EXISTS));
         }
 
         List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
         if (distinctTags.size() > tagEntities.size()) {
-            throw new InvalidDataException(TagResMsg.TAG_NO_EXISTS);
+            throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_NO_EXISTS));
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(UserError.USER_NOT_FOUND))
+                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
-        ArticleEntity articleEntity = toArticleEntity(articleRequest, currentUser, tagEntities);
+        ArticleEntity articleEntity = toArticleEntity(articleRequest, currentUser);
         List<ArticleTag> articleTags = toArticleTagEntity(tagEntities, articleEntity);
         articleRepository.save(articleEntity);
         articleTagRepository.saveAll(articleTags);
         articleRepository.updateSearchVector();
 
-        return toCreateArticleResponse(articleEntity, currentUser, distinctTags);
+        return resFactory.success(ArticleResMsg.ARTICLE_CREATE_SUCCESS, toCreateArticleResponse(articleEntity, currentUser, distinctTags));
     }
 
     private List<String> filterDistinctTags(List<String> tags) {
@@ -104,7 +92,7 @@ public class CreateArticleService {
         return tags;
     }
 
-    public ArticleEntity toArticleEntity(ArticleRequest articleRequest, UserEntity author, List<TagEntity> tagEntities) {
+    public ArticleEntity toArticleEntity(ArticleRequest articleRequest, UserEntity author) {
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();

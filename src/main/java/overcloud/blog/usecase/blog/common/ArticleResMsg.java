@@ -3,6 +3,7 @@ package overcloud.blog.usecase.blog.common;
 
 public class ArticleResMsg {
     public static final String ARTICLE_CREATE_SUCCESS = "article.create.success";
+    public static final String ARTICLE_CREATE_FAILED = "article.create.failed";
     public static final String ARTICLE_UPDATE_SUCCESS = "article.update.success";
     public static final String ARTICLE_UPDATE_NO_AUTHORIZATION = "article.update.no-authorization";
     public static final String ARTICLE_NO_EXISTS = "article.no-exists";
