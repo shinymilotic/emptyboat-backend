@@ -7,14 +7,16 @@ import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.entity.UserRole;
 import overcloud.blog.entity.UserRoleId;
+import overcloud.blog.repository.IRoleRepository;
+import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.IUserRoleRepository;
 import overcloud.blog.repository.jparepository.JpaRoleRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRoleRepository;
-import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.RoleDto;
-import overcloud.blog.usecase.user.common.RoleError;
+import overcloud.blog.usecase.user.common.RoleResMsg;
 import overcloud.blog.usecase.user.common.RolesRequest;
 import overcloud.blog.usecase.user.common.UpdateFlg;
 
@@ -29,49 +31,49 @@ public class AssignRoleService {
 
     private final IUserRoleRepository userRoleRepository;
 
-    private final JpaUserRepository userRepository;
+    private final IUserRepository userRepository;
 
-    private final JpaRoleRepository roleRepository;
+    private final IRoleRepository roleRepository;
 
     public AssignRoleService(IUserRoleRepository userRoleRepository,
-                             JpaUserRepository userRepository,
-                             JpaRoleRepository roleRepository) {
+                             IUserRepository userRepository,
+                             IRoleRepository roleRepository) {
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
     @Transactional
-    public RoleAssignmentResponse assignRole(RolesRequest request, String username) {
-        List<RoleDto> roles = request.getRoles();
-        UserEntity userEntity = userRepository.findByUsername(username);
-        List<String> roleNames = roles.stream()
-                .map(RoleDto::getRoleName)
-                .collect(Collectors.toList());
-        List<RoleEntity> roleEntities = roleRepository.findAllByNames(roleNames);
-        Map<String, RoleEntity> roleEntitiesMap = roleEntities.stream()
-                .collect(Collectors.toMap(RoleEntity::getName, Function.identity()));
+    public RestResponse<RoleAssignmentResponse> assignRole(RolesRequest request, String username) {
+        // List<RoleDto> roles = request.getRoles();
+        // UserEntity userEntity = userRepository.findByUsername(username);
+        // List<String> roleNames = roles.stream()
+        //         .map(RoleDto::getRoleName)
+        //         .collect(Collectors.toList());
+        // List<RoleEntity> roleEntities = roleRepository.findAllByNames(roleNames);
+        // Map<String, RoleEntity> roleEntitiesMap = roleEntities.stream()
+        //         .collect(Collectors.toMap(RoleEntity::getName, Function.identity()));
 
-        for (RoleDto role : roles) {
-            UpdateFlg updateFlg = UpdateFlg.fromInt(role.getUpdateFlg());
-            RoleEntity roleEntity = roleEntitiesMap.get(role.getRoleName());
+        // for (RoleDto role : roles) {
+        //     UpdateFlg updateFlg = UpdateFlg.fromInt(role.getUpdateFlg());
+        //     RoleEntity roleEntity = roleEntitiesMap.get(role.getRoleName());
 
-            switch (updateFlg) {
-                case NEW -> {
-                    Optional<UserRole> userRole = assignNewRole(roleEntity, userEntity);
-                    if (userRole.isEmpty()) {
-                        throw new InvalidDataException(ApiError.from(RoleError.ROLE_ASSIGNMENT_FAILED));
-                    }
-                }
-                case DELETE -> {
-                    deleteAssigedRole(roleEntity, userEntity);
-                }
-                default -> {
-                }
-            }
-        }
+        //     switch (updateFlg) {
+        //         case NEW -> {
+        //             Optional<UserRole> userRole = assignNewRole(roleEntity, userEntity);
+        //             if (userRole.isEmpty()) {
+        //                 throw new InvalidDataException(ApiError.from(RoleError.ROLE_ASSIGNMENT_FAILED));
+        //             }
+        //         }
+        //         case DELETE -> {
+        //             deleteAssigedRole(roleEntity, userEntity);
+        //         }
+        //         default -> {
+        //         }
+        //     }
+        // }
 
-        return toRoleAssignmentResponse(username);
+        return null;
     }
 
     private RoleAssignmentResponse toRoleAssignmentResponse(String username) {
