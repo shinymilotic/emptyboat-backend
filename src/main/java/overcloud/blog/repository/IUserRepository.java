@@ -2,8 +2,6 @@ package overcloud.blog.repository;
 
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.usecase.user.get_followers.FollowerListResposne;
-import overcloud.blog.usecase.user.get_followers.GetFollowers;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -19,4 +17,6 @@ public interface IUserRepository {
     FollowerListResposne getFollowers(UUID userId);
 
     List<UserEntity> findAll(int page, int size);
+
+    UserEntity findRolesByUsernname(String username);
 }

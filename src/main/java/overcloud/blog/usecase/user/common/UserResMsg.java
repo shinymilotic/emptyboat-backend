@@ -36,4 +36,8 @@ public class UserResMsg {
     public static final String USER_GET_FOLLOWERS = "user.get-followers";
     // get profile
     public static final String USER_GET_PROFILE = "user.get-profile";
+    // get user list
+    public static final String USER_GET_USER_LIST = "user.get-user-list";
+    // get role user
+    public static final String GET_ROLE_USER = "user.get-roles-user";
 }

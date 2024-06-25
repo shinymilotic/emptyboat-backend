@@ -5,37 +5,38 @@ import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.jparepository.JpaRoleRepository;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
+import overcloud.blog.repository.IRoleRepository;
+import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.usecase.user.common.UserError;
-
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
+import overcloud.blog.usecase.user.common.UserResMsg;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
 public class GetRolesUserServiceImpl implements GetRolesUserService {
+    private final IUserRepository userRepository;
+    private final IRoleRepository roleRepository;
+    private final ResFactory resFactory;
 
-    private final JpaUserRepository userRepository;
-
-    private final JpaRoleRepository roleRepository;
-
-    public GetRolesUserServiceImpl(JpaUserRepository userRepository,
-                                   JpaRoleRepository roleRepository) {
+    public GetRolesUserServiceImpl(IUserRepository userRepository,
+                                    IRoleRepository roleRepository,
+                                    ResFactory resFactory) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.resFactory = resFactory;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UserRoleListResponse getRolesUser(String username) {
+    public RestResponse<UserRoleListResponse> getRolesUser(String username) {
         UserEntity user = userRepository.findRolesByUsernname(username);
         List<RoleEntity> roles = roleRepository.findAll();
 
         if (user == null) {
-            // do something
-            throw new InvalidDataException(UserError.USER_NOT_FOUND);
+            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
         }
         Set<RoleEntity> rolesUser = user.getRoles();
 
@@ -49,7 +50,6 @@ public class GetRolesUserServiceImpl implements GetRolesUserService {
             listResponse.add(userRoleResponse);
         }
 
-        UserRoleListResponse rs = new UserRoleListResponse(listResponse);
-        return rs;
+        return resFactory.success(UserResMsg.GET_ROLE_USER, new UserRoleListResponse(listResponse));
     }
 }

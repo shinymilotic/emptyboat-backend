@@ -1,5 +1,6 @@
 package overcloud.blog.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +15,6 @@ public interface IRoleRepository {
     int updateRoleByName(String currentRoleName, String updateRoleName);
 
     int deleteRoleByName(String deleteRoleName);
+
+    List<RoleEntity> findAll();
 }

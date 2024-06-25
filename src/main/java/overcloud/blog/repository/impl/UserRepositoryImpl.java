@@ -14,34 +14,34 @@ import java.util.UUID;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository {
-    private final IUserRepository jpaUserRepository;
+    private final IUserRepository jpa;
     private final EntityManager entityManager;
     private final PlainQueryBuilder queryBuilder;
 
     public UserRepositoryImpl(IUserRepository jpaUserRepository, EntityManager entityManager, PlainQueryBuilder queryBuilder) {
-        this.jpaUserRepository = jpaUserRepository;
+        this.jpa = jpaUserRepository;
         this.entityManager = entityManager;
         this.queryBuilder = queryBuilder;
     }
 
     @Override
     public UserEntity findByUsername(String username) {
-        return jpaUserRepository.findByUsername(username);
+        return jpa.findByUsername(username);
     }
 
     @Override
     public UserEntity findByEmail(String email) {
-        return jpaUserRepository.findByEmail(email);
+        return jpa.findByEmail(email);
     }
 
     @Override
     public UserEntity save(UserEntity entity) {
-        return jpaUserRepository.save(entity);
+        return jpa.save(entity);
     }
 
     @Override
     public void enableUser(String confirmToken) {
-        jpaUserRepository.enableUser(confirmToken);
+        jpa.enableUser(confirmToken);
     }
 
     @Override
@@ -78,5 +78,10 @@ public class UserRepositoryImpl implements IUserRepository {
                 .setMaxResults(size)
                 .getResultList();
 
+    }
+
+    @Override
+    public UserEntity findRolesByUsernname(String username) {
+        return jpa.findRolesByUsernname(username);
     }
 }

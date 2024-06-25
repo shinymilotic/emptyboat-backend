@@ -4,36 +4,39 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserListResponse;
+import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class GetUserListService {
-
     private final IUserRepository userRepository;
-
     private final UserResponseMapper userResponseMapper;
+    private final ResFactory resFactory;
 
     public GetUserListService(IUserRepository userRepository,
-                              UserResponseMapper userResponseMapper) {
+                              UserResponseMapper userResponseMapper,
+                              ResFactory resFactory) {
         this.userRepository = userRepository;
         this.userResponseMapper = userResponseMapper;
+        this.resFactory = resFactory;
     }
 
     @Transactional(readOnly = true)
-    public UserListResponse getUsers(int page, int size) {
+    public RestResponse<UserListResponse> getUsers(int page, int size) {
         List<UserEntity> users = userRepository.findAll(page, size);
         List<UserResponse> userResponses = users.stream()
                 .map(userResponseMapper::toUserResponse)
                 .collect(Collectors.toList());
 
-        return UserListResponse.builder()
-                .users(userResponses)
-                .build();
+        return resFactory.success(UserResMsg.USER_GET_USER_LIST,
+                         UserListResponse.builder()
+                            .users(userResponses)
+                            .build()); 
     }
 }

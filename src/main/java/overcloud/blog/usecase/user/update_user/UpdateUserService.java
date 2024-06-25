@@ -2,7 +2,6 @@ package overcloud.blog.usecase.user.update_user;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import overcloud.blog.core.cache.RedisUtils;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
@@ -24,20 +23,17 @@ public class UpdateUserService {
     private final SpringAuthenticationService authenticationService;
     private final UserResponseMapper userResponseMapper;
     private final ObjectsValidator<UpdateUserRequest> validator;
-    private final RedisUtils redisUtils;
     private final ResFactory resFactory;
 
     public UpdateUserService(JpaUserRepository userRepository,
                              SpringAuthenticationService authenticationService,
                              UserResponseMapper userResponseMapper,
                              ObjectsValidator<UpdateUserRequest> validator,
-                             RedisUtils redisUtils,
                              ResFactory resFactory) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.userResponseMapper = userResponseMapper;
         this.validator = validator;
-        this.redisUtils = redisUtils;
         this.resFactory = resFactory;
     }
 
