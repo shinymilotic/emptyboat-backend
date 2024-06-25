@@ -15,7 +15,6 @@ public class ApiError {
     }
 
     public ApiError() {
-        //TODO Auto-generated constructor stub
     }
 
     public static ApiError from(List<ApiValidationError> data) {
