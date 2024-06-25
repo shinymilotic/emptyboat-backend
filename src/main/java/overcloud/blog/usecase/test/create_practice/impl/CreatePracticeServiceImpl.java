@@ -4,19 +4,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.*;
+import overcloud.blog.repository.IEssayAnswerRepository;
+import overcloud.blog.repository.IPracticeChoiceRepository;
 import overcloud.blog.repository.IPracticeRepository;
-import overcloud.blog.repository.jparepository.JpaEssayAnswerRepository;
-import overcloud.blog.repository.jparepository.JpaPracticeChoiceRepository;
-import overcloud.blog.repository.jparepository.JpaTestRepository;
+import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.ChoiceAnswer;
 import overcloud.blog.usecase.test.common.EssayAnswer;
 import overcloud.blog.usecase.test.common.PracticeRequest;
+import overcloud.blog.usecase.test.common.PracticeResMsg;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
-import overcloud.blog.usecase.user.common.UserError;
-
+import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,39 +27,41 @@ import java.util.UUID;
 
 @Service
 public class CreatePracticeServiceImpl implements CreatePracticeService {
-
     private final IPracticeRepository practiceRepository;
-    private final JpaTestRepository testRepository;
+    private final ITestRepository testRepository;
     private final SpringAuthenticationService authenticationService;
-    private final JpaPracticeChoiceRepository practiceChoiceRepository;
-    private final JpaEssayAnswerRepository essayAnswerRepository;
+    private final IPracticeChoiceRepository practiceChoiceRepository;
+    private final IEssayAnswerRepository essayAnswerRepository;
+    private final ResFactory resFactory;
 
     CreatePracticeServiceImpl(IPracticeRepository practiceRepository,
                               SpringAuthenticationService authenticationService,
-                              JpaTestRepository testRepository,
-                              JpaPracticeChoiceRepository practiceChoiceRepository,
-                              JpaEssayAnswerRepository essayAnswerRepository) {
+                              ITestRepository testRepository,
+                              IPracticeChoiceRepository practiceChoiceRepository,
+                              IEssayAnswerRepository essayAnswerRepository,
+                              ResFactory resFactory) {
         this.practiceRepository = practiceRepository;
         this.authenticationService = authenticationService;
         this.testRepository = testRepository;
         this.practiceChoiceRepository = practiceChoiceRepository;
         this.essayAnswerRepository = essayAnswerRepository;
+        this.resFactory = resFactory;
     }
 
     @Override
     @Transactional
-    public CreatePracticeResponse createPractice(PracticeRequest practiceRequest) {
+    public RestResponse<CreatePracticeResponse> createPractice(PracticeRequest practiceRequest) {
         String slug = practiceRequest.getSlug();
         List<ChoiceAnswer> choices = practiceRequest.getChoiceAnswers();
         List<EssayAnswer> essayAnswers = practiceRequest.getEssayAnswers();
         LocalDateTime now = LocalDateTime.now();
 
         if (choices == null || choices.isEmpty()) {
-            // throw new InvalidDataException(null);
+            throw new InvalidDataException(resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED));
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(UserError.USER_NOT_FOUND))
+                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
         Optional<TestEntity> testEntity = testRepository.findBySlug(slug);
@@ -97,6 +101,6 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         CreatePracticeResponse response = new CreatePracticeResponse();
         response.setPracticeId(practiceEntity.getId());
 
-        return response;
+        return resFactory.success(PracticeResMsg.PRACTICE_CREATE_SUCCESS, response);
     }
 }
