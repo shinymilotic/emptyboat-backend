@@ -7,4 +7,5 @@ public class PracticeResMsg  {
     public static final String PRACTICE_CREATE_FAILED = "practice.create.failed";
     public static final String PRACTICE_UPDATE_SUCCESS = "practice.update.success";
     public static final String PRACTICE_GETRESULT_SUCCESS = "practice.get-result";
+    public static final String PRACTICE_GET_LIST = "practice.get-list";
 }
