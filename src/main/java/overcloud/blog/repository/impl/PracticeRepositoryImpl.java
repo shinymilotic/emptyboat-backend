@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeRepository;
-import overcloud.blog.usecase.test.common.Answer;
 import overcloud.blog.usecase.test.get_practice.*;
-
 import java.util.*;
 
 @Repository
