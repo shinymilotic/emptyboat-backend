@@ -3,19 +3,12 @@ package overcloud.blog.usecase.user.logout;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import overcloud.blog.core.cache.RedisUtils;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
-import overcloud.blog.usecase.common.auth.bean.SecurityUser;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
-
 import java.util.Arrays;
 import java.util.Optional;
 
