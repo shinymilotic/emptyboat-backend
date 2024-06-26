@@ -6,14 +6,17 @@ import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.TestQuestion;
-import overcloud.blog.repository.jparepository.JpaTestRepository;
+import overcloud.blog.repository.ITestRepository;
+import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.Answer;
 import overcloud.blog.usecase.test.common.EssayQuestion;
 import overcloud.blog.usecase.test.common.Question;
+import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.common.TestResponse;
 import overcloud.blog.usecase.test.get_test.ChoiceQuestion;
 import overcloud.blog.usecase.test.get_test.GetTestService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,31 +24,35 @@ import java.util.UUID;
 
 @Service
 public class GetTestServiceImpl implements GetTestService {
+    private final ITestRepository testRepository;
+    private final ResFactory resFactory;
 
-    private final JpaTestRepository testRepository;
-
-    public GetTestServiceImpl(JpaTestRepository testRepository) {
+    public GetTestServiceImpl(ITestRepository testRepository, ResFactory resFactory) {
         this.testRepository = testRepository;
+        this.resFactory = resFactory;
     }
 
     @Override
     @Transactional
-    public TestResponse getTest(String slug) {
+    public RestResponse<TestResponse> getTest(String slug) {
         Optional<TestEntity> testEntity = this.testRepository.findBySlug(slug);
 
         if (!testEntity.isPresent()) {
             // do something...
+            throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_GET_FAILED));
         }
 
         String titleDB = testEntity.get().getTitle();
         String slugDB = testEntity.get().getSlug();
         String descriptionDB = testEntity.get().getDescription();
 
-        return TestResponse.testResponseFactory(
+        TestResponse res = TestResponse.testResponseFactory(
                 titleDB,
                 descriptionDB,
                 slugDB,
                 getQuestions(testEntity.get().getQuestions()));
+        
+        return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, res);
     }
 
     public List<Question> getQuestions(List<TestQuestion> testQuestions) {

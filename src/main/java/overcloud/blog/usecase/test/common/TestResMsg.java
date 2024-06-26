@@ -2,9 +2,10 @@ package overcloud.blog.usecase.test.common;
 
 
 public class TestResMsg  {
-    // ANSWER_EMPTY("test.answer.empty", "Answer must not empty!"),
     public static final String ANSWER_NOT_FOUND = "test.answer.empty";
     public static final String TEST_CREATE_SUCCESS = "test.create.success";
-    public static final String TEST_NOT_FOUND = null;
-
+    public static final String TEST_NOT_FOUND = "test.not-found";
+    public static final String TEST_GET_LIST = "test.get-list";
+    public static final String TEST_GET_SUCCESS = "test.get.success";
+    public static final String TEST_GET_FAILED = "test.get.failed";
 }

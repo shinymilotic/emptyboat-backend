@@ -9,12 +9,8 @@ import java.util.UUID;
 
 public interface IPracticeRepository {
     List<PracticeEntity> findByTesterId(UUID testerId);
-
     void deleteByTestId(UUID testId);
-
     Optional<PracticeEntity> findById(UUID id);
-
     PracticeResult getPracticeResult(UUID id);
-
     PracticeEntity save(PracticeEntity entity);
 }
