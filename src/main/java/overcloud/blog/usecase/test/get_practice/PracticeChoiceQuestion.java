@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.usecase.test.common.Answer;
-
 import java.util.List;
 import java.util.UUID;
 
