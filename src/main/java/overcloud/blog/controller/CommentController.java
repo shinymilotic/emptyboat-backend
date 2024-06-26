@@ -13,11 +13,8 @@ import overcloud.blog.usecase.common.response.RestResponse;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class CommentController {
-
     private final GetCommentsService getCommentsService;
-
     private final DeleteCommentService deleteCommentService;
-
     private final CreateCommentService createCommentService;
 
     public CommentController(GetCommentsService getCommentsService,

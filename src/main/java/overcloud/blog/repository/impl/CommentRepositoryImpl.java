@@ -3,6 +3,8 @@ package overcloud.blog.repository.impl;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
+
+import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.repository.ICommentRepository;
 import overcloud.blog.repository.jparepository.JpaCommentRepository;
 
@@ -20,5 +22,9 @@ public class CommentRepositoryImpl implements ICommentRepository {
     @Override
     public void deleteById(UUID fromString) {
         jpa.deleteById(fromString);
+    }
+    @Override
+    public CommentEntity save(CommentEntity commentEntity) {
+        return jpa.save(commentEntity);
     }
 }

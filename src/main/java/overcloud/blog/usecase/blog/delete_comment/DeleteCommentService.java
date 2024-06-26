@@ -21,6 +21,6 @@ public class DeleteCommentService {
     @Transactional
     public RestResponse<Void> deleteComment(String slug, String commendId) {
         commentRepository.deleteById(UUID.fromString(commendId));
-        return resFactory.success(CommentResMsg.COMMENT_SUCCESS, null);
+        return resFactory.success(CommentResMsg.COMMENT_DELETE_SUCCESS, null);
     }
 }
