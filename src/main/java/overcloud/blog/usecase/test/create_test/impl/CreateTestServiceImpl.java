@@ -6,44 +6,44 @@ import org.springframework.util.StringUtils;
 
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IQuestionRepository;
-import overcloud.blog.repository.jparepository.JpaTestRepository;
+import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.blog.common.ArticleUtils;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
-import overcloud.blog.usecase.common.exceptionhandling.ApiError;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.*;
 import overcloud.blog.usecase.test.create_test.CreateTestService;
-import overcloud.blog.usecase.user.common.UserError;
-
+import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CreateTestServiceImpl implements CreateTestService {
-
-    private final JpaTestRepository testRepository;
-
+    private final ITestRepository testRepository;
     private final IQuestionRepository questionRepository;
-
     private final SpringAuthenticationService authenticationService;
+    private final ResFactory resFactory;
 
-    public CreateTestServiceImpl(JpaTestRepository testRepository,
+    public CreateTestServiceImpl(ITestRepository testRepository,
                                  IQuestionRepository questionRepository,
-                                 SpringAuthenticationService authenticationService) {
+                                 SpringAuthenticationService authenticationService,
+                                 ResFactory resFactory) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.authenticationService = authenticationService;
+        this.resFactory = resFactory;
     }
 
     @Override
     @Transactional
-    public void createTest(TestRequest testRequest)  {
+    public RestResponse<Void> createTest(TestRequest testRequest)  {
         List<Question> questions = testRequest.getQuestions();
         LocalDateTime now = LocalDateTime.now();
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(ApiError.from(UserError.USER_NOT_FOUND)))
+                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
         TestEntity testEntity = new TestEntity();
@@ -85,10 +85,9 @@ public class CreateTestServiceImpl implements CreateTestService {
             testQuestion.setQuestion(questionEntity);
             testQuestions.add(testQuestion);
         }
-
         savedTest.setQuestions(testQuestions);
 
-//        savedTest.setQuestions();
+        return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
     }
 
     public List<AnswerEntity> answerEntities(List<Answer> answers, QuestionEntity question, LocalDateTime now) {
@@ -99,7 +98,7 @@ public class CreateTestServiceImpl implements CreateTestService {
             boolean truth = answer.isTruth();
 
             if (!StringUtils.hasText(answerContent)) {
-                throw new InvalidDataException(ApiError.from(TestError.ANSWER_EMPTY));
+                throw new InvalidDataException(resFactory.fail(TestResMsg.ANSWER_NOT_FOUND));
             }
 
             AnswerEntity answerEntity = new AnswerEntity();

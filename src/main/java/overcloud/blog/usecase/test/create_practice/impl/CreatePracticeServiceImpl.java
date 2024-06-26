@@ -67,7 +67,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         Optional<TestEntity> testEntity = testRepository.findBySlug(slug);
 
         if (!testEntity.isPresent()) {
-            //throw exception
+            throw new InvalidDataException(resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED));
         }
 
         PracticeEntity practiceEntity = new PracticeEntity();

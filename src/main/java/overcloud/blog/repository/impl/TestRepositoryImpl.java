@@ -9,6 +9,7 @@ import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class TestRepositoryImpl implements ITestRepository {
@@ -31,5 +32,15 @@ public class TestRepositoryImpl implements ITestRepository {
     @Override
     public Optional<TestEntity> findBySlug(String slug) {
         return jpa.findBySlug(slug);
+    }
+
+    @Override
+    public TestEntity save(TestEntity testEntity) {
+        return jpa.save(testEntity);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        jpa.deleteById(id);
     }
 }

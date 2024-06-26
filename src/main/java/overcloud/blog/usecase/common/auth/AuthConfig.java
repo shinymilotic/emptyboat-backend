@@ -28,11 +28,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class AuthConfig implements WebMvcConfigurer {
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
     private final AuthInterceptor authInterceptor;
-
     private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     public AuthConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
