@@ -14,4 +14,5 @@ public class ArticleResMsg {
     public static final String ARTICLE_DESCRIPTION_SIZE = "article.description.size";
     public static final String ARTICLE_BODY_NOTBLANK = "article.body.not-blank";
     public static final String ARTICLE_TAGS_NOTEMPTY = "article.tags.not-empty";
+    public static final String ARTICLE_DELETE_SUCCESS = "article.delete.success";
 }

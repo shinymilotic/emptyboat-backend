@@ -40,7 +40,7 @@ public class CommentController {
     }
 
     @DeleteMapping(ApiConst.ARTICLES_SLUG_COMMENTS_ID)
-    public RestResponse<Boolean> deleteComment(@PathVariable String slug, @PathVariable("id") String commendId) {
+    public RestResponse<Void> deleteComment(@PathVariable String slug, @PathVariable("id") String commendId) {
         return deleteCommentService.deleteComment(slug, commendId);
     }
 }

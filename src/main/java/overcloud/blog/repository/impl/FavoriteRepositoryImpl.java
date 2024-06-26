@@ -12,7 +12,6 @@ import overcloud.blog.repository.jparepository.JpaFavoriteRepository;
 
 @Repository
 public class FavoriteRepositoryImpl implements IFavoriteRepository {
-
     private final JpaFavoriteRepository jpa;
     
     public FavoriteRepositoryImpl(JpaFavoriteRepository jpa) {
