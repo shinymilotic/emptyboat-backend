@@ -4,38 +4,24 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class ArticleSummary {
     private UUID id;
-
     private String slug;
-
     private String title;
-
     private String description;
-
     private String body;
-
     private List<String> tag;
-
     private Timestamp createdAt;
-
     private Boolean favorited;
-
     private Long favoritesCount;
-
     private String username;
-
     private String bio;
-
     private String image;
-
     private Boolean following;
-
     private Long followersCount;
-
-    public ArticleSummary() {
-
-    }
 
     public UUID getId() {
         return id;

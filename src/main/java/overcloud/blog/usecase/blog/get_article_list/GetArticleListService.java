@@ -2,15 +2,14 @@ package overcloud.blog.usecase.blog.get_article_list;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IArticleRepository;
-import overcloud.blog.repository.jparepository.JpaArticleRepository;
+import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.common.auth.bean.SecurityUser;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
+import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,15 +17,16 @@ import java.util.UUID;
 
 @Service
 public class GetArticleListService {
-
     private final IArticleRepository articleRepository;
-
     private final SpringAuthenticationService authenticationService;
+    private final ResFactory resFactory;
 
     public GetArticleListService(IArticleRepository articleRepository,
-                                 SpringAuthenticationService authenticationService) {
+                                 SpringAuthenticationService authenticationService,
+                                 ResFactory resFactory) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
+        this.resFactory = resFactory;
     }
 
     @Transactional(readOnly = true)
@@ -43,23 +43,23 @@ public class GetArticleListService {
         List<ArticleSummary> articleSummaries = articleRepository.findBy(currentUserId, tag, author, favorited, limit, lastArticleId);
 
         for (ArticleSummary article : articleSummaries) {
-            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article, currentUser);
+            GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article);
             getArticlesResponse.getArticles().add(singleResponse);
             getArticlesResponse.addArticleCount();
         }
 
-        return getArticlesResponse;
+        return resFactory.success(ArticleResMsg.ARTICLE_GET_LIST, getArticlesResponse);
     }
 
 
-    private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleSummary article, UserEntity currentUser) {
+    private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleSummary article) {
         return GetArticlesSingleResponse.builder()
                 .id(article.getId().toString())
                 .title(article.getTitle())
                 .body(article.getBody())
                 .description(article.getDescription())
                 .slug(article.getSlug())
-                .author(toGetArticleAuthorResponse(currentUser, article))
+                .author(toGetArticleAuthorResponse(article))
                 .favorited(article.isFavorited())
                 .favoritesCount(article.getFavoritesCount())
                 .tagList(article.getTag())
@@ -67,7 +67,7 @@ public class GetArticleListService {
                 .build();
     }
 
-    private AuthorResponse toGetArticleAuthorResponse(UserEntity currentUser, ArticleSummary author) {
+    private AuthorResponse toGetArticleAuthorResponse(ArticleSummary author) {
         return AuthorResponse.builder()
                 .username(author.getUsername())
                 .bio(author.getBio())

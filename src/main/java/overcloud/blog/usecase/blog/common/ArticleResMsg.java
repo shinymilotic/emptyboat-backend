@@ -17,4 +17,6 @@ public class ArticleResMsg {
     public static final String ARTICLE_DELETE_SUCCESS = "article.delete.success";
     public static final String ARTICLE_FAVORITE_SUCCESS = "article.favorite.success";
     public static final String ARTICLE_UNFAVORITE_SUCCESS = "article.unfavorite.success";
+    public static final String ARTICLE_GET_SUCCESS = "article.get.success";
+    public static final String ARTICLE_GET_LIST = "article.get-list.success";
 }
