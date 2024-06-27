@@ -15,4 +15,6 @@ public class ArticleResMsg {
     public static final String ARTICLE_BODY_NOTBLANK = "article.body.not-blank";
     public static final String ARTICLE_TAGS_NOTEMPTY = "article.tags.not-empty";
     public static final String ARTICLE_DELETE_SUCCESS = "article.delete.success";
+    public static final String ARTICLE_FAVORITE_SUCCESS = "article.favorite.success";
+    public static final String ARTICLE_UNFAVORITE_SUCCESS = "article.unfavorite.success";
 }

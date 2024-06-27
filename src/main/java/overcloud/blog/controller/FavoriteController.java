@@ -1,17 +1,14 @@
 package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.usecase.blog.create_article.ArticleResponse;
-import overcloud.blog.usecase.blog.favorite.make_favorite.MakeUnfavoriteService;
-import overcloud.blog.usecase.blog.favorite.make_unfavorite.MakeFavoriteService;
+import overcloud.blog.usecase.blog.favorite.make_favorite.MakeFavoriteService;
+import overcloud.blog.usecase.blog.favorite.make_unfavorite.MakeUnfavoriteService;
 import overcloud.blog.usecase.common.response.RestResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class FavoriteController {
-
     private final MakeFavoriteService makeFavoriteService;
-
     private final MakeUnfavoriteService makeUnfavoriteService;
 
     public FavoriteController(MakeFavoriteService makeFavoriteService,

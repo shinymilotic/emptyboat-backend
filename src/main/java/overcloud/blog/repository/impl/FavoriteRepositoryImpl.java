@@ -32,4 +32,9 @@ public class FavoriteRepositoryImpl implements IFavoriteRepository {
     public void deleteById(FavoriteId favoritePk) {
         this.jpa.deleteById(favoritePk);
     }
+
+    @Override
+    public void save(FavoriteEntity favoriteEntity) {
+        this.jpa.save(favoriteEntity);
+    }
 }
