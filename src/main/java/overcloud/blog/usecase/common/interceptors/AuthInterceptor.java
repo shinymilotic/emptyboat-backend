@@ -6,12 +6,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.user.common.UserResMsg;
-
 import java.util.List;
 import java.util.Map;
 

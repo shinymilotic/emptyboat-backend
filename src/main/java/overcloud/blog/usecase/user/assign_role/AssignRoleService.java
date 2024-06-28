@@ -10,21 +10,9 @@ import overcloud.blog.entity.UserRoleId;
 import overcloud.blog.repository.IRoleRepository;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.IUserRoleRepository;
-import overcloud.blog.repository.jparepository.JpaRoleRepository;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
-import overcloud.blog.repository.jparepository.JpaUserRoleRepository;
-import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.RestResponse;
-import overcloud.blog.usecase.user.common.RoleDto;
-import overcloud.blog.usecase.user.common.RoleResMsg;
 import overcloud.blog.usecase.user.common.RolesRequest;
-import overcloud.blog.usecase.user.common.UpdateFlg;
-
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class AssignRoleService {

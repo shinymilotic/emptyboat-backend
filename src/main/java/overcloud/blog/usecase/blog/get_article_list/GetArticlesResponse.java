@@ -18,5 +18,4 @@ public class GetArticlesResponse {
     public void addArticleCount() {
         this.articlesCount++;
     }
-
 }
