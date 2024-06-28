@@ -3,22 +3,25 @@ package overcloud.blog.usecase.blog.get_tags;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.TagEntity;
-import overcloud.blog.repository.jparepository.JpaTagRepository;
-
+import overcloud.blog.repository.ITagRepository;
+import overcloud.blog.usecase.blog.common.TagResMsg;
+import overcloud.blog.usecase.common.response.ResFactory;
+import overcloud.blog.usecase.common.response.RestResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class GetTagsService {
+    private final ITagRepository tagRepository;
+    private final ResFactory resFactory;
 
-    private final JpaTagRepository tagRepository;
-
-    public GetTagsService(JpaTagRepository tagRepository) {
+    public GetTagsService(ITagRepository tagRepository, ResFactory resFactory) {
         this.tagRepository = tagRepository;
+        this.resFactory = resFactory;
     }
 
     @Transactional(readOnly = true)
-    public GetTagResponse getTags() {
+    public RestResponse<GetTagResponse> getTags() {
         List<String> tags = new ArrayList<>();
         List<TagEntity> tagEntities = tagRepository.findAll();
 
@@ -26,7 +29,7 @@ public class GetTagsService {
             tags.add(tagEntity.getName());
         }
 
-        return toGetTagReponse(tags);
+        return resFactory.success(TagResMsg.TAG_GET_SUCCESS, toGetTagReponse(tags));
     }
 
     public GetTagResponse toGetTagReponse(List<String> tags) {

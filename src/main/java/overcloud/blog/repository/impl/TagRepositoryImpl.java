@@ -22,4 +22,8 @@ public class TagRepositoryImpl implements ITagRepository {
     public void saveAll(List<TagEntity> tagForSave) {
         jpa.saveAll(tagForSave);
     }
+    @Override
+    public List<TagEntity> findAll() {
+        return jpa.findAll();
+    }
 }

@@ -7,4 +7,5 @@ import overcloud.blog.entity.TagEntity;
 public interface ITagRepository {
     List<TagEntity> findByTagName(List<String> tagList);
     void saveAll(List<TagEntity> tagForSave);
+    List<TagEntity> findAll();
 }
