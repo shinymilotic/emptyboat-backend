@@ -6,20 +6,20 @@ import org.springframework.stereotype.Repository;
 import overcloud.blog.core.sql.PlainQueryBuilder;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.get_followers.FollowerListResposne;
-
 import java.util.List;
 import java.util.UUID;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository {
-    private final IUserRepository jpa;
+    private final JpaUserRepository jpa;
     private final EntityManager entityManager;
     private final PlainQueryBuilder queryBuilder;
 
-    public UserRepositoryImpl(IUserRepository jpaUserRepository, EntityManager entityManager, PlainQueryBuilder queryBuilder) {
-        this.jpa = jpaUserRepository;
+    public UserRepositoryImpl(JpaUserRepository jpa, EntityManager entityManager, PlainQueryBuilder queryBuilder) {
+        this.jpa = jpa;
         this.entityManager = entityManager;
         this.queryBuilder = queryBuilder;
     }
@@ -47,6 +47,7 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     public FollowerListResposne getFollowers(UUID userId) {
         FollowerListResposne resposne = new FollowerListResposne();
+        
         Query query = entityManager
                 .createNativeQuery("select u.id, u.email, u.username, u.bio, u.image  " +
                                 "from users u " +

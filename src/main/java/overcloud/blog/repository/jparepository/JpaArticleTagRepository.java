@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.ArticleTag;
 import overcloud.blog.entity.ArticleTagId;
-
 import java.util.UUID;
 
 @Repository
@@ -14,7 +13,7 @@ public interface JpaArticleTagRepository extends JpaRepository<ArticleTag, Artic
     @Modifying
     @Query("""
             DELETE FROM ArticleTag articleTag\
-             WHERE articleTag.article.id = :articleId AND articleTag.tag.id = :tagId \
+             WHERE articleTag.id.articleId = :articleId AND articleTag.id.tagId = :tagId \
             """)
     void deleteArticleTags(UUID articleId, UUID tagId);
 

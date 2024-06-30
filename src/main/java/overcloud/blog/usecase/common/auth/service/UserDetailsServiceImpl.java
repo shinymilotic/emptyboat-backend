@@ -5,17 +5,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.repository.jparepository.JpaUserRepository;
+import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.common.auth.bean.SecurityUser;
-
 import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final JpaUserRepository userRepository;
+    private final IUserRepository userRepository;
 
-    public UserDetailsServiceImpl(JpaUserRepository userRepository) {
+    public UserDetailsServiceImpl(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

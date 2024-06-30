@@ -3,7 +3,7 @@ package overcloud.blog.usecase.user.update_user;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
+import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ApiError;
@@ -19,13 +19,13 @@ import java.util.Optional;
 @Service
 public class UpdateUserService {
 
-    private final JpaUserRepository userRepository;
+    private final IUserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
     private final UserResponseMapper userResponseMapper;
     private final ObjectsValidator<UpdateUserRequest> validator;
     private final ResFactory resFactory;
 
-    public UpdateUserService(JpaUserRepository userRepository,
+    public UpdateUserService(IUserRepository userRepository,
                              SpringAuthenticationService authenticationService,
                              UserResponseMapper userResponseMapper,
                              ObjectsValidator<UpdateUserRequest> validator,

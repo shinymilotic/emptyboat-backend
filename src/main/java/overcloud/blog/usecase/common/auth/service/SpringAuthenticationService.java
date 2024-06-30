@@ -3,19 +3,17 @@ package overcloud.blog.usecase.common.auth.service;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import overcloud.blog.repository.jparepository.JpaUserRepository;
+import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.common.auth.bean.SecurityUser;
 
 import java.util.Optional;
 
 @Service
 public class SpringAuthenticationService {
-    private final JpaUserRepository userRepository;
-
+    private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SpringAuthenticationService(JpaUserRepository userRepository,
+    public SpringAuthenticationService(IUserRepository userRepository,
                                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

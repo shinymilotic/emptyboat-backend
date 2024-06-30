@@ -1,6 +1,10 @@
 package overcloud.blog.core.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
+
+import javax.sql.DataSource;
+
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -9,27 +13,27 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class DataSourceConfig {
 
-//    @Bean
-//    public DataSource getDataSource() {
-//        StringBuilder connectionString = new StringBuilder();
-//        connectionString.append("jdbc:postgresql://localhost:5432/realworld");
-//
-//        return DataSourceBuilder.create()
-//            .driverClassName("org.postgresql.Driver")
-//            .url(connectionString.toString())
-//            .username("postgres")
-//            .password("123123").build();
-//    }
+   @Bean
+   public DataSource getDataSource() {
+       StringBuilder connectionString = new StringBuilder();
+       connectionString.append("jdbc:postgresql://localhost:5432/realworld");
 
-    @Bean
-    public HikariDataSource getDataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
-        dataSource.addDataSourceProperty("user","postgres");
-        dataSource.addDataSourceProperty("password","123123");
-        dataSource.addDataSourceProperty("serverName", "172.17.0.1");
-        dataSource.addDataSourceProperty("portNumber","5432");
-        dataSource.addDataSourceProperty("databaseName", "realworld");
+       return DataSourceBuilder.create()
+           .driverClassName("org.postgresql.Driver")
+           .url(connectionString.toString())
+           .username("postgres")
+           .password("123123").build();
+   }
+
+    // @Bean
+    // public HikariDataSource getDataSource() {
+    //     HikariDataSource dataSource = new HikariDataSource();
+    //     dataSource.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
+    //     dataSource.addDataSourceProperty("user","postgres");
+    //     dataSource.addDataSourceProperty("password","1231233");
+    //     dataSource.addDataSourceProperty("serverName", "localhost");
+    //     dataSource.addDataSourceProperty("portNumber","5432");
+    //     dataSource.addDataSourceProperty("databaseName", "realworld");
 //        dataSource.addDataSourceProperty("hibernate.connection.provider_class", "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
 
 //        dataSource.setConnectionTimeout(30000);
@@ -40,11 +44,11 @@ public class DataSourceConfig {
 //        dataSource.setIdleTimeout(0);
 //        dataSource.setMaximumPoolSize(20);
 //        dataSource.setRegisterMbeans(true);
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("123123");
+    //     dataSource.setUsername("postgres");
+    //     dataSource.setPassword("123123");
 
-        return dataSource;
-    }
+    //     return dataSource;
+    // }
 
 
 

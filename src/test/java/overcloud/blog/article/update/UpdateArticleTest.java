@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
-import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleRequest;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleService;

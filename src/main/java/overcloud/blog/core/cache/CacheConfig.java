@@ -17,7 +17,7 @@ public class CacheConfig {
     @Bean
     public JedisConnectionFactory connectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("172.17.0.1");
+        configuration.setHostName("localhost");
         configuration.setDatabase(3);
         configuration.setUsername("default");
         configuration.setPassword("");
