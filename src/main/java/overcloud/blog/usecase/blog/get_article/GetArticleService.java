@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IArticleRepository;
+import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.common.auth.bean.SecurityUser;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
@@ -39,7 +40,7 @@ public class GetArticleService {
 
         ArticleSummary articleSummary = articleRepository.findArticleBySlug(slug, articleId);
 
-        return resFactory.success(slug, toGetArticlesingleResponse(articleSummary));
+        return resFactory.success(ArticleResMsg.ARTICLE_GET_SUCCESS, toGetArticlesingleResponse(articleSummary));
     }
 
     private GetArticleResponse toGetArticlesingleResponse(ArticleSummary article) {
