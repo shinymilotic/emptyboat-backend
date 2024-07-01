@@ -46,7 +46,7 @@ public class CreateCommentService {
         Optional<ApiError> apiError = validator.validate(createCommentRequest);
 
         if (apiError.isPresent()) {
-            throw new InvalidDataException(resFactory.fail(CommentResMsg.COMMENT_CREATE_FAILED, apiError.get()));
+            throw new InvalidDataException(apiError.get());
         }
 
         List<ArticleEntity> articleEntities = articleRepository.findBySlug(slug);

@@ -1,12 +1,13 @@
 package overcloud.blog.usecase.common.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@NoArgsConstructor
 public class ApiError {
     private List<ApiValidationError> errors;
 
@@ -14,10 +15,11 @@ public class ApiError {
         this.errors = data;
     }
 
-    public ApiError() {
-    }
-
     public static ApiError from(List<ApiValidationError> data) {
         return new ApiError(data);
+    }
+
+    public static ApiError from(String id, String message) {        
+        return new ApiError(List.of(new ApiValidationError(id, message)));
     }
 }

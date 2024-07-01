@@ -56,7 +56,7 @@ public class CreateArticleService {
         Optional<ApiError> apiError = validator.validate(articleRequest);
 
         if (apiError.isPresent()) {
-            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_CREATE_FAILED, apiError.get()));
+            throw new InvalidDataException(apiError.get());
         }
 
         Optional<Boolean> isExist = articleRepository.isTitleExist(title);

@@ -42,8 +42,7 @@ public class UpdateUserService {
         Optional<ApiError> apiError = validator.validate(updateUserDto);
 
         if (apiError.isPresent()) {
-            RestResponse<ApiError> res = resFactory.fail(UserResMsg.USER_UPDATE_FAILED, apiError.get());
-            throw new InvalidDataException(res);
+            throw new InvalidDataException(apiError.get());
         }
 
         String updateBio = updateUserDto.getBio();

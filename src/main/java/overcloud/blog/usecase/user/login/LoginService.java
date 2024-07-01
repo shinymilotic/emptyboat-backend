@@ -47,8 +47,7 @@ public class LoginService {
     public RestResponse<UserResponse> login(LoginRequest loginRequest, HttpServletResponse response) {
         Optional<ApiError> apiError = validator.validate(loginRequest);
         if (apiError.isPresent()) {
-            RestResponse<ApiError> res = resFactory.fail(UserResMsg.USER_LOGIN_FAILED, apiError.get());
-            throw new InvalidDataException(res);
+            throw new InvalidDataException(apiError.get());
         }
 
         String email = loginRequest.getEmail();

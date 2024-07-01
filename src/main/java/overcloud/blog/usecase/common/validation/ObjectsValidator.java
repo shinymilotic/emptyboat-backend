@@ -27,9 +27,10 @@ public class ObjectsValidator<T> {
     public Optional<ApiError> validate(T objectToValidate) {
         Set<ConstraintViolation<T>> violations = validator.validate(objectToValidate);
         if (!violations.isEmpty()) {
+
             List<ApiValidationError> errors = violations.stream()
                     .map(ConstraintViolation::getMessage)
-                    .map((id) -> ApiValidationError.from(id, messageSource.getMessage(id, null, Locale.getDefault())))
+                    .map((id) -> new ApiValidationError(id, messageSource.getMessage(id, null, Locale.getDefault())))
                     .collect(Collectors.toList());
 
             return Optional.of(new ApiError(errors));

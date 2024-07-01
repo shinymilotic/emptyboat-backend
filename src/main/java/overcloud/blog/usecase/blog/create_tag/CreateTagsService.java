@@ -31,10 +31,10 @@ public class CreateTagsService {
     }
 
     @Transactional
-    public RestResponse<CreateTagResponse> createTags(CreateTagRequest createTagRequest) throws Exception {
+    public RestResponse<CreateTagResponse> createTags(CreateTagRequest createTagRequest) {
         Optional<ApiError> apiError = validator.validate(createTagRequest);
         if (apiError.isPresent()) {
-            throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_CREATE_FAILED, apiError.get()));
+            throw new InvalidDataException(apiError.get());
         }
 
         List<String> tags = removeDuplicatedTags(createTagRequest.getTags());

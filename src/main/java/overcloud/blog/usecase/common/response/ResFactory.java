@@ -20,17 +20,9 @@ public class ResFactory {
             .data(data).build();
     }
 
-    public <T> RestResponse<ApiError> fail(String messageId, ApiError data) {
-        return RestResponse.<ApiError>builder()
-            .code(messageId)
-            .message(messageSource.getMessage(messageId, null, Locale.getDefault()))
-            .data(data).build();
-    }
+    public <T> ApiError fail(String messageId) {
+        String message = messageSource.getMessage(messageId, null, Locale.getDefault());
 
-    public <T> RestResponse<ApiError> fail(String messageId) {
-        return RestResponse.<ApiError>builder()
-            .code(messageId)
-            .message(messageSource.getMessage(messageId, null, Locale.getDefault()))
-            .build();
+        return ApiError.from(messageId, message);
     }
 }

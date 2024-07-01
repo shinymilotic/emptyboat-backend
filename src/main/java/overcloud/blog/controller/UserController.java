@@ -24,7 +24,6 @@ import overcloud.blog.usecase.user.register.RegisterRequest;
 import overcloud.blog.usecase.user.register.RegisterService;
 import overcloud.blog.usecase.user.update_user.UpdateUserRequest;
 import overcloud.blog.usecase.user.update_user.UpdateUserService;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -32,7 +31,6 @@ import java.util.UUID;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class UserController {
-
     private final RegisterService registerService;
     private final UpdateUserService updateUserService;
     private final LogoutService logoutService;
@@ -42,11 +40,8 @@ public class UserController {
     private final RefreshTokenService refreshTokenService;
     private final GetUserListService getUserListService;
     private final GetRolesUserService getRolesUserService;
-
     private final ConfirmEmailService confirmEmailService;
-
     private final GetFollowers getFollowers;
-
 
     public UserController(RegisterService registerService,
                           UpdateUserService updateUserService,
@@ -72,7 +67,7 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS)
-    public RestResponse<UserResponse> register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) throws Exception {
+    public RestResponse<Void> register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) throws Exception {
         return registerService.registerUser(registrationDto, response);
     }
 

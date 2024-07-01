@@ -41,7 +41,7 @@ public class UpdateArticleService {
     public RestResponse<UpdateArticleResponse> updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
         Optional<ApiError> apiError = validator.validate(updateArticleRequest);
         if (!apiError.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_UPDATE_FAILED, apiError.get()));
+            throw new InvalidDataException(apiError.get());
         }
 
         List<ArticleEntity> articleEntities = articleRepository.findBySlug(currentSlug);
