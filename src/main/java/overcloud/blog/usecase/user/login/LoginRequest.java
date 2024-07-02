@@ -13,8 +13,6 @@ import overcloud.blog.usecase.user.common.UserResMsg;
 @AllArgsConstructor
 @Setter
 @Getter
-@JsonTypeName("user")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class LoginRequest {
     @JsonProperty("email")
     @NotNull(message = UserResMsg.USER_LOGIN_PASSWORD_NOTNULL)

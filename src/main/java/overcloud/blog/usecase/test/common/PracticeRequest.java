@@ -10,10 +10,8 @@ import lombok.Setter;
 import java.util.List;
 
 @Builder
-@JsonTypeName("practice")
 @Getter
 @Setter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class PracticeRequest {
     @JsonProperty("slug")
     private String slug;

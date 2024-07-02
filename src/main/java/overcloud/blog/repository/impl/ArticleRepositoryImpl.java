@@ -15,7 +15,6 @@ import java.util.*;
 
 @Repository
 public class ArticleRepositoryImpl implements IArticleRepository {
-
     private final JpaArticleRepository jpa;
     private final EntityManager entityManager;
 

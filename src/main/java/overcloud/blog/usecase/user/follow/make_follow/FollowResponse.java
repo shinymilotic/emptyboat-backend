@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
 
 @Builder
-@JsonTypeName("profile")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class FollowResponse {
     @JsonProperty("username")
     private String username;

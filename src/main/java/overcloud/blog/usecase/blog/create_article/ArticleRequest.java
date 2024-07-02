@@ -1,8 +1,6 @@
 package overcloud.blog.usecase.blog.create_article;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -14,10 +12,8 @@ import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import java.util.List;
 
 @Builder
-@JsonTypeName("article")
 @Getter
 @Setter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class ArticleRequest {
     @JsonProperty("title")
     @NotBlank(message = ArticleResMsg.ARTICLE_TITLE_NOTBLANK)

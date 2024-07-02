@@ -1,17 +1,13 @@
 package overcloud.blog.usecase.user.follow.make_unfollow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Builder
-@JsonTypeName("profile")
 @Getter
 @Setter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class UnfollowResponse {
     @JsonProperty("username")
     private String username;

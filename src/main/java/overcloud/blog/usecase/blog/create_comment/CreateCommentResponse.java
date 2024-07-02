@@ -8,7 +8,6 @@ import overcloud.blog.usecase.blog.common.AuthorResponse;
 
 import java.util.UUID;
 
-@JsonTypeName("comment")
 @Getter
 @Setter
 @Builder

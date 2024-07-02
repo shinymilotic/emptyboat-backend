@@ -1,18 +1,14 @@
 package overcloud.blog.usecase.blog.update_article;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.*;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 
-@JsonTypeName("article")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class UpdateArticleResponse {
     @JsonProperty("id")
     private String id;

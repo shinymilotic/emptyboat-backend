@@ -15,8 +15,6 @@ import overcloud.blog.usecase.user.common.UserResMsg;
 @Builder
 @Setter
 @Getter
-@JsonTypeName("user")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class RegisterRequest {
     @JsonProperty("username")
     @NotBlank(message = UserResMsg.USER_REGISTER_USERNAME_NOTBLANK)

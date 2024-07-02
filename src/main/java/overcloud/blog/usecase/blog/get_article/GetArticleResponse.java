@@ -10,11 +10,9 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@JsonTypeName("article")
 @Getter
 @Setter
 @Builder
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class GetArticleResponse {
     @JsonProperty("id")
     private String id;

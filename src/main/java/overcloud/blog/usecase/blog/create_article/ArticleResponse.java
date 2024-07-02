@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.*;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 
-@JsonTypeName("article")
 @Getter
 @Setter
 @Builder

@@ -97,7 +97,7 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.PROFILES_USERNAME)
-    public RestResponse<GetProfileResponse> getProfile(@PathVariable String username) throws Exception {
+    public RestResponse<GetProfileResponse> getProfile(@PathVariable String username) {
         return getProfileService.getProfile(username);
     }
 
@@ -107,7 +107,7 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.USER_LIST)
-    public RestResponse<UserListResponse> getUsers(int page, int size) throws Exception {
+    public RestResponse<UserListResponse> getUsers(int page, int size) {
         return getUserListService.getUsers(page, size);
     }
 
