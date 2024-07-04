@@ -25,7 +25,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
     @Override
     public List<ArticleEntity> findBySlug(String slug) {
-        return List.of();
+        return this.jpa.findBySlug(slug);
     }
 
     @Override
