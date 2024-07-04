@@ -2,7 +2,6 @@ package overcloud.blog.usecase.blog.delete_article;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.ICommentRepository;
 import overcloud.blog.repository.IFavoriteRepository;
@@ -28,14 +27,12 @@ public class DeleteArticleService {
     }
 
     @Transactional
-    public RestResponse<DeleteArticleResponse> deleteArticle(String slug) {
-        DeleteArticleResponse deleteArticleResponse = new DeleteArticleResponse();
+    public RestResponse<Void> deleteArticle(String slug) {
         commentRepository.deleteByArticleSlug(slug);
         favoriteRepository.deleteByArticleSlug(slug);
         articleRepository.deleteBySlug(slug);
-        deleteArticleResponse.setSlug(slug);
         articleRepository.updateSearchVector();
         
-        return resFactory.success(ArticleResMsg.ARTICLE_DELETE_SUCCESS, deleteArticleResponse);
+        return resFactory.success(ArticleResMsg.ARTICLE_DELETE_SUCCESS, null);
     }
 }

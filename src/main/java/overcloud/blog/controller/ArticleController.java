@@ -1,20 +1,16 @@
 package overcloud.blog.controller;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.UUID;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.usecase.blog.create_article.ArticleRequest;
-import overcloud.blog.usecase.blog.create_article.ArticleResponse;
 import overcloud.blog.usecase.blog.create_article.CreateArticleService;
-import overcloud.blog.usecase.blog.delete_article.DeleteArticleResponse;
 import overcloud.blog.usecase.blog.delete_article.DeleteArticleService;
 import overcloud.blog.usecase.blog.get_article.GetArticleResponse;
 import overcloud.blog.usecase.blog.get_article.GetArticleService;
 import overcloud.blog.usecase.blog.get_article_list.GetArticleListService;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleRequest;
-import overcloud.blog.usecase.blog.update_article.UpdateArticleResponse;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleService;
 import overcloud.blog.usecase.common.response.RestResponse;
 
@@ -22,15 +18,10 @@ import overcloud.blog.usecase.common.response.RestResponse;
 @RestController
 public class ArticleController {
     private final CreateArticleService createArticleService;
-
     private final UpdateArticleService updateArticleService;
-
     private final GetArticleService getArticleService;
-
     private final GetArticleListService getArticleListService;
-
     private final DeleteArticleService deleteArticleService;
-
 
     public ArticleController(CreateArticleService createArticleService,
                              UpdateArticleService updateArticleService,
@@ -46,20 +37,20 @@ public class ArticleController {
 
     @Secured({"ADMIN", "USER"})
     @PostMapping(ApiConst.ARTICLES)
-    public RestResponse<ArticleResponse> createArticle(@RequestBody ArticleRequest createArticleRequest) throws JsonProcessingException {
+    public RestResponse<UUID> createArticle(@RequestBody ArticleRequest createArticleRequest) {
         return createArticleService.createArticle(createArticleRequest);
     }
 
     @Secured({"ADMIN", "USER"})
     @PutMapping(ApiConst.ARTICLES_SLUG)
-    public RestResponse<UpdateArticleResponse> updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
+    public RestResponse<UUID> updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
                                                @PathVariable("slug") String currentSlug) {
         return updateArticleService.updateArticle(updateArticleRequest, currentSlug);
     }
 
     @Secured({"ADMIN", "USER"})
     @DeleteMapping(ApiConst.ARTICLES_SLUG)
-    public RestResponse<DeleteArticleResponse> deleteArticle(@PathVariable String slug) {
+    public RestResponse<Void> deleteArticle(@PathVariable String slug) {
         return deleteArticleService.deleteArticle(slug);
     }
 

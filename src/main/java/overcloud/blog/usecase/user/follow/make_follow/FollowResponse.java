@@ -1,8 +1,6 @@
 package overcloud.blog.usecase.user.follow.make_follow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
 
 @Builder

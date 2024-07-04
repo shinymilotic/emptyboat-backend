@@ -24,7 +24,7 @@ public class GetCommentsService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<GetCommentsResponse> getComments(String articleSlug) {
+    public RestResponse<List<CommentResponse>> getComments(String articleSlug) {
         List<CommentEntity> commentEntities = commentRepository.findByArticleSlug(articleSlug);
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (CommentEntity commentEntity : commentEntities) {
@@ -32,7 +32,7 @@ public class GetCommentsService {
             commentResponses.add(toCommentResponse(commentEntity, author));
         }
 
-        return resFactory.success(CommentResMsg.COMMENT_GET_SUCCESS, GetCommentsResponse.from(commentResponses));
+        return resFactory.success(CommentResMsg.COMMENT_GET_SUCCESS, commentResponses);
     }
 
     public CommentResponse toCommentResponse(CommentEntity commentEntity, UserEntity authorEntity) {

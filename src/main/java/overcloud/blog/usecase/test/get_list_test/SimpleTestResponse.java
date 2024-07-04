@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-public class TestResponse {
+public class SimpleTestResponse {
     @JsonProperty("title")
     private String title;
     @JsonProperty("description")

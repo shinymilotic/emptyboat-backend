@@ -1,7 +1,6 @@
-package overcloud.blog.usecase.user.follow;
+package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.controller.ApiConst;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.follow.make_follow.FollowResponse;
 import overcloud.blog.usecase.user.follow.make_follow.FollowService;

@@ -5,16 +5,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.core.cache.RedisUtils;
-
 import java.util.Optional;
 
 @Component
 public class AuthenticationProvider {
-
     private final UserDetailsService userDetailsService;
-
     private final RedisUtils redisUtils;
 
     public AuthenticationProvider(UserDetailsService userDetailsService, RedisUtils redisUtils) {

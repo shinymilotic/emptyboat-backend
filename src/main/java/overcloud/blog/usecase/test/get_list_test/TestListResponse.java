@@ -14,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class TestListResponse {
     @JsonProperty("tests")
-    private List<TestResponse> tests;
+    private List<SimpleTestResponse> tests;
 }

@@ -8,8 +8,7 @@ import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.get_list_test.GetListTestService;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
-import overcloud.blog.usecase.test.get_list_test.TestListResponse;
-import overcloud.blog.usecase.test.get_list_test.TestResponse;
+import overcloud.blog.usecase.test.get_list_test.SimpleTestResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +24,15 @@ public class GetListTestServiceImpl implements GetListTestService {
 
     @Override
     @Transactional
-    public RestResponse<TestListResponse> getListTest() {
+    public RestResponse<List<SimpleTestResponse>> getListTest() {
         List<TestListRecord> testList = testRepository.findAll();
-        TestListResponse responses = new TestListResponse(new ArrayList<>());
+        List<SimpleTestResponse> responses = (new ArrayList<>());
         for (TestListRecord test : testList) {
             String title = test.getTitle();
             String slug = test.getSlug();
             String description = test.getDescription();
 
-            responses.getTests().add(new TestResponse(title, description, slug));
+            responses.add(new SimpleTestResponse(title, description, slug));
         }
 
         return resFactory.success(TestResMsg.TEST_GET_LIST, responses);

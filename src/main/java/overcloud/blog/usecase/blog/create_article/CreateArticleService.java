@@ -9,7 +9,6 @@ import overcloud.blog.repository.IArticleTagRepository;
 import overcloud.blog.repository.ITagRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.blog.common.ArticleUtils;
-import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.common.TagResMsg;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
@@ -19,10 +18,10 @@ import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.common.validation.ObjectsValidator;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +48,7 @@ public class CreateArticleService {
     }
 
     @Transactional
-    public RestResponse<ArticleResponse> createArticle(ArticleRequest articleRequest) {
+    public RestResponse<UUID> createArticle(ArticleRequest articleRequest) {
         String title = articleRequest.getTitle();
         List<String> distinctTags = filterDistinctTags(articleRequest.getTagList());
         articleRequest.setTagList(distinctTags);
@@ -79,7 +78,7 @@ public class CreateArticleService {
         articleTagRepository.saveAll(articleTags);
         articleRepository.updateSearchVector();
 
-        return resFactory.success(ArticleResMsg.ARTICLE_CREATE_SUCCESS, toCreateArticleResponse(articleEntity, currentUser, distinctTags));
+        return resFactory.success(ArticleResMsg.ARTICLE_CREATE_SUCCESS, articleEntity.getId());
     }
 
     private List<String> filterDistinctTags(List<String> tags) {
@@ -123,28 +122,5 @@ public class CreateArticleService {
                             .build();
                 })
                 .collect(Collectors.toList());
-    }
-
-    public ArticleResponse toCreateArticleResponse(ArticleEntity articleEntity, UserEntity author, List<String> tagNames) {
-        return ArticleResponse.builder()
-                .id(articleEntity.getId().toString())
-                .title(articleEntity.getTitle())
-                .body(articleEntity.getBody())
-                .description(articleEntity.getDescription())
-                .tagList(tagNames)
-                .author(toAuthorResponse(author))
-                .slug(articleEntity.getSlug())
-                .createdAt(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
-                .updatedAt(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
-                .favorited(false)
-                .build();
-    }
-
-    private AuthorResponse toAuthorResponse(UserEntity userEntity) {
-        return AuthorResponse.builder()
-                .bio(userEntity.getBio())
-                .username(userEntity.getUsername())
-                .image(userEntity.getImage())
-                .build();
     }
 }

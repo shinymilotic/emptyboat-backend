@@ -16,7 +16,6 @@ import java.util.UUID;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class PracticeController {
-
     private final CreatePracticeService createPracticeService;
     private final UserPracticeService userPracticeService;
     private final GetPracticeResultService getPracticeResultService;

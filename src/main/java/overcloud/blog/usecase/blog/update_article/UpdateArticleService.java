@@ -6,7 +6,6 @@ import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
-import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ApiError;
@@ -15,10 +14,9 @@ import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.common.validation.ObjectsValidator;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UpdateArticleService {
@@ -38,7 +36,7 @@ public class UpdateArticleService {
     }
 
     @Transactional
-    public RestResponse<UpdateArticleResponse> updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
+    public RestResponse<UUID> updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
         Optional<ApiError> apiError = validator.validate(updateArticleRequest);
         if (!apiError.isEmpty()) {
             throw new InvalidDataException(apiError.get());
@@ -65,29 +63,6 @@ public class UpdateArticleService {
         articleRepository.save(articleEntity);
         articleRepository.updateSearchVector();
 
-        return resFactory.success(ArticleResMsg.ARTICLE_UPDATE_SUCCESS, toUpdateArticleResponse(currentUser, articleEntity, new ArrayList<String>()));
-    }
-
-    private UpdateArticleResponse toUpdateArticleResponse(UserEntity currentUser, ArticleEntity articleEntity, List<String> tagNames) {
-        return UpdateArticleResponse.builder()
-                .id(articleEntity.getId().toString())
-                .title(articleEntity.getTitle())
-                .body(articleEntity.getBody())
-                .description(articleEntity.getDescription())
-                .tagList(tagNames)
-                .author(toAuthorResponse(currentUser))
-                .slug(articleEntity.getSlug())
-                .createdAt(articleEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
-                .updatedAt(articleEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))
-//                .favorited(favoriteUtils.isFavorited(currentUser, articleEntity))
-                .build();
-    }
-
-    private AuthorResponse toAuthorResponse(UserEntity userEntity) {
-        return AuthorResponse.builder()
-                .bio(userEntity.getBio())
-                .username(userEntity.getUsername())
-                .image(userEntity.getImage())
-                .build();
+        return resFactory.success(ArticleResMsg.ARTICLE_UPDATE_SUCCESS, articleEntity.getId());
     }
 }

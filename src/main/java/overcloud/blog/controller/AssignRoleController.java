@@ -10,7 +10,6 @@ import overcloud.blog.usecase.user.common.RolesRequest;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class AssignRoleController {
-
     private final AssignRoleService assignRoleService;
 
     public AssignRoleController(AssignRoleService assignRoleService) {

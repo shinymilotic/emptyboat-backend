@@ -2,7 +2,6 @@ package overcloud.blog.usecase.blog.create_comment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.*;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 

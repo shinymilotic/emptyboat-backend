@@ -5,7 +5,9 @@ import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.usecase.user.common.UserResponse;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -19,7 +21,7 @@ public class GetFollowersImpl implements GetFollowers {
     }
 
     @Override
-    public RestResponse<FollowerListResposne> getFollowers(UUID userId) {
+    public RestResponse<List<UserResponse>> getFollowers(UUID userId) {
         return resFactory.success(UserResMsg.USER_GET_FOLLOWERS, userRepository.getFollowers(userId));
     }
 }

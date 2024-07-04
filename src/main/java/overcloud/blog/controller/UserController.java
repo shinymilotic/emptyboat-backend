@@ -3,29 +3,26 @@ package overcloud.blog.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import overcloud.blog.usecase.common.response.RestResponse;
-import overcloud.blog.usecase.user.common.UserListResponse;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailRequest;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailService;
 import overcloud.blog.usecase.user.get_current_user.GetCurrentUserService;
-import overcloud.blog.usecase.user.get_followers.FollowerListResposne;
 import overcloud.blog.usecase.user.get_followers.GetFollowers;
 import overcloud.blog.usecase.user.get_profile.GetProfileResponse;
 import overcloud.blog.usecase.user.get_profile.GetProfileService;
 import overcloud.blog.usecase.user.get_roles_user.GetRolesUserService;
-import overcloud.blog.usecase.user.get_roles_user.UserRoleListResponse;
+import overcloud.blog.usecase.user.get_roles_user.UserRoleResponse;
 import overcloud.blog.usecase.user.get_users.GetUserListService;
 import overcloud.blog.usecase.user.login.LoginRequest;
 import overcloud.blog.usecase.user.login.LoginService;
 import overcloud.blog.usecase.user.logout.LogoutService;
-import overcloud.blog.usecase.user.refresh_token.RefreshTokenResponse;
 import overcloud.blog.usecase.user.refresh_token.RefreshTokenService;
 import overcloud.blog.usecase.user.register.RegisterRequest;
 import overcloud.blog.usecase.user.register.RegisterService;
 import overcloud.blog.usecase.user.update_user.UpdateUserRequest;
 import overcloud.blog.usecase.user.update_user.UpdateUserService;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -51,7 +48,8 @@ public class UserController {
                           GetCurrentUserService getCurrentUserService,
                           RefreshTokenService refreshTokenService,
                           GetUserListService getUserListService,
-                          GetRolesUserService getRolesUserService, ConfirmEmailService confirmEmailService,
+                          GetRolesUserService getRolesUserService,
+                          ConfirmEmailService confirmEmailService,
                           GetFollowers getFollowers) {
         this.registerService = registerService;
         this.updateUserService = updateUserService;
@@ -67,7 +65,7 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS)
-    public RestResponse<Void> register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) throws Exception {
+    public RestResponse<Void> register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) {
         return registerService.registerUser(registrationDto, response);
     }
 
@@ -102,17 +100,17 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.USERS_REFRESHTOKEN)
-    public RestResponse<RefreshTokenResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public RestResponse<UUID> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         return refreshTokenService.refreshToken(request, response);
     }
 
     @GetMapping(ApiConst.USER_LIST)
-    public RestResponse<UserListResponse> getUsers(int page, int size) {
+    public RestResponse<List<UserResponse>> getUsers(int page, int size) {
         return getUserListService.getUsers(page, size);
     }
 
     @GetMapping(ApiConst.ROLES_USERNAME)
-    public RestResponse<UserRoleListResponse> getRolesUser(@PathVariable String username) {
+    public RestResponse<List<UserRoleResponse>> getRolesUser(@PathVariable String username) {
         return getRolesUserService.getRolesUser(username);
     }
 
@@ -122,7 +120,7 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.FOLLOWERS)
-    public RestResponse<FollowerListResposne> getFollowers(@PathVariable UUID userId) {
+    public RestResponse<List<UserResponse>> getFollowers(@PathVariable UUID userId) {
         return getFollowers.getFollowers(userId);
     }
 }

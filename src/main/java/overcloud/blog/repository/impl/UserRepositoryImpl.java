@@ -2,13 +2,12 @@ package overcloud.blog.repository.impl;
 
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
-
 import overcloud.blog.core.sql.PlainQueryBuilder;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.common.UserResponse;
-import overcloud.blog.usecase.user.get_followers.FollowerListResposne;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,8 +44,8 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public FollowerListResposne getFollowers(UUID userId) {
-        FollowerListResposne resposne = new FollowerListResposne();
+    public List<UserResponse> getFollowers(UUID userId) {
+        List<UserResponse> resposne = new ArrayList<>();
         
         Query query = entityManager
                 .createNativeQuery("select u.id, u.email, u.username, u.bio, u.image  " +
@@ -61,7 +60,7 @@ public class UserRepositoryImpl implements IUserRepository {
         final List<?> list = (List<?>) query.getResultList();
         
         list.stream().map(row -> (Tuple) row)
-            .map(row -> resposne.getFollowers().add(new UserResponse(
+            .map(row -> resposne.add(new UserResponse(
                 (UUID) row.get("id"),
                 (String) row.get("email"),
                 (String) row.get("username"),

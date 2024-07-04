@@ -21,7 +21,7 @@ public class GetTagsService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<GetTagResponse> getTags() {
+    public RestResponse<List<String>> getTags() {
         List<String> tags = new ArrayList<>();
         List<TagEntity> tagEntities = tagRepository.findAll();
 
@@ -29,12 +29,6 @@ public class GetTagsService {
             tags.add(tagEntity.getName());
         }
 
-        return resFactory.success(TagResMsg.TAG_GET_SUCCESS, toGetTagReponse(tags));
-    }
-
-    public GetTagResponse toGetTagReponse(List<String> tags) {
-        return GetTagResponse.builder()
-                .tagList(tags)
-                .build();
+        return resFactory.success(TagResMsg.TAG_GET_SUCCESS, tags);
     }
 }

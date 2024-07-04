@@ -12,7 +12,6 @@ import java.util.List;
 @Setter
 @Builder
 public class GetArticlesSingleResponse {
-
     @JsonProperty("id")
     private String id;
 

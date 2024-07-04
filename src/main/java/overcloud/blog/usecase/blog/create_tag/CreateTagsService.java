@@ -31,7 +31,7 @@ public class CreateTagsService {
     }
 
     @Transactional
-    public RestResponse<CreateTagResponse> createTags(CreateTagRequest createTagRequest) {
+    public RestResponse<List<String>> createTags(CreateTagRequest createTagRequest) {
         Optional<ApiError> apiError = validator.validate(createTagRequest);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -46,7 +46,7 @@ public class CreateTagsService {
 
         saveAllTags(tags);
 
-        return resFactory.success(TagResMsg.TAG_CREATE_SUCCESS, toCreateTagResponse(tags));
+        return resFactory.success(TagResMsg.TAG_CREATE_SUCCESS, tags);
     }
 
     public List<String> removeDuplicatedTags(List<String> tags) {
@@ -61,11 +61,5 @@ public class CreateTagsService {
             tagForSave.add(tagEntity);
         }
         tagRepository.saveAll(tagForSave);
-    }
-
-    public CreateTagResponse toCreateTagResponse(Iterable<String> tags) {
-        return CreateTagResponse.builder()
-                .tags(tags)
-                .build();
     }
 }

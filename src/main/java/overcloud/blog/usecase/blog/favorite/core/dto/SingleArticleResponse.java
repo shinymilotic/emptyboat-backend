@@ -2,8 +2,6 @@ package overcloud.blog.usecase.blog.favorite.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

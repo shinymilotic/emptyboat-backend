@@ -6,7 +6,6 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
-import overcloud.blog.usecase.user.common.UserListResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
@@ -28,15 +27,12 @@ public class GetUserListService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<UserListResponse> getUsers(int page, int size) {
+    public RestResponse<List<UserResponse>> getUsers(int page, int size) {
         List<UserEntity> users = userRepository.findAll(page, size);
         List<UserResponse> userResponses = users.stream()
                 .map(userResponseMapper::toUserResponse)
                 .collect(Collectors.toList());
 
-        return resFactory.success(UserResMsg.USER_GET_USER_LIST,
-                         UserListResponse.builder()
-                            .users(userResponses)
-                            .build()); 
+        return resFactory.success(UserResMsg.USER_GET_USER_LIST, userResponses); 
     }
 }

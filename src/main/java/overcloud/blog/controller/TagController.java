@@ -1,10 +1,9 @@
 package overcloud.blog.controller;
 
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
-import overcloud.blog.usecase.blog.create_tag.CreateTagResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
-import overcloud.blog.usecase.blog.get_tags.GetTagResponse;
 import overcloud.blog.usecase.blog.get_tags.GetTagsService;
 import overcloud.blog.usecase.common.response.RestResponse;
 
@@ -21,12 +20,12 @@ public class TagController {
     }
 
     @PostMapping(ApiConst.TAGS)
-    public RestResponse<CreateTagResponse> createTags(@RequestBody CreateTagRequest createTagRequest) throws Exception {
+    public RestResponse<List<String>> createTags(@RequestBody CreateTagRequest createTagRequest) {
         return createTagService.createTags(createTagRequest);
     }
 
     @GetMapping(ApiConst.TAGS)
-    public RestResponse<GetTagResponse> getTags() {
+    public RestResponse<List<String>> getTags() {
         return getTagsService.getTags();
     }
 }

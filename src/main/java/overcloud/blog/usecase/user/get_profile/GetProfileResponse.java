@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GetProfileResponse {
-
     @JsonProperty("username")
     private String username;
 

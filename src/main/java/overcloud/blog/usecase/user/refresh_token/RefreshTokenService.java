@@ -16,6 +16,7 @@ import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
@@ -32,7 +33,7 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public RestResponse<RefreshTokenResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public RestResponse<UUID> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         Optional<String> refreshToken = readServletCookie(request, "refreshToken");
 
         if (refreshToken.isEmpty()) {
@@ -65,9 +66,8 @@ public class RefreshTokenService {
             jwtRefreshTokenCookie.setDomain("localhost");
             response.addCookie(jwtTokenCookie);
             response.addCookie(jwtRefreshTokenCookie);
-            String userId = refreshTokenEntity.get().getUserId().toString();
-            RefreshTokenResponse res = RefreshTokenResponse.builder().userId(userId).build();
-            return resFactory.success(UserResMsg.REFRESHTOKEN_SUCCESS, res);
+            UUID userId = refreshTokenEntity.get().getUserId();
+            return resFactory.success(UserResMsg.REFRESHTOKEN_SUCCESS, userId);
         } catch (JwtException e) {
             throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESHTOKEN_FAILED));
         }
