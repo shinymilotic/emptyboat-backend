@@ -56,7 +56,8 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         List<EssayAnswer> essayAnswers = practiceRequest.getEssayAnswers();
         LocalDateTime now = LocalDateTime.now();
 
-        if (choices == null || choices.isEmpty()) {
+        if ((choices == null || choices.isEmpty()) && 
+            (essayAnswers == null || essayAnswers.isEmpty())) {
             throw new InvalidDataException(resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED));
         }
 
