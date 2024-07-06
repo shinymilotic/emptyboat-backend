@@ -2,7 +2,6 @@ package overcloud.blog.usecase.test.create_practice.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IEssayAnswerRepository;
 import overcloud.blog.repository.IPracticeChoiceRepository;

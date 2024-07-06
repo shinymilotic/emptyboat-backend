@@ -18,13 +18,13 @@ public class FavoriteController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping(ApiConst.ARTICLES_SLUG_FAVORITE)
+    @PostMapping(ApiConst.ARTICLE_ID_FAVORITE)
     public RestResponse<Void> makeFavorite(@PathVariable String slug) {
         return makeFavoriteService.makeFavorite(slug);
     }
 
     @CrossOrigin(origins = "*")
-    @DeleteMapping(ApiConst.ARTICLES_SLUG_FAVORITE)
+    @DeleteMapping(ApiConst.ARTICLE_ID_FAVORITE)
     public RestResponse<Void> makeUnfavorite(@PathVariable String slug) {
         return makeUnfavoriteService.makeUnfavorite(slug);
     }

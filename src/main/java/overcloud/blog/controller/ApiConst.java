@@ -5,13 +5,13 @@ public class ApiConst {
     /* Articles */
     public static final String ARTICLES = "/articles";
 
-    public static final String ARTICLES_SLUG = "/articles/{slug}";
+    public static final String ARTICLE = "/articles/{id}";
 
-    public static final String ARTICLES_SLUG_COMMENTS = "/articles/{slug}/comments";
+    public static final String ARTICLE_COMMENTS = "/articles/{id}/comments";
 
-    public static final String ARTICLES_SLUG_COMMENTS_ID = "/articles/{slug}/comments/{id}";
+    public static final String ARTICLE_ID_COMMENTS_ID = "/articles/{id}/comments/{id}";
 
-    public static final String ARTICLES_SLUG_FAVORITE = "/articles/{slug}/favorite";
+    public static final String ARTICLE_ID_FAVORITE = "/articles/{id}/favorite";
 
     public static final String ROLES_USERNAME = "/roles/{username}";
 
@@ -47,7 +47,7 @@ public class ApiConst {
 
     public static final String TESTS = "/tests";
 
-    public static final String TESTS_SLUG = "/tests/{slug}";
+    public static final String TESTS_ID = "/tests/{id}";
 
     public static final String PRACTICE = "/practice";
 

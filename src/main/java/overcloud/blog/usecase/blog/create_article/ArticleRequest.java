@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 public class ArticleRequest {
     @JsonProperty("title")
-    @NotBlank(message = ArticleResMsg.ARTICLE_TITLE_NOTBLANK)
     @Size(min = 1, max = 60, message = ArticleResMsg.ARTICLE_TITLE_SIZE)
     private String title;
 

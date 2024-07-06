@@ -27,7 +27,7 @@ public class GetArticleService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<GetArticleResponse> getArticle(String slug) {
+    public RestResponse<GetArticleResponse> getArticle(String id) {
         SecurityUser securityUser = authenticationService.getCurrentUser()
                 .orElse(null);
 
@@ -38,7 +38,7 @@ public class GetArticleService {
             articleId = currentUser.getId();
         }
 
-        ArticleSummary articleSummary = articleRepository.findArticleBySlug(slug, articleId);
+        ArticleSummary articleSummary = articleRepository.findArticleById(id, articleId);
 
         return resFactory.success(ArticleResMsg.ARTICLE_GET_SUCCESS, toGetArticlesingleResponse(articleSummary));
     }

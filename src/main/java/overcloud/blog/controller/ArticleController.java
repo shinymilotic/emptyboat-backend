@@ -42,21 +42,21 @@ public class ArticleController {
     }
 
     @Secured({"ADMIN", "USER"})
-    @PutMapping(ApiConst.ARTICLES_SLUG)
+    @PutMapping(ApiConst.ARTICLE)
     public RestResponse<UUID> updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
                                                @PathVariable("slug") String currentSlug) {
         return updateArticleService.updateArticle(updateArticleRequest, currentSlug);
     }
 
     @Secured({"ADMIN", "USER"})
-    @DeleteMapping(ApiConst.ARTICLES_SLUG)
-    public RestResponse<Void> deleteArticle(@PathVariable String slug) {
-        return deleteArticleService.deleteArticle(slug);
+    @DeleteMapping(ApiConst.ARTICLE)
+    public RestResponse<Void> deleteArticle(@PathVariable String id) {
+        return deleteArticleService.deleteArticle(id);
     }
 
-    @GetMapping(ApiConst.ARTICLES_SLUG)
-    public RestResponse<GetArticleResponse> getArticle(@PathVariable String slug) {
-        return getArticleService.getArticle(slug);
+    @GetMapping(ApiConst.ARTICLE)
+    public RestResponse<GetArticleResponse> getArticle(@PathVariable String id) {
+        return getArticleService.getArticle(id);
     }
 
     @GetMapping(ApiConst.ARTICLES)

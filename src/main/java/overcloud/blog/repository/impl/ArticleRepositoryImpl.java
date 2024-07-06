@@ -125,13 +125,13 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     }
 
     @Override
-    public ArticleSummary findArticleBySlug(String slug, UUID currentUserId) {
+    public ArticleSummary findArticleById(String id, UUID currentUserId) {
         String query = "select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, " +
                 " fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount " +
                 "from " +
                 "(select articles.id, slug, body, title, description, created_at, author_id " +
                 "from articles " +
-                " WHERE slug = :slug ) a " +
+                " WHERE id = :id ) a " +
                 "left join users author on " +
                 "author.id = a.author_id " +
                 "left join ( " +
@@ -161,7 +161,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
                 " ORDER BY a.id DESC  ";
 
         Query resultList = entityManager.createNativeQuery(query, Tuple.class);
-        resultList.setParameter("slug", slug);
+        resultList.setParameter("id", id);
         resultList.setParameter("currentUserId", currentUserId);
 
         List<Tuple> articlesData = resultList.getResultList();

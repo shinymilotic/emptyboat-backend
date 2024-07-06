@@ -14,7 +14,7 @@ public interface IArticleRepository {
     void deleteBySlug(String slug);
     Optional<Boolean> isTitleExist(String title);
     List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId);
-    ArticleSummary findArticleBySlug(String slug, UUID currentUserId);
+    ArticleSummary findArticleById(String slug, UUID currentUserId);
     List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId);
     List<UserEntity> findAllPaging(int page, int size);
     void save(ArticleEntity articleEntity);

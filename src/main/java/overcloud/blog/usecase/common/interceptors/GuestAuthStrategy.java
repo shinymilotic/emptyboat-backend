@@ -12,9 +12,9 @@ import java.util.Set;
 public class GuestAuthStrategy implements AuthStrategy {
     private static final Map<String, Set<String>> EXCLUDED_RESOURCE = Map.ofEntries(
             Map.entry(ApiConst.ARTICLES, Set.of("POST")),
-            Map.entry(ApiConst.ARTICLES_SLUG, Set.of("PUT", "DELETE")),
-            Map.entry(ApiConst.ARTICLES_SLUG_COMMENTS, Set.of("POST")),
-            Map.entry(ApiConst.ARTICLES_SLUG_FAVORITE, Set.of("DELETE", "POST")),
+            Map.entry(ApiConst.ARTICLE, Set.of("PUT", "DELETE")),
+            Map.entry(ApiConst.ARTICLE_COMMENTS, Set.of("POST")),
+            Map.entry(ApiConst.ARTICLE_ID_FAVORITE, Set.of("DELETE", "POST")),
             Map.entry(ApiConst.ROLES_USERNAME, Set.of("GET")),
             Map.entry(ApiConst.ROLES, Set.of("GET", "PUT")),
             Map.entry(ApiConst.TAGS, Set.of("POST")),
