@@ -48,12 +48,12 @@ public class TestController {
     }
 
     @GetMapping(ApiConst.TESTS_ID)
-    public RestResponse<TestResponse> getTestBySlug(@PathVariable("slug") String slug) {
-        return this.getTestService.getTest(slug);
+    public RestResponse<TestResponse> getTestById(@PathVariable("id") String id) {
+        return this.getTestService.getTest(id);
     }
 
     @DeleteMapping(ApiConst.TESTS_ID)
-    public RestResponse<Void> deleteTestBySlug(@PathVariable("slug") String slug) {
-        return this.deleteTestService.deleteTest(slug);
+    public RestResponse<Void> deleteTestById(@PathVariable("id") String id) {
+        return this.deleteTestService.deleteTest(id);
     }
 }
