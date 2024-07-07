@@ -23,9 +23,6 @@ public class TestEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "slug")
-    private String slug;
-
     @Column(name = "author_id")
     private UUID authorId;
 

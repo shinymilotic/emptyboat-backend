@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Table(name = "articles", schema = "public")
 public class ArticleEntity {
@@ -23,9 +25,6 @@ public class ArticleEntity {
 //    private UserEntity author;
     @Column(name = "author_id")
     private UUID authorId;
-
-    @Column(name = "slug")
-    private String slug;
 
     @Column(name = "title")
     private String title;
@@ -50,10 +49,6 @@ public class ArticleEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    public ArticleEntity() {
-
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -7,7 +7,7 @@ import overcloud.blog.entity.FavoriteId;
 
 public interface IFavoriteRepository {
     List<FavoriteEntity> findById(UUID userId, UUID articleId);
-    void deleteByArticleSlug(String slug);
+    void deleteByArticleId(UUID id);
     void deleteById(FavoriteId favoritePk);
     void save(FavoriteEntity favoriteEntity);
 }

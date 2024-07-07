@@ -9,12 +9,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IArticleRepository {
-    List<ArticleEntity> findBySlug(String slug);
+    Optional<ArticleEntity> findById(UUID id);
     void updateSearchVector();
-    void deleteBySlug(String slug);
+    void deleteById(UUID id);
     Optional<Boolean> isTitleExist(String title);
     List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId);
-    ArticleSummary findArticleById(String slug, UUID currentUserId);
+    ArticleSummary findArticleById(String id, UUID currentUserId);
     List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId);
     List<UserEntity> findAllPaging(int page, int size);
     void save(ArticleEntity articleEntity);

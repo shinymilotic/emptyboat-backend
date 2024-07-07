@@ -6,8 +6,8 @@ import java.util.UUID;
 import overcloud.blog.entity.CommentEntity;
 
 public interface ICommentRepository {
-    void deleteByArticleSlug(String slug);
-    void deleteById(UUID fromString);
+    void deleteByArticleId(UUID id);
+    void deleteById(UUID id);
     CommentEntity save(CommentEntity commentEntity);
-    List<CommentEntity> findByArticleSlug(String articleSlug);
+    List<CommentEntity> findByArticleId(UUID articleId);
 }
