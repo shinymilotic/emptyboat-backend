@@ -15,9 +15,6 @@ public class GetArticlesSingleResponse {
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty("slug")
-    private String slug;
-
     @JsonProperty("title")
     private String title;
 

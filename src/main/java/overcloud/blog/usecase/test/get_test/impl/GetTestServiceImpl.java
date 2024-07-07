@@ -34,8 +34,8 @@ public class GetTestServiceImpl implements GetTestService {
 
     @Override
     @Transactional
-    public RestResponse<TestResponse> getTest(String slug) {
-        Optional<TestEntity> testEntity = this.testRepository.findBySlug(slug);
+    public RestResponse<TestResponse> getTest(String id) {
+        Optional<TestEntity> testEntity = this.testRepository.findById(UUID.fromString(id));
 
         if (!testEntity.isPresent()) {
             // do something...
@@ -43,13 +43,11 @@ public class GetTestServiceImpl implements GetTestService {
         }
 
         String titleDB = testEntity.get().getTitle();
-        String slugDB = testEntity.get().getSlug();
         String descriptionDB = testEntity.get().getDescription();
 
         TestResponse res = TestResponse.testResponseFactory(
                 titleDB,
                 descriptionDB,
-                slugDB,
                 getQuestions(testEntity.get().getQuestions()));
         
         return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, res);

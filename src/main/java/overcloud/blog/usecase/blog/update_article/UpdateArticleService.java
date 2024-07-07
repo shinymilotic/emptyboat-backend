@@ -36,17 +36,17 @@ public class UpdateArticleService {
     }
 
     @Transactional
-    public RestResponse<UUID> updateArticle(UpdateArticleRequest updateArticleRequest, String currentSlug) {
+    public RestResponse<UUID> updateArticle(UpdateArticleRequest updateArticleRequest, String id) {
         Optional<ApiError> apiError = validator.validate(updateArticleRequest);
         if (!apiError.isEmpty()) {
             throw new InvalidDataException(apiError.get());
         }
 
-        List<ArticleEntity> articleEntities = articleRepository.findBySlug(currentSlug);
-        if (articleEntities.isEmpty()) {
+        Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
+        if (!articleEntities.isPresent()) {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
         }
-        ArticleEntity articleEntity = articleEntities.get(0);
+        ArticleEntity articleEntity = articleEntities.get();
 
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))

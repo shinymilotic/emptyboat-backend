@@ -9,8 +9,6 @@ import java.util.List;
 public class SingleArticleResponse {
     @JsonProperty("id")
     private String id;
-    @JsonProperty("slug")
-    private String slug;
     @JsonProperty("title")
     private String title;
     @JsonProperty("description")
@@ -36,14 +34,6 @@ public class SingleArticleResponse {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
     }
 
     public String getTitle() {

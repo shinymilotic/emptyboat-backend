@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface JpaTestRepository extends JpaRepository<TestEntity, UUID> {
-    @Query("SELECT t FROM TestEntity t WHERE t.slug = :slug")
-    Optional<TestEntity> findBySlug(@Param("slug") String slug);
+    @Query("SELECT t FROM TestEntity t WHERE t.id = :id")
+    Optional<TestEntity> findById(@Param("id") String id);
 }
 

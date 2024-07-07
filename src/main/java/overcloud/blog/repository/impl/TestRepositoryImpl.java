@@ -23,15 +23,15 @@ public class TestRepositoryImpl implements ITestRepository {
 
     @Override
     public List<TestListRecord> findAll() {
-        String s = "SELECT new overcloud.blog.usecase.test.get_list_test.TestListRecord(t.title, t.description, t.slug) " +
+        String s = "SELECT new overcloud.blog.usecase.test.get_list_test.TestListRecord(t.title, t.description) " +
                 " FROM TestEntity t ";
         TypedQuery<TestListRecord> testQuery = entityManager.createQuery(s, TestListRecord.class);
         return testQuery.getResultList();
     }
 
     @Override
-    public Optional<TestEntity> findBySlug(String slug) {
-        return jpa.findBySlug(slug);
+    public Optional<TestEntity> findById(UUID id) {
+        return jpa.findById(id);
     }
 
     @Override

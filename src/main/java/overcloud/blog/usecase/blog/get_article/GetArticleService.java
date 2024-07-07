@@ -32,13 +32,13 @@ public class GetArticleService {
                 .orElse(null);
 
         UserEntity currentUser = null;
-        UUID articleId = null;
+        UUID userId = null;
         if (securityUser != null && securityUser.getUser() != null) {
             currentUser = securityUser.getUser();
-            articleId = currentUser.getId();
+            userId = currentUser.getId();
         }
 
-        ArticleSummary articleSummary = articleRepository.findArticleById(id, articleId);
+        ArticleSummary articleSummary = articleRepository.findArticleById(id, userId);
 
         return resFactory.success(ArticleResMsg.ARTICLE_GET_SUCCESS, toGetArticlesingleResponse(articleSummary));
     }
@@ -49,7 +49,6 @@ public class GetArticleService {
                 .title(article.getTitle())
                 .body(article.getBody())
                 .description(article.getDescription())
-                .slug(article.getSlug())
                 .author(toGetArticleAuthorResponse(article))
                 .favorited(article.isFavorited())
                 .favoritesCount(article.getFavoritesCount())

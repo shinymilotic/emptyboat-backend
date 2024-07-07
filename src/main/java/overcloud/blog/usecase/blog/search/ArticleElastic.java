@@ -11,8 +11,6 @@ package overcloud.blog.usecase.blog.search;
 //    @Id
 //    private String id;
 //
-//    private String slug;
-//
 //    private String title;
 //
 //    private String description;

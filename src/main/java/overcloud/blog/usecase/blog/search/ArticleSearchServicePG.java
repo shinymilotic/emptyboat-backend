@@ -62,7 +62,6 @@ public class ArticleSearchServicePG implements ArticleSearchService {
                 .title(article.getTitle())
                 .body(article.getBody())
                 .description(article.getDescription())
-                .slug(article.getSlug())
                 .author(toGetArticleAuthorResponse(article))
                 .favorited(article.isFavorited())
                 .favoritesCount(article.getFavoritesCount())

@@ -12,6 +12,8 @@ import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MakeFavoriteService {
@@ -31,17 +33,17 @@ public class MakeFavoriteService {
     }
 
     @Transactional
-    public RestResponse<Void> makeFavorite(String slug) {
+    public RestResponse<Void> makeFavorite(String id) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
-        List<ArticleEntity> articleList = articleRepository.findBySlug(slug);
-        if (articleList.isEmpty()) {
+        Optional<ArticleEntity> articleList = articleRepository.findById(UUID.fromString(id));
+        if (!articleList.isPresent()) {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
         }
-        ArticleEntity articleEntity = articleList.getFirst();
+        ArticleEntity articleEntity = articleList.get();
         favoriteEntity.setId(new FavoriteId());
         favoriteEntity.setArticle(articleEntity);
         favoriteEntity.setUser(currentUser);

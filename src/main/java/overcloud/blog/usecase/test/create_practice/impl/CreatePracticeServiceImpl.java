@@ -50,7 +50,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     @Override
     @Transactional
     public RestResponse<CreatePracticeResponse> createPractice(PracticeRequest practiceRequest) {
-        String slug = practiceRequest.getSlug();
+        UUID id = UUID.fromString(practiceRequest.getId());
         List<ChoiceAnswer> choices = practiceRequest.getChoiceAnswers();
         List<EssayAnswer> essayAnswers = practiceRequest.getEssayAnswers();
         LocalDateTime now = LocalDateTime.now();
@@ -64,7 +64,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
-        Optional<TestEntity> testEntity = testRepository.findBySlug(slug);
+        Optional<TestEntity> testEntity = testRepository.findById(id);
 
         if (!testEntity.isPresent()) {
             throw new InvalidDataException(resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED));

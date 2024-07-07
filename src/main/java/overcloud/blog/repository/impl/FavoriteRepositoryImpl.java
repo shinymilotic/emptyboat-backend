@@ -24,8 +24,8 @@ public class FavoriteRepositoryImpl implements IFavoriteRepository {
     }
 
     @Override
-    public void deleteByArticleSlug(String slug) {
-        this.jpa.deleteByArticleSlug(slug);
+    public void deleteByArticleId(UUID id) {
+        this.jpa.deleteByArticleId(id);
     }
 
     @Override

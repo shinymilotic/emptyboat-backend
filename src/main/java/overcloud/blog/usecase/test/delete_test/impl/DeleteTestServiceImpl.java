@@ -11,6 +11,7 @@ import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.delete_test.DeleteTestService;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DeleteTestServiceImpl implements DeleteTestService {
@@ -29,8 +30,8 @@ public class DeleteTestServiceImpl implements DeleteTestService {
 
     @Override
     @Transactional
-    public RestResponse<Void> deleteTest(String slug) {
-        Optional<TestEntity> test = testRepository.findBySlug(slug);
+    public RestResponse<Void> deleteTest(String id) {
+        Optional<TestEntity> test = testRepository.findById(UUID.fromString(id));
 
         if (!test.isPresent()) {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));

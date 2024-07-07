@@ -10,5 +10,4 @@ import lombok.Setter;
 public class TestListRecord {
     private String title;
     private String description;
-    private String slug;
 }

@@ -1,5 +1,8 @@
 package overcloud.blog.usecase.blog.favorite.make_unfavorite;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.ArticleEntity;
@@ -32,16 +35,18 @@ public class MakeUnfavoriteService {
     }
 
     @Transactional
-    public RestResponse<Void> makeUnfavorite(String slug) {
-        ArticleEntity articleEntity = articleRepository.findBySlug(slug).get(0);
+    public RestResponse<Void> makeUnfavorite(String id) {
+        Optional<ArticleEntity> articleEntity = articleRepository.findById(UUID.fromString(id));
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
-        FavoriteId favoritePk = new FavoriteId();
-        favoritePk.setUserId(currentUser.getId());
-        favoritePk.setArticleId(articleEntity.getId());
-        favoriteRepository.deleteById(favoritePk);
+        if (articleEntity.isPresent()) {
+            FavoriteId favoritePk = new FavoriteId();
+            favoritePk.setUserId(currentUser.getId());
+            favoritePk.setArticleId(articleEntity.get().getId());
+            favoriteRepository.deleteById(favoritePk);
+        }
         
         return resFactory.success(ArticleResMsg.ARTICLE_UNFAVORITE_SUCCESS, null);
     }

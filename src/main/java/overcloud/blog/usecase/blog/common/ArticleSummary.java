@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ArticleSummary {
     private UUID id;
-    private String slug;
     private String title;
     private String description;
     private String body;
@@ -29,14 +28,6 @@ public class ArticleSummary {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
     }
 
     public String getTitle() {

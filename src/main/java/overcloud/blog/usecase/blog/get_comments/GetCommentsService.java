@@ -12,6 +12,7 @@ import overcloud.blog.usecase.common.response.RestResponse;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GetCommentsService {
@@ -24,8 +25,8 @@ public class GetCommentsService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<List<CommentResponse>> getComments(String articleSlug) {
-        List<CommentEntity> commentEntities = commentRepository.findByArticleSlug(articleSlug);
+    public RestResponse<List<CommentResponse>> getComments(String id) {
+        List<CommentEntity> commentEntities = commentRepository.findByArticleId(UUID.fromString(id));
         List<CommentResponse> commentResponses = new ArrayList<>();
         for (CommentEntity commentEntity : commentEntities) {
             UserEntity author = commentEntity.getAuthor();

@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 public class PracticeRequest {
-    @JsonProperty("slug")
-    private String slug;
+    @JsonProperty("id")
+    private String id;
 
     @JsonProperty("choiceAnswers")
     private List<ChoiceAnswer> choiceAnswers;

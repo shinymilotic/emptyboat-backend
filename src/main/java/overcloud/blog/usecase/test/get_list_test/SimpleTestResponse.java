@@ -15,6 +15,4 @@ public class SimpleTestResponse {
     private String title;
     @JsonProperty("description")
     private String description;
-    @JsonProperty("slug")
-    private String slug;
 }

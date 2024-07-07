@@ -15,8 +15,8 @@ public class CommentRepositoryImpl implements ICommentRepository {
         this.jpa = jpa;
     }
     @Override
-    public void deleteByArticleSlug(String slug) {
-        jpa.deleteByArticleSlug(slug);
+    public void deleteByArticleId(UUID id) {
+        jpa.deleteByArticleId(id);
     }
     @Override
     public void deleteById(UUID fromString) {
@@ -27,7 +27,7 @@ public class CommentRepositoryImpl implements ICommentRepository {
         return jpa.save(commentEntity);
     }
     @Override
-    public List<CommentEntity> findByArticleSlug(String articleSlug) {
-        return jpa.findByArticleSlug(articleSlug);
+    public List<CommentEntity> findByArticleId(UUID articleId) {
+        return jpa.findByArticleId(articleId);
     }
 }

@@ -12,13 +12,13 @@ import java.util.UUID;
 @Repository
 public interface JpaCommentRepository extends JpaRepository<CommentEntity, UUID> {
 
-    @Query("SELECT cm FROM CommentEntity cm WHERE cm.article.slug = :articleSlug")
-    List<CommentEntity> findByArticleSlug(String articleSlug);
+    @Query("SELECT cm FROM CommentEntity cm WHERE cm.article.id = :articleId")
+    List<CommentEntity> findByArticleId(UUID articleId);
 
     @Modifying
     @Query("""
             DELETE FROM CommentEntity comment \
-             WHERE comment.article.slug = :slug \
+             WHERE comment.article.id = :id \
             """)
-    void deleteByArticleSlug(String slug);
+    void deleteByArticleId(UUID id);
 }

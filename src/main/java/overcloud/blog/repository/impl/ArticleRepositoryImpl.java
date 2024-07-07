@@ -24,8 +24,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     }
 
     @Override
-    public List<ArticleEntity> findBySlug(String slug) {
-        return this.jpa.findBySlug(slug);
+    public Optional<ArticleEntity> findById(UUID id) {
+        return this.jpa.findById(id);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     }
 
     @Override
-    public void deleteBySlug(String slug) {
-        this.jpa.deleteBySlug(slug);
+    public void deleteById(UUID id) {
+        this.jpa.deleteById(id);
     }
 
     @Override
@@ -46,10 +46,10 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     @Override
     public List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId) {
         StringBuilder query = new StringBuilder();
-        query.append("select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
+        query.append("select a.id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
         query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
         query.append("from ");
-        query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
+        query.append("(select articles.id, body, title, description, created_at, author_id ");
         query.append("from articles ");
         query.append(ifTag("left join article_tag on articles.id = article_tag.article_id left join tags on tags.id = article_tag.tag_id", tag));
         StringBuilder articleWhereStatement = new StringBuilder();
@@ -126,10 +126,10 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
     @Override
     public ArticleSummary findArticleById(String id, UUID currentUserId) {
-        String query = "select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, " +
+        String query = "select a.id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, " +
                 " fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount " +
                 "from " +
-                "(select articles.id, slug, body, title, description, created_at, author_id " +
+                "(select articles.id, body, title, description, created_at, author_id " +
                 "from articles " +
                 " WHERE id = :id ) a " +
                 "left join users author on " +
@@ -172,10 +172,10 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     @Override
     public List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId) {
         StringBuilder query = new StringBuilder();
-        query.append("select a.id, a.slug, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
+        query.append("select a.id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
         query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
         query.append("from ");
-        query.append("(select articles.id, slug, body, title, description, created_at, author_id ");
+        query.append("(select articles.id, body, title, description, created_at, author_id ");
         query.append("from articles ");
         query.append(" WHERE search_vector @@ to_tsquery('english', :keyword) ");
         if (StringUtils.hasText(lastArticleId)) {
@@ -237,7 +237,6 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             }
 
             summary.setId((UUID) data.get("id"));
-            summary.setSlug((String) data.get("slug"));
             summary.setTitle((String) data.get("title"));
             summary.setDescription((String) data.get("description"));
             summary.setBody((String) data.get("body"));
@@ -271,7 +270,6 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
             ArticleSummary summary = new ArticleSummary();
             summary.setId((UUID) data.get("id"));
-            summary.setSlug((String) data.get("slug"));
             summary.setTitle((String) data.get("title"));
             summary.setDescription((String) data.get("description"));
             summary.setBody((String) data.get("body"));

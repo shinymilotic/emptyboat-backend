@@ -6,5 +6,5 @@ import overcloud.blog.usecase.common.response.RestResponse;
 
 @Service
 public interface DeleteTestService {
-    RestResponse<Void> deleteTest(String slug);
+    RestResponse<Void> deleteTest(String id);
 }

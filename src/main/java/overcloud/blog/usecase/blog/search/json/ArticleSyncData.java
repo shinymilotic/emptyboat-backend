@@ -17,9 +17,6 @@ public class ArticleSyncData {
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty("slug")
-    private String slug;
-
     @JsonProperty("author_id")
     private String authorId;
 

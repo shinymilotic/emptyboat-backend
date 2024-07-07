@@ -3,11 +3,9 @@ package overcloud.blog.usecase.test.create_test.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
-import overcloud.blog.usecase.blog.common.ArticleUtils;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ResFactory;
@@ -49,7 +47,6 @@ public class CreateTestServiceImpl implements CreateTestService {
         TestEntity testEntity = new TestEntity();
         testEntity.setTitle(testRequest.getTitle());
         testEntity.setDescription(testRequest.getDescription());
-        testEntity.setSlug(ArticleUtils.toSlug(testRequest.getTitle()));
         testEntity.setAuthorId(currentUser.getId());
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);

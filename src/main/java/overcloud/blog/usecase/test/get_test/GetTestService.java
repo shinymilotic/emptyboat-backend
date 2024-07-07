@@ -7,5 +7,5 @@ import overcloud.blog.usecase.test.common.TestResponse;
 
 @Service
 public interface GetTestService {
-    RestResponse<TestResponse> getTest(String slug);
+    RestResponse<TestResponse> getTest(String id);
 }

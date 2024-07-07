@@ -6,16 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.ArticleEntity;
-
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface JpaArticleRepository extends JpaRepository<ArticleEntity, UUID> {
-    @Query("SELECT ar FROM ArticleEntity ar WHERE ar.slug = :slug ")
-    List<ArticleEntity> findBySlug(@Param("slug") String slug);
-
 //    @Query("SELECT ar FROM ArticleEntity ar WHERE ar.title = :title ")
 //    List<ArticleEntity> findByTitle(String title);
 
@@ -24,8 +19,8 @@ public interface JpaArticleRepository extends JpaRepository<ArticleEntity, UUID>
     void updateSearchVector();
 
     @Modifying
-    @Query("DELETE FROM ArticleEntity ar WHERE ar.slug = :slug ")
-    void deleteBySlug(String slug);
+    @Query("DELETE FROM ArticleEntity ar WHERE ar.id = :id ")
+    void deleteById(UUID id);
 
     @Query(value = "SELECT true  FROM articles a WHERE a.title = :title limit 1 ", nativeQuery = true)
     Optional<Boolean> isTitleExist(@Param("title") String title);

@@ -8,7 +8,6 @@ import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.IArticleTagRepository;
 import overcloud.blog.repository.ITagRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
-import overcloud.blog.usecase.blog.common.ArticleUtils;
 import overcloud.blog.usecase.blog.common.TagResMsg;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
@@ -95,7 +94,6 @@ public class CreateArticleService {
         String title = articleRequest.getTitle();
         String body = articleRequest.getBody();
         String description = articleRequest.getDescription();
-        String slug = ArticleUtils.toSlug(title);
         LocalDateTime now = LocalDateTime.now();
 
         ArticleEntity articleEntity = new ArticleEntity();
@@ -103,7 +101,6 @@ public class CreateArticleService {
         articleEntity.setAuthorId(author.getId());
         articleEntity.setBody(body);
         articleEntity.setDescription(description);
-        articleEntity.setSlug(slug);
         articleEntity.setTitle(title);
         articleEntity.setCreatedAt(now);
         articleEntity.setUpdatedAt(now);

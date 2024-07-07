@@ -22,7 +22,7 @@ public interface JpaFavoriteRepository extends JpaRepository<FavoriteEntity, Fav
     @Modifying
     @Query("""
             DELETE FROM FavoriteEntity favorite \
-             WHERE favorite.article.slug = :slug \
+             WHERE favorite.article.id = :id \
             """)
-    void deleteByArticleSlug(String slug);
+    void deleteByArticleId(UUID id);
 }

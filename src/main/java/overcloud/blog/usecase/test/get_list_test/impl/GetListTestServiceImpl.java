@@ -29,10 +29,9 @@ public class GetListTestServiceImpl implements GetListTestService {
         List<SimpleTestResponse> responses = (new ArrayList<>());
         for (TestListRecord test : testList) {
             String title = test.getTitle();
-            String slug = test.getSlug();
             String description = test.getDescription();
 
-            responses.add(new SimpleTestResponse(title, description, slug));
+            responses.add(new SimpleTestResponse(title, description));
         }
 
         return resFactory.success(TestResMsg.TEST_GET_LIST, responses);

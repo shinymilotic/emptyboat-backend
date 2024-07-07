@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CreateCommentService {
@@ -42,19 +43,19 @@ public class CreateCommentService {
     }
 
     @Transactional
-    public RestResponse<CreateCommentResponse> createComment(CreateCommentRequest createCommentRequest, String slug) {
+    public RestResponse<CreateCommentResponse> createComment(CreateCommentRequest createCommentRequest, String id) {
         Optional<ApiError> apiError = validator.validate(createCommentRequest);
 
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
 
-        List<ArticleEntity> articleEntities = articleRepository.findBySlug(slug);
-        if (articleEntities.isEmpty()) {
+        Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
+        if (!articleEntities.isPresent()) {
             throw new InvalidDataException(resFactory.fail(CommentResMsg.COMMENT_ARTICLE_NOT_EXIST));
         }
 
-        ArticleEntity articleEntity = articleEntities.get(0);
+        ArticleEntity articleEntity = articleEntities.get();
 
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
