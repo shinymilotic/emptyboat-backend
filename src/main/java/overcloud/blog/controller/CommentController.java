@@ -36,8 +36,8 @@ public class CommentController {
         return getCommentsService.getComments(id);
     }
 
-    @DeleteMapping(ApiConst.ARTICLE_ID_COMMENTS_ID)
-    public RestResponse<Void> deleteComment(@PathVariable("articleId") String articleId, @PathVariable("commentId") String commendId) {
-        return deleteCommentService.deleteComment(articleId, commendId);
+    @DeleteMapping(ApiConst.COMMENT_ID)
+    public RestResponse<Void> deleteComment(@PathVariable("commentId") String commendId) {
+        return deleteCommentService.deleteComment(commendId);
     }
 }

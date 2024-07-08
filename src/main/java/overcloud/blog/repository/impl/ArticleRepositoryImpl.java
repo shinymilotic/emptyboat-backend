@@ -125,7 +125,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     }
 
     @Override
-    public ArticleSummary findArticleById(String id, UUID currentUserId) {
+    public ArticleSummary findArticleById(UUID id, UUID currentUserId) {
         String query = "select a.id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, " +
                 " fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount " +
                 "from " +

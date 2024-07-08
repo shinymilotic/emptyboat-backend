@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface ITestRepository {
     List<TestListRecord> findAll();
-    Optional<TestEntity> findById(UUID slug);
+    Optional<TestEntity> findById(UUID id);
     TestEntity save(TestEntity testEntity);
     void deleteById(UUID id);
 }

@@ -13,31 +13,20 @@ import java.util.List;
 public class GetArticleResponse {
     @JsonProperty("id")
     private String id;
-
-    @JsonProperty("slug")
-    private String slug;
-
     @JsonProperty("title")
     private String title;
-
     @JsonProperty("description")
     private String description;
-
     @JsonProperty("body")
     private String body;
-
     @JsonProperty("tagList")
     private List<String> tagList;
-
     @JsonProperty("createdAt")
     private LocalDateTime createdAt;
-
     @JsonProperty("updatedAt")
     private LocalDateTime updatedAt;
-
     @JsonProperty("favorited")
     private Boolean favorited;
-
     @JsonProperty("favoritesCount")
     private Long favoritesCount;
 

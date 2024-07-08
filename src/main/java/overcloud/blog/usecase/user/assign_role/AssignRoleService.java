@@ -16,11 +16,8 @@ import java.util.Optional;
 
 @Service
 public class AssignRoleService {
-
     private final IUserRoleRepository userRoleRepository;
-
     private final IUserRepository userRepository;
-
     private final IRoleRepository roleRepository;
 
     public AssignRoleService(IUserRoleRepository userRoleRepository,

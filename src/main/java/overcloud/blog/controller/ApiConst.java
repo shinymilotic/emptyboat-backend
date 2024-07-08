@@ -9,7 +9,7 @@ public class ApiConst {
 
     public static final String ARTICLE_COMMENTS = "/articles/{id}/comments";
 
-    public static final String ARTICLE_ID_COMMENTS_ID = "/articles/{articleId}/comments/{commentId}";
+    public static final String COMMENT_ID = "/comment/{commentId}";
 
     public static final String ARTICLE_ID_FAVORITE = "/articles/{id}/favorite";
 

@@ -38,7 +38,7 @@ public class GetArticleService {
             userId = currentUser.getId();
         }
 
-        ArticleSummary articleSummary = articleRepository.findArticleById(id, userId);
+        ArticleSummary articleSummary = articleRepository.findArticleById(UUID.fromString(id), userId);
 
         return resFactory.success(ArticleResMsg.ARTICLE_GET_SUCCESS, toGetArticlesingleResponse(articleSummary));
     }
