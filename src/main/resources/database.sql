@@ -69,7 +69,6 @@ CREATE TABLE public.test (
 	title text NOT NULL,
 	created_at timestamp NULL,
 	updated_at timestamp NULL,
-	slug varchar(200) NOT NULL DEFAULT ''::character varying,
 	CONSTRAINT test_pk PRIMARY KEY (id)
 );
 CREATE UNIQUE INDEX test_title_uindex ON public.test USING btree (title);
@@ -126,7 +125,6 @@ CREATE TABLE public.answer (
 CREATE TABLE public.articles (
 	id uuid NOT NULL,
 	author_id uuid NOT NULL,
-	slug text NOT NULL,
 	title varchar(250) NOT NULL,
 	description text NOT NULL,
 	body text NOT NULL,
@@ -134,7 +132,6 @@ CREATE TABLE public.articles (
 	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	search_vector tsvector NULL,
 	CONSTRAINT articles_pkey PRIMARY KEY (id),
-	CONSTRAINT articles_slug_key UNIQUE (slug),
 	CONSTRAINT articles_author_id_fkey FOREIGN KEY (author_id) REFERENCES public.users(id)
 );
 CREATE INDEX articles_author_id_idx ON public.articles USING btree (author_id);
