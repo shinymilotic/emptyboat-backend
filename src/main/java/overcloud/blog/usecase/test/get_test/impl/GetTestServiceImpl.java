@@ -38,7 +38,6 @@ public class GetTestServiceImpl implements GetTestService {
         Optional<TestEntity> testEntity = this.testRepository.findById(UUID.fromString(id));
 
         if (!testEntity.isPresent()) {
-            // do something...
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_GET_FAILED));
         }
 

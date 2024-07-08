@@ -30,8 +30,8 @@ public class GetListTestServiceImpl implements GetListTestService {
         for (TestListRecord test : testList) {
             String title = test.getTitle();
             String description = test.getDescription();
-
-            responses.add(new SimpleTestResponse(title, description));
+            String id = test.getId().toString();
+            responses.add(new SimpleTestResponse(id, title, description));
         }
 
         return resFactory.success(TestResMsg.TEST_GET_LIST, responses);

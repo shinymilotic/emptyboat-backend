@@ -11,6 +11,8 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class SimpleTestResponse {
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("title")
     private String title;
     @JsonProperty("description")
