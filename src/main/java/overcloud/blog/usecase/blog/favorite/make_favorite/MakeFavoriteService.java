@@ -11,7 +11,6 @@ import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
