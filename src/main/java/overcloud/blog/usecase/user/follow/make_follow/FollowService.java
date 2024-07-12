@@ -35,7 +35,7 @@ public class FollowService {
     }
 
     @Transactional
-    public RestResponse<FollowResponse> followUser(String username) {
+    public RestResponse<Void> followUser(String username) {
         FollowEntity followEntity = new FollowEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
@@ -50,17 +50,6 @@ public class FollowService {
         followEntity.setFollowee(followee);
         followRepository.save(followEntity);
 
-        return resFactory.success(UserResMsg.USER_FOLLOW_SUCCESS, toFollowResponse(followee)) ;
-    }
-
-    public FollowResponse toFollowResponse(UserEntity followee) {
-        return FollowResponse.builder()
-                .username(followee.getUsername())
-                .email(followee.getEmail())
-                .bio(followee.getBio())
-                .image(followee.getImage())
-                .following(true)
-                .followersCount(followUtils.getFollowingCount(followee))
-                .build();
+        return resFactory.success(UserResMsg.USER_FOLLOW_SUCCESS, null) ;
     }
 }

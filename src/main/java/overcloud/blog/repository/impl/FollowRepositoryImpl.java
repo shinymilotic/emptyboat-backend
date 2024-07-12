@@ -17,8 +17,8 @@ public class FollowRepositoryImpl implements IFollowRepository {
     }
 
     @Override
-    public List<FollowEntity> getFollowing(String currentUsername, String followingUsername) {
-        return jpa.getFollowing(currentUsername, followingUsername);
+    public void unfollow(String currentUsername, String followingUsername) {
+        jpa.unfollow(currentUsername, followingUsername);
     }
 
     @Override
