@@ -91,8 +91,6 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
             if (questionType != null && questionType.equals(2) && !cachedQuestions.containsKey(questionId)) {
                 questions.add(PracticeEssayQuestion.questionFactory(questionId, question, essayAnswer));
             }
-
-            
         }
 
         practiceResult.setQuestions(questions);

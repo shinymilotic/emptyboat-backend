@@ -1,7 +1,5 @@
 package overcloud.blog.repository.impl;
 
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 import overcloud.blog.repository.IFollowRepository;
 import overcloud.blog.repository.jparepository.JpaFollowRepository;
