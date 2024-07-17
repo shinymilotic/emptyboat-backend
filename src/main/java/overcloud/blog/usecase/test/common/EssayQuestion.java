@@ -2,6 +2,8 @@ package overcloud.blog.usecase.test.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,7 @@ public class EssayQuestion implements Question {
     private String id;
 
     @JsonProperty("question")
+    @NotBlank(message = TestResMsg.TEST_QUESTION_SIZE)
     private String question;
 
     @JsonProperty("questionType")

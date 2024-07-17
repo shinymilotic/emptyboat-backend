@@ -2,15 +2,14 @@ package overcloud.blog.usecase.blog.create_comment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import overcloud.blog.usecase.blog.common.CommentResMsg;
 
 @Getter
 @Setter
 public class CreateCommentRequest {
     @JsonProperty("body")
-    @NotNull
-    @NotBlank
+    @NotBlank(message = CommentResMsg.COMMENT_NOTBLANK)
     private String body;
 }

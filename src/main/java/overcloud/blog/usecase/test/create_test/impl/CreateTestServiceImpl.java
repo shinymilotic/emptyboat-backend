@@ -6,16 +6,20 @@ import org.springframework.util.StringUtils;
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
+import overcloud.blog.usecase.blog.create_article.ArticleRequest;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.usecase.common.response.ApiError;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
+import overcloud.blog.usecase.common.validation.ObjectsValidator;
 import overcloud.blog.usecase.test.common.*;
 import overcloud.blog.usecase.test.create_test.CreateTestService;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CreateTestServiceImpl implements CreateTestService {
@@ -23,20 +27,29 @@ public class CreateTestServiceImpl implements CreateTestService {
     private final IQuestionRepository questionRepository;
     private final SpringAuthenticationService authenticationService;
     private final ResFactory resFactory;
+    private final ObjectsValidator<TestRequest> validator;
 
     public CreateTestServiceImpl(ITestRepository testRepository,
                                  IQuestionRepository questionRepository,
                                  SpringAuthenticationService authenticationService,
-                                 ResFactory resFactory) {
+                                 ResFactory resFactory,
+                                 ObjectsValidator<TestRequest> validator) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.authenticationService = authenticationService;
         this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
     @Transactional
     public RestResponse<Void> createTest(TestRequest testRequest)  {
+        Optional<ApiError> apiError = validator.validate(testRequest);
+
+        if (apiError.isPresent()) {
+            throw new InvalidDataException(apiError.get());
+        }
+        
         List<Question> questions = testRequest.getQuestions();
         LocalDateTime now = LocalDateTime.now();
 
