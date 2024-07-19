@@ -56,7 +56,6 @@ public class CreateTestServiceImpl implements CreateTestService {
                 ChoiceQuestion choiceQuestion = (ChoiceQuestion) question;
                 apiError = validateAnswer(apiError, choiceQuestion.getAnswers());
             }
-            
         }
 
         return apiError;
@@ -65,6 +64,13 @@ public class CreateTestServiceImpl implements CreateTestService {
     private Optional<ApiError> validateAnswer(Optional<ApiError> apiError, List<Answer> answers) {
         if (answers == null || answers.isEmpty()) {
             apiError = validator.addError(apiError, TestResMsg.TEST_LIST_ANSWER_SIZE);
+            answers = new ArrayList<>();
+        }
+
+        for (Answer answer : answers) {
+            if (StringUtils.hasText(answer.getAnswer())) {
+                apiError = validator.addError(apiError, TestResMsg.TEST_ANSWER_SIZE);
+            }
         }
 
         return apiError;
@@ -74,10 +80,7 @@ public class CreateTestServiceImpl implements CreateTestService {
     @Transactional
     public RestResponse<Void> createTest(TestRequest testRequest)  {
         Optional<ApiError> apiError = validator.validate(testRequest);
-        List<Question> questions = testRequest.getQuestions();
-
-        apiError = validateQuestions(apiError, questions);
-
+        apiError = validateQuestions(apiError, testRequest.getQuestions());
 
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -96,9 +99,8 @@ public class CreateTestServiceImpl implements CreateTestService {
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);
 
-        // insert questions
         List<QuestionEntity> questionEntities = new ArrayList<>();
-        for (Question questionReq : questions) {
+        for (Question questionReq : testRequest.getQuestions()) {
             String question = questionReq.getQuestion();
             QuestionEntity questionEntity = new QuestionEntity();
             questionEntity.setId(UuidCreator.getTimeOrderedEpoch());
