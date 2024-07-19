@@ -25,4 +25,10 @@ public class ResFactory {
 
         return ApiError.from(messageId, message);
     }
+
+    public <T> ApiValidationError failDetail(String messageId) {
+        String message = messageSource.getMessage(messageId, null, Locale.getDefault());
+
+        return new ApiValidationError(messageId, message);
+    }
 }

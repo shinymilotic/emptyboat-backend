@@ -3,10 +3,11 @@ package overcloud.blog.usecase.test.create_test.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
-import overcloud.blog.usecase.blog.create_article.ArticleRequest;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ApiError;
@@ -27,13 +28,13 @@ public class CreateTestServiceImpl implements CreateTestService {
     private final IQuestionRepository questionRepository;
     private final SpringAuthenticationService authenticationService;
     private final ResFactory resFactory;
-    private final ObjectsValidator<TestRequest> validator;
+    private final ObjectsValidator validator;
 
     public CreateTestServiceImpl(ITestRepository testRepository,
                                  IQuestionRepository questionRepository,
                                  SpringAuthenticationService authenticationService,
                                  ResFactory resFactory,
-                                 ObjectsValidator<TestRequest> validator) {
+                                 ObjectsValidator validator) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.authenticationService = authenticationService;
@@ -41,35 +42,66 @@ public class CreateTestServiceImpl implements CreateTestService {
         this.validator = validator;
     }
 
+    public Optional<ApiError> validateQuestions(Optional<ApiError> apiError, List<Question> questions) {
+        if (questions == null || questions.isEmpty()) {
+            return apiError;
+        }
+
+        for (Question question : questions) {
+            if (!StringUtils.hasText(question.getQuestion())) {
+                apiError = validator.addError(apiError, TestResMsg.TEST_QUESTION_SIZE);
+            }
+
+            if (question.getQuestionType() == 1) {
+                ChoiceQuestion choiceQuestion = (ChoiceQuestion) question;
+                apiError = validateAnswer(apiError, choiceQuestion.getAnswers());
+            }
+            
+        }
+
+        return apiError;
+    }
+
+    private Optional<ApiError> validateAnswer(Optional<ApiError> apiError, List<Answer> answers) {
+        if (answers == null || answers.isEmpty()) {
+            apiError = validator.addError(apiError, TestResMsg.TEST_LIST_ANSWER_SIZE);
+        }
+
+        return apiError;
+    }
+
     @Override
     @Transactional
     public RestResponse<Void> createTest(TestRequest testRequest)  {
         Optional<ApiError> apiError = validator.validate(testRequest);
+        List<Question> questions = testRequest.getQuestions();
+
+        apiError = validateQuestions(apiError, questions);
+
 
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
         
-        List<Question> questions = testRequest.getQuestions();
         LocalDateTime now = LocalDateTime.now();
-
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
         TestEntity testEntity = new TestEntity();
+        testEntity.setId(UuidCreator.getTimeOrderedEpoch());
         testEntity.setTitle(testRequest.getTitle());
         testEntity.setDescription(testRequest.getDescription());
         testEntity.setAuthorId(currentUser.getId());
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);
-        TestEntity savedTest = testRepository.save(testEntity);
 
         // insert questions
         List<QuestionEntity> questionEntities = new ArrayList<>();
         for (Question questionReq : questions) {
             String question = questionReq.getQuestion();
             QuestionEntity questionEntity = new QuestionEntity();
+            questionEntity.setId(UuidCreator.getTimeOrderedEpoch());
             questionEntity.setQuestion(question);
             questionEntity.setQuestionType(questionReq.getQuestionType());
             if (questionReq.getQuestionType() == 1) {
@@ -81,12 +113,11 @@ public class CreateTestServiceImpl implements CreateTestService {
             questionEntity.setUpdatedAt(now);
             questionEntities.add(questionEntity);
         }
-        List<QuestionEntity> savedQuestions = questionRepository.saveAll(questionEntities);
 
         // insert test_question
         List<TestQuestion> testQuestions = new ArrayList<>();
         int order = 0;
-        for (QuestionEntity questionEntity : savedQuestions) {
+        for (QuestionEntity questionEntity : questionEntities) {
             TestQuestionId testQuestionId = new TestQuestionId(testEntity.getId(), questionEntity.getId());
             TestQuestion testQuestion = new TestQuestion();
             testQuestion.setId(testQuestionId);
@@ -95,6 +126,9 @@ public class CreateTestServiceImpl implements CreateTestService {
             testQuestion.setQuestion(questionEntity);
             testQuestions.add(testQuestion);
         }
+        
+        TestEntity savedTest = testRepository.save(testEntity);
+        questionRepository.saveAll(questionEntities);
         savedTest.setQuestions(testQuestions);
 
         return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
@@ -106,11 +140,6 @@ public class CreateTestServiceImpl implements CreateTestService {
         for (Answer answer : answers) {
             String answerContent = answer.getAnswer();
             boolean truth = answer.isTruth();
-
-            if (!StringUtils.hasText(answerContent)) {
-                throw new InvalidDataException(resFactory.fail(TestResMsg.ANSWER_NOT_FOUND));
-            }
-
             AnswerEntity answerEntity = new AnswerEntity();
             answerEntity.setAnswer(answerContent);
             answerEntity.setQuestion(question);

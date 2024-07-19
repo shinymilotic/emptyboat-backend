@@ -1,6 +1,8 @@
 package overcloud.blog.usecase.test.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,7 @@ public class Answer {
     private UUID id;
 
     @JsonProperty("answer")
+    @NotBlank(message = TestResMsg.TEST_ANSWER_SIZE)
     private String answer;
 
     @JsonProperty("truth")
