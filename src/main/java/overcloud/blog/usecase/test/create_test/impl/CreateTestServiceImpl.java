@@ -116,7 +116,6 @@ public class CreateTestServiceImpl implements CreateTestService {
             questionEntities.add(questionEntity);
         }
 
-        // insert test_question
         List<TestQuestion> testQuestions = new ArrayList<>();
         int order = 0;
         for (QuestionEntity questionEntity : questionEntities) {
