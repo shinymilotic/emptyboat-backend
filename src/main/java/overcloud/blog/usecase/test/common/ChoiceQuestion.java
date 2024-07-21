@@ -20,14 +20,12 @@ public class ChoiceQuestion implements Question {
     private String id;
 
     @JsonProperty("question")
-    @NotBlank(message = TestResMsg.TEST_QUESTION_SIZE)
     private String question;
 
     @JsonProperty("questionType")
     private int questionType;
 
     @JsonProperty("answers")
-    @NotEmpty(message = TestResMsg.TEST_LIST_ANSWER_SIZE)
     private List<Answer> answers;
 
     public static ChoiceQuestion questionFactory(String id, String question, List<Answer> answers) {

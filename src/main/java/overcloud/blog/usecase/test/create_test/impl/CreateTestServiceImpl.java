@@ -68,7 +68,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         }
 
         for (Answer answer : answers) {
-            if (StringUtils.hasText(answer.getAnswer())) {
+            if (!StringUtils.hasText(answer.getAnswer())) {
                 apiError = validator.addError(apiError, TestResMsg.TEST_ANSWER_SIZE);
             }
         }

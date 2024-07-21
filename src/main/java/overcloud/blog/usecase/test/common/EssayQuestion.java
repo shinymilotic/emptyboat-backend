@@ -17,7 +17,6 @@ public class EssayQuestion implements Question {
     private String id;
 
     @JsonProperty("question")
-    @NotBlank(message = TestResMsg.TEST_QUESTION_SIZE)
     private String question;
 
     @JsonProperty("questionType")

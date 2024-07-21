@@ -17,7 +17,6 @@ public class Answer {
     private UUID id;
 
     @JsonProperty("answer")
-    @NotBlank(message = TestResMsg.TEST_ANSWER_SIZE)
     private String answer;
 
     @JsonProperty("truth")

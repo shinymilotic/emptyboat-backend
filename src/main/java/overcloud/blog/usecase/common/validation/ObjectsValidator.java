@@ -8,6 +8,9 @@ import overcloud.blog.usecase.common.response.ApiValidationError;
 import overcloud.blog.usecase.common.response.ResFactory;
 import org.springframework.stereotype.Component;
 import overcloud.blog.usecase.common.response.ApiError;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -41,11 +44,17 @@ public class ObjectsValidator<T> {
     public Optional<ApiError> addError(Optional<ApiError> error, String messageId) {
         if (error.isPresent()) {
             List<ApiValidationError> detail = error.get().getErrors();
-            detail.add(resFactory.failDetail(messageId));
+            for (ApiValidationError apiValidationError : detail) {
+                if (messageId.equals(apiValidationError.getMessageId())) {
+                    return error;
+                }
+            }
             error.get().getErrors().add(resFactory.failDetail(messageId));
             return Optional.of(ApiError.from(detail));
         } else {
-            return Optional.of(new ApiError(List.of(resFactory.failDetail(messageId))));
+            List<ApiValidationError> detail = new ArrayList<>();
+            detail.add(resFactory.failDetail(messageId));
+            return Optional.of(new ApiError(detail));
         }
     }
 }
