@@ -2,18 +2,15 @@ package overcloud.blog.usecase.test.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @JsonDeserialize(as = ChoiceQuestion.class)
 public class ChoiceQuestion implements Question {
     @JsonProperty("id")
@@ -27,6 +24,10 @@ public class ChoiceQuestion implements Question {
 
     @JsonProperty("answers")
     private List<Answer> answers;
+
+    public ChoiceQuestion() {
+        this.answers = new ArrayList<>();
+    }
 
     public static ChoiceQuestion questionFactory(String id, String question, List<Answer> answers) {
         return new ChoiceQuestion(id, question, 1, answers);

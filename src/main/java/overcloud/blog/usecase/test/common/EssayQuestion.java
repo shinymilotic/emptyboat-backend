@@ -2,15 +2,15 @@ package overcloud.blog.usecase.test.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonDeserialize(as = EssayQuestion.class)
 public class EssayQuestion implements Question {
     @JsonProperty("id")
