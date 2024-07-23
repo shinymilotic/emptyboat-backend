@@ -1,9 +1,12 @@
 package overcloud.blog.usecase.user.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.micrometer.common.lang.NonNullApi;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.UUID;
 
@@ -11,6 +14,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserResponse {
     @JsonProperty("id")
     private UUID id;

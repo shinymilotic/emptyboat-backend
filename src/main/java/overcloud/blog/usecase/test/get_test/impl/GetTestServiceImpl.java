@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
-import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.TestQuestion;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
@@ -35,21 +34,13 @@ public class GetTestServiceImpl implements GetTestService {
     @Override
     @Transactional
     public RestResponse<TestResponse> getTest(String id) {
-        Optional<TestEntity> testEntity = this.testRepository.findById(UUID.fromString(id));
+        Optional<TestResponse> res = this.testRepository.getTestResponse(UUID.fromString(id));
 
-        if (!testEntity.isPresent()) {
+        if (!res.isPresent()) {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_GET_FAILED));
         }
-
-        String titleDB = testEntity.get().getTitle();
-        String descriptionDB = testEntity.get().getDescription();
-
-        TestResponse res = TestResponse.testResponseFactory(
-                titleDB,
-                descriptionDB,
-                getQuestions(testEntity.get().getQuestions()));
         
-        return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, res);
+        return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, res.get());
     }
 
     public List<Question> getQuestions(List<TestQuestion> testQuestions) {
