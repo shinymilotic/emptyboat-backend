@@ -61,8 +61,8 @@ public class TestRepositoryImpl implements ITestRepository {
         sql.append(" , a.id as answerId, a.answer, a.truth  ");
         sql.append("FROM test t ");
         sql.append("inner join users author on t.author_id = author.id ");
-        sql.append("inner join test_question tq on t.id = tq.test_id ");
-        sql.append("inner join question q on q.id = tq.question_id ");
+        sql.append("left join test_question tq on t.id = tq.test_id ");
+        sql.append("left join question q on q.id = tq.question_id ");
         sql.append("left join answer a on a.question_id = q.id ");
         sql.append("WHERE t.id = :id ");
         sql.append("ORDER BY q.id ");
@@ -73,45 +73,50 @@ public class TestRepositoryImpl implements ITestRepository {
         List<Tuple> results = query.getResultList();
         
         Optional<TestResponse> res = Optional.empty();
-        Tuple first = results.getFirst();
-        if (first != null) {
-            TestResponse testResponse = new TestResponse();
-            testResponse.setTitle((String) first.get("title"));
-            testResponse.setDescription((String) first.get("description"));
-            UserResponse author = new UserResponse();
-            author.setId((UUID) first.get("authorId"));
-            author.setUsername((String) first.get("username"));
-            author.setEmail((String) first.get("email"));
-            author.setBio((String) first.get("bio"));
-            author.setImage((String) first.get("image"));
-            testResponse.setAuthor(author);
-            res = Optional.of(testResponse);
-        } else {
+        if (results.isEmpty()) {
             return res;
         }
+        Tuple first = results.getFirst();
+        TestResponse testResponse = new TestResponse();
+        testResponse.setTitle((String) first.get("title"));
+        testResponse.setDescription((String) first.get("description"));
+        UserResponse author = new UserResponse();
+        author.setId((UUID) first.get("authorId"));
+        author.setUsername((String) first.get("username"));
+        author.setEmail((String) first.get("email"));
+        author.setBio((String) first.get("bio"));
+        author.setImage((String) first.get("image"));
+        testResponse.setAuthor(author);
+        res = Optional.of(testResponse);
 
-        TestResponse testResponse = res.get();
         Map<UUID, ChoiceQuestion> choiceQuestionMap = new HashMap<>();
         UUID previousQuestionId = null;
         for (Tuple result : results) {
-            Integer questionType = (Integer) result.get("question_type");
             UUID questionId = (UUID) result.get("questionId");
+            if (questionId == null) {
+                return res;
+            }
+            Integer questionType = (Integer) result.get("question_type");
             String question = (String) result.get("question");
             
-            if (questionType.equals(1) && questionId.equals(previousQuestionId)) {
-                ChoiceQuestion choiceQuestion = choiceQuestionMap.get(previousQuestionId);
+            if (questionType.equals(1)) {
                 UUID answerId = (UUID) result.get("answerId");
                 String strAnswer = (String) result.get("answer");
                 Boolean truth = (Boolean) result.get("truth");
                 Answer answer = Answer.answerFactory(answerId, strAnswer, truth);
-                choiceQuestion.getAnswers().add(answer);
-            } else if (questionType.equals(1)) {
-                ChoiceQuestion choiceQuestion = new ChoiceQuestion();
-                choiceQuestion.setId(questionId.toString());
-                choiceQuestion.setQuestion(question);
-                choiceQuestion.setQuestionType(questionType);
-                choiceQuestionMap.put(id, choiceQuestion);
-                testResponse.getQuestions().add(choiceQuestion);
+
+                if (questionId.equals(previousQuestionId)) {
+                    ChoiceQuestion choiceQuestion = choiceQuestionMap.get(previousQuestionId);
+                    choiceQuestion.getAnswers().add(answer);
+                } else {
+                    ChoiceQuestion choiceQuestion = new ChoiceQuestion();
+                    choiceQuestion.setId(questionId.toString());
+                    choiceQuestion.setQuestion(question);
+                    choiceQuestion.setQuestionType(questionType);
+                    choiceQuestion.getAnswers().add(answer);
+                    choiceQuestionMap.put(questionId, choiceQuestion);
+                    testResponse.getQuestions().add(choiceQuestion);
+                }   
             } else if (questionType.equals(2)) {
                 EssayQuestion essayQuestion = new EssayQuestion();
                 essayQuestion.setId(questionId.toString());

@@ -37,7 +37,7 @@ public class GetTestServiceImpl implements GetTestService {
         Optional<TestResponse> res = this.testRepository.getTestResponse(UUID.fromString(id));
 
         if (!res.isPresent()) {
-            throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_GET_FAILED));
+            throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));
         }
         
         return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, res.get());
