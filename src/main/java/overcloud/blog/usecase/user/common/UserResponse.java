@@ -1,8 +1,6 @@
 package overcloud.blog.usecase.user.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.micrometer.common.lang.NonNullApi;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

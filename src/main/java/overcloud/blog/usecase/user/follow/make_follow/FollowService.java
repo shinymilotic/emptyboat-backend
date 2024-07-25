@@ -19,18 +19,15 @@ public class FollowService {
     private final IUserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
     private final IFollowRepository followRepository;
-    private final FollowUtils followUtils;
     private final ResFactory resFactory;
 
     public FollowService(IUserRepository userRepository,
                          SpringAuthenticationService authenticationService,
                          IFollowRepository followRepository,
-                         FollowUtils followUtils,
                          ResFactory resFactory) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.followRepository = followRepository;
-        this.followUtils = followUtils;
         this.resFactory = resFactory;
     }
 

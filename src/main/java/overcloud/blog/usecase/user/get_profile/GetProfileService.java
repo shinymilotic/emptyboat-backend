@@ -10,23 +10,19 @@ import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
-import overcloud.blog.usecase.user.follow.core.utils.FollowUtils;
 import java.util.Optional;
 
 @Service
 public class GetProfileService {
     private final IUserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
-    private final FollowUtils followUtils;
     private final ResFactory resFactory;
 
     public GetProfileService(IUserRepository userRepository,
                              SpringAuthenticationService authenticationService,
-                             FollowUtils followUtils,
                              ResFactory resFactory) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
-        this.followUtils = followUtils;
         this.resFactory = resFactory;
     }
 

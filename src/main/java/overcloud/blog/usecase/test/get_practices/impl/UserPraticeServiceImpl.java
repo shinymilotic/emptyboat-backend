@@ -13,7 +13,6 @@ import overcloud.blog.usecase.common.response.ResFactory;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.PracticeResMsg;
 import overcloud.blog.usecase.test.common.PracticeResponse;
-import overcloud.blog.usecase.test.common.UserPracticeResponse;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.util.ArrayList;

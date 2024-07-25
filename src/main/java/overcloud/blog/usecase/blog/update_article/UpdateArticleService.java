@@ -52,9 +52,9 @@ public class UpdateArticleService {
                 .getUser();
 
 //        // Update authorization
-    //    if (!currentUser.getId().equals(articleEntity.getAuthor().getId())) {
-    //        throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_UPDATE_NO_AUTHORIZATION));
-    //    }
+       if (!currentUser.getId().equals(articleEntity.getAuthorId())) {
+           throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_UPDATE_NO_AUTHORIZATION));
+       }
 
         LocalDateTime now = LocalDateTime.now();
         articleEntity.setBody(updateArticleRequest.getBody());

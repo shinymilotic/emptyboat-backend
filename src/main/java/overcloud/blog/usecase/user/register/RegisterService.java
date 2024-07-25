@@ -28,7 +28,6 @@ public class RegisterService {
     private final SpringAuthenticationService authenticationService;
     private final JwtUtils jwtUtils;
     private final ObjectsValidator<RegisterRequest> validator;
-    private final UserResponseMapper userResponseMapper;
     private final EmailService emailService;
     private final JpaRefreshTokenRepository refreshTokenRepository;
     private final ResFactory resFactory;
@@ -37,7 +36,7 @@ public class RegisterService {
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
                            ObjectsValidator<RegisterRequest> validator,
-                           UserResponseMapper userResponseMapper, EmailService emailService,
+                           EmailService emailService,
                            JpaRefreshTokenRepository refreshTokenRepository,
                            ResFactory resFactory) {
         this.userRepository = userRepository;
@@ -45,7 +44,6 @@ public class RegisterService {
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
-        this.userResponseMapper = userResponseMapper;
         this.emailService = emailService;
         this.refreshTokenRepository = refreshTokenRepository;
         this.resFactory = resFactory;
@@ -75,6 +73,7 @@ public class RegisterService {
                 .email(registrationDto.getEmail())
                 .image("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
                 .password(hashedPassword)
+                .enable(true)
                 .build();
 
         UserEntity savedUser = userRepository.save(userEntity);
@@ -91,8 +90,8 @@ public class RegisterService {
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
         saveDBRefreshToken(refreshToken, savedUser.getId());
 
-        emailService.sendSimpleMessage(savedUser.getEmail(), "Registration email confirm!",
-                "Please click on the confirmation link: http://localhost:4200/confirmEmail/" + refreshToken);
+        // emailService.sendSimpleMessage(savedUser.getEmail(), "Registration email confirm!",
+        //         "Please click on the confirmation link: http://localhost:4200/confirmEmail/" + refreshToken);
 
         return resFactory.success(UserResMsg.USER_REGISTER_SUCCESS, null);
     }
