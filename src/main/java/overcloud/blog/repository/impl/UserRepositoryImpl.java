@@ -2,7 +2,6 @@ package overcloud.blog.repository.impl;
 
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
-import overcloud.blog.core.sql.PlainQueryBuilder;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
@@ -15,12 +14,10 @@ import java.util.UUID;
 public class UserRepositoryImpl implements IUserRepository {
     private final JpaUserRepository jpa;
     private final EntityManager entityManager;
-    private final PlainQueryBuilder queryBuilder;
 
-    public UserRepositoryImpl(JpaUserRepository jpa, EntityManager entityManager, PlainQueryBuilder queryBuilder) {
+    public UserRepositoryImpl(JpaUserRepository jpa, EntityManager entityManager) {
         this.jpa = jpa;
         this.entityManager = entityManager;
-        this.queryBuilder = queryBuilder;
     }
 
     @Override
@@ -74,7 +71,7 @@ public class UserRepositoryImpl implements IUserRepository {
     public List<UserEntity> findAll(int page, int size) {
         return entityManager
                 .createQuery("SELECT users FROM UserEntity users", UserEntity.class)
-                .setFirstResult(queryBuilder.getOffset(page, size))
+                .setFirstResult(page * (size - 1))
                 .setMaxResults(size)
                 .getResultList();
 
@@ -83,5 +80,17 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     public UserEntity findRolesByUsernname(String username) {
         return jpa.findRolesByUsernname(username);
+    }
+
+    @Override
+    public List<Tuple> findProfile(String username, UUID currentUserId) {
+        Query query = entityManager.createNativeQuery(
+            "SELECT u.*, f2.follower_id = :currentUserId as following" +
+            " FROM users u " + 
+            "left join follows f2 on u.id = f2.followee_id " + 
+            "where u.username = :username  ", 
+        Tuple.class);
+
+        return query.getResultList();
     }
 }

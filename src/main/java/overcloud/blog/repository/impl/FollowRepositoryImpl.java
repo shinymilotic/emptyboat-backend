@@ -7,7 +7,6 @@ import overcloud.blog.usecase.user.follow.core.FollowEntity;
 
 @Repository
 public class FollowRepositoryImpl implements IFollowRepository {
-
     private final JpaFollowRepository jpa;
 
     public FollowRepositoryImpl(JpaFollowRepository jpa) {

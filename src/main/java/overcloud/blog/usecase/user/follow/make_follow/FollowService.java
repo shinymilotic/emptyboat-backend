@@ -12,7 +12,6 @@ import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.follow.core.FollowEntity;
 import overcloud.blog.usecase.user.follow.core.FollowId;
-import overcloud.blog.usecase.user.follow.core.utils.FollowUtils;
 
 @Service
 public class FollowService {
