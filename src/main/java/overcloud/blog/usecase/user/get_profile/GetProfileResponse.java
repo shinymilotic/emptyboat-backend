@@ -21,7 +21,4 @@ public class GetProfileResponse {
 
     @JsonProperty("following")
     private boolean following;
-
-    @JsonProperty("followersCount")
-    private int followersCount;
 }

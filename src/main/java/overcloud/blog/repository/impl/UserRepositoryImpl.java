@@ -2,10 +2,14 @@ package overcloud.blog.repository.impl;
 
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
+
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.common.UserResponse;
+import overcloud.blog.usecase.user.get_profile.GetProfileResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -83,14 +87,43 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public List<Tuple> findProfile(String username, UUID currentUserId) {
-        Query query = entityManager.createNativeQuery(
-            "SELECT u.*, f2.follower_id = :currentUserId as following" +
-            " FROM users u " + 
-            "left join follows f2 on u.id = f2.followee_id " + 
-            "where u.username = :username  ", 
-        Tuple.class);
+    public GetProfileResponse findProfile(String username, UUID currentUserId) {
+        StringBuilder sql = new StringBuilder();
 
-        return query.getResultList();
+        if (currentUserId != null) {
+            sql.append("SELECT u.email, u.username, u.bio, u.image, f1.follower_id as following, COUNT(f2.follower_id) as followersCount ");
+            sql.append(" FROM users u ");
+            sql.append(" LEFT JOIN follows f1 ON u.id = f1.followee_id AND f1.follower_id = :currentUserId ");
+            sql.append(" LEFT JOIN follows f2 on u.id = f2.followee_id ");
+            sql.append(" WHERE u.username = :username ");
+            sql.append(" GROUP BY u.id, following ");
+        } else {
+            sql.append("SELECT u.email, u.username, u.bio, u.image, COUNT(f2.follower_id) as followersCount ");
+            sql.append(" FROM users u ");
+            sql.append(" LEFT JOIN follows f2 on u.id = f2.followee_id ");
+            sql.append(" WHERE u.username = :username ");
+            sql.append(" GROUP BY u.id ");
+        }
+        Query query = entityManager.createNativeQuery(sql.toString(), Tuple.class);
+        
+        List<Tuple> users = query.getResultList();
+
+        GetProfileResponse response = null;
+        for (Tuple user: users) {
+            response = new GetProfileResponse();
+            response.setEmail(user.get("email", String.class));
+            response.setUsername(user.get("username", String.class));
+            response.setBio(user.get("bio", String.class));
+            response.setImage(user.get("image", String.class));
+
+            if (currentUserId != null) {
+                Boolean following = user.get("following", Boolean.class);
+                response.setFollowing(following);
+            } else {
+                response.setFollowing(false);
+            }
+        }
+
+        return response;
     }
 }

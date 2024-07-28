@@ -15,6 +15,7 @@ import overcloud.blog.usecase.user.common.UserResMsg;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class GetProfileService {
@@ -32,28 +33,20 @@ public class GetProfileService {
 
     @Transactional(readOnly = true)
     public RestResponse<GetProfileResponse> getProfile(String username) {
-         = new GetProfileResponse();
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
         if (currentSecurityUser.isPresent()) {
             currentUser = currentSecurityUser.get().getUser();
         }
 
-        List<Tuple> user = userRepository.findProfile(username, currentUser.getId());
-        if (user == null || user.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
-        }
-        
-        GetProfileResponse profileResponse = getProfileResponse(user);
-
-        return resFactory.success(UserResMsg.USER_GET_PROFILE, profileResponse);
-    }
-
-    private GetProfileResponse getProfileResponse(List<Tuple> users) {
-        for (Tuple user: users) {
-
+        UUID currentUserId = null;
+        if (currentUser != null) {
+            currentUserId = currentUser.getId();
         }
 
-        return null;
+        GetProfileResponse user = userRepository.findProfile(username, currentUserId);
+
+        return resFactory.success(UserResMsg.USER_GET_PROFILE, user);
     }
+
 }
