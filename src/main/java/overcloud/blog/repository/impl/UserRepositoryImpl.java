@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public void enableUser(String confirmToken) {
-        jpa.enableUser(confirmToken);
+        // jpa.enableUser(confirmToken);
     }
 
     @Override
@@ -105,7 +105,11 @@ public class UserRepositoryImpl implements IUserRepository {
             sql.append(" GROUP BY u.id ");
         }
         Query query = entityManager.createNativeQuery(sql.toString(), Tuple.class);
-        
+
+        query.setParameter("username", username);
+        if (currentUserId != null) {
+            query.setParameter("currentUserId", currentUserId);
+        }
         List<Tuple> users = query.getResultList();
 
         GetProfileResponse response = null;
@@ -117,8 +121,8 @@ public class UserRepositoryImpl implements IUserRepository {
             response.setImage(user.get("image", String.class));
 
             if (currentUserId != null) {
-                Boolean following = user.get("following", Boolean.class);
-                response.setFollowing(following);
+                UUID following = user.get("following", UUID.class);
+                response.setFollowing(following == null ? false : true);
             } else {
                 response.setFollowing(false);
             }
