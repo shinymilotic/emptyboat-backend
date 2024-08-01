@@ -13,6 +13,11 @@ import overcloud.blog.usecase.test.delete_test.DeleteTestService;
 import overcloud.blog.usecase.test.get_list_test.GetListTestService;
 import overcloud.blog.usecase.test.get_list_test.SimpleTestResponse;
 import overcloud.blog.usecase.test.get_test.GetTestService;
+import overcloud.blog.usecase.test.update_test.TestUpdateRequest;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -31,12 +36,6 @@ public class TestController {
         this.getTestService = getTestService;
         this.deleteTestService = deleteTestService;
     }
-
-    /* get exam
-     *   create exam
-     *   update exam
-     *   delete exam
-     * */
 
     @PostMapping(ApiConst.TEST)
     public RestResponse<Void> createTest(@RequestBody TestRequest testRequest) {
@@ -57,4 +56,11 @@ public class TestController {
     public RestResponse<Void> deleteTestById(@PathVariable("id") String id) {
         return this.deleteTestService.deleteTest(id);
     }
+
+    @PostMapping(ApiConst.TEST_UPDATE)
+    public RestResponse<Void> updateTest(@PathVariable("id") String id, @RequestBody TestUpdateRequest entity) {
+        
+        return entity;
+    }
+    
 }
