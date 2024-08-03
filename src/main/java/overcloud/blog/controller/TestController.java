@@ -3,8 +3,6 @@ package overcloud.blog.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
-
-import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.TestRequest;
 import overcloud.blog.usecase.test.common.TestResponse;
@@ -14,6 +12,7 @@ import overcloud.blog.usecase.test.get_list_test.GetListTestService;
 import overcloud.blog.usecase.test.get_list_test.SimpleTestResponse;
 import overcloud.blog.usecase.test.get_test.GetTestService;
 import overcloud.blog.usecase.test.update_test.TestUpdateRequest;
+import overcloud.blog.usecase.test.update_test.UpdateTestService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,15 +25,18 @@ public class TestController {
     private final GetListTestService getListTestService;
     private final GetTestService getTestService;
     private final DeleteTestService deleteTestService;
-    
+    private final UpdateTestService updateTestService;
+
     public TestController(CreateTestService createTestService,
                           GetListTestService getListTestService,
                           GetTestService getTestService,
-                          DeleteTestService deleteTestService) {
+                          DeleteTestService deleteTestService,
+                          UpdateTestService updateTestService) {
         this.createTestService = createTestService;
         this.getListTestService = getListTestService;
         this.getTestService = getTestService;
         this.deleteTestService = deleteTestService;
+        this.updateTestService = updateTestService;
     }
 
     @PostMapping(ApiConst.TEST)
@@ -58,9 +60,8 @@ public class TestController {
     }
 
     @PostMapping(ApiConst.TEST_UPDATE)
-    public RestResponse<Void> updateTest(@PathVariable("id") String id, @RequestBody TestUpdateRequest entity) {
-        
-        return entity;
+    public RestResponse<Void> updateTest(@PathVariable("id") String id, @RequestBody TestUpdateRequest request) {
+        return updateTestService.updateTest(id, request);
     }
     
 }

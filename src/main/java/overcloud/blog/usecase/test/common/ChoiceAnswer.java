@@ -9,9 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class ChoiceAnswer {
-    @JsonProperty("questionId")
-    private String questionId;
-
     @JsonProperty("answerId")
     private List<String> answer;
 }
