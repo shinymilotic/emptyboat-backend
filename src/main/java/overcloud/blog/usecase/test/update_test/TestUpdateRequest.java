@@ -17,6 +17,6 @@ import lombok.Setter;
 public class TestUpdateRequest {
     private UpdateValue<String> title;
     private UpdateValue<String> description;
-    private List<Question> questions;
+    private List<UpdQuestion> questions;
     private Integer updateFlg;
 }
