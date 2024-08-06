@@ -15,8 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TestUpdateRequest {
-    private UpdateValue<String> title;
-    private UpdateValue<String> description;
+    private String title;
+    private String description;
     private List<UpdQuestion> questions;
-    private Integer updateFlg;
 }

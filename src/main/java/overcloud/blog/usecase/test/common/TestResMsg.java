@@ -12,4 +12,5 @@ public class TestResMsg  {
     public static final String TEST_LIST_ANSWER_SIZE = "test.answers.size";
     public static final String TEST_ANSWER_SIZE = "test.answer.not-blank";
     public static final String TEST_AUTHOR_NOT_MATCH = "test.author.not-match";
+    public static final String TEST_UPDATE_SUCCESS = "test.update.success";
 }

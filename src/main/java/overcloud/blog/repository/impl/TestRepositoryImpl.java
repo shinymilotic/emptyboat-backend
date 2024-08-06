@@ -129,4 +129,9 @@ public class TestRepositoryImpl implements ITestRepository {
 
         return res;
     }
+
+    @Override
+    public void updateTest(UUID testId, String title, String description) {
+        jpa.updateTest(testId, title, description);
+    }
 }
