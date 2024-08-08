@@ -1,11 +1,10 @@
 package overcloud.blog.usecase.test.update_test;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.transaction.annotation.Transactional;
-
-import overcloud.blog.entity.TestEntity;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ApiError;
@@ -33,8 +32,31 @@ public class UpdateTestServiceImpl implements UpdateTestService {
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
+        List<UpdQuestion> questions = request.getQuestions();
         testRepo.updateTest(testId, request.getTitle(), request.getDescription());
         
+        for (UpdQuestion question : questions) {
+
+
+        }
+
+        for (UpdQuestion question : questions) {
+            if (question.getQuestionType() == 1) {
+                UpdChoiceQuestion choiceQuestion = (UpdChoiceQuestion) question;
+            } else if (question.getQuestionType() == 2) {
+                UpdEssayQuestion essayQuestion = (UpdEssayQuestion) question;
+
+            }
+
+            if (question.getUpdateFlg() == UpdateFlg.CREATE.getValue()) {
+                
+
+            } else if (question.getUpdateFlg() == UpdateFlg.UPDATE.getValue()) {
+
+            } else if (question.getUpdateFlg() == UpdateFlg.DELETE.getValue()) {
+
+            }
+        }
         return resFactory.success(TestResMsg.TEST_UPDATE_SUCCESS, null);
     }
     

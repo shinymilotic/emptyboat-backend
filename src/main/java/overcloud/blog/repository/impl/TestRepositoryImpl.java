@@ -1,6 +1,8 @@
 package overcloud.blog.repository.impl;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
@@ -24,6 +26,8 @@ import java.util.UUID;
 @Repository
 public class TestRepositoryImpl implements ITestRepository {
     private final JpaTestRepository jpa;
+
+    @PersistenceContext
     private final EntityManager entityManager;
 
     public TestRepositoryImpl(JpaTestRepository jpaTestRepository, EntityManager entityManager) {
@@ -133,5 +137,12 @@ public class TestRepositoryImpl implements ITestRepository {
     @Override
     public void updateTest(UUID testId, String title, String description) {
         jpa.updateTest(testId, title, description);
+    }
+
+    @Override
+    public void batchInsert(List<TestEntity> testEntities) {
+        for (TestEntity testEntity : testEntities) {
+            entityManager.persist(testEntity);
+        }
     }
 }
