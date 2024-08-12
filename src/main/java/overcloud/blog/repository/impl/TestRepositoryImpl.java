@@ -61,7 +61,8 @@ public class TestRepositoryImpl implements ITestRepository {
     @Override
     public Optional<TestResponse> getTestResponse(UUID id) {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT t.title, t.description, q.id as questionId , q.question , q.question_type , author.id as authorId, author.username , author.email , author.bio , author.image ");
+        sql.append("SELECT t.title, t.description, q.id as questionId , q.question "
+        + " q.question_type , author.id as authorId, author.username , author.email , author.bio , author.image ");
         sql.append(" , a.id as answerId, a.answer, a.truth  ");
         sql.append("FROM test t ");
         sql.append("inner join users author on t.author_id = author.id ");
@@ -120,7 +121,7 @@ public class TestRepositoryImpl implements ITestRepository {
                     choiceQuestion.getAnswers().add(answer);
                     choiceQuestionMap.put(questionId, choiceQuestion);
                     testResponse.getQuestions().add(choiceQuestion);
-                }   
+                }
             } else if (questionType.equals(2)) {
                 EssayQuestion essayQuestion = new EssayQuestion();
                 essayQuestion.setId(questionId.toString());
@@ -139,10 +140,10 @@ public class TestRepositoryImpl implements ITestRepository {
         jpa.updateTest(testId, title, description);
     }
 
-    @Override
-    public void batchInsert(List<TestEntity> testEntities) {
-        for (TestEntity testEntity : testEntities) {
-            entityManager.persist(testEntity);
-        }
-    }
+    // @Override
+    // public void batchInsert(List<TestEntity> testEntities) {
+    //     for (TestEntity testEntity : testEntities) {
+    //         entityManager.persist(testEntity);
+    //     }
+    // }
 }

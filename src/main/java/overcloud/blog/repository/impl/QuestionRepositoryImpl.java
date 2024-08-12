@@ -6,6 +6,7 @@ import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.jparepository.JpaQuestionRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class QuestionRepositoryImpl implements IQuestionRepository {
@@ -22,7 +23,19 @@ public class QuestionRepositoryImpl implements IQuestionRepository {
     }
 
     @Override
-    public List<QuestionEntity> saveAll(List<QuestionEntity> entityList) {
-        return jpaQuestionRepository.saveAll(entityList);
+    public void saveAll(List<QuestionEntity> entityList) {
+        jpaQuestionRepository.saveAll(entityList);
+    }
+
+    @Override
+    public void updateAll(List<QuestionEntity> questions) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateAll'");
+    }
+
+    @Override
+    public void deleteAll(List<UUID> questionIds) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteAll'");
     }
 }

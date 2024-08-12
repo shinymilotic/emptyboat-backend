@@ -15,5 +15,4 @@ public interface ITestRepository {
     void deleteById(UUID id);
     Optional<TestResponse> getTestResponse(UUID id);
     void updateTest(UUID testId, String title, String description);
-    void batchInsert(List<TestEntity> testEntities);
 }
