@@ -104,7 +104,7 @@ CREATE TABLE public.users (
 
 -- DROP TABLE public.answer;
 
-CREATE TABLE public.answer (
+CREATE TABLE public.answers (
 	id uuid NOT NULL,
 	answer text NOT NULL,
 	truth bool NOT NULL,

@@ -13,5 +13,5 @@ public class UpdChoiceAnswer {
     private String answerId;
     private UpdateValue<String> answer;
     private UpdateValue<Boolean> truth;
-    private Boolean updateFlg;
+    private Integer updateFlg;
 }
