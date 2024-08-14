@@ -18,7 +18,7 @@ import java.util.UUID;
 @Table(name = "articles", schema = "public")
 public class ArticleEntity {
     @Id
-    private UUID id;
+    private UUID articleId;
 
 //    @ManyToOne
 //    @JoinColumn(name = "author_id")
@@ -57,12 +57,12 @@ public class ArticleEntity {
 
         ArticleEntity that = (ArticleEntity) o;
 
-        return id.equals(that.id);
+        return articleId.equals(that.articleId);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return articleId.hashCode();
     }
 
 }

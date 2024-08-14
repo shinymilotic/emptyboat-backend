@@ -44,7 +44,7 @@ public class MakeUnfavoriteService {
         if (articleEntity.isPresent()) {
             FavoriteId favoritePk = new FavoriteId();
             favoritePk.setUserId(currentUser.getId());
-            favoritePk.setArticleId(articleEntity.get().getId());
+            favoritePk.setArticleId(articleEntity.get().getArticleId());
             favoriteRepository.deleteById(favoritePk);
         }
         

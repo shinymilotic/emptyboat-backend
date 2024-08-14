@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "article_tag", schema = "public")
+@Table(name = "article_tags", schema = "public")
 public class ArticleTag {
     @EmbeddedId
     private ArticleTagId id;

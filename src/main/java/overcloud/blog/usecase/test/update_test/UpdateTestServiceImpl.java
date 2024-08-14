@@ -55,6 +55,8 @@ public class UpdateTestServiceImpl implements UpdateTestService {
         List<UpdChoiceAnswer> deleteAnswers = new ArrayList<>();
         for (UpdQuestion question : questions) {
             if (question.getUpdateFlg().equals(UpdateFlg.NEW.getValue())) {
+                question.getQuestion();
+                question.getQuestionType();
                 insertList.add(question);
             } else if (question.getUpdateFlg().equals(UpdateFlg.UPDATE.getValue())) {
                 updateList.add(question);

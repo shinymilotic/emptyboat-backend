@@ -83,7 +83,7 @@ public class GetTestServiceImpl implements GetTestService {
         List<AnswerEntity> answerEntities = questionEntity.getAnswers();
         List<Answer> answers = new ArrayList<>();
         for (AnswerEntity answerEntity : answerEntities) {
-            UUID id = answerEntity.getId();
+            UUID id = answerEntity.getAnswerId();
             String answerString = answerEntity.getAnswer();
             boolean truth = answerEntity.isTruth();
             Answer answer = Answer.answerFactory(id, answerString, truth);

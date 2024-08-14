@@ -62,6 +62,6 @@ public class UpdateArticleService {
         articleRepository.save(articleEntity);
         articleRepository.updateSearchVector();
 
-        return resFactory.success(ArticleResMsg.ARTICLE_UPDATE_SUCCESS, articleEntity.getId());
+        return resFactory.success(ArticleResMsg.ARTICLE_UPDATE_SUCCESS, articleEntity.getArticleId());
     }
 }

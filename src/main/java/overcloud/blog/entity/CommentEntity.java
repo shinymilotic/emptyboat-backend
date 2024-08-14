@@ -13,8 +13,8 @@ import java.util.UUID;
 @Table(name = "comments", schema = "public")
 public class CommentEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    // @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID commentId;
 
     @ManyToOne
     @JoinColumn(name = "article_id")

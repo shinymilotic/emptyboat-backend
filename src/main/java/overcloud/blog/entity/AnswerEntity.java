@@ -10,11 +10,11 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "answer", schema = "public")
+@Table(name = "answers", schema = "public")
 public class AnswerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    // @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID answerId;
 
     @ManyToOne
     @JoinColumn(name = "question_id")

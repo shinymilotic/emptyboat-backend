@@ -78,7 +78,7 @@ public class CreateCommentService {
 
     public CreateCommentResponse toCreateCommentResponse(CommentEntity commentEntity, UserEntity userEntity) {
         return CreateCommentResponse.builder()
-                .id(commentEntity.getId())
+                .id(commentEntity.getCommentId())
                 .body(commentEntity.getBody())
                 .author(toAuthorResponse(userEntity))
                 .createdAt(commentEntity.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm")))

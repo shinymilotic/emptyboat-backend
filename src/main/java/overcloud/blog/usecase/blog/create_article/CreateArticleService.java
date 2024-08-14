@@ -77,7 +77,7 @@ public class CreateArticleService {
         articleTagRepository.saveAll(articleTags);
         articleRepository.updateSearchVector();
 
-        return resFactory.success(ArticleResMsg.ARTICLE_CREATE_SUCCESS, articleEntity.getId());
+        return resFactory.success(ArticleResMsg.ARTICLE_CREATE_SUCCESS, articleEntity.getArticleId());
     }
 
     private List<String> filterDistinctTags(List<String> tags) {
@@ -97,7 +97,7 @@ public class CreateArticleService {
         LocalDateTime now = LocalDateTime.now();
 
         ArticleEntity articleEntity = new ArticleEntity();
-        articleEntity.setId(UuidCreator.getTimeOrderedEpoch());
+        articleEntity.setArticleId(UuidCreator.getTimeOrderedEpoch());
         articleEntity.setAuthorId(author.getId());
         articleEntity.setBody(body);
         articleEntity.setDescription(description);
@@ -112,7 +112,7 @@ public class CreateArticleService {
         return tagEntities.stream()
                 .map(tagEntity -> {
                     ArticleTagId articleTagId = new ArticleTagId();
-                    articleTagId.setArticleId(articleEntity.getId());
+                    articleTagId.setArticleId(articleEntity.getArticleId());
                     articleTagId.setTagId(tagEntity.getId());
                     return ArticleTag.builder()
                             .id(articleTagId)
