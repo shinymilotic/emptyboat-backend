@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "test_question", schema = "public")
+@Table(name = "test_questions", schema = "public")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

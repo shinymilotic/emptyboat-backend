@@ -39,8 +39,8 @@ public class FollowService {
 
         UserEntity followee = userRepository.findByUsername(username);
         FollowId followId = new FollowId();
-        followId.setFolloweeId(followee.getId());
-        followId.setFollowerId(currentUser.getId());
+        followId.setFolloweeId(followee.getUserId());
+        followId.setFollowerId(currentUser.getUserId());
         followEntity.setId(followId);
         followEntity.setFollower(currentUser);
         followEntity.setFollowee(followee);

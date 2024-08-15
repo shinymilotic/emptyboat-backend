@@ -53,13 +53,13 @@ public class GetTestServiceImpl implements GetTestService {
                 long countRightAnswers = answers.stream().filter(e -> e.isTruth()).count();
                 if (countRightAnswers > 1) {
                     questions.add(ChoiceQuestion.questionFactory(
-                            questionEntity.getId().toString(),
+                            questionEntity.getQuestionId().toString(),
                             questionEntity.getQuestion(),
                             getAnswers(questionEntity),
                             true));
                 } else if (countRightAnswers == 1) {
                     questions.add(ChoiceQuestion.questionFactory(
-                            questionEntity.getId().toString(),
+                            questionEntity.getQuestionId().toString(),
                             questionEntity.getQuestion(),
                             getAnswers(questionEntity),
                             false));
@@ -69,7 +69,7 @@ public class GetTestServiceImpl implements GetTestService {
 //                questions.add(question);
             } else if (questionEntity.getQuestionType() == 2) {
                 EssayQuestion question = EssayQuestion.questionFactory(
-                        questionEntity.getId().toString(),
+                        questionEntity.getQuestionId().toString(),
                         questionEntity.getQuestion());
                 questions.add(question);
             }

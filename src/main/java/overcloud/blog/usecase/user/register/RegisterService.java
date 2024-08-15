@@ -88,7 +88,7 @@ public class RegisterService {
         }
 
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
-        saveDBRefreshToken(refreshToken, savedUser.getId());
+        saveDBRefreshToken(refreshToken, savedUser.getUserId());
 
         // emailService.sendSimpleMessage(savedUser.getEmail(), "Registration email confirm!",
         //         "Please click on the confirmation link: http://localhost:4200/confirmEmail/" + refreshToken);

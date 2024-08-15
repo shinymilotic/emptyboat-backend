@@ -13,8 +13,8 @@ import java.util.UUID;
 @Table(name = "essay_answers", schema = "public")
 public class EssayAnswerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    // @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID essayAnswerId;
 
     @Column(name = "answer")
     private String answer;

@@ -22,7 +22,7 @@ public class UserRoleMapper {
 
     public UserRoleResponse toUserRoleResponse(RoleEntity roleEntity, boolean checked) {
         return UserRoleResponse.builder()
-                .roleId(roleEntity.getId().toString())
+                .roleId(roleEntity.getRoleId().toString())
                 .roleName(roleEntity.getName())
                 .checked(checked)
                 .build();

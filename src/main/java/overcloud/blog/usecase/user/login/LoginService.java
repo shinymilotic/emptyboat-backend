@@ -63,7 +63,7 @@ public class LoginService {
         String accessToken = jwtUtils.encode(user.getEmail());
         String refreshToken = jwtUtils.generateRefreshToken(user.getEmail());
 
-        saveDBRefreshToken(refreshToken, user.getId());
+        saveDBRefreshToken(refreshToken, user.getUserId());
 
         Cookie jwtTokenCookie = new Cookie("jwtToken", accessToken);
         jwtTokenCookie.setMaxAge(86400);

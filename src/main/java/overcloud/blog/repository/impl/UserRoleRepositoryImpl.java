@@ -24,17 +24,17 @@ public class UserRoleRepositoryImpl implements IUserRoleRepository {
     }
 
     public UserRole assignRole(String roleName, String email) {
-        UUID userId = entityManager.createQuery("SELECT u.id FROM UserEntity u WHERE u.email = :email ", UUID.class)
+        UUID userId = entityManager.createQuery("SELECT u.userId FROM UserEntity u WHERE u.email = :email ", UUID.class)
                 .setParameter("email", email)
                 .getSingleResult();
 
-        UUID roleId = entityManager.createQuery("SELECT r.id FROM RoleEntity r WHERE r.name = :roleName", UUID.class)
+        UUID roleId = entityManager.createQuery("SELECT r.roleId FROM RoleEntity r WHERE r.name = :roleName", UUID.class)
                 .setParameter("roleName", roleName)
                 .getSingleResult();
 
         UserRole userRole = UserRole.builder().id(new UserRoleId(roleId, userId))
-                .role(RoleEntity.builder().id(roleId).build())
-                .user(UserEntity.builder().id(userId).build())
+                .role(RoleEntity.builder().roleId(roleId).build())
+                .user(UserEntity.builder().userId(userId).build())
                 .build();
         return jpa.save(userRole);
     }

@@ -21,7 +21,7 @@ public class RoleMapper {
 
     public RoleResponse toRoleResponse(RoleEntity roleEntity) {
         return RoleResponse.builder()
-                .roleId(roleEntity.getId().toString())
+                .roleId(roleEntity.getRoleId().toString())
                 .roleName(roleEntity.getName())
                 .build();
     }

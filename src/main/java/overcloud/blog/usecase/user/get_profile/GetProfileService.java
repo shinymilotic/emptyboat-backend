@@ -41,7 +41,7 @@ public class GetProfileService {
 
         UUID currentUserId = null;
         if (currentUser != null) {
-            currentUserId = currentUser.getId();
+            currentUserId = currentUser.getUserId();
         }
 
         GetProfileResponse user = userRepository.findProfile(username, currentUserId);

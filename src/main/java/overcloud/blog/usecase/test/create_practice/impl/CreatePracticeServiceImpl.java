@@ -71,8 +71,8 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         }
 
         PracticeEntity practiceEntity = new PracticeEntity();
-        practiceEntity.setTestId(testEntity.get().getId());
-        practiceEntity.setTesterId(currentUser.getId());
+        practiceEntity.setTestId(testEntity.get().getTestId());
+        practiceEntity.setTesterId(currentUser.getUserId());
         practiceEntity.setCreatedAt(now);
         practiceEntity = practiceRepository.save(practiceEntity);
 
@@ -81,7 +81,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
             for (String answerId : choice.getAnswer()) {
                 PracticeChoiceEntity choiceEntity = new PracticeChoiceEntity();
                 choiceEntity.setAnswerId(UUID.fromString(answerId));
-                choiceEntity.setPracticeId(practiceEntity.getId());
+                choiceEntity.setPracticeId(practiceEntity.getPracticeId());
                 choiceEntities.add(choiceEntity);
             }
         }
@@ -89,7 +89,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         List<EssayAnswerEntity> essayAnswerEntities = new ArrayList<>();
         for (EssayAnswer answer : essayAnswers) {
             EssayAnswerEntity essayAnswerEntity = new EssayAnswerEntity();
-            essayAnswerEntity.setPracticeId(practiceEntity.getId());
+            essayAnswerEntity.setPracticeId(practiceEntity.getPracticeId());
             essayAnswerEntity.setQuestionId(UUID.fromString(answer.getQuestionId()));
             essayAnswerEntity.setAnswer(answer.getAnswer());
             essayAnswerEntity.setCreatedAt(now);
@@ -99,7 +99,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         essayAnswerRepository.saveAll(essayAnswerEntities);
 
         CreatePracticeResponse response = new CreatePracticeResponse();
-        response.setPracticeId(practiceEntity.getId());
+        response.setPracticeId(practiceEntity.getPracticeId());
 
         return resFactory.success(PracticeResMsg.PRACTICE_CREATE_SUCCESS, response);
     }

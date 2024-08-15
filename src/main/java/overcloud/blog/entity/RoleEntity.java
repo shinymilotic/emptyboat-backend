@@ -15,8 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RoleEntity implements GrantedAuthority {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID roleId;
 
     @Column(name = "name")
     private String name;
@@ -31,11 +30,11 @@ public class RoleEntity implements GrantedAuthority {
         if (this == o) return true;
         if (!(o instanceof RoleEntity that)) return false;
 
-        return getId().equals(that.getId());
+        return getRoleId().equals(that.getRoleId());
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return getRoleId().hashCode();
     }
 }

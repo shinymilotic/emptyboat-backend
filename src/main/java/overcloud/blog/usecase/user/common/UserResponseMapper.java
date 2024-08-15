@@ -7,7 +7,7 @@ import overcloud.blog.entity.UserEntity;
 public class UserResponseMapper {
     public UserResponse toUserResponse(UserEntity userEntity) {
         return UserResponse.builder()
-                .id(userEntity.getId())
+                .id(userEntity.getUserId())
                 .username(userEntity.getUsername())
                 .email(userEntity.getEmail())
                 .bio(userEntity.getBio())

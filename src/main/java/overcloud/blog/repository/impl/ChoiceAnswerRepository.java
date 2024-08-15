@@ -48,7 +48,6 @@ public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
             query.append(now);
             query.append(")");
         }
-        query.
     // @Modifying
     // @Query("UPDATE AnswerEntity a SET a.answer = :answer AND a.truth = :truth AND a.updatedAt = :updatedAt WHERE a.id = :id")
     // void updateAll(UUID id, String answer, boolean truth, LocalDateTime updatedAt);

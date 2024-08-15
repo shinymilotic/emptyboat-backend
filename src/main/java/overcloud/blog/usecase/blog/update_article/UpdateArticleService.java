@@ -52,7 +52,7 @@ public class UpdateArticleService {
                 .getUser();
 
 //        // Update authorization
-       if (!currentUser.getId().equals(articleEntity.getAuthorId())) {
+       if (!currentUser.getUserId().equals(articleEntity.getAuthorId())) {
            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_UPDATE_NO_AUTHORIZATION));
        }
 

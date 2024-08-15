@@ -11,8 +11,7 @@ import java.util.UUID;
 @Table(name = "tags", schema = "public")
 public class TagEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID tagId;
 
     @Column(name = "name")
     private String name;

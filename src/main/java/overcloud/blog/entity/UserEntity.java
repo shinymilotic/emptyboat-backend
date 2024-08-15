@@ -19,8 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID userId;
 
     @Column(name = "email")
     private String email;
@@ -73,11 +72,11 @@ public class UserEntity implements Serializable {
             return false;
         }
 
-        return id.equals(that.id);
+        return userId.equals(that.userId);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return userId.hashCode();
     }
 }

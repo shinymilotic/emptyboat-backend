@@ -36,7 +36,7 @@ public class GetArticleListService {
         UUID currentUserId = null;
         if (currentSecurityUser.isPresent()) {
             currentUser = currentSecurityUser.get().getUser();
-            currentUserId = currentUser.getId();
+            currentUserId = currentUser.getUserId();
         }
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());

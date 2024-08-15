@@ -83,8 +83,8 @@ public class AssignRoleService {
 
     private void deleteAssigedRole(RoleEntity roleEntity, UserEntity userEntity) {
         UserRoleId id = new UserRoleId();
-        id.setUserId(userEntity.getId());
-        id.setRoleId(roleEntity.getId());
+        id.setUserId(userEntity.getUserId());
+        id.setRoleId(roleEntity.getRoleId());
         UserRole userRole = new UserRole();
         userRole.setId(id);
 

@@ -43,13 +43,13 @@ public class UserPraticeServiceImpl implements UserPracticeService {
             throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
         }
 
-        List<PracticeEntity> practices = practiceRepository.findByTesterId(user.getId());
+        List<PracticeEntity> practices = practiceRepository.findByTesterId(user.getUserId());
 
         List<PracticeResponse> practiceResponseList = new ArrayList<>();
         for (PracticeEntity practiceEntity : practices) {
             TestEntity test = practiceEntity.getTest();
             PracticeResponse practice = PracticeResponse.builder()
-                    .id(practiceEntity.getId().toString())
+                    .id(practiceEntity.getPracticeId().toString())
                     .testTitle(test.getTitle())
                     .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
                     .build();

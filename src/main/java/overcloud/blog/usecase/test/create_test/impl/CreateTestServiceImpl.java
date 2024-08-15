@@ -91,10 +91,10 @@ public class CreateTestServiceImpl implements CreateTestService {
                 .getUser();
 
         TestEntity testEntity = new TestEntity();
-        testEntity.setId(UuidCreator.getTimeOrderedEpoch());
+        testEntity.setTestId(UuidCreator.getTimeOrderedEpoch());
         testEntity.setTitle(testRequest.getTitle());
         testEntity.setDescription(testRequest.getDescription());
-        testEntity.setAuthorId(currentUser.getId());
+        testEntity.setAuthorId(currentUser.getUserId());
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);
 
@@ -102,7 +102,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         for (Question questionReq : testRequest.getQuestions()) {
             String question = questionReq.getQuestion();
             QuestionEntity questionEntity = new QuestionEntity();
-            questionEntity.setId(UuidCreator.getTimeOrderedEpoch());
+            questionEntity.setQuestionId(UuidCreator.getTimeOrderedEpoch());
             questionEntity.setQuestion(question);
             questionEntity.setQuestionType(questionReq.getQuestionType());
             if (questionReq.getQuestionType() == 1) {
@@ -118,7 +118,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         List<TestQuestion> testQuestions = new ArrayList<>();
         int order = 0;
         for (QuestionEntity questionEntity : questionEntities) {
-            TestQuestionId testQuestionId = new TestQuestionId(testEntity.getId(), questionEntity.getId());
+            TestQuestionId testQuestionId = new TestQuestionId(testEntity.getTestId(), questionEntity.getQuestionId());
             TestQuestion testQuestion = new TestQuestion();
             testQuestion.setId(testQuestionId);
             testQuestion.setTest(testEntity);

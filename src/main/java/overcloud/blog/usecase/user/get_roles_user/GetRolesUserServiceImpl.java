@@ -43,7 +43,7 @@ public class GetRolesUserServiceImpl implements GetRolesUserService {
         List<UserRoleResponse> listResponse = new ArrayList<>();
         for (RoleEntity role : roles) {
             UserRoleResponse userRoleResponse =
-                    new UserRoleResponse(role.getId().toString(), role.getName(), false);
+                    new UserRoleResponse(role.getRoleId().toString(), role.getName(), false);
             if (rolesUser.contains(role)) {
                 userRoleResponse.setChecked(true);
             }

@@ -40,7 +40,7 @@ public class ArticleSearchServicePG implements ArticleSearchService {
         UUID currentUserId = null;
         if (currentSecurityUser.isPresent()) {
             currentUser = currentSecurityUser.get().getUser();
-            currentUserId = currentUser.getId();
+            currentUserId = currentUser.getUserId();
         }
 
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();

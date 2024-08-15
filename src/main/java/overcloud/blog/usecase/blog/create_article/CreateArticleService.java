@@ -98,7 +98,7 @@ public class CreateArticleService {
 
         ArticleEntity articleEntity = new ArticleEntity();
         articleEntity.setArticleId(UuidCreator.getTimeOrderedEpoch());
-        articleEntity.setAuthorId(author.getId());
+        articleEntity.setAuthorId(author.getUserId());
         articleEntity.setBody(body);
         articleEntity.setDescription(description);
         articleEntity.setTitle(title);
@@ -113,7 +113,7 @@ public class CreateArticleService {
                 .map(tagEntity -> {
                     ArticleTagId articleTagId = new ArticleTagId();
                     articleTagId.setArticleId(articleEntity.getArticleId());
-                    articleTagId.setTagId(tagEntity.getId());
+                    articleTagId.setTagId(tagEntity.getTagId());
                     return ArticleTag.builder()
                             .id(articleTagId)
                             .build();

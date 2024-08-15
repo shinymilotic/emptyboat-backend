@@ -47,12 +47,12 @@ public class DeleteTestServiceImpl implements DeleteTestService {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));
         }
 
-        if (!currentUser.getId().equals(test.get().getAuthorId())) {
+        if (!currentUser.getUserId().equals(test.get().getAuthorId())) {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_AUTHOR_NOT_MATCH));
         }
 
-        practiceRepository.deleteByTestId(test.get().getId());
-        testRepository.deleteById(test.get().getId());
+        practiceRepository.deleteByTestId(test.get().getTestId());
+        testRepository.deleteById(test.get().getTestId());
 
         return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
     }

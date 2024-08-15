@@ -9,11 +9,10 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "refresh_token", schema = "public")
+@Table(name = "refresh_tokens", schema = "public")
 public class RefreshTokenEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID refreshTokenId;
 
     @Column(name = "refresh_token")
     private String refreshToken;

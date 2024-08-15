@@ -35,7 +35,7 @@ public class GetArticleService {
         UUID userId = null;
         if (securityUser != null && securityUser.getUser() != null) {
             currentUser = securityUser.getUser();
-            userId = currentUser.getId();
+            userId = currentUser.getUserId();
         }
 
         ArticleSummary articleSummary = articleRepository.findArticleById(UUID.fromString(id), userId);
