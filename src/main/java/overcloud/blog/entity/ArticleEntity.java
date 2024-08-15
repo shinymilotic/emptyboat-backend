@@ -20,9 +20,6 @@ public class ArticleEntity {
     @Id
     private UUID articleId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "author_id")
-//    private UserEntity author;
     @Column(name = "author_id")
     private UUID authorId;
 

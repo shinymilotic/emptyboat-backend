@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PraceticeChoiceId implements Serializable{
+public class PraceticeChoiceId implements Serializable {
     @Column(name = "practice_id")
     private UUID practiceId;
 
