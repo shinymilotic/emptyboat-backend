@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdChoiceAnswer {
     private String answerId;
-    private UpdateValue<String> answer;
-    private UpdateValue<Boolean> truth;
+    private String answer;
+    private Boolean truth;
     private Integer updateFlg;
 }

@@ -1,12 +1,14 @@
 package overcloud.blog.usecase.test.update_test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.transaction.annotation.Transactional;
-
+import com.github.f4b6a3.uuid.UuidCreator;
+import overcloud.blog.entity.AnswerEntity;
+import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.repository.IChoiceAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
@@ -47,21 +49,31 @@ public class UpdateTestServiceImpl implements UpdateTestService {
         }
         List<UpdQuestion> questions = request.getQuestions();
         testRepo.updateTest(testId, request.getTitle(), request.getDescription());
-        List<UpdQuestion> insertList = new ArrayList<>();
-        List<UpdQuestion> updateList = new ArrayList<>();
-        List<UpdQuestion> deleteList = new ArrayList<>();
-        List<UpdChoiceAnswer> insertAnswers = new ArrayList<>();
-        List<UpdChoiceAnswer> updateAnswers = new ArrayList<>();
-        List<UpdChoiceAnswer> deleteAnswers = new ArrayList<>();
+        List<QuestionEntity> insertList = new ArrayList<>();
+        List<QuestionEntity> updateList = new ArrayList<>();
+        List<UUID> deleteList = new ArrayList<>();
+        List<AnswerEntity> insertAnswers = new ArrayList<>();
+        List<AnswerEntity> updateAnswers = new ArrayList<>();
+        List<UUID> deleteAnswers = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
         for (UpdQuestion question : questions) {
             if (question.getUpdateFlg().equals(UpdateFlg.NEW.getValue())) {
-                question.getQuestion();
-                question.getQuestionType();
-                insertList.add(question);
+                QuestionEntity questionEntity = new QuestionEntity();
+                questionEntity.setQuestionId(UuidCreator.getTimeOrderedEpoch());
+                questionEntity.setQuestion(question.getQuestion());
+                questionEntity.setQuestionType(question.getQuestionType());
+                questionEntity.setCreatedAt(now);
+                questionEntity.setUpdatedAt(now);
+                insertList.add(questionEntity);
             } else if (question.getUpdateFlg().equals(UpdateFlg.UPDATE.getValue())) {
-                updateList.add(question);
+                QuestionEntity questionEntity = new QuestionEntity();
+                questionEntity.setQuestionId(UUID.fromString(question.getId()));
+                questionEntity.setQuestion(question.getQuestion());
+                questionEntity.setQuestionType(question.getQuestionType());
+                questionEntity.setUpdatedAt(now);
+                updateList.add(questionEntity);
             } else if (question.getUpdateFlg().equals(UpdateFlg.DELETE.getValue())) {
-                deleteList.add(question);
+                deleteList.add(UUID.fromString(question.getId()));
             }
 
             if (question.getQuestionType().equals(1) && question.getUpdateFlg().equals(UpdateFlg.DELETE.getValue())) {
@@ -70,22 +82,34 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                 
                 for (UpdChoiceAnswer answer : answers) {
                     if (answer.getUpdateFlg().equals(UpdateFlg.NEW.getValue())) {
-                        insertAnswers.add(answer);
+                        AnswerEntity answerEntity = new AnswerEntity();
+                        answerEntity.setAnswerId(UuidCreator.getTimeOrderedEpoch());
+                        answerEntity.setAnswer(answer.getAnswer());
+                        answerEntity.setTruth(answer.getTruth());
+                        answerEntity.setCreatedAt(now);
+                        answerEntity.setUpdatedAt(now);
+                        insertAnswers.add(answerEntity);
                     } else if (answer.getUpdateFlg().equals(UpdateFlg.UPDATE.getValue())) {
-                        updateAnswers.add(answer);
+                        AnswerEntity answerEntity = new AnswerEntity();
+                        answerEntity.setAnswerId(UuidCreator.getTimeOrderedEpoch());
+                        answerEntity.setAnswer(answer.getAnswer());
+                        answerEntity.setTruth(answer.getTruth());
+                        answerEntity.setCreatedAt(now);
+                        answerEntity.setUpdatedAt(now);
+                        updateAnswers.add(answerEntity);
                     } else if (answer.getUpdateFlg().equals(UpdateFlg.DELETE.getValue())) {
-                        deleteAnswers.add(answer);
+                        deleteAnswers.add(UUID.fromString(answer.getAnswerId()));
                     }
                 }
-                // insertList.add(choiceQuestion);
             }
         }
+
         questionRepo.saveAll(insertList);
         questionRepo.updateAll(updateList);
         questionRepo.deleteAll(deleteList);
-        choiceAnswerRepo.saveAll(null);
-        choiceAnswerRepo.updateAll(null);
-        choiceAnswerRepo.deleteAll(null);
+        choiceAnswerRepo.saveAll(insertAnswers);
+        choiceAnswerRepo.updateAll(updateAnswers);
+        choiceAnswerRepo.deleteAll(deleteAnswers);
         
         return resFactory.success(TestResMsg.TEST_UPDATE_SUCCESS, null);
     }
