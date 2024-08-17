@@ -30,8 +30,8 @@ public class TestRepositoryImpl implements ITestRepository {
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public TestRepositoryImpl(JpaTestRepository jpaTestRepository, EntityManager entityManager) {
-        this.jpa = jpaTestRepository;
+    public TestRepositoryImpl(JpaTestRepository jpa, EntityManager entityManager) {
+        this.jpa = jpa;
         this.entityManager = entityManager;
     }
 

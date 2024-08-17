@@ -11,26 +11,25 @@ import java.util.UUID;
 @Repository
 public class QuestionRepositoryImpl implements IQuestionRepository {
 
-    private final JpaQuestionRepository jpaQuestionRepository;
+    private final JpaQuestionRepository jpa;
 
-    public QuestionRepositoryImpl(JpaQuestionRepository jpaQuestionRepository) {
-        this.jpaQuestionRepository = jpaQuestionRepository;
+    public QuestionRepositoryImpl(JpaQuestionRepository jpa) {
+        this.jpa = jpa;
     }
 
     @Override
     public QuestionEntity save(QuestionEntity entity) {
-        return jpaQuestionRepository.save(entity);
+        return jpa.save(entity);
     }
 
     @Override
     public void saveAll(List<QuestionEntity> entityList) {
-        jpaQuestionRepository.saveAll(entityList);
+        jpa.saveAll(entityList);
     }
 
     @Override
     public void updateAll(List<QuestionEntity> questions) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateAll'");
+        jpa.updateAll(questions);
     }
 
     @Override
