@@ -19,8 +19,8 @@ public interface JpaArticleRepository extends JpaRepository<ArticleEntity, UUID>
     void updateSearchVector();
 
     @Modifying
-    @Query("DELETE FROM ArticleEntity ar WHERE ar.id = :id ")
-    void deleteById(UUID id);
+    @Query("DELETE FROM ArticleEntity ar WHERE ar.articleId = :articleId ")
+    void deleteById(UUID articleId);
 
     @Query(value = "SELECT true  FROM articles a WHERE a.title = :title limit 1 ", nativeQuery = true)
     Optional<Boolean> isTitleExist(@Param("title") String title);

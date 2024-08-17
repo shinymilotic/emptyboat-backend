@@ -46,26 +46,26 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     @Override
     public List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId) {
         StringBuilder query = new StringBuilder();
-        query.append("select a.id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
+        query.append("select a.article_id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
         query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
         query.append("from ");
-        query.append("(select articles.id, body, title, description, created_at, author_id ");
+        query.append("(select articles.article_id, body, title, description, created_at, author_id ");
         query.append("from articles ");
-        query.append(ifTag("left join article_tag on articles.id = article_tag.article_id left join tags on tags.id = article_tag.tag_id", tag));
+        query.append(ifTag("left join article_tag on articles.article_id = article_tag.article_id left join tags on tags.tag_id = article_tag.tag_id", tag));
         StringBuilder articleWhereStatement = new StringBuilder();
         if (StringUtils.hasText(lastArticleId)) {
-            articleWhereStatement.append("  articles.id < uuid(:lastArticleId) ");
+            articleWhereStatement.append("  articles.article_id < uuid(:lastArticleId) ");
         }
         articleWhereStatement.append(ifTag(operator(articleWhereStatement, " AND "), tag));
         articleWhereStatement.append(ifTag(" tags.name = :tag ", tag));
-        articleWhereStatement.append(ifTag(" GROUP BY articles.id ", tag));
+        articleWhereStatement.append(ifTag(" GROUP BY articles.article_id ", tag));
         query.append(operator(articleWhereStatement, " WHERE "));
         query.append(articleWhereStatement);
 
-        query.append(" ORDER BY articles.id DESC ");
+        query.append(" ORDER BY articles.article_id DESC ");
         query.append(" limit :limit) a ");
         query.append("left join users author on ");
-        query.append("author.id = a.author_id ");
+        query.append("author.user_id = a.author_id ");
         query.append("left join ( ");
         query.append("select ");
         query.append("f.followee_id, ");
@@ -75,7 +75,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("follows f ");
         query.append("group by ");
         query.append("f.followee_id) f1 on ");
-        query.append("f1.followee_id = author.id ");
+        query.append("f1.followee_id = author.user_id ");
         query.append("left join ( ");
         query.append("select ");
         query.append("article_id , ");
@@ -84,14 +84,14 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("COUNT(user_id) favoritesCount ");
         query.append("from ");
         query.append("favorites ");
-        query.append(ifFavorited("left join (select id, username from users where username = :favorited) fu on fu.id = favorites.user_id ", favorited));
+        query.append(ifFavorited("left join (select user_id, username from users where username = :favorited) fu on fu.user_id = favorites.user_id ", favorited));
         query.append("group by ");
         query.append("article_id) fa on ");
-        query.append("fa.article_id = a.id ");
-        query.append("left join article_tag at2 on ");
-        query.append("a.id = at2.article_id ");
+        query.append("fa.article_id = a.article_id ");
+        query.append("left join article_tags at2 on ");
+        query.append("a.article_id = at2.article_id ");
         query.append("left join tags t on ");
-        query.append("t.id = at2.tag_id ");
+        query.append("t.tag_id = at2.tag_id ");
 
         StringBuilder whereStatement = new StringBuilder();
         whereStatement.append(ifAuthor(" author.username = :author ", author));
@@ -101,7 +101,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         whereStatement.append(ifTag(" t.name = :tag ", tag));
         query.append(operator(whereStatement, " WHERE "));
         query.append(whereStatement);
-        query.append(" ORDER BY a.id DESC  ");
+        query.append(" ORDER BY a.article_id DESC  ");
 
         Query resultList = entityManager.createNativeQuery(query.toString(), Tuple.class);
         resultList.setParameter("currentUserId", currentUserId);
@@ -125,15 +125,15 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     }
 
     @Override
-    public ArticleSummary findArticleById(UUID id, UUID currentUserId) {
-        String query = "select a.id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, " +
+    public ArticleSummary findArticleById(UUID articleId, UUID currentUserId) {
+        String query = "select a.article_id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, " +
                 " fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount " +
                 "from " +
-                "(select articles.id, body, title, description, created_at, author_id " +
+                "(select articles.article_id, body, title, description, created_at, author_id " +
                 "from articles " +
-                " WHERE id = :id ) a " +
+                " WHERE article_id = :articleId ) a " +
                 "left join users author on " +
-                "author.id = a.author_id " +
+                "author.user_id = a.author_id " +
                 "left join ( " +
                 "select " +
                 "f.followee_id, " +
@@ -143,7 +143,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
                 "follows f " +
                 "group by " +
                 "f.followee_id) f1 on " +
-                "f1.followee_id = author.id " +
+                "f1.followee_id = author.user_id " +
                 "left join ( " +
                 "select " +
                 "article_id , " +
@@ -153,15 +153,15 @@ public class ArticleRepositoryImpl implements IArticleRepository {
                 "favorites " +
                 "group by " +
                 "article_id) fa on " +
-                "fa.article_id = a.id " +
+                "fa.article_id = a.article_id " +
                 "left join article_tag at2 on " +
-                "a.id = at2.article_id " +
+                "a.article_id = at2.article_id " +
                 "left join tags t on " +
-                "t.id = at2.tag_id " +
-                " ORDER BY a.id DESC  ";
+                "t.tag_id = at2.tag_id " +
+                " ORDER BY a.article_id DESC  ";
 
         Query resultList = entityManager.createNativeQuery(query, Tuple.class);
-        resultList.setParameter("id", id);
+        resultList.setParameter("id", articleId);
         resultList.setParameter("currentUserId", currentUserId);
 
         List<Tuple> articlesData = resultList.getResultList();
@@ -172,19 +172,19 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     @Override
     public List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId) {
         StringBuilder query = new StringBuilder();
-        query.append("select a.id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
+        query.append("select a.article_id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
         query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
         query.append("from ");
-        query.append("(select articles.id, body, title, description, created_at, author_id ");
+        query.append("(select articles.article_id, body, title, description, created_at, author_id ");
         query.append("from articles ");
         query.append(" WHERE search_vector @@ to_tsquery('english', :keyword) ");
         if (StringUtils.hasText(lastArticleId)) {
-            query.append(" AND id < uuid(:lastArticleId) ");
+            query.append(" AND article_id < uuid(:lastArticleId) ");
         }
-        query.append(" ORDER BY id DESC  ");
+        query.append(" ORDER BY article_id DESC  ");
         query.append(" limit :limit ) a ");
         query.append("left join users author on ");
-        query.append("author.id = a.author_id ");
+        query.append("author.user_id = a.author_id ");
         query.append("left join ( ");
         query.append("select ");
         query.append("f.followee_id, ");
@@ -194,7 +194,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("follows f ");
         query.append("group by ");
         query.append("f.followee_id) f1 on ");
-        query.append("f1.followee_id = author.id ");
+        query.append("f1.followee_id = author.user_id ");
         query.append("left join ( ");
         query.append("select ");
         query.append("article_id , ");
@@ -204,12 +204,12 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("favorites ");
         query.append("group by ");
         query.append("article_id) fa on ");
-        query.append("fa.article_id = a.id ");
+        query.append("fa.article_id = a.article_id ");
         query.append("left join article_tag at2 on ");
-        query.append("a.id = at2.article_id ");
+        query.append("a.article_id = at2.article_id ");
         query.append("left join tags t on ");
-        query.append("t.id = at2.tag_id ");
-        query.append(" ORDER BY a.id DESC  ");
+        query.append("t.tag_id = at2.tag_id ");
+        query.append(" ORDER BY a.article_id DESC  ");
 
         Query resultList = entityManager.createNativeQuery(query.toString(), Tuple.class);
         if (StringUtils.hasText(lastArticleId)) {
