@@ -44,16 +44,16 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
     @Override
     public PracticeResult getPracticeResult(UUID practiceId) {
         Query practiceResult = entityManager
-                .createNativeQuery("select q.id as questionId, q.question, q.question_type , " +
-                        " a.id as answerId, a.answer as answer , a.truth , ea.answer as essayAnswer, " +
-                        " pc.answer_id = a.id as choice" +
-                        " FROM practice p" +
-                        " INNER JOIN test t ON p.test_id = t.id and p.id = :practiceId " +
-                        " INNER JOIN test_question tq ON tq.test_id = t.id " +
-                        " INNER JOIN question q ON tq.question_id = q.id " +
-                        " LEFT JOIN answers a ON a.question_id  = q.id " +
-                        " LEFT JOIN practice_choices pc ON pc.practice_id = p.id AND pc.answer_id = a.id " +
-                        " LEFT JOIN essay_answer ea ON ea.practice_id = p.id AND ea.question_id = q.id ", Tuple.class)
+                .createNativeQuery("select q.question_id as questionId, q.question, q.question_type , " +
+                        " a.choice_answer_id as answerId, a.answer as answer , a.truth , ea.answer as essayAnswer, " +
+                        " pc.answer_id = a.choice_answer_id as choice" +
+                        " FROM practices p" +
+                        " INNER JOIN tests t ON p.test_id = t.test_id and p.practice_id = :practiceId " +
+                        " INNER JOIN test_questions tq ON tq.test_id = t.test_id " +
+                        " INNER JOIN questions q ON tq.question_id = q.question_id " +
+                        " LEFT JOIN choice_answers a ON a.question_id  = q.question_id " +
+                        " LEFT JOIN practice_choices pc ON pc.practice_id = p.practice_id AND pc.answer_id = a.choice_answer_id " +
+                        " LEFT JOIN essay_answers ea ON ea.practice_id = p.practice_id AND ea.question_id = q.question_id ", Tuple.class)
                 .setParameter("practiceId", practiceId);
 
         List<Tuple> results = practiceResult.getResultList();
