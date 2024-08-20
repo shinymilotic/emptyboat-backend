@@ -21,7 +21,7 @@ public interface JpaRefreshTokenRepository extends JpaRepository<RefreshTokenEnt
     @Query(" SELECT r FROM RefreshTokenEntity r WHERE r.refreshToken = :refreshToken")
     Optional<RefreshTokenEntity> findByRefreshToken(@Param("refreshToken") String refreshToken);
 
-    @Query(" SELECT u FROM RefreshTokenEntity r INNER JOIN  UserEntity u ON r.userId = u.id" +
+    @Query(" SELECT u FROM RefreshTokenEntity r INNER JOIN  UserEntity u ON r.userId = u.userId" +
             " WHERE r.refreshToken = :refreshToken")
     Optional<UserEntity> findUserByToken(@Param("refreshToken") String refreshToken);
 }
