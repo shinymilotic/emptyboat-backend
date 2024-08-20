@@ -161,7 +161,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
                 " ORDER BY a.article_id DESC  ";
 
         Query resultList = entityManager.createNativeQuery(query, Tuple.class);
-        resultList.setParameter("id", articleId);
+        resultList.setParameter("article_id", articleId);
         resultList.setParameter("currentUserId", currentUserId);
 
         List<Tuple> articlesData = resultList.getResultList();
@@ -229,14 +229,14 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         UUID previousArticleId = null;
         Map<UUID, ArticleSummary> articleSummaryMap = new HashMap<>();
         for (Tuple data : articlesData) {
-            UUID articleId = (UUID) data.get("id");
+            UUID articleId = (UUID) data.get("article_id");
             String tagName = (String) data.get("tag");
             if (articleId.equals(previousArticleId)) {
                 articleSummaryMap.get(articleId).getTag().add((String) data.get("tag"));
                 continue;
             }
 
-            summary.setId((UUID) data.get("id"));
+            summary.setId(articleId);
             summary.setTitle((String) data.get("title"));
             summary.setDescription((String) data.get("description"));
             summary.setBody((String) data.get("body"));
@@ -262,14 +262,14 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         UUID previousArticleId = null;
         Map<UUID, ArticleSummary> articleSummaryMap = new HashMap<>();
         for (Tuple data : articlesData) {
-            UUID articleId = (UUID) data.get("id");
+            UUID articleId = (UUID) data.get("article_id");
             String tagName = (String) data.get("tag");
             if (articleId.equals(previousArticleId)) {
                 articleSummaryMap.get(articleId).getTag().add((String) data.get("tag"));
             }
 
             ArticleSummary summary = new ArticleSummary();
-            summary.setId((UUID) data.get("id"));
+            summary.setId(articleId);
             summary.setTitle((String) data.get("title"));
             summary.setDescription((String) data.get("description"));
             summary.setBody((String) data.get("body"));

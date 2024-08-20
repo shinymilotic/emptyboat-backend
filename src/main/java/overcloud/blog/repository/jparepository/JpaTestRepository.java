@@ -12,10 +12,10 @@ import java.util.UUID;
 @Repository
 public interface JpaTestRepository extends JpaRepository<TestEntity, UUID> {
     @Query("SELECT t FROM TestEntity t WHERE t.testId = :testId")
-    Optional<TestEntity> findById(@Param("id") String testId);
+    Optional<TestEntity> findById(@Param("testId") UUID testId);
 
     @Modifying
     @Query("UPDATE TestEntity t SET t.title = :title AND t.description = :description WHERE t.testId = :testId")
-    void updateTest(@Param("id") UUID testId, @Param("title") String title, @Param("description") String description);
+    void updateTest(@Param("testId") UUID testId, @Param("title") String title, @Param("description") String description);
 }
 
