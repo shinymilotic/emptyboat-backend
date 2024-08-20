@@ -37,7 +37,7 @@ public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
         LocalDateTime now = LocalDateTime.now();
         StringBuilder query = new StringBuilder();
 
-        query.append("UPDATE answers FROM (VALUES ");
+        query.append("UPDATE choice_answers FROM (VALUES ");
 
         for (AnswerEntity answerEntity : answers) {
             query.append("(");

@@ -49,11 +49,11 @@ public class UserRepositoryImpl implements IUserRepository {
         List<UserResponse> resposne = new ArrayList<>();
         
         Query query = entityManager
-                .createNativeQuery("select u.id, u.email, u.username, u.bio, u.image  " +
-                                "from users u " +
-                                "inner join follows f " +
-                                "on u.id = f.followee_id " +
-                                "where f.follower_id = :userId ",
+                .createNativeQuery("SELECT u.user_id, u.email, u.username, u.bio, u.image  " +
+                                "FROM users u " +
+                                "INNER JOIN follows f " +
+                                "ON u.user_id = f.followee_id " +
+                                "WHERE f.follower_id = :userId ",
                         Tuple.class)
                 .setParameter("userId", userId);
 
@@ -62,7 +62,7 @@ public class UserRepositoryImpl implements IUserRepository {
         
         list.stream().map(row -> (Tuple) row)
             .map(row -> resposne.add(new UserResponse(
-                (UUID) row.get("id"),
+                (UUID) row.get("user_id"),
                 (String) row.get("email"),
                 (String) row.get("username"),
                 (String) row.get("bio"),
@@ -93,16 +93,16 @@ public class UserRepositoryImpl implements IUserRepository {
         if (currentUserId != null) {
             sql.append("SELECT u.email, u.username, u.bio, u.image, f1.follower_id as following, COUNT(f2.follower_id) as followersCount ");
             sql.append(" FROM users u ");
-            sql.append(" LEFT JOIN follows f1 ON u.id = f1.followee_id AND f1.follower_id = :currentUserId ");
-            sql.append(" LEFT JOIN follows f2 on u.id = f2.followee_id ");
+            sql.append(" LEFT JOIN follows f1 ON u.user_id = f1.followee_id AND f1.follower_id = :currentUserId ");
+            sql.append(" LEFT JOIN follows f2 on u.user_id = f2.followee_id ");
             sql.append(" WHERE u.username = :username ");
-            sql.append(" GROUP BY u.id, following ");
+            sql.append(" GROUP BY u.user_id, following ");
         } else {
             sql.append("SELECT u.email, u.username, u.bio, u.image, COUNT(f2.follower_id) as followersCount ");
             sql.append(" FROM users u ");
-            sql.append(" LEFT JOIN follows f2 on u.id = f2.followee_id ");
+            sql.append(" LEFT JOIN follows f2 on u.user_id = f2.followee_id ");
             sql.append(" WHERE u.username = :username ");
-            sql.append(" GROUP BY u.id ");
+            sql.append(" GROUP BY u.user_id ");
         }
         Query query = entityManager.createNativeQuery(sql.toString(), Tuple.class);
 

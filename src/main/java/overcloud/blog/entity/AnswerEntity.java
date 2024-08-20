@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "answers", schema = "public")
+@Table(name = "choice_answers", schema = "public")
 public class AnswerEntity {
     @Id
     // @GeneratedValue(strategy = GenerationType.UUID)

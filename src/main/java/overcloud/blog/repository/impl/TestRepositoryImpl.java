@@ -37,7 +37,7 @@ public class TestRepositoryImpl implements ITestRepository {
 
     @Override
     public List<TestListRecord> findAll() {
-        String s = "SELECT new overcloud.blog.usecase.test.get_list_test.TestListRecord(t.id, t.title, t.description) " +
+        String s = "SELECT new overcloud.blog.usecase.test.get_list_test.TestListRecord(t.testId, t.title, t.description) " +
                 " FROM TestEntity t ";
         TypedQuery<TestListRecord> testQuery = entityManager.createQuery(s, TestListRecord.class);
         return testQuery.getResultList();
@@ -61,16 +61,16 @@ public class TestRepositoryImpl implements ITestRepository {
     @Override
     public Optional<TestResponse> getTestResponse(UUID id) {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT t.title, t.description, q.id as questionId , q.question "
-        + " q.question_type , author.id as authorId, author.username , author.email , author.bio , author.image ");
-        sql.append(" , a.id as answerId, a.answer, a.truth  ");
-        sql.append("FROM test t ");
-        sql.append("inner join users author on t.author_id = author.id ");
-        sql.append("left join test_question tq on t.id = tq.test_id ");
-        sql.append("left join question q on q.id = tq.question_id ");
-        sql.append("left join answer a on a.question_id = q.id ");
-        sql.append("WHERE t.id = :id ");
-        sql.append("ORDER BY q.id ");
+        sql.append("SELECT t.title, t.description, q.question_id as questionId , q.question "
+        + " q.question_type , author.user_id as authorId, author.username , author.email , author.bio , author.image ");
+        sql.append(" , a.choice_answer_id as answerId, a.answer, a.truth  ");
+        sql.append("FROM tests t ");
+        sql.append("INNER JOIN users author on t.author_id = author.user_id ");
+        sql.append("LEFT JOIN test_questions tq on t.test_id = tq.test_id ");
+        sql.append("LEFT JOIN questions q on q.question_id = tq.question_id ");
+        sql.append("LEFT JOIN choice_answers a on a.question_id = q.question_id ");
+        sql.append("WHERE t.test_id = :id ");
+        sql.append("ORDER BY q.question_id ");
 
         Query query = entityManager.createNativeQuery(sql.toString(), Tuple.class);
         query.setParameter("id", id);
