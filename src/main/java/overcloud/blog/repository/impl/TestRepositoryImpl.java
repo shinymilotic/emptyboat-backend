@@ -61,8 +61,8 @@ public class TestRepositoryImpl implements ITestRepository {
     @Override
     public Optional<TestResponse> getTestResponse(UUID id) {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT t.title, t.description, q.question_id as questionId , q.question "
-        + " q.question_type , author.user_id as authorId, author.username , author.email , author.bio , author.image ");
+        sql.append("SELECT t.title, t.description, q.question_id as questionId , q.question, ");
+        sql.append(" q.question_type , author.user_id as authorId, author.username , author.email , author.bio , author.image ");
         sql.append(" , a.choice_answer_id as answerId, a.answer, a.truth  ");
         sql.append("FROM tests t ");
         sql.append("INNER JOIN users author on t.author_id = author.user_id ");
