@@ -15,14 +15,14 @@ public interface JpaFavoriteRepository extends JpaRepository<FavoriteEntity, Fav
 
     @Query("""
             SELECT favorite FROM FavoriteEntity favorite\
-             WHERE favorite.user.userId = :userId AND favorite.article.articleId = :articleId \
+             WHERE favorite.id.userId = :userId AND favorite.id.articleId = :articleId \
             """)
     List<FavoriteEntity> findById(UUID userId, UUID articleId);
 
     @Modifying
     @Query("""
             DELETE FROM FavoriteEntity favorite \
-             WHERE favorite.article.articleId = :id \
+             WHERE favorite.id.articleId = :id \
             """)
     void deleteByArticleId(UUID id);
 }

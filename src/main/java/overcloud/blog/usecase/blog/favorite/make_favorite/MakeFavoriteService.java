@@ -43,9 +43,10 @@ public class MakeFavoriteService {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
         }
         ArticleEntity articleEntity = articleList.get();
-        favoriteEntity.setId(new FavoriteId());
-        favoriteEntity.setArticle(articleEntity);
-        favoriteEntity.setUser(currentUser);
+        FavoriteId favoriteId = new FavoriteId();
+        favoriteId.setArticleId(articleEntity.getArticleId());
+        favoriteId.setUserId(currentUser.getUserId());
+        favoriteEntity.setId(favoriteId);
         favoriteRepository.save(favoriteEntity);
 
         return resFactory.success(ArticleResMsg.ARTICLE_FAVORITE_SUCCESS, null);

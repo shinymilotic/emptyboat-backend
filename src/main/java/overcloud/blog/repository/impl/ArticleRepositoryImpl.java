@@ -51,7 +51,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("from ");
         query.append("(select articles.article_id, body, title, description, created_at, author_id ");
         query.append("from articles ");
-        query.append(ifTag("left join article_tag on articles.article_id = article_tag.article_id left join tags on tags.tag_id = article_tag.tag_id", tag));
+        query.append(ifTag("left join article_tags on articles.article_id = article_tags.article_id left join tags on tags.tag_id = article_tags.tag_id", tag));
         StringBuilder articleWhereStatement = new StringBuilder();
         if (StringUtils.hasText(lastArticleId)) {
             articleWhereStatement.append("  articles.article_id < uuid(:lastArticleId) ");
@@ -154,14 +154,14 @@ public class ArticleRepositoryImpl implements IArticleRepository {
                 "group by " +
                 "article_id) fa on " +
                 "fa.article_id = a.article_id " +
-                "left join article_tag at2 on " +
+                "left join article_tags at2 on " +
                 "a.article_id = at2.article_id " +
                 "left join tags t on " +
                 "t.tag_id = at2.tag_id " +
                 " ORDER BY a.article_id DESC  ";
 
         Query resultList = entityManager.createNativeQuery(query, Tuple.class);
-        resultList.setParameter("article_id", articleId);
+        resultList.setParameter("articleId", articleId);
         resultList.setParameter("currentUserId", currentUserId);
 
         List<Tuple> articlesData = resultList.getResultList();
@@ -205,7 +205,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("group by ");
         query.append("article_id) fa on ");
         query.append("fa.article_id = a.article_id ");
-        query.append("left join article_tag at2 on ");
+        query.append("left join article_tags at2 on ");
         query.append("a.article_id = at2.article_id ");
         query.append("left join tags t on ");
         query.append("t.tag_id = at2.tag_id ");
@@ -223,6 +223,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
         return toArticleSummaryList(articlesData);
     }
+
 
     private ArticleSummary toArticleSummary(List<Tuple> articlesData) {
         ArticleSummary summary = new ArticleSummary();

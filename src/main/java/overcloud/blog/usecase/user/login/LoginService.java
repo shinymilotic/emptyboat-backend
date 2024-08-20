@@ -4,6 +4,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.github.f4b6a3.uuid.UuidCreator;
+
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
@@ -89,6 +92,7 @@ public class LoginService {
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {
         RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity();
+        refreshTokenEntity.setRefreshTokenId(UuidCreator.getTimeOrderedEpoch());
         refreshTokenEntity.setRefreshToken(refreshToken);
         refreshTokenEntity.setUserId(userId);
         refreshTokenRepository.save(refreshTokenEntity);

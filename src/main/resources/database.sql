@@ -260,7 +260,7 @@ CREATE TABLE public.test_question (
 
 -- DROP TABLE public.user_role;
 
-CREATE TABLE public.user_role (
+CREATE TABLE public.user_roles (
 	role_id uuid NOT NULL,
 	user_id uuid NOT NULL,
 	CONSTRAINT user_role_pk PRIMARY KEY (role_id, user_id),
