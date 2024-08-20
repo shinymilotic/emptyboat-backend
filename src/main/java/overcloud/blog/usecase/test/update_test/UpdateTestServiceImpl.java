@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.entity.AnswerEntity;
@@ -20,6 +22,7 @@ import overcloud.blog.usecase.common.validation.ObjectsValidator;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.user.common.UpdateFlg;
 
+@Service
 public class UpdateTestServiceImpl implements UpdateTestService {
     private final ObjectsValidator validator;
     private final ResFactory resFactory;
