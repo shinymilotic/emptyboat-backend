@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,7 +24,7 @@ public class PracticeEntity {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "test_id", insertable = false, updatable = false)
-    private TestEntity test;
+    // @ManyToOne
+    // @JoinColumn(name = "test_id", insertable = false, updatable = false)
+    // private TestEntity test;
 }

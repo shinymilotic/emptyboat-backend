@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IQuestionRepository;
+import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
@@ -27,18 +28,21 @@ public class CreateTestServiceImpl implements CreateTestService {
     private final IQuestionRepository questionRepository;
     private final SpringAuthenticationService authenticationService;
     private final ResFactory resFactory;
+    private final ITestQuestionRepository testQuestionRepository;
     private final ObjectsValidator validator;
 
     public CreateTestServiceImpl(ITestRepository testRepository,
                                  IQuestionRepository questionRepository,
                                  SpringAuthenticationService authenticationService,
                                  ResFactory resFactory,
-                                 ObjectsValidator validator) {
+                                 ObjectsValidator validator,
+                                 ITestQuestionRepository testQuestionRepository) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.authenticationService = authenticationService;
         this.resFactory = resFactory;
         this.validator = validator;
+        this.testQuestionRepository = testQuestionRepository;
     }
 
     public Optional<ApiError> validateQuestions(Optional<ApiError> apiError, List<Question> questions) {
@@ -121,15 +125,13 @@ public class CreateTestServiceImpl implements CreateTestService {
             TestQuestionId testQuestionId = new TestQuestionId(testEntity.getTestId(), questionEntity.getQuestionId());
             TestQuestion testQuestion = new TestQuestion();
             testQuestion.setId(testQuestionId);
-            testQuestion.setTest(testEntity);
             testQuestion.setQuestionOrder(++order);
-            testQuestion.setQuestion(questionEntity);
             testQuestions.add(testQuestion);
         }
         
-        TestEntity savedTest = testRepository.save(testEntity);
+        testRepository.save(testEntity);
         questionRepository.saveAll(questionEntities);
-        savedTest.setQuestions(testQuestions);
+        testQuestionRepository.saveAll(testQuestions);
 
         return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
     }

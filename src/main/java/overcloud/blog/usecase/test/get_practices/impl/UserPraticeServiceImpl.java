@@ -47,13 +47,13 @@ public class UserPraticeServiceImpl implements UserPracticeService {
 
         List<PracticeResponse> practiceResponseList = new ArrayList<>();
         for (PracticeEntity practiceEntity : practices) {
-            TestEntity test = practiceEntity.getTest();
-            PracticeResponse practice = PracticeResponse.builder()
-                    .id(practiceEntity.getPracticeId().toString())
-                    .testTitle(test.getTitle())
-                    .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
-                    .build();
-            practiceResponseList.add(practice);
+            // TestEntity test = practiceEntity.getTest();
+            // PracticeResponse practice = PracticeResponse.builder()
+            //         .id(practiceEntity.getPracticeId().toString())
+            //         .testTitle(test.getTitle())
+            //         .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
+            //         .build();
+            // practiceResponseList.add(practice);
         }
 
         return resFactory.success(PracticeResMsg.PRACTICE_GET_LIST, practiceResponseList);

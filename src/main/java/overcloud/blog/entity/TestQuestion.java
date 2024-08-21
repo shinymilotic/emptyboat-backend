@@ -14,14 +14,6 @@ public class TestQuestion {
     @EmbeddedId
     private TestQuestionId id;
 
-    @ManyToOne
-    @MapsId(value = "testId")
-    private TestEntity test;
-
-    @ManyToOne
-    @MapsId(value = "questionId")
-    private QuestionEntity question;
-
     @Column(name = "question_order")
     private int questionOrder;
 }

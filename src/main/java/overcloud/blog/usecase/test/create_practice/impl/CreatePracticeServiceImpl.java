@@ -84,6 +84,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         for (ChoiceAnswer choice : choices) {
             for (String answerId : choice.getAnswer()) {
                 PracticeChoiceEntity choiceEntity = new PracticeChoiceEntity();
+                choiceEntity.setPracticeChoiceId(UuidCreator.getTimeOrderedEpoch());
                 choiceEntity.setAnswerId(UUID.fromString(answerId));
                 choiceEntity.setPracticeId(practiceEntity.getPracticeId());
                 choiceEntities.add(choiceEntity);
@@ -93,6 +94,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         List<EssayAnswerEntity> essayAnswerEntities = new ArrayList<>();
         for (EssayAnswer answer : essayAnswers) {
             EssayAnswerEntity essayAnswerEntity = new EssayAnswerEntity();
+            essayAnswerEntity.setEssayAnswerId(UuidCreator.getTimeOrderedEpoch());
             essayAnswerEntity.setPracticeId(practiceEntity.getPracticeId());
             essayAnswerEntity.setQuestionId(UUID.fromString(answer.getQuestionId()));
             essayAnswerEntity.setAnswer(answer.getAnswer());

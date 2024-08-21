@@ -30,10 +30,4 @@ public class TestEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "test", orphanRemoval = true, cascade = CascadeType.MERGE)
-    private List<TestQuestion> questions;
-
-    @OneToMany(mappedBy = "test", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<PracticeEntity> practices;
 }
