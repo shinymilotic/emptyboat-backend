@@ -13,9 +13,9 @@ public interface JpaFollowRepository extends JpaRepository<FollowEntity, FollowI
 
     @Modifying
     @Query("""
-             DELETE FROM FollowEntity f WHERE\
-             f.follower.username = :currentUsername\
-             AND f.followee.username = :followingUsername \
+             DELETE FROM FollowEntity f  WHERE \
+             f.id.followerId IN (SELECT u.userId FROM UserEntity u WHERE u.username = :currentUsername) \
+             AND f.id.followeeId IN (SELECT u.userId FROM UserEntity u WHERE u.username = :followingUsername) \
             """)
     void unfollow(String currentUsername, String followingUsername);
 }

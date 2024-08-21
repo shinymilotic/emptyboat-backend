@@ -102,6 +102,7 @@ public class RegisterService {
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {
         RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity();
+        refreshTokenEntity.setRefreshTokenId(UuidCreator.getTimeOrderedEpoch());
         refreshTokenEntity.setRefreshToken(refreshToken);
         refreshTokenEntity.setUserId(userId);
         refreshTokenRepository.save(refreshTokenEntity);
