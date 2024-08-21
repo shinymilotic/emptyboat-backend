@@ -114,9 +114,7 @@ public class CreateArticleService {
                     ArticleTagId articleTagId = new ArticleTagId();
                     articleTagId.setArticleId(articleEntity.getArticleId());
                     articleTagId.setTagId(tagEntity.getTagId());
-                    return ArticleTag.builder()
-                            .id(articleTagId)
-                            .build();
+                    return new ArticleTag(articleTagId);
                 })
                 .collect(Collectors.toList());
     }
