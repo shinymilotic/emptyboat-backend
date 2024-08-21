@@ -28,10 +28,4 @@ public class PracticeEntity {
     @ManyToOne
     @JoinColumn(name = "test_id", insertable = false, updatable = false)
     private TestEntity test;
-
-    @OneToMany(mappedBy = "practice", orphanRemoval = true)
-    private List<PracticeChoiceEntity> choices;
-
-    @OneToMany(mappedBy = "practice", orphanRemoval = true)
-    private List<EssayAnswerEntity> essayAnswers;
 }
