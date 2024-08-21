@@ -42,8 +42,6 @@ public class FollowService {
         followId.setFolloweeId(followee.getUserId());
         followId.setFollowerId(currentUser.getUserId());
         followEntity.setId(followId);
-        followEntity.setFollower(currentUser);
-        followEntity.setFollowee(followee);
         followRepository.save(followEntity);
 
         return resFactory.success(UserResMsg.USER_FOLLOW_SUCCESS, null) ;

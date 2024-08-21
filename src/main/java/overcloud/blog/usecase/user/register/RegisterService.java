@@ -3,6 +3,9 @@ package overcloud.blog.usecase.user.register;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.github.f4b6a3.uuid.UuidCreator;
+
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
@@ -69,6 +72,7 @@ public class RegisterService {
         }
 
         UserEntity userEntity = UserEntity.builder()
+                .userId(UuidCreator.getTimeOrderedEpoch())
                 .username(registrationDto.getUsername())
                 .email(registrationDto.getEmail())
                 .image("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")

@@ -3,6 +3,8 @@ package overcloud.blog.usecase.blog.create_tag;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.f4b6a3.uuid.UuidCreator;
+
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.repository.ITagRepository;
 import overcloud.blog.usecase.blog.common.TagResMsg;
@@ -57,6 +59,7 @@ public class CreateTagsService {
         List<TagEntity> tagForSave = new ArrayList<>();
         for (String tag : tags) {
             TagEntity tagEntity = new TagEntity();
+            tagEntity.setTagId(UuidCreator.getTimeOrderedEpoch());
             tagEntity.setName(tag);
             tagForSave.add(tagEntity);
         }

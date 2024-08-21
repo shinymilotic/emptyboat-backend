@@ -2,6 +2,9 @@ package overcloud.blog.usecase.test.create_practice.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.github.f4b6a3.uuid.UuidCreator;
+
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IEssayAnswerRepository;
 import overcloud.blog.repository.IPracticeChoiceRepository;
@@ -71,6 +74,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         }
 
         PracticeEntity practiceEntity = new PracticeEntity();
+        practiceEntity.setPracticeId(UuidCreator.getTimeOrderedEpoch());
         practiceEntity.setTestId(testEntity.get().getTestId());
         practiceEntity.setTesterId(currentUser.getUserId());
         practiceEntity.setCreatedAt(now);

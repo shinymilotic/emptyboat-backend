@@ -3,7 +3,6 @@ package overcloud.blog.usecase.user.follow.core;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.entity.UserEntity;
 
 @Entity
 @Getter
@@ -12,14 +11,6 @@ import overcloud.blog.entity.UserEntity;
 public class FollowEntity {
     @EmbeddedId
     private FollowId id;
-
-    @ManyToOne
-    @MapsId("followerId")
-    private UserEntity follower;
-
-    @ManyToOne
-    @MapsId("followeeId")
-    private UserEntity followee;
 
     @Override
     public boolean equals(Object o) {

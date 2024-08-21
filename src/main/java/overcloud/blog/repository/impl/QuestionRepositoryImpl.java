@@ -29,7 +29,6 @@ public class QuestionRepositoryImpl implements IQuestionRepository {
 
     @Override
     public void updateAll(List<QuestionEntity> questions) {
-        jpa.updateAll(questions);
     }
 
     @Override

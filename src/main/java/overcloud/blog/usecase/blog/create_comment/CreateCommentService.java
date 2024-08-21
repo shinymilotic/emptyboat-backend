@@ -2,6 +2,9 @@ package overcloud.blog.usecase.blog.create_comment;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.github.f4b6a3.uuid.UuidCreator;
+
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.entity.UserEntity;
@@ -68,6 +71,7 @@ public class CreateCommentService {
         String body = createCommentRequest.getBody();
         LocalDateTime now = LocalDateTime.now();
         CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setCommentId(UuidCreator.getTimeOrderedEpoch());
         commentEntity.setArticle(articleEntity);
         commentEntity.setAuthor(author);
         commentEntity.setBody(body);
