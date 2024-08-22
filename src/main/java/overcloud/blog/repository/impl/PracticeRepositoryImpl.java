@@ -3,9 +3,9 @@ package overcloud.blog.repository.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.Tuple;
-import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
+import overcloud.blog.entity.TestEntity;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeRepository;
 import overcloud.blog.usecase.test.get_practice.*;
@@ -23,12 +23,24 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
 
     @Override
     public List<PracticeEntity> findByTesterId(UUID testerId) {
-        TypedQuery<PracticeEntity> practiceQuery = entityManager
-                .createQuery("SELECT p FROM PracticeEntity p JOIN FETCH p.test  WHERE p.testerId = :testerId ORDER BY p.createdAt DESC ",
-                        PracticeEntity.class)
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT p, t FROM PracticeEntity p ");
+        query.append("INNER JOIN TestEntity t ON p.testId = t.testId ");
+        query.append("WHERE p.testerId = :testerId ORDER BY p.createdAt DESC ");
+
+        Query practiceQuery = entityManager
+                .createQuery(query.toString())
                 .setParameter("testerId", testerId);
 
-        return practiceQuery.getResultList();
+        List<Object[]> results = practiceQuery.getResultList();
+        
+        for (Object[] data : results) {
+            PracticeEntity practiceEntity = (PracticeEntity) data[0];
+            TestEntity testEntity = (TestEntity) data[1];
+
+            
+        }
+        return new ArrayList<>();
     }
 
     @Override
