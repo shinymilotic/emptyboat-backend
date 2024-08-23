@@ -79,9 +79,9 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("left join ( ");
         query.append("select ");
         query.append("article_id , ");
-        query.append("bool_or(user_id = :currentUserId) as favorited, ");
+        query.append("bool_or(favorites.user_id = :currentUserId) as favorited, ");
         query.append(ifFavorited("bool_or(fu.username = :favorited) as favoritedUser, ", favorited));
-        query.append("COUNT(user_id) favoritesCount ");
+        query.append("COUNT(favorites.user_id) favoritesCount ");
         query.append("from ");
         query.append("favorites ");
         query.append(ifFavorited("left join (select user_id, username from users where username = :favorited) fu on fu.user_id = favorites.user_id ", favorited));
@@ -148,7 +148,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
                 "select " +
                 "article_id , " +
                 "bool_or(user_id = :currentUserId) as favorited, " +
-                "COUNT(user_id) favoritesCount " +
+                "COUNT(favorites.user_id) favoritesCount " +
                 "from " +
                 "favorites " +
                 "group by " +
@@ -198,8 +198,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("left join ( ");
         query.append("select ");
         query.append("article_id , ");
-        query.append("bool_or(user_id = :currentUserId) as favorited, ");
-        query.append("COUNT(user_id) favoritesCount ");
+        query.append("bool_or(favorites.user_id = :currentUserId) as favorited, ");
+        query.append("COUNT(favorites.user_id) favoritesCount ");
         query.append("from ");
         query.append("favorites ");
         query.append("group by ");

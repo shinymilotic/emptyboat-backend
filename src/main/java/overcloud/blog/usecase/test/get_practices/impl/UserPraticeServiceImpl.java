@@ -48,9 +48,9 @@ public class UserPraticeServiceImpl implements UserPracticeService {
 
         List<PracticeResponse> practiceResponseList = new ArrayList<>();
         for (Tuple row : data) {
-            UUID practiceId = (UUID) row.get("practiceId");
-            String testTitle = (String) row.get("title");
-            LocalDateTime createdAt = (LocalDateTime) row.get("createdAt");
+            UUID practiceId = (UUID) row.get(0);
+            String testTitle = (String) row.get(1);
+            LocalDateTime createdAt = (LocalDateTime) row.get(2);
 
             PracticeResponse practice = PracticeResponse.builder()
                     .id(practiceId.toString())
