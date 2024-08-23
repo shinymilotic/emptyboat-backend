@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.persistence.Tuple;
+
 public interface IPracticeRepository {
-    List<PracticeEntity> findByTesterId(UUID testerId);
+    List<Tuple> findByTesterId(UUID testerId);
     void deleteByTestId(UUID testId);
     Optional<PracticeEntity> findById(UUID id);
     PracticeResult getPracticeResult(UUID id);

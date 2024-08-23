@@ -2,9 +2,8 @@ package overcloud.blog.usecase.test.get_practices.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import jakarta.persistence.Tuple;
 import overcloud.blog.core.datetime.DateTimeService;
-import overcloud.blog.entity.PracticeEntity;
-import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.IUserRepository;
@@ -15,8 +14,10 @@ import overcloud.blog.usecase.test.common.PracticeResMsg;
 import overcloud.blog.usecase.test.common.PracticeResponse;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserPraticeServiceImpl implements UserPracticeService {
@@ -43,17 +44,20 @@ public class UserPraticeServiceImpl implements UserPracticeService {
             throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
         }
 
-        List<PracticeEntity> practices = practiceRepository.findByTesterId(user.getUserId());
+        List<Tuple> data = practiceRepository.findByTesterId(user.getUserId());
 
         List<PracticeResponse> practiceResponseList = new ArrayList<>();
-        for (PracticeEntity practiceEntity : practices) {
-            // TestEntity test = practiceEntity.getTest();
-            // PracticeResponse practice = PracticeResponse.builder()
-            //         .id(practiceEntity.getPracticeId().toString())
-            //         .testTitle(test.getTitle())
-            //         .date(dateTimeService.dateTimeToString(practiceEntity.getCreatedAt()))
-            //         .build();
-            // practiceResponseList.add(practice);
+        for (Tuple row : data) {
+            UUID practiceId = (UUID) row.get("practiceId");
+            String testTitle = (String) row.get("title");
+            LocalDateTime createdAt = (LocalDateTime) row.get("createdAt");
+
+            PracticeResponse practice = PracticeResponse.builder()
+                    .id(practiceId.toString())
+                    .testTitle(testTitle)
+                    .date(dateTimeService.dateTimeToString(createdAt))
+                    .build();
+            practiceResponseList.add(practice);
         }
 
         return resFactory.success(PracticeResMsg.PRACTICE_GET_LIST, practiceResponseList);
