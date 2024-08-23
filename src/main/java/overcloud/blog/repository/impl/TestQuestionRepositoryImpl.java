@@ -11,7 +11,12 @@ import overcloud.blog.repository.jparepository.JpaTestQuestionRepository;
 @Repository
 public class TestQuestionRepositoryImpl implements ITestQuestionRepository {
 
-    private JpaTestQuestionRepository jpa;
+    private final JpaTestQuestionRepository jpa;
+
+    public TestQuestionRepositoryImpl(JpaTestQuestionRepository jpa) {
+        this.jpa = jpa;
+    }
+    
     @Override
     public void saveAll(List<TestQuestion> testQuestions) {
         jpa.saveAll(testQuestions);

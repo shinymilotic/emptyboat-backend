@@ -86,7 +86,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                 for (UpdChoiceAnswer answer : answers) {
                     if (answer.getUpdateFlg().equals(UpdateFlg.NEW.getValue())) {
                         AnswerEntity answerEntity = new AnswerEntity();
-                        answerEntity.setAnswerId(UuidCreator.getTimeOrderedEpoch());
+                        answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
                         answerEntity.setAnswer(answer.getAnswer());
                         answerEntity.setTruth(answer.getTruth());
                         answerEntity.setCreatedAt(now);
@@ -94,7 +94,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                         insertAnswers.add(answerEntity);
                     } else if (answer.getUpdateFlg().equals(UpdateFlg.UPDATE.getValue())) {
                         AnswerEntity answerEntity = new AnswerEntity();
-                        answerEntity.setAnswerId(UuidCreator.getTimeOrderedEpoch());
+                        answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
                         answerEntity.setAnswer(answer.getAnswer());
                         answerEntity.setTruth(answer.getTruth());
                         answerEntity.setCreatedAt(now);

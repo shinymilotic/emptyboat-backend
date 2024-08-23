@@ -12,6 +12,6 @@ import overcloud.blog.entity.AnswerEntity;
 @Repository
 public interface JpaChoiceAnswerRepository extends JpaRepository<AnswerEntity, UUID> {
     @Modifying
-    @Query("DELETE FROM AnswerEntity a WHERE a.answerId IN :answerIds")
+    @Query("DELETE FROM AnswerEntity a WHERE a.choiceAnswerId IN :answerIds")
     void deleteAll(List<UUID> answerIds);
 }

@@ -53,7 +53,7 @@ public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
 
     @Override
     public void deleteAll(List<UUID> answerIds) {
-        
+        jpa.deleteAll(answerIds);
     }
 
     

@@ -14,7 +14,7 @@ import java.util.UUID;
 public class AnswerEntity {
     @Id
     // @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID answerId;
+    private UUID choiceAnswerId;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
