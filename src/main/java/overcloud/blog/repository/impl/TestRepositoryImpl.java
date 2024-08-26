@@ -1,7 +1,6 @@
 package overcloud.blog.repository.impl;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.Tuple;
@@ -16,7 +15,6 @@ import overcloud.blog.usecase.test.common.EssayQuestion;
 import overcloud.blog.usecase.test.common.TestResponse;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
 import overcloud.blog.usecase.user.common.UserResponse;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
