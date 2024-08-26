@@ -3,11 +3,7 @@ package overcloud.blog.repository.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import overcloud.blog.entity.AnswerEntity;
