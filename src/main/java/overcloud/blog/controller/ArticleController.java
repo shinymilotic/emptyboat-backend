@@ -43,7 +43,7 @@ public class ArticleController {
 
     @Secured({"ADMIN", "USER"})
     @PutMapping(ApiConst.ARTICLE)
-    public RestResponse<UUID> updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
+    public RestResponse<Void> updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
                                                @PathVariable("id") String id) {
         return updateArticleService.updateArticle(updateArticleRequest, id);
     }
