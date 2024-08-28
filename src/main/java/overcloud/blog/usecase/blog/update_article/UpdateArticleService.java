@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IArticleRepository;
+import overcloud.blog.repository.ITagRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.common.auth.service.SpringAuthenticationService;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
@@ -21,15 +22,18 @@ import java.util.UUID;
 public class UpdateArticleService {
     private final SpringAuthenticationService authenticationService;
     private final IArticleRepository articleRepository;
+    private final ITagRepository tagRepository;
     private final ObjectsValidator<UpdateArticleRequest> validator;
     private final ResFactory resFactory;
 
     public UpdateArticleService(SpringAuthenticationService authenticationService,
                                 IArticleRepository articleRepository,
+                                ITagRepository tagRepository,
                                 ObjectsValidator<UpdateArticleRequest> validator,
                                 ResFactory resFactory) {
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
+        this.tagRepository = tagRepository;
         this.validator = validator;
         this.resFactory = resFactory;
     }
@@ -42,6 +46,7 @@ public class UpdateArticleService {
         }
 
         Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
+        tagRepository.findByTagName(null)
         if (!articleEntities.isPresent()) {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
         }
@@ -51,15 +56,18 @@ public class UpdateArticleService {
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
-//        // Update authorization
        if (!currentUser.getUserId().equals(articleEntity.getAuthorId())) {
            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_UPDATE_NO_AUTHORIZATION));
        }
 
         LocalDateTime now = LocalDateTime.now();
+        articleEntity.setTitle(updateArticleRequest.getTitle());
+        articleEntity.setDescription(updateArticleRequest.getDescription());
         articleEntity.setBody(updateArticleRequest.getBody());
         articleEntity.setUpdatedAt(now);
+        
         articleRepository.save(articleEntity);
+        tagRepository.saveAll(null);
         articleRepository.updateSearchVector();
 
         return resFactory.success(ArticleResMsg.ARTICLE_UPDATE_SUCCESS, articleEntity.getArticleId());
