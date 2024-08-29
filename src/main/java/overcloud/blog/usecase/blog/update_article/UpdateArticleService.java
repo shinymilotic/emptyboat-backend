@@ -3,9 +3,12 @@ package overcloud.blog.usecase.blog.update_article;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.ArticleEntity;
+import overcloud.blog.entity.ArticleTag;
+import overcloud.blog.entity.ArticleTagId;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IArticleRepository;
+import overcloud.blog.repository.IArticleTagRepository;
 import overcloud.blog.repository.ITagRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.blog.common.TagResMsg;
@@ -17,6 +20,7 @@ import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.common.validation.ObjectsValidator;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,17 +30,20 @@ public class UpdateArticleService {
     private final SpringAuthenticationService authenticationService;
     private final IArticleRepository articleRepository;
     private final ITagRepository tagRepository;
+    private final IArticleTagRepository articleTagRepository;
     private final ObjectsValidator<UpdateArticleRequest> validator;
     private final ResFactory resFactory;
 
     public UpdateArticleService(SpringAuthenticationService authenticationService,
                                 IArticleRepository articleRepository,
                                 ITagRepository tagRepository,
+                                IArticleTagRepository articleTagRepository,
                                 ObjectsValidator<UpdateArticleRequest> validator,
                                 ResFactory resFactory) {
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
         this.tagRepository = tagRepository;
+        this.articleTagRepository = articleTagRepository;
         this.validator = validator;
         this.resFactory = resFactory;
     }
@@ -50,17 +57,24 @@ public class UpdateArticleService {
         List<String> tags = updateArticleRequest.getTagList();
         Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
         List<TagEntity> tagEntities = tagRepository.findByTagName(updateArticleRequest.getTagList());
-
-        for (String tag : tags) {
-            if (!isTagExist(tag, tagEntities)) {
-                throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_NO_EXISTS));
-            }
-        }
+        
 
         if (!articleEntities.isPresent()) {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
         }
         ArticleEntity articleEntity = articleEntities.get();
+
+        List<ArticleTag> articleTags = new ArrayList<>();
+        for (String tag : tags) {
+            Optional<TagEntity> tagEntity = isTagExist(tag, tagEntities);
+
+            if (!tagEntity.isPresent()) {
+                throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_NO_EXISTS));
+            } else {
+                ArticleTagId articleTagId = new ArticleTagId(articleEntity.getArticleId(), tagEntity.get().getTagId());
+                articleTags.add(new ArticleTag(articleTagId));
+            }
+        }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
@@ -77,18 +91,19 @@ public class UpdateArticleService {
         articleEntity.setUpdatedAt(now);
         
         articleRepository.save(articleEntity);
-        tagRepository.saveAll(null);
+        articleTagRepository.deleteByArticleId(articleEntity.getArticleId());
+        articleTagRepository.saveAll(articleTags);
         articleRepository.updateSearchVector();
 
         return resFactory.success(ArticleResMsg.ARTICLE_UPDATE_SUCCESS, null);
     }
 
-    private boolean isTagExist(String tag, List<TagEntity> tagEntities) {
+    private Optional<TagEntity> isTagExist(String tag, List<TagEntity> tagEntities) {
         for (TagEntity tagEntity : tagEntities) {
             if (tagEntity.getName().equals(tag)) {
-                return true;
+                return Optional.of(tagEntity);
             }
         }
-        return false;
+        return Optional.empty();
     }
 }
