@@ -58,7 +58,6 @@ public class UpdateArticleService {
         Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
         List<TagEntity> tagEntities = tagRepository.findByTagName(updateArticleRequest.getTagList());
         
-
         if (!articleEntities.isPresent()) {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
         }
