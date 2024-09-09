@@ -13,6 +13,7 @@ import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.repository.IChoiceAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
+import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
 import overcloud.blog.usecase.common.response.ApiError;
@@ -29,17 +30,19 @@ public class UpdateTestServiceImpl implements UpdateTestService {
     private final ITestRepository testRepo;
     private final IQuestionRepository questionRepo;
     private final IChoiceAnswerRepository choiceAnswerRepo;
-
+    private final ITestQuestionRepository testQuestionRepo;
     public UpdateTestServiceImpl(ObjectsValidator validator,
             ResFactory resFactory,
             ITestRepository testRepo,
             IQuestionRepository questionRepo,
-            IChoiceAnswerRepository choiceAnswerRepo) {
+            IChoiceAnswerRepository choiceAnswerRepo,
+            ITestQuestionRepository testQuestionRepo) {
         this.validator = validator;
         this.resFactory = resFactory;
         this.testRepo = testRepo;
         this.questionRepo = questionRepo;
         this.choiceAnswerRepo = choiceAnswerRepo;
+        this.testQuestionRepo = testQuestionRepo;
     }
 
     @Override
@@ -54,7 +57,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
         testRepo.updateTest(testId, request.getTitle(), request.getDescription());
         List<QuestionEntity> insertList = new ArrayList<>();
         List<QuestionEntity> updateList = new ArrayList<>();
-        List<UUID> deleteList = new ArrayList<>();
+        List<UUID> deleteQuestionList = new ArrayList<>();
         List<AnswerEntity> insertAnswers = new ArrayList<>();
         List<AnswerEntity> updateAnswers = new ArrayList<>();
         List<UUID> deleteAnswers = new ArrayList<>();
@@ -76,7 +79,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                 questionEntity.setUpdatedAt(now);
                 updateList.add(questionEntity);
             } else if (question.getUpdateFlg().equals(UpdateFlg.DELETE.getValue())) {
-                deleteList.add(UUID.fromString(question.getId()));
+                deleteQuestionList.add(UUID.fromString(question.getId()));
             }
 
             if (question.getQuestionType().equals(1) && question.getUpdateFlg().equals(UpdateFlg.DELETE.getValue())) {
@@ -109,7 +112,8 @@ public class UpdateTestServiceImpl implements UpdateTestService {
 
         questionRepo.saveAll(insertList);
         questionRepo.updateAll(updateList);
-        questionRepo.deleteAll(deleteList);
+        testQuestionRepo.deleteAllById(deleteQuestionList);
+        questionRepo.deleteAll(deleteQuestionList);
         choiceAnswerRepo.saveAll(insertAnswers);
         choiceAnswerRepo.updateAll(updateAnswers);
         choiceAnswerRepo.deleteAll(deleteAnswers);

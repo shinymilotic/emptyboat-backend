@@ -1,6 +1,7 @@
 package overcloud.blog.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,11 @@ public class TestQuestionRepositoryImpl implements ITestQuestionRepository {
     @Override
     public void saveAll(List<TestQuestion> testQuestions) {
         jpa.saveAll(testQuestions);
+    }
+
+    @Override
+    public void deleteAllById(List<UUID> ids) {
+        
     }
     
 }

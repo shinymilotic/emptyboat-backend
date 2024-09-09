@@ -29,11 +29,11 @@ public class QuestionRepositoryImpl implements IQuestionRepository {
 
     @Override
     public void updateAll(List<QuestionEntity> questions) {
+        jpa.saveAllAndFlush(questions);
     }
 
     @Override
     public void deleteAll(List<UUID> questionIds) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAll'");
+        jpa.deleteAllByIdInBatch(questionIds);
     }
 }

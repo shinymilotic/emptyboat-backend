@@ -51,7 +51,5 @@ public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
     public void deleteAll(List<UUID> answerIds) {
         jpa.deleteAll(answerIds);
     }
-
-    
 }
 

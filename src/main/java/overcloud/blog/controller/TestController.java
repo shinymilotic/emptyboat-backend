@@ -59,7 +59,7 @@ public class TestController {
         return this.deleteTestService.deleteTest(id);
     }
 
-    @PostMapping(ApiConst.TEST_UPDATE)
+    @PutMapping(ApiConst.TEST_UPDATE)
     public RestResponse<Void> updateTest(@PathVariable("id") String id, @RequestBody TestUpdateRequest request) {
         return updateTestService.updateTest(id, request);
     }
