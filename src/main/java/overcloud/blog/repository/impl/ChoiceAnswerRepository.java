@@ -30,6 +30,10 @@ public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
 
     @Override
     public void updateAll(List<AnswerEntity> answers) {
+        if (answers == null || answers.isEmpty()) {
+            return;
+        }
+
         LocalDateTime now = LocalDateTime.now();
         StringBuilder query = new StringBuilder();
 

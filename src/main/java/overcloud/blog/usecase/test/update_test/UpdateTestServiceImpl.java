@@ -12,6 +12,7 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.repository.IChoiceAnswerRepository;
+import overcloud.blog.repository.IEssayAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
@@ -31,18 +32,21 @@ public class UpdateTestServiceImpl implements UpdateTestService {
     private final IQuestionRepository questionRepo;
     private final IChoiceAnswerRepository choiceAnswerRepo;
     private final ITestQuestionRepository testQuestionRepo;
+    private final IEssayAnswerRepository essayAnswerRepo;
     public UpdateTestServiceImpl(ObjectsValidator validator,
             ResFactory resFactory,
             ITestRepository testRepo,
             IQuestionRepository questionRepo,
             IChoiceAnswerRepository choiceAnswerRepo,
-            ITestQuestionRepository testQuestionRepo) {
+            ITestQuestionRepository testQuestionRepo,
+            IEssayAnswerRepository essayAnswerRepo) {
         this.validator = validator;
         this.resFactory = resFactory;
         this.testRepo = testRepo;
         this.questionRepo = questionRepo;
         this.choiceAnswerRepo = choiceAnswerRepo;
         this.testQuestionRepo = testQuestionRepo;
+        this.essayAnswerRepo = essayAnswerRepo;
     }
 
     @Override
@@ -112,6 +116,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
 
         questionRepo.saveAll(insertList);
         questionRepo.updateAll(updateList);
+        essayAnswerRepo.deleteAllByQuestionId(deleteQuestionList);
         testQuestionRepo.deleteAllById(deleteQuestionList);
         questionRepo.deleteAll(deleteQuestionList);
         choiceAnswerRepo.saveAll(insertAnswers);

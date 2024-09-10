@@ -1,6 +1,7 @@
 package overcloud.blog.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +20,10 @@ public class EssayAnswerRepositoryImpl implements IEssayAnswerRepository {
     @Override
     public void saveAll(List<EssayAnswerEntity> essayAnswerEntities) {
         jpa.saveAll(essayAnswerEntities);
+    }
+
+    @Override
+    public void deleteAllByQuestionId(List<UUID> questionIds) {
+        jpa.deleteAllByQuestionId(questionIds);
     }
 }
