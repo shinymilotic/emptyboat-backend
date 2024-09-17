@@ -2,7 +2,7 @@ package overcloud.blog.usecase.test.get_test;
 
 import org.springframework.stereotype.Service;
 
-import overcloud.blog.usecase.common.response.RestResponse;
+import overcloud.blog.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.TestResponse;
 
 @Service

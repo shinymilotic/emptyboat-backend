@@ -2,7 +2,7 @@ package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import overcloud.blog.usecase.common.response.RestResponse;
+import overcloud.blog.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.RoleListResponse;
 import overcloud.blog.usecase.user.get_all_roles.GetAllRoleService;
 import overcloud.blog.usecase.user.manage_role.ManageRoleRequest;

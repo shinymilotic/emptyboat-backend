@@ -3,7 +3,8 @@ package overcloud.blog.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.usecase.common.response.RestResponse;
+
+import overcloud.blog.common.response.RestResponse;
 import overcloud.blog.usecase.test.common.TestRequest;
 import overcloud.blog.usecase.test.common.TestResponse;
 import overcloud.blog.usecase.test.create_test.CreateTestService;

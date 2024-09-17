@@ -3,6 +3,7 @@ package overcloud.blog.usecase.user.assign_role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import overcloud.blog.common.response.RestResponse;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.entity.UserRole;
@@ -10,7 +11,6 @@ import overcloud.blog.entity.UserRoleId;
 import overcloud.blog.repository.IRoleRepository;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.IUserRoleRepository;
-import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.RolesRequest;
 import java.util.Optional;
 

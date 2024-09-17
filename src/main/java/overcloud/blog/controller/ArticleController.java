@@ -3,6 +3,8 @@ package overcloud.blog.controller;
 import java.util.UUID;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import overcloud.blog.common.response.RestResponse;
 import overcloud.blog.usecase.blog.create_article.ArticleRequest;
 import overcloud.blog.usecase.blog.create_article.CreateArticleService;
 import overcloud.blog.usecase.blog.delete_article.DeleteArticleService;
@@ -12,7 +14,6 @@ import overcloud.blog.usecase.blog.get_article_list.GetArticleListService;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleRequest;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleService;
-import overcloud.blog.usecase.common.response.RestResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

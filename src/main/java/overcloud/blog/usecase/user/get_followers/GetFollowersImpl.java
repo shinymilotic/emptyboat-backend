@@ -1,9 +1,10 @@
 package overcloud.blog.usecase.user.get_followers;
 
 import org.springframework.stereotype.Service;
+
+import overcloud.blog.common.response.ResFactory;
+import overcloud.blog.common.response.RestResponse;
 import overcloud.blog.repository.IUserRepository;
-import overcloud.blog.usecase.common.response.ResFactory;
-import overcloud.blog.usecase.common.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.common.UserResponse;
 

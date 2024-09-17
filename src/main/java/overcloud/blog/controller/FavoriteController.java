@@ -1,9 +1,10 @@
 package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
+
+import overcloud.blog.common.response.RestResponse;
 import overcloud.blog.usecase.blog.favorite.make_favorite.MakeFavoriteService;
 import overcloud.blog.usecase.blog.favorite.make_unfavorite.MakeUnfavoriteService;
-import overcloud.blog.usecase.common.response.RestResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

@@ -9,6 +9,12 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.github.f4b6a3.uuid.UuidCreator;
+
+import overcloud.blog.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.common.response.ApiError;
+import overcloud.blog.common.response.ResFactory;
+import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.common.validation.ObjectsValidator;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.repository.IChoiceAnswerRepository;
@@ -16,11 +22,6 @@ import overcloud.blog.repository.IEssayAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
-import overcloud.blog.usecase.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.usecase.common.response.ApiError;
-import overcloud.blog.usecase.common.response.ResFactory;
-import overcloud.blog.usecase.common.response.RestResponse;
-import overcloud.blog.usecase.common.validation.ObjectsValidator;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.user.common.UpdateFlg;
 
