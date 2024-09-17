@@ -1,4 +1,4 @@
-package overcloud.blog.common.filters;
+package overcloud.blog.filters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import overcloud.blog.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.exception.InvalidDataException;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

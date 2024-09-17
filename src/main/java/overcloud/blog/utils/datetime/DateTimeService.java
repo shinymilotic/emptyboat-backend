@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.datetime;
+package overcloud.blog.utils.datetime;
 
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;

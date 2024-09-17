@@ -1,4 +1,4 @@
-package overcloud.blog.common.validation.annotation;
+package overcloud.blog.utils.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.websocket;
+package overcloud.blog.config.websocket;
 
 //@Configuration
 //@EnableWebSocketMessageBroker

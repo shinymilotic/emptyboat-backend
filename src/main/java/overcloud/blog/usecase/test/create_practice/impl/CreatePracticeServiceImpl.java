@@ -5,10 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 
-import overcloud.blog.common.auth.service.SpringAuthenticationService;
-import overcloud.blog.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.common.response.ResFactory;
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.auth.service.SpringAuthenticationService;
+import overcloud.blog.exception.InvalidDataException;
+import overcloud.blog.response.ResFactory;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IEssayAnswerRepository;
 import overcloud.blog.repository.IPracticeChoiceRepository;

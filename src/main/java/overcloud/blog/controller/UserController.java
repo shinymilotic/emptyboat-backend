@@ -2,7 +2,7 @@ package overcloud.blog.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailRequest;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailService;

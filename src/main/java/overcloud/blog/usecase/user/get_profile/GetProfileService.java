@@ -3,17 +3,14 @@ package overcloud.blog.usecase.user.get_profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.Tuple;
-import overcloud.blog.common.auth.bean.SecurityUser;
-import overcloud.blog.common.auth.service.SpringAuthenticationService;
-import overcloud.blog.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.common.response.ResFactory;
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.auth.bean.SecurityUser;
+import overcloud.blog.auth.service.SpringAuthenticationService;
+import overcloud.blog.response.ResFactory;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

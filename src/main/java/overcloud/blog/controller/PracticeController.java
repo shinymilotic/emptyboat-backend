@@ -2,7 +2,7 @@ package overcloud.blog.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.test.common.PracticeRequest;
 import overcloud.blog.usecase.test.common.PracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeResponse;

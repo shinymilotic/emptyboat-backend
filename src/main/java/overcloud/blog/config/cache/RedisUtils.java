@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.cache;
+package overcloud.blog.config.cache;
 
 import java.util.List;
 import java.util.Map;

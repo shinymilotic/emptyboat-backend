@@ -1,4 +1,4 @@
-package overcloud.blog.common.exceptionhandling.handler;
+package overcloud.blog.exception.handler;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import overcloud.blog.common.exceptionhandling.InvalidDataException;
+import overcloud.blog.exception.InvalidDataException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 

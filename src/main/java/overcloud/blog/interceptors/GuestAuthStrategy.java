@@ -1,4 +1,4 @@
-package overcloud.blog.common.interceptors;
+package overcloud.blog.interceptors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package overcloud.blog.common.response;
+package overcloud.blog.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

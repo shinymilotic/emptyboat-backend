@@ -1,12 +1,11 @@
 package overcloud.blog.usecase.user.update_user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.common.validation.annotation.LetterAndNumber;
+import overcloud.blog.utils.validation.LetterAndNumber;
 
 //@JsonTypeName("user")
 @Getter

@@ -3,22 +3,14 @@ package overcloud.blog.usecase.test.get_test.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.common.response.ResFactory;
-import overcloud.blog.common.response.RestResponse;
-import overcloud.blog.entity.AnswerEntity;
-import overcloud.blog.entity.QuestionEntity;
-import overcloud.blog.entity.TestQuestion;
+import overcloud.blog.exception.InvalidDataException;
+import overcloud.blog.response.ResFactory;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.repository.ITestRepository;
-import overcloud.blog.usecase.test.common.Answer;
-import overcloud.blog.usecase.test.common.EssayQuestion;
-import overcloud.blog.usecase.test.common.Question;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.common.TestResponse;
-import overcloud.blog.usecase.test.get_test.ChoiceQuestion;
 import overcloud.blog.usecase.test.get_test.GetTestService;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Optional;
 import java.util.UUID;
 

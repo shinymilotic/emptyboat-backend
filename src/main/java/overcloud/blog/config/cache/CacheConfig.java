@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.cache;
+package overcloud.blog.config.cache;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

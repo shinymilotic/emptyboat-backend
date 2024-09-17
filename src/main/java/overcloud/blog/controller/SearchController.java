@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.blog.search.ArticleSearchService;
 import overcloud.blog.usecase.blog.search.ArticleSearchServicePG;

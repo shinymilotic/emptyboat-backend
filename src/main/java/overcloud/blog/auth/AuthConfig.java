@@ -1,4 +1,4 @@
-package overcloud.blog.common.auth;
+package overcloud.blog.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +17,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import overcloud.blog.common.filters.ExceptionHandlerFilter;
-import overcloud.blog.common.filters.JwtAuthenticationFilter;
-import overcloud.blog.common.interceptors.AuthInterceptor;
+import overcloud.blog.filters.ExceptionHandlerFilter;
+import overcloud.blog.filters.JwtAuthenticationFilter;
+import overcloud.blog.interceptors.AuthInterceptor;
 
 import java.util.Arrays;
 

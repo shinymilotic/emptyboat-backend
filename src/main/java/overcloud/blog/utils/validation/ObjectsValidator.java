@@ -1,12 +1,12 @@
-package overcloud.blog.common.validation;
+package overcloud.blog.utils.validation;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import overcloud.blog.common.response.ApiError;
-import overcloud.blog.common.response.ApiValidationError;
-import overcloud.blog.common.response.ResFactory;
+import overcloud.blog.response.ApiError;
+import overcloud.blog.response.ApiValidationError;
+import overcloud.blog.response.ResFactory;
 
 import org.springframework.stereotype.Component;
 

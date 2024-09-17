@@ -1,6 +1,6 @@
 package overcloud.blog.usecase.blog.search;
 
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
 
 public interface ArticleSearchService {

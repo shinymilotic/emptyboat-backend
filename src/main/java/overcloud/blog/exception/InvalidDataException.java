@@ -1,10 +1,10 @@
-package overcloud.blog.common.exceptionhandling;
+package overcloud.blog.exception;
 
 
 
 import lombok.Getter;
 import lombok.Setter;
-import overcloud.blog.common.response.ApiError;
+import overcloud.blog.response.ApiError;
 
 @Getter
 @Setter

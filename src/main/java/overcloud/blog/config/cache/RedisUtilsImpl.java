@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.cache;
+package overcloud.blog.config.cache;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;

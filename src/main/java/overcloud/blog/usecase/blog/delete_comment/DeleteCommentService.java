@@ -3,8 +3,8 @@ package overcloud.blog.usecase.blog.delete_comment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.common.response.ResFactory;
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.response.ResFactory;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.repository.ICommentRepository;
 import overcloud.blog.usecase.blog.common.CommentResMsg;
 

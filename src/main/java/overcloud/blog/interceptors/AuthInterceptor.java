@@ -1,4 +1,4 @@
-package overcloud.blog.common.interceptors;
+package overcloud.blog.interceptors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,8 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import overcloud.blog.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.common.response.ResFactory;
+import overcloud.blog.exception.InvalidDataException;
+import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.util.List;

@@ -5,21 +5,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import overcloud.blog.auth.service.SpringAuthenticationService;
+import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
-import overcloud.blog.usecase.blog.favorite.core.utils.FavoriteUtils;
+import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleRequest;
 import overcloud.blog.usecase.blog.update_article.UpdateArticleService;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
-import overcloud.blog.entity.UserEntity;
-import overcloud.blog.infrastructure.auth.bean.SecurityUser;
-import overcloud.blog.infrastructure.auth.service.SpringAuthenticationService;
-import overcloud.blog.infrastructure.validation.ObjectsValidator;
-
-import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateArticleTest {
@@ -34,8 +26,6 @@ public class UpdateArticleTest {
     @Mock
     private JpaUserRepository userRepository;
     @Mock
-    private FavoriteUtils favoriteUtils;
-    @Mock
     private ObjectsValidator<UpdateArticleRequest> validator;
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource
@@ -48,17 +38,6 @@ public class UpdateArticleTest {
 
     private void setAuthentication() {
         // add principal object to SecurityContextHolder
-        UserEntity user = UserEntity.builder()
-                        .id(UUID.fromString("e7e861df-2c3f-4304-a2b0-3b98c1ba16c8"))
-                        .email("trungtin.mai1412@gmail.com")
-                        .username("thepianist00")
-                        .bio("A pragmatddsdsadsaic programmerss")
-                        .image("https://avatars.githubusercontent.com/u/19252712?s=100&v=100")
-                        .password("$2a$10$ba45PLemGgZxRXAjHkyuRuuHE0o4dmrKFcyW5a").build();
-
-        UserDetails secureUser = new SecurityUser(user);
-        Authentication auth = new UsernamePasswordAuthenticationToken(secureUser,secureUser.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
     // @BeforeEach

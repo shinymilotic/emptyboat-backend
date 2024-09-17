@@ -1,4 +1,4 @@
-package overcloud.blog.common.auth.service;
+package overcloud.blog.auth.service;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.infrastructure.cache.RedisUtils;
+import overcloud.blog.config.cache.RedisUtils;
 
 import java.util.Optional;
 

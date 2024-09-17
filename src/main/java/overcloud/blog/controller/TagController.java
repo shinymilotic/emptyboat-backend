@@ -3,7 +3,7 @@ package overcloud.blog.controller;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
 import overcloud.blog.usecase.blog.get_tags.GetTagsService;

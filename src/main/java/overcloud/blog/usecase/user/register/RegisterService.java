@@ -6,13 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 
-import overcloud.blog.common.auth.service.JwtUtils;
-import overcloud.blog.common.auth.service.SpringAuthenticationService;
-import overcloud.blog.common.exceptionhandling.InvalidDataException;
-import overcloud.blog.common.response.ApiError;
-import overcloud.blog.common.response.ResFactory;
-import overcloud.blog.common.response.RestResponse;
-import overcloud.blog.common.validation.ObjectsValidator;
+import overcloud.blog.auth.service.JwtUtils;
+import overcloud.blog.auth.service.SpringAuthenticationService;
+import overcloud.blog.exception.InvalidDataException;
+import overcloud.blog.response.ApiError;
+import overcloud.blog.response.ResFactory;
+import overcloud.blog.response.RestResponse;
+import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
@@ -21,7 +21,7 @@ import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.usecase.email.EmailService;
 import overcloud.blog.usecase.user.common.UserResMsg;
-import overcloud.blog.usecase.user.common.UserResponseMapper;
+
 import java.util.*;
 
 @Service

@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.email;
+package overcloud.blog.config.email;
 
 import java.util.Properties;
 import org.springframework.context.annotation.Bean;

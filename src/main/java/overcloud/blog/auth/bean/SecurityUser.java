@@ -1,4 +1,4 @@
-package overcloud.blog.common.auth.bean;
+package overcloud.blog.auth.bean;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import overcloud.blog.entity.RoleEntity;

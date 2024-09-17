@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.websocket;
+package overcloud.blog.config.websocket;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;

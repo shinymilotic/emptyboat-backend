@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.datasource;
+package overcloud.blog.config.datasource;
 
 import javax.sql.DataSource;
 import org.springframework.boot.jdbc.DataSourceBuilder;

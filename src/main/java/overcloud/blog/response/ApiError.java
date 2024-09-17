@@ -1,4 +1,4 @@
-package overcloud.blog.common.response;
+package overcloud.blog.response;
 
 import java.util.List;
 import lombok.Getter;

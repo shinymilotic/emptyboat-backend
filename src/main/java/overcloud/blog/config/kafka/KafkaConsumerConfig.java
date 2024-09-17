@@ -1,4 +1,4 @@
-package overcloud.blog.infrastructure.kafka;
+package overcloud.blog.config.kafka;
 
 
 //

@@ -3,8 +3,8 @@ package overcloud.blog.usecase.test.get_practice.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.common.response.ResFactory;
-import overcloud.blog.common.response.RestResponse;
+import overcloud.blog.response.ResFactory;
+import overcloud.blog.response.RestResponse;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.usecase.test.common.PracticeResMsg;
 import overcloud.blog.usecase.test.get_practice.GetPracticeResultService;
