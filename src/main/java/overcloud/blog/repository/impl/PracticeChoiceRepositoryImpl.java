@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import overcloud.blog.entity.PracticeChoiceEntity;
+import overcloud.blog.entity.PracticeChoiceQuestionEntity;
 import overcloud.blog.repository.IPracticeChoiceRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeChoiceRepository;
 
@@ -17,7 +17,7 @@ public class PracticeChoiceRepositoryImpl implements IPracticeChoiceRepository {
     }
 
     @Override
-    public void saveAll(List<PracticeChoiceEntity> choiceEntities) {
+    public void saveAll(List<PracticeChoiceQuestionEntity> choiceEntities) {
         jpa.saveAll(choiceEntities);
     }
 }

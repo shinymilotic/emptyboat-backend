@@ -3,26 +3,18 @@ package overcloud.blog.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "practice_open_questions", schema = "public")
 public class PracticeOpenQuestionEntity {
-    @Id
-    private UUID essayAnswerId;
+    @EmbeddedId
+    private PracticeOpenQuestionId practiceOpenQuestionId;
 
     @Column(name = "answer")
     private String answer;
-
-    @Column(name = "question_id")
-    private UUID questionId;
-
-    @Column(name = "practice_id")
-    private UUID practiceId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

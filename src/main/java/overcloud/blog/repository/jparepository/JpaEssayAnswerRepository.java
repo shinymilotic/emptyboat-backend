@@ -5,13 +5,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeOpenQuestionEntity;
+import overcloud.blog.entity.PracticeOpenQuestionId;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface JpaEssayAnswerRepository extends JpaRepository<PracticeOpenQuestionEntity, UUID> {
+public interface JpaEssayAnswerRepository extends JpaRepository<PracticeOpenQuestionEntity, PracticeOpenQuestionId> {
     @Modifying
-    @Query("DELETE FROM EssayAnswerEntity a WHERE a.questionId IN :questionIds")
+    @Query("DELETE FROM PracticeOpenQuestionEntity a WHERE a.questionId IN :questionIds")
     void deleteAllByQuestionId(List<UUID> questionIds);
 }

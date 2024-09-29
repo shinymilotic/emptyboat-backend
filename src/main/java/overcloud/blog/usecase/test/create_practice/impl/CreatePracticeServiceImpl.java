@@ -80,13 +80,13 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         practiceEntity.setCreatedAt(now);
         practiceEntity = practiceRepository.save(practiceEntity);
 
-        List<PracticeChoiceEntity> choiceEntities = new ArrayList<>();
+        List<PracticeChoiceQuestionEntity> choiceEntities = new ArrayList<>();
         for (ChoiceAnswer choice : choices) {
             for (String answerId : choice.getAnswer()) {
-                PracticeChoiceEntity choiceEntity = new PracticeChoiceEntity();
-                choiceEntity.setPracticeChoiceId(UuidCreator.getTimeOrderedEpoch());
-                choiceEntity.setAnswerId(UUID.fromString(answerId));
-                choiceEntity.setPracticeId(practiceEntity.getPracticeId());
+                PracticeChoiceQuestionEntity choiceEntity = new PracticeChoiceQuestionEntity();
+                // choiceEntity.setPracticeChoiceId(UuidCreator.getTimeOrderedEpoch());
+                // choiceEntity.setAnswerId(UUID.fromString(answerId));
+                // choiceEntity.setPracticeId(practiceEntity.getPracticeId());
                 choiceEntities.add(choiceEntity);
             }
         }
@@ -94,12 +94,12 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         List<PracticeOpenQuestionEntity> essayAnswerEntities = new ArrayList<>();
         for (EssayAnswer answer : essayAnswers) {
             PracticeOpenQuestionEntity essayAnswerEntity = new PracticeOpenQuestionEntity();
-            essayAnswerEntity.setEssayAnswerId(UuidCreator.getTimeOrderedEpoch());
-            essayAnswerEntity.setPracticeId(practiceEntity.getPracticeId());
-            essayAnswerEntity.setQuestionId(UUID.fromString(answer.getQuestionId()));
-            essayAnswerEntity.setAnswer(answer.getAnswer());
-            essayAnswerEntity.setCreatedAt(now);
-            essayAnswerEntities.add(essayAnswerEntity);
+            // essayAnswerEntity.setEssayAnswerId(UuidCreator.getTimeOrderedEpoch());
+            // essayAnswerEntity.setPracticeId(practiceEntity.getPracticeId());
+            // essayAnswerEntity.setQuestionId(UUID.fromString(answer.getQuestionId()));
+            // essayAnswerEntity.setAnswer(answer.getAnswer());
+            // essayAnswerEntity.setCreatedAt(now);
+            // essayAnswerEntities.add(essayAnswerEntity);
         }
         practiceChoiceRepository.saveAll(choiceEntities);
         essayAnswerRepository.saveAll(essayAnswerEntities);
