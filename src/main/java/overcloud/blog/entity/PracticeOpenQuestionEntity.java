@@ -10,8 +10,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "essay_answers", schema = "public")
-public class EssayAnswerEntity {
+@Table(name = "practice_open_questions", schema = "public")
+public class PracticeOpenQuestionEntity {
     @Id
     private UUID essayAnswerId;
 

@@ -91,9 +91,9 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
             }
         }
 
-        List<EssayAnswerEntity> essayAnswerEntities = new ArrayList<>();
+        List<PracticeOpenQuestionEntity> essayAnswerEntities = new ArrayList<>();
         for (EssayAnswer answer : essayAnswers) {
-            EssayAnswerEntity essayAnswerEntity = new EssayAnswerEntity();
+            PracticeOpenQuestionEntity essayAnswerEntity = new PracticeOpenQuestionEntity();
             essayAnswerEntity.setEssayAnswerId(UuidCreator.getTimeOrderedEpoch());
             essayAnswerEntity.setPracticeId(practiceEntity.getPracticeId());
             essayAnswerEntity.setQuestionId(UUID.fromString(answer.getQuestionId()));

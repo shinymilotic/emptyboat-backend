@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import overcloud.blog.entity.EssayAnswerEntity;
+import overcloud.blog.entity.PracticeOpenQuestionEntity;
 import overcloud.blog.repository.IEssayAnswerRepository;
 import overcloud.blog.repository.jparepository.JpaEssayAnswerRepository;
 
@@ -18,7 +18,7 @@ public class EssayAnswerRepositoryImpl implements IEssayAnswerRepository {
     }
 
     @Override
-    public void saveAll(List<EssayAnswerEntity> essayAnswerEntities) {
+    public void saveAll(List<PracticeOpenQuestionEntity> essayAnswerEntities) {
         jpa.saveAll(essayAnswerEntities);
     }
 

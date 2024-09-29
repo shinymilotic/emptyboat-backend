@@ -57,7 +57,7 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
                         " INNER JOIN questions q ON tq.question_id = q.question_id " +
                         " LEFT JOIN choice_answers a ON a.question_id  = q.question_id " +
                         " LEFT JOIN practice_choices pc ON pc.practice_id = p.practice_id AND pc.answer_id = a.choice_answer_id " +
-                        " LEFT JOIN essay_answers ea ON ea.practice_id = p.practice_id AND ea.question_id = q.question_id ", Tuple.class)
+                        " LEFT JOIN practice_open_questions ea ON ea.practice_id = p.practice_id AND ea.question_id = q.question_id ", Tuple.class)
                 .setParameter("practiceId", practiceId);
 
         List<Tuple> results = practiceResult.getResultList();
