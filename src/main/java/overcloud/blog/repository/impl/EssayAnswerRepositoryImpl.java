@@ -6,14 +6,14 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import overcloud.blog.entity.PracticeOpenQuestionEntity;
-import overcloud.blog.repository.IEssayAnswerRepository;
-import overcloud.blog.repository.jparepository.JpaEssayAnswerRepository;
+import overcloud.blog.repository.IPracticeOpenQuestionRepository;
+import overcloud.blog.repository.jparepository.JpaPracticeOpenQuestionRepository;
 
 @Repository
-public class EssayAnswerRepositoryImpl implements IEssayAnswerRepository {
-    private final JpaEssayAnswerRepository jpa;
+public class EssayAnswerRepositoryImpl implements IPracticeOpenQuestionRepository {
+    private final JpaPracticeOpenQuestionRepository jpa;
 
-    public EssayAnswerRepositoryImpl(JpaEssayAnswerRepository jpa) {
+    public EssayAnswerRepositoryImpl(JpaPracticeOpenQuestionRepository jpa) {
         this.jpa = jpa;
     }
 

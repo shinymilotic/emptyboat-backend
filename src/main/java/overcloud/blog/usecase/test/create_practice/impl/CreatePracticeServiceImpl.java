@@ -2,15 +2,13 @@ package overcloud.blog.usecase.test.create_practice.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.github.f4b6a3.uuid.UuidCreator;
-
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ResFactory;
 import overcloud.blog.response.RestResponse;
 import overcloud.blog.entity.*;
-import overcloud.blog.repository.IEssayAnswerRepository;
+import overcloud.blog.repository.IPracticeOpenQuestionRepository;
 import overcloud.blog.repository.IPracticeChoiceRepository;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.ITestRepository;
@@ -33,14 +31,14 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     private final ITestRepository testRepository;
     private final SpringAuthenticationService authenticationService;
     private final IPracticeChoiceRepository practiceChoiceRepository;
-    private final IEssayAnswerRepository essayAnswerRepository;
+    private final IPracticeOpenQuestionRepository essayAnswerRepository;
     private final ResFactory resFactory;
 
     CreatePracticeServiceImpl(IPracticeRepository practiceRepository,
                               SpringAuthenticationService authenticationService,
                               ITestRepository testRepository,
                               IPracticeChoiceRepository practiceChoiceRepository,
-                              IEssayAnswerRepository essayAnswerRepository,
+                              IPracticeOpenQuestionRepository essayAnswerRepository,
                               ResFactory resFactory) {
         this.practiceRepository = practiceRepository;
         this.authenticationService = authenticationService;

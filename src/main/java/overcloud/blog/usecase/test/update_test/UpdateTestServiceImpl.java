@@ -18,7 +18,7 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.repository.IChoiceAnswerRepository;
-import overcloud.blog.repository.IEssayAnswerRepository;
+import overcloud.blog.repository.IPracticeOpenQuestionRepository;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
@@ -33,14 +33,14 @@ public class UpdateTestServiceImpl implements UpdateTestService {
     private final IQuestionRepository questionRepo;
     private final IChoiceAnswerRepository choiceAnswerRepo;
     private final ITestQuestionRepository testQuestionRepo;
-    private final IEssayAnswerRepository essayAnswerRepo;
+    private final IPracticeOpenQuestionRepository essayAnswerRepo;
     public UpdateTestServiceImpl(ObjectsValidator validator,
             ResFactory resFactory,
             ITestRepository testRepo,
             IQuestionRepository questionRepo,
             IChoiceAnswerRepository choiceAnswerRepo,
             ITestQuestionRepository testQuestionRepo,
-            IEssayAnswerRepository essayAnswerRepo) {
+            IPracticeOpenQuestionRepository essayAnswerRepo) {
         this.validator = validator;
         this.resFactory = resFactory;
         this.testRepo = testRepo;

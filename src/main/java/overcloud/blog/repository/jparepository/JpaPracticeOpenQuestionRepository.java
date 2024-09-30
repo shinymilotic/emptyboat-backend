@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface JpaEssayAnswerRepository extends JpaRepository<PracticeOpenQuestionEntity, PracticeOpenQuestionId> {
+public interface JpaPracticeOpenQuestionRepository extends JpaRepository<PracticeOpenQuestionEntity, PracticeOpenQuestionId> {
     @Modifying
-    @Query("DELETE FROM PracticeOpenQuestionEntity a WHERE a.questionId IN :questionIds")
+    @Query("DELETE FROM PracticeOpenQuestionEntity a WHERE a.id.questionId IN :questionIds")
     void deleteAllByQuestionId(List<UUID> questionIds);
 }
