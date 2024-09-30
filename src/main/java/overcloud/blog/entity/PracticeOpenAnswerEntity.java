@@ -8,18 +8,14 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "practice_open_questions", schema = "public")
-public class PracticeOpenQuestionEntity {
+@Table(name = "practice_open_answers", schema = "public")
+public class PracticeOpenAnswerEntity {
     @EmbeddedId
-    private PracticeOpenQuestionId practiceOpenQuestionId;
+    private PracticeOpenAnswerId practiceOpenAnswerId;
 
     @Column(name = "answer")
     private String answer;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @ManyToOne
-    @JoinColumn(name = "practice_id", insertable = false, updatable = false)
-    private PracticeEntity practice;
 }

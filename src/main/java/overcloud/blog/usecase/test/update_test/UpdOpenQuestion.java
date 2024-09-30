@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonDeserialize(as = UpdEssayQuestion.class)
-public class UpdEssayQuestion implements UpdQuestion {
+@JsonDeserialize(as = UpdOpenQuestion.class)
+public class UpdOpenQuestion implements UpdQuestion {
     private String id;
     private String question;
     private Integer questionType;

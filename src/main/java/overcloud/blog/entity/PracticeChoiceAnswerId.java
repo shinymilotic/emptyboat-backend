@@ -2,40 +2,35 @@ package overcloud.blog.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.io.Serializable;
 import java.util.UUID;
 
 @Embeddable
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class PracticeOpenQuestionId implements Serializable {
+public class PracticeChoiceAnswerId {
     @Column(name = "practice_id")
     private UUID practiceId;
 
-    @Column(name = "question_id")
-    private UUID questionId;
+    @Column(name = "choice_answer_id")
+    private UUID choiceAnswerId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PracticeOpenQuestionId that = (PracticeOpenQuestionId) o;
+        PracticeChoiceAnswerId that = (PracticeChoiceAnswerId) o;
 
         if (!practiceId.equals(that.practiceId)) return false;
-        return questionId.equals(that.questionId);
+        return choiceAnswerId.equals(that.choiceAnswerId);
     }
 
     @Override
     public int hashCode() {
         int result = practiceId.hashCode();
-        result = 31 * result + questionId.hashCode();
+        result = 31 * result + choiceAnswerId.hashCode();
         return result;
     }
 }

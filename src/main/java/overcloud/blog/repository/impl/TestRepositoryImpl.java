@@ -11,7 +11,7 @@ import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.test.common.Answer;
 import overcloud.blog.usecase.test.common.ChoiceQuestion;
-import overcloud.blog.usecase.test.common.EssayQuestion;
+import overcloud.blog.usecase.test.common.OpenQuestion;
 import overcloud.blog.usecase.test.common.TestResponse;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
 import overcloud.blog.usecase.user.common.UserResponse;
@@ -121,11 +121,11 @@ public class TestRepositoryImpl implements ITestRepository {
                     testResponse.getQuestions().add(choiceQuestion);
                 }
             } else if (questionType.equals(2)) {
-                EssayQuestion essayQuestion = new EssayQuestion();
-                essayQuestion.setId(questionId.toString());
-                essayQuestion.setQuestion(question);
-                essayQuestion.setQuestionType(questionType);
-                testResponse.getQuestions().add(essayQuestion);
+                OpenQuestion openQuestion = new OpenQuestion();
+                openQuestion.setId(questionId.toString());
+                openQuestion.setQuestion(question);
+                openQuestion.setQuestionType(questionType);
+                testResponse.getQuestions().add(openQuestion);
             }
             previousQuestionId = questionId;
         }

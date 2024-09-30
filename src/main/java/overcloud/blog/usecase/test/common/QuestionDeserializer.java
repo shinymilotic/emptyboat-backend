@@ -17,7 +17,7 @@ public class QuestionDeserializer extends JsonDeserializer<Question> {
         if (root.get("questionType").asInt() == 1) {
             instanceClass = ChoiceQuestion.class;
         } else if (root.get("questionType").asInt() == 2) {
-            instanceClass = EssayQuestion.class;
+            instanceClass = OpenQuestion.class;
         }
         if (instanceClass == null) {
             return null;

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EssayAnswer {
+public class OpenAnswer {
     @JsonProperty("questionId")
     private String questionId;
 

@@ -5,21 +5,21 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import overcloud.blog.entity.PracticeOpenQuestionEntity;
-import overcloud.blog.repository.IPracticeOpenQuestionRepository;
+import overcloud.blog.entity.PracticeOpenAnswerEntity;
+import overcloud.blog.repository.IPracticeOpenAnswerRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeOpenQuestionRepository;
 
 @Repository
-public class EssayAnswerRepositoryImpl implements IPracticeOpenQuestionRepository {
+public class PracticeOpenAnswerRepositoryImpl implements IPracticeOpenAnswerRepository {
     private final JpaPracticeOpenQuestionRepository jpa;
 
-    public EssayAnswerRepositoryImpl(JpaPracticeOpenQuestionRepository jpa) {
+    public PracticeOpenAnswerRepositoryImpl(JpaPracticeOpenQuestionRepository jpa) {
         this.jpa = jpa;
     }
 
     @Override
-    public void saveAll(List<PracticeOpenQuestionEntity> essayAnswerEntities) {
-        jpa.saveAll(essayAnswerEntities);
+    public void saveAll(List<PracticeOpenAnswerEntity> openAnswerEntities) {
+        jpa.saveAll(openAnswerEntities);
     }
 
     @Override

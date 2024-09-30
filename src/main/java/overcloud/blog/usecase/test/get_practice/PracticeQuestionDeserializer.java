@@ -17,7 +17,7 @@ public class PracticeQuestionDeserializer extends JsonDeserializer<PracticeQuest
         if (root.get("questionType").asInt() == 1) {
             instanceClass = PracticeChoiceQuestion.class;
         } else if (root.get("questionType").asInt() == 2) {
-            instanceClass = PracticeEssayQuestion.class;
+            instanceClass = PracticeOpenQuestion.class;
         }
         if (instanceClass == null) {
             return null;

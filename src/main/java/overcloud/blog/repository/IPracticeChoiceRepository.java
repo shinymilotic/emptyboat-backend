@@ -2,8 +2,8 @@ package overcloud.blog.repository;
 
 import java.util.List;
 
-import overcloud.blog.entity.PracticeChoiceQuestionEntity;
+import overcloud.blog.entity.PracticeChoiceAnswerEntity;
 
 public interface IPracticeChoiceRepository {
-    void saveAll(List<PracticeChoiceQuestionEntity> choiceEntities);
+    void saveAll(List<PracticeChoiceAnswerEntity> choiceEntities);
 }

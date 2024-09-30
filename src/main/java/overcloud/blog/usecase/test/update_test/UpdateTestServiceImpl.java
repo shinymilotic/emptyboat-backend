@@ -18,7 +18,7 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.AnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
 import overcloud.blog.repository.IChoiceAnswerRepository;
-import overcloud.blog.repository.IPracticeOpenQuestionRepository;
+import overcloud.blog.repository.IPracticeOpenAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
@@ -33,21 +33,22 @@ public class UpdateTestServiceImpl implements UpdateTestService {
     private final IQuestionRepository questionRepo;
     private final IChoiceAnswerRepository choiceAnswerRepo;
     private final ITestQuestionRepository testQuestionRepo;
-    private final IPracticeOpenQuestionRepository essayAnswerRepo;
+    private final IPracticeOpenAnswerRepository openAnswerRepo;
+
     public UpdateTestServiceImpl(ObjectsValidator validator,
             ResFactory resFactory,
             ITestRepository testRepo,
             IQuestionRepository questionRepo,
             IChoiceAnswerRepository choiceAnswerRepo,
             ITestQuestionRepository testQuestionRepo,
-            IPracticeOpenQuestionRepository essayAnswerRepo) {
+            IPracticeOpenAnswerRepository openAnswerRepo) {
         this.validator = validator;
         this.resFactory = resFactory;
         this.testRepo = testRepo;
         this.questionRepo = questionRepo;
         this.choiceAnswerRepo = choiceAnswerRepo;
         this.testQuestionRepo = testQuestionRepo;
-        this.essayAnswerRepo = essayAnswerRepo;
+        this.openAnswerRepo = openAnswerRepo;
     }
 
     @Override
@@ -117,7 +118,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
 
         questionRepo.saveAll(insertList);
         questionRepo.updateAll(updateList);
-        essayAnswerRepo.deleteAllByQuestionId(deleteQuestionList);
+        openAnswerRepo.deleteAllByQuestionId(deleteQuestionList);
         testQuestionRepo.deleteAllById(deleteQuestionList);
         questionRepo.deleteAll(deleteQuestionList);
         choiceAnswerRepo.saveAll(insertAnswers);
