@@ -96,7 +96,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
             PracticeOpenAnswerId openAnswerId = new PracticeOpenAnswerId();
             openAnswerId.setPracticeId(practiceEntity.getPracticeId());
             openAnswerId.setQuestionId(UUID.fromString(answer.getQuestionId()));
-            openAnswerEntity.setPracticeOpenAnswerId(openAnswerId);
+            openAnswerEntity.setId(openAnswerId);
             openAnswerEntity.setAnswer(answer.getAnswer());
             openAnswerEntity.setCreatedAt(now);
             openAnswerEntities.add(openAnswerEntity);

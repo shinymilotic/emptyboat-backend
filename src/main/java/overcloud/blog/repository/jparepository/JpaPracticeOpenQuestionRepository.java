@@ -13,6 +13,6 @@ import java.util.UUID;
 @Repository
 public interface JpaPracticeOpenQuestionRepository extends JpaRepository<PracticeOpenAnswerEntity, PracticeOpenAnswerId> {
     @Modifying
-    @Query("DELETE FROM PracticeOpenQuestionEntity a WHERE a.practiceOpenAnswerId.questionId IN :questionIds")
+    @Query("DELETE FROM PracticeOpenQuestionEntity a WHERE a.id.questionId IN :questionIds")
     void deleteAllByQuestionId(List<UUID> questionIds);
 }

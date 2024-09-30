@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "practice_open_answers", schema = "public")
 public class PracticeOpenAnswerEntity {
     @EmbeddedId
-    private PracticeOpenAnswerId practiceOpenAnswerId;
+    private PracticeOpenAnswerId id;
 
     @Column(name = "answer")
     private String answer;
