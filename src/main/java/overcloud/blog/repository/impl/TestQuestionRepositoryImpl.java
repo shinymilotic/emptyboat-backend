@@ -27,5 +27,10 @@ public class TestQuestionRepositoryImpl implements ITestQuestionRepository {
     public void deleteAllById(List<UUID> ids) {
         jpa.deleteByQuestionIds(ids);
     }
+
+    @Override
+    public void deleteByTestId(UUID testId) {
+        jpa.deleteByTestId(testId);
+    }
     
 }

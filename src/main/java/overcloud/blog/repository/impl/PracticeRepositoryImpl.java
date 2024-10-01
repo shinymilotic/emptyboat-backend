@@ -106,4 +106,9 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
     public PracticeEntity save(PracticeEntity entity) {
         return jpa.save(entity);
     }
+
+    @Override
+    public void deleteTestId(UUID testId) {
+        jpa.deleteTestId(testId);
+    }
 }

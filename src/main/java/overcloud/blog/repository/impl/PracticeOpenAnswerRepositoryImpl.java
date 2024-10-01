@@ -7,13 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import overcloud.blog.entity.PracticeOpenAnswerEntity;
 import overcloud.blog.repository.IPracticeOpenAnswerRepository;
-import overcloud.blog.repository.jparepository.JpaPracticeOpenQuestionRepository;
+import overcloud.blog.repository.jparepository.JpaPracticeOpenAnswerRepository;
 
 @Repository
 public class PracticeOpenAnswerRepositoryImpl implements IPracticeOpenAnswerRepository {
-    private final JpaPracticeOpenQuestionRepository jpa;
+    private final JpaPracticeOpenAnswerRepository jpa;
 
-    public PracticeOpenAnswerRepositoryImpl(JpaPracticeOpenQuestionRepository jpa) {
+    public PracticeOpenAnswerRepositoryImpl(JpaPracticeOpenAnswerRepository jpa) {
         this.jpa = jpa;
     }
 
