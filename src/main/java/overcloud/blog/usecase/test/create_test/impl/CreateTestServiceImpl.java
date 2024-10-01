@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import com.github.f4b6a3.uuid.UuidCreator;
-
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
@@ -144,6 +143,7 @@ public class CreateTestServiceImpl implements CreateTestService {
             String answerContent = answer.getAnswer();
             boolean truth = answer.isTruth();
             AnswerEntity answerEntity = new AnswerEntity();
+            answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
             answerEntity.setAnswer(answerContent);
             answerEntity.setQuestion(question);
             answerEntity.setTruth(truth);
