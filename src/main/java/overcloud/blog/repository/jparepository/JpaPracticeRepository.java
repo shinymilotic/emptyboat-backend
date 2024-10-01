@@ -16,10 +16,6 @@ public interface JpaPracticeRepository extends JpaRepository<PracticeEntity, UUI
     List<PracticeEntity> findByTesterId(@Param("testerId") UUID testerId);
 
     @Modifying
-    @Query(" DELETE FROM PracticeEntity p WHERE p.testId = :testId ")
+    @Query("DELETE FROM PracticeEntity p WHERE p.testId = :testId ")
     void deleteByTestId(@Param("testId") UUID testId);
-
-    @Modifying
-    @Query(" UPDATE PracticeEntity p SET p.testId = :testId")
-    void deleteTestId(UUID testId);
 }

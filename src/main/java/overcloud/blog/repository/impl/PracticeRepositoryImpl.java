@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
+
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.System;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.repository.IPracticeRepository;
@@ -108,7 +110,10 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
     }
 
     @Override
-    public void deleteTestId(UUID testId) {
-        jpa.deleteTestId(testId);
+    public int deleteTestId(UUID testId) {
+        return entityManager.createQuery(
+        "UPDATE PracticeEntity p SET p.testId = null WHERE p.testId = :testId")
+            .setParameter("testId", testId)
+            .executeUpdate();
     }
 }
