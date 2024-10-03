@@ -9,7 +9,9 @@ import overcloud.blog.response.ResFactory;
 import overcloud.blog.response.RestResponse;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
+import overcloud.blog.repository.IEssayAnswerRepository;
 import overcloud.blog.repository.IPracticeRepository;
+import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.delete_test.DeleteTestService;
@@ -22,16 +24,22 @@ import java.util.UUID;
 public class DeleteTestServiceImpl implements DeleteTestService {
     private final ITestRepository testRepository;
     private final IPracticeRepository practiceRepository;
+    private final ITestQuestionRepository testQuestionRepository;
+    private final IEssayAnswerRepository essayAnswerRepository;
     private final ResFactory resFactory ;
     private final SpringAuthenticationService authenticationService;
 
     DeleteTestServiceImpl(
             ITestRepository testRepository,
             IPracticeRepository practiceRepository,
+            ITestQuestionRepository testQuestionRepository,
+            IEssayAnswerRepository essayAnswerRepository,
             ResFactory resFactory,
             SpringAuthenticationService authenticationService) {
         this.testRepository = testRepository;
         this.practiceRepository = practiceRepository;
+        this.testQuestionRepository = testQuestionRepository;
+        this.essayAnswerRepository = essayAnswerRepository;
         this.resFactory = resFactory;
         this.authenticationService = authenticationService;
     }
@@ -52,10 +60,11 @@ public class DeleteTestServiceImpl implements DeleteTestService {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_AUTHOR_NOT_MATCH));
         }
 
+        testQuestionRepository.deleteByTestId(test.get().getTestId());
+        essayAnswerRepository.deleteByPracticeId(null);
         practiceRepository.deleteByTestId(test.get().getTestId());
         testRepository.deleteById(test.get().getTestId());
 
         return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
     }
-
 }

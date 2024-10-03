@@ -74,7 +74,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         for (Answer answer : answers) {
             if (!StringUtils.hasText(answer.getAnswer())) {
                 apiError = validator.addError(apiError, TestResMsg.TEST_ANSWER_SIZE);
-            }
+           }
         }
 
         return apiError;
@@ -144,6 +144,7 @@ public class CreateTestServiceImpl implements CreateTestService {
             String answerContent = answer.getAnswer();
             boolean truth = answer.isTruth();
             AnswerEntity answerEntity = new AnswerEntity();
+            answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
             answerEntity.setAnswer(answerContent);
             answerEntity.setQuestion(question);
             answerEntity.setTruth(truth);

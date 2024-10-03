@@ -2,9 +2,7 @@ package overcloud.blog.repository.impl;
 
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.stereotype.Repository;
-
 import overcloud.blog.entity.EssayAnswerEntity;
 import overcloud.blog.repository.IEssayAnswerRepository;
 import overcloud.blog.repository.jparepository.JpaEssayAnswerRepository;
@@ -25,5 +23,9 @@ public class EssayAnswerRepositoryImpl implements IEssayAnswerRepository {
     @Override
     public void deleteAllByQuestionId(List<UUID> questionIds) {
         jpa.deleteAllByQuestionId(questionIds);
+    }
+
+    @Override
+    public void deleteByPracticeId(Object object) {
     }
 }

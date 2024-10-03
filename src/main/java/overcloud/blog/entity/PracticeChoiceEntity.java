@@ -15,8 +15,8 @@ public class PracticeChoiceEntity {
     @Id
     private UUID practiceChoiceId;
 
-    @Column(name = "answer_id")
-    private UUID answerId;
+    @Column(name = "choice_answer_id")
+    private UUID choiceAnswerId;
 
     @Column(name = "practice_id")
     private UUID practiceId;

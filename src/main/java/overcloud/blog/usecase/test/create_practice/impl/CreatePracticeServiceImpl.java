@@ -85,7 +85,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
             for (String answerId : choice.getAnswer()) {
                 PracticeChoiceEntity choiceEntity = new PracticeChoiceEntity();
                 choiceEntity.setPracticeChoiceId(UuidCreator.getTimeOrderedEpoch());
-                choiceEntity.setAnswerId(UUID.fromString(answerId));
+                choiceEntity.setChoiceAnswerId(UUID.fromString(answerId));
                 choiceEntity.setPracticeId(practiceEntity.getPracticeId());
                 choiceEntities.add(choiceEntity);
             }

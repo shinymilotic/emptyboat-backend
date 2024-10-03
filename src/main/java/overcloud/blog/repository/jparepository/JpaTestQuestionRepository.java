@@ -16,4 +16,8 @@ public interface JpaTestQuestionRepository extends JpaRepository<TestQuestion, T
     @Modifying
     @Query("DELETE FROM TestQuestion t WHERE t.id.questionId IN :questionIds")
     void deleteByQuestionIds(List<UUID> questionIds);
+
+    @Modifying
+    @Query("DELETE FROM TestQuestion t WHERE t.id.testId = :testId")
+    void deleteByTestId(UUID testId);
 }
