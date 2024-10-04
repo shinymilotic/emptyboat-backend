@@ -2,12 +2,10 @@ package overcloud.blog.repository.jparepository;
 
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import overcloud.blog.entity.TestQuestion;
 import overcloud.blog.entity.TestQuestionId;
 
@@ -18,6 +16,6 @@ public interface JpaTestQuestionRepository extends JpaRepository<TestQuestion, T
     void deleteByQuestionIds(List<UUID> questionIds);
 
     @Modifying
-    @Query("DELETE FROM TestQuestion t WHERE t.id.testId = :testId")
+    @Query("DELETE FROM TestQuestion tq WHERE tq.id.testId = :testId")
     void deleteByTestId(UUID testId);
 }

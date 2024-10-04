@@ -11,8 +11,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-@JsonDeserialize(as = PracticeEssayQuestion.class)
-public class PracticeEssayQuestion implements PracticeQuestion {
+@JsonDeserialize(as = PracticeOpenQuestion.class)
+public class PracticeOpenQuestion implements PracticeQuestion {
     @JsonProperty("id")
     private UUID id;
 
@@ -25,7 +25,7 @@ public class PracticeEssayQuestion implements PracticeQuestion {
     @JsonProperty("answer")
     private String answer;
 
-    public static PracticeEssayQuestion questionFactory(UUID id, String question, String answer) {
-        return new PracticeEssayQuestion(id, question, 2, answer);
+    public static PracticeOpenQuestion questionFactory(UUID id, String question, String answer) {
+        return new PracticeOpenQuestion(id, question, 2, answer);
     }
 }

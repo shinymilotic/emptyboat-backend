@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonDeserialize(as = EssayQuestion.class)
-public class EssayQuestion implements Question {
+@JsonDeserialize(as = OpenQuestion.class)
+public class OpenQuestion implements Question {
     @JsonProperty("id")
     private String id;
 
@@ -22,7 +22,7 @@ public class EssayQuestion implements Question {
     @JsonProperty("questionType")
     private int questionType;
 
-    public static EssayQuestion questionFactory(String id, String question) {
-        return new EssayQuestion(id, question, 2);
+    public static OpenQuestion questionFactory(String id, String question) {
+        return new OpenQuestion(id, question, 2);
     }
 }
