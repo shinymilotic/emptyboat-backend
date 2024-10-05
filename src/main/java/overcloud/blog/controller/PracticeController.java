@@ -10,7 +10,6 @@ import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
 import overcloud.blog.usecase.test.get_practice.GetPracticeResultService;
 import overcloud.blog.usecase.test.get_practice.PracticeResult;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
-
 import java.util.List;
 import java.util.UUID;
 
