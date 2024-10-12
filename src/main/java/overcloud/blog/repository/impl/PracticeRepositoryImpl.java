@@ -4,8 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
-
-import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.System;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
 import overcloud.blog.repository.IPracticeRepository;
@@ -32,7 +30,7 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
 
         TypedQuery<Tuple> practiceQuery = entityManager
                 .createQuery(query.toString(), Tuple.class)
-                .setParameter("testerId", testerId);        
+                .setParameter("testerId", testerId);
 
         return practiceQuery.getResultList();
     }
