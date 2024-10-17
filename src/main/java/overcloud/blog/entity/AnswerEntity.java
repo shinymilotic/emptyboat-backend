@@ -16,9 +16,8 @@ public class AnswerEntity {
     // @GeneratedValue(strategy = GenerationType.UUID)
     private UUID choiceAnswerId;
 
-    @ManyToOne
-    @JoinColumn(name = "question_id")
-    private QuestionEntity question;
+    @Column(name = "question_id")
+    private UUID questionId;
 
     @Column(name = "answer")
     private String answer;

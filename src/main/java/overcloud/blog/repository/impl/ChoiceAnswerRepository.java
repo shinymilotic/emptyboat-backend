@@ -33,22 +33,7 @@ public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
         if (answers == null || answers.isEmpty()) {
             return;
         }
-
-        LocalDateTime now = LocalDateTime.now();
-        StringBuilder query = new StringBuilder();
-
-        query.append("UPDATE choice_answers FROM (VALUES ");
-
-        for (AnswerEntity answerEntity : answers) {
-            query.append("(");
-            query.append(answerEntity.getAnswer());
-            query.append(", ");
-            query.append(answerEntity.isTruth()); 
-            query.append(", ");
-            query.append(now);
-            query.append(")");
-        }
-        this.entityManager.createNativeQuery(query.toString()).executeUpdate();
+        this.jpa.saveAll(answers);
     }
 
     @Override

@@ -22,9 +22,6 @@ public class QuestionEntity {
     @Column(name = "question_type")
     private int questionType;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private List<AnswerEntity> answers;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

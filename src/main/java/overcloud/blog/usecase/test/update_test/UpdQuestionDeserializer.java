@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import overcloud.blog.usecase.test.common.QuestionType;
+
 import java.io.IOException;
 
 public class UpdQuestionDeserializer extends JsonDeserializer<UpdQuestion> {
@@ -14,9 +16,9 @@ public class UpdQuestionDeserializer extends JsonDeserializer<UpdQuestion> {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         ObjectNode root = mapper.readTree(jp);
         Class<? extends UpdQuestion> instanceClass = null;
-        if (root.get("questionType").asInt() == 1) {
+        if (root.get("questionType").asInt() == QuestionType.CHOICE.getValue()) {
             instanceClass = UpdChoiceQuestion.class;
-        } else if (root.get("questionType").asInt() == 2) {
+        } else if (root.get("questionType").asInt() == QuestionType.OPEN.getValue()) {
             instanceClass = UpdOpenQuestion.class;
         }
         if (instanceClass == null) {

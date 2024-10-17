@@ -11,6 +11,7 @@ import overcloud.blog.response.ResFactory;
 import overcloud.blog.response.RestResponse;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.*;
+import overcloud.blog.repository.IChoiceAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
@@ -29,6 +30,7 @@ public class CreateTestServiceImpl implements CreateTestService {
     private final SpringAuthenticationService authenticationService;
     private final ResFactory resFactory;
     private final ITestQuestionRepository testQuestionRepository;
+    private final IChoiceAnswerRepository choiceAnswerRepository;
     private final ObjectsValidator validator;
 
     public CreateTestServiceImpl(ITestRepository testRepository,
@@ -36,13 +38,15 @@ public class CreateTestServiceImpl implements CreateTestService {
                                  SpringAuthenticationService authenticationService,
                                  ResFactory resFactory,
                                  ObjectsValidator validator,
-                                 ITestQuestionRepository testQuestionRepository) {
+                                 ITestQuestionRepository testQuestionRepository,
+                                 IChoiceAnswerRepository choiceAnswerRepository) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.authenticationService = authenticationService;
         this.resFactory = resFactory;
         this.validator = validator;
         this.testQuestionRepository = testQuestionRepository;
+        this.choiceAnswerRepository = choiceAnswerRepository;
     }
 
     public Optional<ApiError> validateQuestions(Optional<ApiError> apiError, List<Question> questions) {
@@ -55,7 +59,7 @@ public class CreateTestServiceImpl implements CreateTestService {
                 apiError = validator.addError(apiError, TestResMsg.TEST_QUESTION_SIZE);
             }
 
-            if (question.getQuestionType() == 1) {
+            if (question.getQuestionType() == QuestionType.CHOICE.getValue()) {
                 ChoiceQuestion choiceQuestion = (ChoiceQuestion) question;
                 apiError = validateAnswer(apiError, choiceQuestion.getAnswers());
             }
@@ -103,15 +107,16 @@ public class CreateTestServiceImpl implements CreateTestService {
         testEntity.setUpdatedAt(now);
 
         List<QuestionEntity> questionEntities = new ArrayList<>();
+        List<AnswerEntity> answerEntities = new ArrayList<>();
         for (Question questionReq : testRequest.getQuestions()) {
             String question = questionReq.getQuestion();
             QuestionEntity questionEntity = new QuestionEntity();
             questionEntity.setQuestionId(UuidCreator.getTimeOrderedEpoch());
             questionEntity.setQuestion(question);
             questionEntity.setQuestionType(questionReq.getQuestionType());
-            if (questionReq.getQuestionType() == 1) {
+            if (questionReq.getQuestionType() == QuestionType.CHOICE.getValue()) {
                 ChoiceQuestion choiceQuestion = (ChoiceQuestion) questionReq;
-                questionEntity.setAnswers(answerEntities(choiceQuestion.getAnswers(), questionEntity, now));
+                answerEntities.addAll(answerEntities(choiceQuestion.getAnswers(), questionEntity, now));
             }
             questionEntity.setQuestionType(questionReq.getQuestionType());
             questionEntity.setCreatedAt(now);
@@ -132,6 +137,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         testRepository.save(testEntity);
         questionRepository.saveAll(questionEntities);
         testQuestionRepository.saveAll(testQuestions);
+        choiceAnswerRepository.saveAll(answerEntities);
 
         return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
     }
@@ -145,7 +151,7 @@ public class CreateTestServiceImpl implements CreateTestService {
             AnswerEntity answerEntity = new AnswerEntity();
             answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
             answerEntity.setAnswer(answerContent);
-            answerEntity.setQuestion(question);
+            answerEntity.setQuestionId(question.getQuestionId());
             answerEntity.setTruth(truth);
             answerEntity.setCreatedAt(now);
             answerEntity.setUpdatedAt(now);

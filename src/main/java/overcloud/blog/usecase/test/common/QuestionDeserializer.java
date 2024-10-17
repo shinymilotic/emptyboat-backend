@@ -14,9 +14,9 @@ public class QuestionDeserializer extends JsonDeserializer<Question> {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         ObjectNode root = mapper.readTree(jp);
         Class<? extends Question> instanceClass = null;
-        if (root.get("questionType").asInt() == 1) {
+        if (root.get("questionType").asInt() == QuestionType.CHOICE.getValue()) {
             instanceClass = ChoiceQuestion.class;
-        } else if (root.get("questionType").asInt() == 2) {
+        } else if (root.get("questionType").asInt() == QuestionType.OPEN.getValue()) {
             instanceClass = OpenQuestion.class;
         }
         if (instanceClass == null) {
