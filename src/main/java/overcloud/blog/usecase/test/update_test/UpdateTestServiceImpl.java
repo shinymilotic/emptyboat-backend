@@ -82,26 +82,14 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                     List<UpdChoiceAnswer> answers = choiceQuestion.getAnswers();
 
                     for (UpdChoiceAnswer answer : answers) {
-                        if (answer.getUpdateFlg().equals(UpdateFlg.NEW.getValue())) {
-                            AnswerEntity answerEntity = new AnswerEntity();
-                            answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
-                            answerEntity.setAnswer(answer.getAnswer());
-                            answerEntity.setTruth(answer.getTruth());
-                            answerEntity.setQuestionId(null);
-                            answerEntity.setCreatedAt(now);
-                            answerEntity.setUpdatedAt(now);
-                            insertAnswers.add(answerEntity);
-                        } else if (answer.getUpdateFlg().equals(UpdateFlg.UPDATE.getValue())) {
-                            AnswerEntity answerEntity = new AnswerEntity();
-                            answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
-                            answerEntity.setAnswer(answer.getAnswer());
-                            answerEntity.setTruth(answer.getTruth());
-                            answerEntity.setCreatedAt(now);
-                            answerEntity.setUpdatedAt(now);
-                            updateAnswers.add(answerEntity);
-                        } else if (answer.getUpdateFlg().equals(UpdateFlg.DELETE.getValue())) {
-                            deleteAnswers.add(UUID.fromString(answer.getAnswerId()));
-                        }
+                        AnswerEntity answerEntity = new AnswerEntity();
+                        answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
+                        answerEntity.setAnswer(answer.getAnswer());
+                        answerEntity.setTruth(answer.getTruth());
+                        answerEntity.setQuestionId(questionEntity.getQuestionId());
+                        answerEntity.setCreatedAt(now);
+                        answerEntity.setUpdatedAt(now);
+                        insertAnswers.add(answerEntity);
                     }
                 }
             } else if (question.getUpdateFlg().equals(UpdateFlg.UPDATE.getValue())) {
@@ -111,8 +99,33 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                 questionEntity.setQuestionType(question.getQuestionType());
                 questionEntity.setUpdatedAt(now);
                 updateList.add(questionEntity);
+
+                if (question.getQuestionType().equals(QuestionType.CHOICE.getValue())) {
+                    UpdChoiceQuestion choiceQuestion = (UpdChoiceQuestion) question;
+                    List<UpdChoiceAnswer> answers = choiceQuestion.getAnswers();
+
+                    for (UpdChoiceAnswer answer : answers) {
+                        AnswerEntity answerEntity = new AnswerEntity();
+                        answerEntity.setChoiceAnswerId(UUID.fromString(answer.getAnswerId()));
+                        answerEntity.setAnswer(answer.getAnswer());
+                        answerEntity.setTruth(answer.getTruth());
+                        answerEntity.setQuestionId(questionEntity.getQuestionId());
+                        answerEntity.setCreatedAt(now);
+                        answerEntity.setUpdatedAt(now);
+                        updateAnswers.add(answerEntity);
+                    }
+                }
             } else if (question.getUpdateFlg().equals(UpdateFlg.DELETE.getValue())) {
                 deleteQuestionList.add(UUID.fromString(question.getId()));
+
+                if (question.getQuestionType().equals(QuestionType.CHOICE.getValue())) {
+                    UpdChoiceQuestion choiceQuestion = (UpdChoiceQuestion) question;
+                    List<UpdChoiceAnswer> answers = choiceQuestion.getAnswers();
+
+                    for (UpdChoiceAnswer answer : answers) {
+                        deleteAnswers.add(UUID.fromString(answer.getAnswerId()));
+                    }
+                }
             }
         }
 
