@@ -106,7 +106,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
 
                     for (UpdChoiceAnswer answer : answers) {
                         AnswerEntity answerEntity = new AnswerEntity();
-                        answerEntity.setChoiceAnswerId(UUID.fromString(answer.getAnswerId()));
+                        answerEntity.setChoiceAnswerId(UUID.fromString(answer.getId()));
                         answerEntity.setAnswer(answer.getAnswer());
                         answerEntity.setTruth(answer.getTruth());
                         answerEntity.setQuestionId(questionEntity.getQuestionId());
@@ -123,7 +123,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                     List<UpdChoiceAnswer> answers = choiceQuestion.getAnswers();
 
                     for (UpdChoiceAnswer answer : answers) {
-                        deleteAnswers.add(UUID.fromString(answer.getAnswerId()));
+                        deleteAnswers.add(UUID.fromString(answer.getId()));
                     }
                 }
             }

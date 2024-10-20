@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdChoiceAnswer {
-    private String answerId;
+    private String id;
     private String answer;
     private Boolean truth;
     private Integer updateFlg;
