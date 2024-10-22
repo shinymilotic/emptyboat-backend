@@ -11,7 +11,7 @@ import overcloud.blog.utils.datetime.DateTimeService;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.test.common.PracticeResMsg;
-import overcloud.blog.usecase.test.common.PracticeResponse;
+import overcloud.blog.usecase.test.get_practices.response.PracticeResponse;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;

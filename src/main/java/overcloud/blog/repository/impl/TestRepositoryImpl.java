@@ -12,7 +12,7 @@ import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.test.create_test.response.Answer;
 import overcloud.blog.usecase.test.create_test.response.ChoiceQuestion;
 import overcloud.blog.usecase.test.create_test.response.OpenQuestion;
-import overcloud.blog.usecase.test.common.TestResponse;
+import overcloud.blog.usecase.test.get_test.response.TestResponse;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
 import overcloud.blog.usecase.user.common.UserResponse;
 import java.util.HashMap;

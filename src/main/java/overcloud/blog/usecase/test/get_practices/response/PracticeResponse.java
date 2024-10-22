@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.test.common;
+package overcloud.blog.usecase.test.get_practices.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

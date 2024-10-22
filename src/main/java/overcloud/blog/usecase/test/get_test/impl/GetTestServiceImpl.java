@@ -7,7 +7,7 @@ import overcloud.blog.response.ResFactory;
 import overcloud.blog.response.RestResponse;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.common.TestResMsg;
-import overcloud.blog.usecase.test.common.TestResponse;
+import overcloud.blog.usecase.test.get_test.response.TestResponse;
 import overcloud.blog.usecase.test.get_test.GetTestService;
 import java.util.Optional;
 import java.util.UUID;

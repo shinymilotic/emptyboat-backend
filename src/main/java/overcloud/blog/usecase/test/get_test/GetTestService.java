@@ -3,7 +3,7 @@ package overcloud.blog.usecase.test.get_test;
 import org.springframework.stereotype.Service;
 
 import overcloud.blog.response.RestResponse;
-import overcloud.blog.usecase.test.common.TestResponse;
+import overcloud.blog.usecase.test.get_test.response.TestResponse;
 
 @Service
 public interface GetTestService {

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.test.create_test.request.TestRequest;
-import overcloud.blog.usecase.test.common.TestResponse;
+import overcloud.blog.usecase.test.get_test.response.TestResponse;
 import overcloud.blog.usecase.test.create_test.CreateTestService;
 import overcloud.blog.usecase.test.delete_test.DeleteTestService;
 import overcloud.blog.usecase.test.get_list_test.GetListTestService;
