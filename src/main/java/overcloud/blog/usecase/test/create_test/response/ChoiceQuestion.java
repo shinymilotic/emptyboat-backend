@@ -1,8 +1,9 @@
-package overcloud.blog.usecase.test.common;
+package overcloud.blog.usecase.test.create_test.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
+import overcloud.blog.usecase.test.common.Question;
 
 import java.util.ArrayList;
 import java.util.List;

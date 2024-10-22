@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.test.common;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import overcloud.blog.usecase.test.create_test.response.QuestionDeserializer;
 
 @JsonDeserialize(using = QuestionDeserializer.class)
 public interface Question {

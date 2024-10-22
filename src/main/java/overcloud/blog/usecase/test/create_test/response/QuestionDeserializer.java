@@ -1,10 +1,12 @@
-package overcloud.blog.usecase.test.common;
+package overcloud.blog.usecase.test.create_test.response;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import overcloud.blog.usecase.test.common.Question;
+import overcloud.blog.usecase.test.common.QuestionType;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.test.common;
+package overcloud.blog.usecase.test.create_practice;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -9,6 +9,10 @@ import java.util.List;
 @Getter
 @Setter
 public class ChoiceAnswer {
+
+    @JsonProperty("questionId")
+    private String questionId;
+
     @JsonProperty("answerId")
     private List<String> answer;
 }

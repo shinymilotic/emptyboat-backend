@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.test.create_practice;
+package overcloud.blog.usecase.test.create_practice.response;
 
 import java.util.UUID;
 
