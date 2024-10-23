@@ -12,8 +12,6 @@ import overcloud.blog.repository.IPracticeOpenAnswerRepository;
 import overcloud.blog.repository.IPracticeChoiceRepository;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.ITestRepository;
-import overcloud.blog.usecase.test.create_practice.request.ChoiceAnswer;
-import overcloud.blog.usecase.test.create_practice.request.OpenAnswer;
 import overcloud.blog.usecase.test.create_practice.request.PracticeRequest;
 import overcloud.blog.usecase.test.common.PracticeResMsg;
 import overcloud.blog.usecase.test.create_practice.response.CreatePracticeResponse;
@@ -51,7 +49,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     @Override
     @Transactional
     public RestResponse<CreatePracticeResponse> createPractice(PracticeRequest practiceRequest) {
-        UUID id = UUID.fromString(practiceRequest.getId());
+        /*UUID id = UUID.fromString(practiceRequest.getId());
         List<ChoiceAnswer> choices = practiceRequest.getChoiceAnswers();
         List<OpenAnswer> openAnswers = practiceRequest.getOpenAnswers();
         LocalDateTime now = LocalDateTime.now();
@@ -105,8 +103,8 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         openAnswerRepository.saveAll(openAnswerEntities);
 
         CreatePracticeResponse response = new CreatePracticeResponse();
-        response.setPracticeId(practiceEntity.getPracticeId());
+        response.setPracticeId(practiceEntity.getPracticeId());*/
 
-        return resFactory.success(PracticeResMsg.PRACTICE_CREATE_SUCCESS, response);
+        return null;
     }
 }
