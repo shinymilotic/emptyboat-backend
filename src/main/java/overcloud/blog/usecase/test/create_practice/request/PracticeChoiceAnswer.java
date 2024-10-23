@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PracticeChoiceAnswer {
+public class PracticeChoiceAnswer implements PracticeAnswer {
     @JsonProperty("answerId")
     private List<String> answer;
 }

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PracticeOpenAnswer {
+public class PracticeOpenAnswer implements PracticeAnswer {
     @JsonProperty("answer")
     private String answer;
 }
