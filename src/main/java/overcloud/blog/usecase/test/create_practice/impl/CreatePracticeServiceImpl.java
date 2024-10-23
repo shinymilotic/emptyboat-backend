@@ -14,6 +14,7 @@ import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.create_practice.request.PracticeRequest;
 import overcloud.blog.usecase.test.common.PracticeResMsg;
+import overcloud.blog.usecase.test.create_practice.request.QuestionPractice;
 import overcloud.blog.usecase.test.create_practice.response.CreatePracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
 import overcloud.blog.usecase.user.common.UserResMsg;
@@ -49,6 +50,11 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     @Override
     @Transactional
     public RestResponse<CreatePracticeResponse> createPractice(PracticeRequest practiceRequest) {
+        List<QuestionPractice> practices = practiceRequest.getPractices();
+
+        for (QuestionPractice practice : practices) {
+            practice.getAnswer();
+        }
         /*UUID id = UUID.fromString(practiceRequest.getId());
         List<ChoiceAnswer> choices = practiceRequest.getChoiceAnswers();
         List<OpenAnswer> openAnswers = practiceRequest.getOpenAnswers();

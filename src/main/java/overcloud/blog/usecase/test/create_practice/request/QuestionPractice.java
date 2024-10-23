@@ -14,5 +14,5 @@ public class QuestionPractice<T> {
     private Integer questionType;
 
     @JsonProperty("answer")
-    private T answer;
+    private PracticeAnswer answer;
 }

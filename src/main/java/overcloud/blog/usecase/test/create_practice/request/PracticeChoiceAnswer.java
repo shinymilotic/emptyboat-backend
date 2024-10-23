@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
-public class OpenAnswer {
-    @JsonProperty("questionId")
-    private String questionId;
-
-    @JsonProperty("answer")
-    private String answer;
+public class PracticeChoiceAnswer {
+    @JsonProperty("answerId")
+    private List<String> answer;
 }
