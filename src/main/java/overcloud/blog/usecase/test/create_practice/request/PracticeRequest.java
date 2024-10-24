@@ -14,5 +14,5 @@ public class PracticeRequest {
     private String testId;
 
     @JsonProperty("practices")
-    private List<QuestionPractice> practices;
+    private List<IQuestionPractice> practices;
 }

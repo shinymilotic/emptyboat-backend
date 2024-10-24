@@ -1,12 +1,18 @@
 package overcloud.blog.usecase.test.create_practice.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class QuestionPractice<T> {
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonDeserialize(as = PracticeOpenQuestion.class)
+public class PracticeOpenQuestion implements IQuestionPractice {
     @JsonProperty("questionId")
     private String questionId;
 
@@ -14,5 +20,5 @@ public class QuestionPractice<T> {
     private Integer questionType;
 
     @JsonProperty("answer")
-    private PracticeAnswer answer;
+    private String answer;
 }

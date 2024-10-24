@@ -8,20 +8,22 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import overcloud.blog.usecase.test.common.QuestionType;
 import java.io.IOException;
 
-public class PracticeAnswerDeserializer extends JsonDeserializer<PracticeAnswer> {
+public class QuestionPracticeDeserializer extends JsonDeserializer<IQuestionPractice> {
     @Override
-    public PracticeAnswer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public IQuestionPractice deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         ObjectNode root = mapper.readTree(jp);
-        Class<? extends PracticeAnswer> instanceClass = null;
+        Class<? extends IQuestionPractice> instanceClass = null;
         if (root.get("questionType").asInt() == QuestionType.CHOICE.getValue()) {
-            instanceClass = PracticeChoiceAnswer.class;
+            instanceClass = PracticeChoiceQuestion.class;
         } else if (root.get("questionType").asInt() == QuestionType.OPEN.getValue()) {
-            instanceClass = PracticeOpenAnswer.class;
+            instanceClass = PracticeOpenQuestion.class;
         }
         if (instanceClass == null) {
             return null;
         }
-        return mapper.readValue(root.toString(), instanceClass);
+
+        var vs = mapper.readValue(root.toString(), instanceClass);
+        return vs;
     }
 }

@@ -4,20 +4,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.auth.service.SpringAuthenticationService;
+import overcloud.blog.entity.*;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ResFactory;
 import overcloud.blog.response.RestResponse;
-import overcloud.blog.entity.*;
 import overcloud.blog.repository.IPracticeOpenAnswerRepository;
 import overcloud.blog.repository.IPracticeChoiceRepository;
 import overcloud.blog.repository.IPracticeRepository;
 import overcloud.blog.repository.ITestRepository;
-import overcloud.blog.usecase.test.create_practice.request.PracticeRequest;
+import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.test.common.PracticeResMsg;
-import overcloud.blog.usecase.test.create_practice.request.QuestionPractice;
+import overcloud.blog.usecase.test.common.QuestionType;
+import overcloud.blog.usecase.test.create_practice.request.IQuestionPractice;
+import overcloud.blog.usecase.test.create_practice.request.PracticeChoiceQuestion;
+import overcloud.blog.usecase.test.create_practice.request.PracticeOpenQuestion;
+import overcloud.blog.usecase.test.create_practice.request.PracticeRequest;
 import overcloud.blog.usecase.test.create_practice.response.CreatePracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
 import overcloud.blog.usecase.user.common.UserResMsg;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,18 +55,11 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     @Override
     @Transactional
     public RestResponse<CreatePracticeResponse> createPractice(PracticeRequest practiceRequest) {
-        List<QuestionPractice> practices = practiceRequest.getPractices();
-
-        for (QuestionPractice practice : practices) {
-            practice.getAnswer();
-        }
-        /*UUID id = UUID.fromString(practiceRequest.getId());
-        List<ChoiceAnswer> choices = practiceRequest.getChoiceAnswers();
-        List<OpenAnswer> openAnswers = practiceRequest.getOpenAnswers();
+        List<IQuestionPractice> practices = practiceRequest.getPractices();
+        UUID testId = UUID.fromString(practiceRequest.getTestId());
         LocalDateTime now = LocalDateTime.now();
 
-        if ((choices == null || choices.isEmpty()) && 
-            (openAnswers == null || openAnswers.isEmpty())) {
+        if (practices == null || practices.isEmpty()) {
             throw new InvalidDataException(resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED));
         }
 
@@ -69,7 +67,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
-        Optional<TestEntity> testEntity = testRepository.findById(id);
+        Optional<TestEntity> testEntity = testRepository.findById(testId);
 
         if (!testEntity.isPresent()) {
             throw new InvalidDataException(resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED));
@@ -83,34 +81,47 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         practiceEntity = practiceRepository.save(practiceEntity);
 
         List<PracticeChoiceAnswerEntity> choiceEntities = new ArrayList<>();
-        for (ChoiceAnswer choice : choices) {
-            for (String answerId : choice.getAnswer()) {
-                PracticeChoiceAnswerEntity choiceEntity = new PracticeChoiceAnswerEntity();
-                PracticeChoiceAnswerId practiceChoiceQuestionId = new PracticeChoiceAnswerId();
-                practiceChoiceQuestionId.setChoiceAnswerId(UUID.fromString(answerId));
-                practiceChoiceQuestionId.setPracticeId(practiceEntity.getPracticeId());
-                choiceEntity.setPracticeChoiceAnswerId(practiceChoiceQuestionId);
-                choiceEntities.add(choiceEntity);
+        List<PracticeOpenAnswerEntity> openAnswerEntities = new ArrayList<>();
+
+        for (IQuestionPractice practice : practices) {
+
+            UUID questionId = UUID.fromString(practice.getQuestionId());
+            Integer questionType = practice.getQuestionType();
+
+            if (questionType.equals(QuestionType.CHOICE.getValue())) {
+                PracticeChoiceQuestion practiceChoiceQuestion = (PracticeChoiceQuestion) practice;
+
+                for (String answerId : practiceChoiceQuestion.getAnswer()) {
+                    PracticeChoiceAnswerId practiceChoiceAnswerId = new PracticeChoiceAnswerId();
+                    practiceChoiceAnswerId.setPracticeId(practiceEntity.getPracticeId());
+                    practiceChoiceAnswerId.setChoiceAnswerId(UUID.fromString(answerId));
+                    PracticeChoiceAnswerEntity entity = new PracticeChoiceAnswerEntity();
+                    entity.setPracticeChoiceAnswerId(practiceChoiceAnswerId);
+                    choiceEntities.add(entity);
+                }
+            } else if (questionType.equals(QuestionType.OPEN.getValue())) {
+                openAnswerEntities.add(getPracticeOpenAnswerEntity(practiceEntity, (PracticeOpenQuestion) practice, questionId, now));
             }
         }
 
-        List<PracticeOpenAnswerEntity> openAnswerEntities = new ArrayList<>();
-        for (OpenAnswer answer : openAnswers) {
-            PracticeOpenAnswerEntity openAnswerEntity = new PracticeOpenAnswerEntity();
-            PracticeOpenAnswerId openAnswerId = new PracticeOpenAnswerId();
-            openAnswerId.setPracticeId(practiceEntity.getPracticeId());
-            openAnswerId.setQuestionId(UUID.fromString(answer.getQuestionId()));
-            openAnswerEntity.setId(openAnswerId);
-            openAnswerEntity.setAnswer(answer.getAnswer());
-            openAnswerEntity.setCreatedAt(now);
-            openAnswerEntities.add(openAnswerEntity);
-        }
         practiceChoiceRepository.saveAll(choiceEntities);
         openAnswerRepository.saveAll(openAnswerEntities);
 
         CreatePracticeResponse response = new CreatePracticeResponse();
-        response.setPracticeId(practiceEntity.getPracticeId());*/
+        response.setPracticeId(practiceEntity.getPracticeId());
+        return resFactory.success(PracticeResMsg.PRACTICE_CREATE_SUCCESS, response);
+    }
 
-        return null;
+    private static PracticeOpenAnswerEntity getPracticeOpenAnswerEntity(PracticeEntity practiceEntity, PracticeOpenQuestion practice, UUID questionId, LocalDateTime now) {
+        PracticeOpenQuestion practiceOpenQuestion = practice;
+        PracticeOpenAnswerId practiceOpenAnswerId = new PracticeOpenAnswerId();
+        practiceOpenAnswerId.setPracticeId(practiceEntity.getPracticeId());
+        practiceOpenAnswerId.setQuestionId(questionId);
+
+        PracticeOpenAnswerEntity entity = new PracticeOpenAnswerEntity();
+        entity.setId(practiceOpenAnswerId);
+        entity.setAnswer(practiceOpenQuestion.getAnswer());
+        entity.setCreatedAt(now);
+        return entity;
     }
 }
