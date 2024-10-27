@@ -56,4 +56,6 @@ public class ApiConst {
     public static final String PRACTICE_ID = "/practice/{id}";
 
     public static final String TEST_UPDATE = "/test/{id}/update";
+
+    public static final String FOLLOW_TAG = "/tag/{id}/follow";
 }
