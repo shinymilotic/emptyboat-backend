@@ -9,4 +9,7 @@ public class TagResMsg  {
     public static final String TAG_CREATE_FAILED = "tag.create.failed";
     // get tags success
     public static final String TAG_GET_SUCCESS = "tag.get.success";
+    public static final String TAG_FOLLOW_SUCCESS = "tag.follow.success";
+
+
 }
