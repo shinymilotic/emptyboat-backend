@@ -42,7 +42,6 @@ public class FollowTagServiceImpl implements FollowTagService {
         tagFollowId.setFollowerId(currentUser.getUserId());
         TagFollowEntity tagFollowEntity = new TagFollowEntity();
         tagFollowEntity.setTagFollowId(tagFollowId);
-
         tagFollowRepository.save(tagFollowEntity);
 
         return resFactory.success(TagResMsg.TAG_FOLLOW_SUCCESS, null);
