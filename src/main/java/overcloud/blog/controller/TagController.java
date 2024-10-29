@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import overcloud.blog.response.RestResponse;
+import overcloud.blog.usecase.blog.common.TagResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
 import overcloud.blog.usecase.blog.follow_tag.FollowTagService;
@@ -32,7 +33,7 @@ public class TagController {
     }
 
     @GetMapping(ApiConst.TAGS)
-    public RestResponse<List<String>> getTags() {
+    public RestResponse<List<TagResponse>> getTags() {
         return getTagsService.getTags();
     }
 
@@ -40,5 +41,4 @@ public class TagController {
     public RestResponse<Void> followTag(@PathVariable("id") String tagId) {
         return followTagService.followTag(tagId);
     }
-    
 }
