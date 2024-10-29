@@ -14,7 +14,6 @@ import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.blog.get_article_list.AuthorResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesSingleResponse;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -10,6 +10,8 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
+import overcloud.blog.usecase.blog.common.TagResponse;
+
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -46,7 +48,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     @Override
     public List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId) {
         StringBuilder query = new StringBuilder();
-        query.append("select a.article_id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
+        query.append("select a.article_id, a.title, a.description, a.body, t.tag_id as tagId , t.name as tag, a.created_at as createdAt, fa.favorited, ");
         query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
         query.append("from ");
         query.append("(select articles.article_id, body, title, description, created_at, author_id ");
@@ -126,7 +128,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
     @Override
     public ArticleSummary findArticleById(UUID articleId, UUID currentUserId) {
-        String query = "select a.article_id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, " +
+        String query = "select a.article_id, a.title, a.description, a.body, t.tag_id as tagId , t.name as tag, a.created_at as createdAt, fa.favorited, " +
                 " fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount " +
                 "from " +
                 "(select articles.article_id, body, title, description, created_at, author_id " +
@@ -172,7 +174,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     @Override
     public List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId) {
         StringBuilder query = new StringBuilder();
-        query.append("select a.article_id, a.title, a.description, a.body, t.name as tag, a.created_at as createdAt, fa.favorited, ");
+        query.append("select a.article_id, a.title, a.description, a.body, t.tag_id as tagId , t.name as tag, a.created_at as createdAt, fa.favorited, ");
         query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
         query.append("from ");
         query.append("(select articles.article_id, body, title, description, created_at, author_id ");
@@ -231,9 +233,13 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         Map<UUID, ArticleSummary> articleSummaryMap = new HashMap<>();
         for (Tuple data : articlesData) {
             UUID articleId = (UUID) data.get("article_id");
+            UUID tagId = (UUID) data.get("tagId");
             String tagName = (String) data.get("tag");
+            TagResponse tag = new TagResponse();
+            tag.setId(tagId.toString());
+            tag.setName(tagName);
             if (articleId.equals(previousArticleId)) {
-                articleSummaryMap.get(articleId).getTag().add((String) data.get("tag"));
+                articleSummaryMap.get(articleId).getTag().add(tag);
                 continue;
             }
 
@@ -241,8 +247,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             summary.setTitle((String) data.get("title"));
             summary.setDescription((String) data.get("description"));
             summary.setBody((String) data.get("body"));
-            List<String> tagList = new ArrayList<>();
-            tagList.add(tagName);
+            List<TagResponse> tagList = new ArrayList<>();
+            tagList.add(tag);
             summary.setTag(tagList);
             summary.setCreatedAt((Timestamp) data.get("createdAt"));
             summary.setFavorited((Boolean) data.get("favorited"));
@@ -264,9 +270,13 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         Map<UUID, ArticleSummary> articleSummaryMap = new HashMap<>();
         for (Tuple data : articlesData) {
             UUID articleId = (UUID) data.get("article_id");
+            UUID tagId = (UUID) data.get("tagId");
             String tagName = (String) data.get("tag");
+            TagResponse tag = new TagResponse();
+            tag.setId(tagId.toString());
+            tag.setName(tagName);
             if (articleId.equals(previousArticleId)) {
-                articleSummaryMap.get(articleId).getTag().add((String) data.get("tag"));
+                articleSummaryMap.get(articleId).getTag().add(tag);
             }
 
             ArticleSummary summary = new ArticleSummary();
@@ -274,8 +284,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             summary.setTitle((String) data.get("title"));
             summary.setDescription((String) data.get("description"));
             summary.setBody((String) data.get("body"));
-            List<String> tagList = new ArrayList<>();
-            tagList.add(tagName);
+            List<TagResponse> tagList = new ArrayList<>();
+            tagList.add(tag);
             summary.setTag(tagList);
             summary.setCreatedAt((Timestamp) data.get("createdAt"));
             summary.setFavorited((Boolean) data.get("favorited"));

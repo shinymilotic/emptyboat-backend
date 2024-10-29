@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import overcloud.blog.usecase.blog.common.TagResponse;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class GetArticleResponse {
     @JsonProperty("body")
     private String body;
     @JsonProperty("tagList")
-    private List<String> tagList;
+    private List<TagResponse> tagList;
     @JsonProperty("createdAt")
     private LocalDateTime createdAt;
     @JsonProperty("updatedAt")
@@ -29,7 +31,6 @@ public class GetArticleResponse {
     private Boolean favorited;
     @JsonProperty("favoritesCount")
     private Long favoritesCount;
-
     @JsonProperty("author")
     private AuthorResponse author;
 }
