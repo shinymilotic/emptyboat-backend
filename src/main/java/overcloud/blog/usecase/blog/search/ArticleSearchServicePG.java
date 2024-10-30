@@ -2,7 +2,6 @@ package overcloud.blog.usecase.blog.search;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import overcloud.blog.auth.bean.SecurityUser;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.response.ResFactory;
