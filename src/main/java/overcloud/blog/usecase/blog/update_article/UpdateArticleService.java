@@ -66,7 +66,8 @@ public class UpdateArticleService {
 
         List<ArticleTag> articleTags = new ArrayList<>();
         for (String tag : tags) {
-            Optional<TagEntity> tagEntity = isTagExist(tag, tagEntities);
+            UUID tagId = UUID.fromString(tag);
+            Optional<TagEntity> tagEntity = isTagExist(tagId, tagEntities);
 
             if (!tagEntity.isPresent()) {
                 throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_NO_EXISTS));
@@ -98,9 +99,9 @@ public class UpdateArticleService {
         return resFactory.success(ArticleResMsg.ARTICLE_UPDATE_SUCCESS, null);
     }
 
-    private Optional<TagEntity> isTagExist(String tag, List<TagEntity> tagEntities) {
+    private Optional<TagEntity> isTagExist(UUID tagId, List<TagEntity> tagEntities) {
         for (TagEntity tagEntity : tagEntities) {
-            if (tagEntity.getName().equals(tag)) {
+            if (tagEntity.getTagId().equals(tagId)) {
                 return Optional.of(tagEntity);
             }
         }
