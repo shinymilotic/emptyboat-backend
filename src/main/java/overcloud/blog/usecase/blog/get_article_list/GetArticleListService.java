@@ -1,8 +1,10 @@
 package overcloud.blog.usecase.blog.get_article_list;
 
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.util.StringUtils;
 import overcloud.blog.auth.bean.SecurityUser;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.response.ResFactory;
@@ -34,7 +36,11 @@ public class GetArticleListService {
     @Transactional(readOnly = true)
     public RestResponse<GetArticlesResponse> getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
-        UUID tagId = UUID.fromString(tag);
+        UUID tagId = null;
+        if (StringUtils.hasText(tag)) {
+            tagId = UUID.fromString(tag);
+        }
+
         UserEntity currentUser = null;
         UUID currentUserId = null;
         if (currentSecurityUser.isPresent()) {
