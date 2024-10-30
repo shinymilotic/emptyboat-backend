@@ -64,7 +64,7 @@ public class CreateArticleService {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_TITLE_EXISTS));
         }
 
-        List<TagEntity> tagEntities = tagRepository.findByTagName(articleRequest.getTagList());
+        List<TagEntity> tagEntities = tagRepository.findByTagIds(articleRequest.getTagList());
         if (distinctTags.size() > tagEntities.size()) {
             throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_NO_EXISTS));
         }

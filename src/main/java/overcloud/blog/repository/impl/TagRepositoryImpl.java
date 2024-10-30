@@ -15,8 +15,8 @@ public class TagRepositoryImpl implements ITagRepository {
         this.jpa = jpa;
     }
     @Override
-    public List<TagEntity> findByTagName(List<String> tagList) {
-        return jpa.findByTagName(tagList);
+    public List<TagEntity> findByTagIds(List<String> tagList) {
+        return jpa.findByTagIds(tagList);
     }
     @Override
     public void saveAll(List<TagEntity> tagForSave) {
