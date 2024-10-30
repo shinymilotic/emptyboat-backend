@@ -34,6 +34,7 @@ public class GetArticleListService {
     @Transactional(readOnly = true)
     public RestResponse<GetArticlesResponse> getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
+        UUID tagId = UUID.fromString(tag);
         UserEntity currentUser = null;
         UUID currentUserId = null;
         if (currentSecurityUser.isPresent()) {
@@ -42,7 +43,7 @@ public class GetArticleListService {
         }
         GetArticlesResponse getArticlesResponse = new GetArticlesResponse();
         getArticlesResponse.setArticles(new ArrayList<>());
-        List<ArticleSummary> articleSummaries = articleRepository.findBy(currentUserId, tag, author, favorited, limit, lastArticleId);
+        List<ArticleSummary> articleSummaries = articleRepository.findBy(currentUserId, tagId, author, favorited, limit, lastArticleId);
 
         for (ArticleSummary article : articleSummaries) {
             GetArticlesSingleResponse singleResponse = toGetArticlesSingleResponse(article);

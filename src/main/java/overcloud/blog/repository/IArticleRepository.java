@@ -13,7 +13,7 @@ public interface IArticleRepository {
     void updateSearchVector();
     void deleteById(UUID id);
     Optional<Boolean> isTitleExist(String title);
-    List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId);
+    List<ArticleSummary> findBy(UUID currentUserId, UUID tagId, String author, String favorited, int limit, String lastArticleId);
     ArticleSummary findArticleById(UUID id, UUID currentUserId);
     List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId);
     List<UserEntity> findAllPaging(int page, int size);

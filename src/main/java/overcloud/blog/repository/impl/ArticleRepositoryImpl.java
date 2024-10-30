@@ -45,21 +45,21 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     }
 
     @Override
-    public List<ArticleSummary> findBy(UUID currentUserId, String tag, String author, String favorited, int limit, String lastArticleId) {
+    public List<ArticleSummary> findBy(UUID currentUserId, UUID tagId, String author, String favorited, int limit, String lastArticleId) {
         StringBuilder query = new StringBuilder();
         query.append("select a.article_id, a.title, a.description, a.body, t.tag_id as tagId , t.name as tag, a.created_at as createdAt, fa.favorited, ");
         query.append(" fa.favoritesCount, author.username, author.bio, author.image, f1.following, f1.followersCount ");
         query.append("from ");
         query.append("(select articles.article_id, body, title, description, created_at, author_id ");
         query.append("from articles ");
-        query.append(ifTag("left join article_tags on articles.article_id = article_tags.article_id left join tags on tags.tag_id = article_tags.tag_id", tag));
+        query.append(ifTag("left join article_tags on articles.article_id = article_tags.article_id left join tags on tags.tag_id = article_tags.tag_id", tagId));
         StringBuilder articleWhereStatement = new StringBuilder();
         if (StringUtils.hasText(lastArticleId)) {
             articleWhereStatement.append("  articles.article_id < uuid(:lastArticleId) ");
         }
-        articleWhereStatement.append(ifTag(operator(articleWhereStatement, " AND "), tag));
-        articleWhereStatement.append(ifTag(" tags.name = :tag ", tag));
-        articleWhereStatement.append(ifTag(" GROUP BY articles.article_id ", tag));
+        articleWhereStatement.append(ifTag(operator(articleWhereStatement, " AND "), tagId));
+        articleWhereStatement.append(ifTag(" tags.tag_id = :tag ", tagId));
+        articleWhereStatement.append(ifTag(" GROUP BY articles.article_id ", tagId));
         query.append(operator(articleWhereStatement, " WHERE "));
         query.append(articleWhereStatement);
 
@@ -98,8 +98,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         whereStatement.append(ifAuthor(" author.username = :author ", author));
         whereStatement.append(ifFavorited(operator(whereStatement, " AND "), favorited));
         whereStatement.append(ifFavorited(" fa.favoritedUser = true", favorited));
-        whereStatement.append(ifTag(operator(whereStatement, " AND "), tag));
-        whereStatement.append(ifTag(" t.name = :tag ", tag));
+        whereStatement.append(ifTag(operator(whereStatement, " AND "), tagId));
+        whereStatement.append(ifTag(" t.tag_id = :tag ", tagId));
         query.append(operator(whereStatement, " WHERE "));
         query.append(whereStatement);
         query.append(" ORDER BY a.article_id DESC  ");
@@ -113,8 +113,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         if (StringUtils.hasText(author)) {
             resultList.setParameter("author", author);
         }
-        if (StringUtils.hasText(tag)) {
-            resultList.setParameter("tag", tag);
+        if (tagId != null) {
+            resultList.setParameter("tag", tagId);
         }
         if (StringUtils.hasText(favorited)) {
             resultList.setParameter("favorited", favorited);
@@ -316,8 +316,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         return "";
     }
 
-    private String ifTag(String query, String tag) {
-        if (StringUtils.hasText(tag)) {
+    private String ifTag(String query, UUID tagId) {
+        if (tagId != null) {
             return query;
         }
         return "";
