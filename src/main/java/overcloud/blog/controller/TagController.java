@@ -2,14 +2,12 @@ package overcloud.blog.controller;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
-
 import overcloud.blog.response.RestResponse;
-import overcloud.blog.usecase.blog.common.TagResponse;
+import overcloud.blog.usecase.blog.common.ITagResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
 import overcloud.blog.usecase.blog.follow_tag.FollowTagService;
 import overcloud.blog.usecase.blog.get_tags.GetTagsService;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -33,8 +31,8 @@ public class TagController {
     }
 
     @GetMapping(ApiConst.TAGS)
-    public RestResponse<List<TagResponse>> getTags() {
-        return getTagsService.getTags();
+    public RestResponse<List<ITagResponse>> getTags(@RequestParam(required = false) Boolean following) {
+        return getTagsService.getTags(following);
     }
 
     @PostMapping(ApiConst.FOLLOW_TAG)

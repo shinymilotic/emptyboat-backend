@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagResponse implements ITagResponse {
+public class TagFollowingResponse implements ITagResponse {
     private String id;
     private String name;
+    private boolean following;
 }
