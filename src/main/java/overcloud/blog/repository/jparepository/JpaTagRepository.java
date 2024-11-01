@@ -14,6 +14,8 @@ public interface JpaTagRepository extends JpaRepository<TagEntity, UUID> {
     @Query("SELECT tag FROM TagEntity tag WHERE tag.id IN (:tagList)")
     List<TagEntity> findByTagIds(List<String> tagList);
 
-    @Query("SELECT tag.tagId, tag.name, user.userId FROM TagEntity tag LEFT JOIN UserEntity user ON user.userId = tag.tagId WHERE user.userId = :userId")
+    @Query(value = "SELECT t.tag_id, t.name, u1.user_id FROM tags t  " +
+            " LEFT JOIN tag_follows tf ON tf.tag_id = t.tag_id" +
+            " LEFT JOIN (SELECT u0.user_id FROM users u0 WHERE u0.user_id = :userId) u1 ON u1.user_id = tf.follower_id ", nativeQuery = true)
     List<Tuple> findAllWithFollowing(@Param("userId") UUID userId);
 }

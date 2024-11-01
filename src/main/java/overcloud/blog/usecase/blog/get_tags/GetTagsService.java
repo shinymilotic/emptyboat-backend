@@ -39,7 +39,7 @@ public class GetTagsService {
     public RestResponse<List<ITagResponse>> getTags(Boolean following) {
         List<ITagResponse> response = new ArrayList<>();
 
-        if (following == null || following == false) {
+        if (following == null || !following) {
             List<TagEntity> tagEntities = tagRepository.findAll();
             for (TagEntity tagEntity : tagEntities) {
                 TagResponse tagResponse = new TagResponse();
@@ -54,9 +54,9 @@ public class GetTagsService {
 
             List<Tuple> tags = tagRepository.findAllWithFollowing(currentUser.getUserId());
             for (Tuple tag : tags) {
-                UUID tagId = (UUID) tag.get("tagId");
+                UUID tagId = (UUID) tag.get("tag_id");
                 String tagName = (String) tag.get("name");
-                UUID userId = (UUID) tag.get("userId");
+                UUID userId = (UUID) tag.get("user_id");
                 TagFollowingResponse tagResponse = new TagFollowingResponse();
                 tagResponse.setId(tagId.toString());
                 tagResponse.setName(tagName);
@@ -69,8 +69,6 @@ public class GetTagsService {
                 response.add(tagResponse);
             }
         }
-
-        
 
         return resFactory.success(TagResMsg.TAG_GET_SUCCESS, response);
     }
