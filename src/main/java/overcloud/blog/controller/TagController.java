@@ -48,4 +48,5 @@ public class TagController {
     public RestResponse<Void> unfollowTag(@PathVariable("id") String tagId) {
         return unfollowTagService.unfollowTag(tagId);
     }
+
 }
