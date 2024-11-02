@@ -8,6 +8,7 @@ import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
 import overcloud.blog.usecase.blog.follow_tag.FollowTagService;
 import overcloud.blog.usecase.blog.get_tags.GetTagsService;
+import overcloud.blog.usecase.blog.unfollow_tag.UnfollowTagService;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -16,13 +17,16 @@ public class TagController {
     private final CreateTagsService createTagService;
     private final GetTagsService getTagsService;
     private final FollowTagService followTagService;
+    private final UnfollowTagService unfollowTagService;
 
     public TagController(CreateTagsService createTagService,
                          GetTagsService getTagsService,
-                         FollowTagService followTagService) {
+                         FollowTagService followTagService,
+                         UnfollowTagService unfollowTagService) {
         this.createTagService = createTagService;
         this.getTagsService = getTagsService;
         this.followTagService = followTagService;
+        this.unfollowTagService = unfollowTagService;
     }
 
     @PostMapping(ApiConst.TAGS)
@@ -38,5 +42,10 @@ public class TagController {
     @PostMapping(ApiConst.FOLLOW_TAG)
     public RestResponse<Void> followTag(@PathVariable("id") String tagId) {
         return followTagService.followTag(tagId);
+    }
+
+    @PostMapping(ApiConst.UNFOLLOW_TAG)
+    public RestResponse<Void> unfollowTag(@PathVariable("id") String tagId) {
+        return unfollowTagService.unfollowTag(tagId);
     }
 }

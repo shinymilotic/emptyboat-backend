@@ -10,6 +10,5 @@ public class TagResMsg  {
     // get tags success
     public static final String TAG_GET_SUCCESS = "tag.get.success";
     public static final String TAG_FOLLOW_SUCCESS = "tag.follow.success";
-
-
+    public static final String TAGS_UNFOLLOW_SUCCESS = "tag.unfollow.success";
 }
