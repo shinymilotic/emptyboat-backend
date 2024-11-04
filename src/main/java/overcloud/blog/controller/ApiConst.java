@@ -60,4 +60,6 @@ public class ApiConst {
     public static final String FOLLOW_TAG = "/tag/{id}/follow";
 
     public static final String UNFOLLOW_TAG = "/tag/{id}/unfollow";
+
+    public static final String FOLLOWING_TAGS = "/followingTags";
 }
