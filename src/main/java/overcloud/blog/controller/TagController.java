@@ -7,6 +7,7 @@ import overcloud.blog.usecase.blog.common.ITagResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
 import overcloud.blog.usecase.blog.follow_tag.FollowTagService;
+import overcloud.blog.usecase.blog.get_following_tags.FollowingTagResponse;
 import overcloud.blog.usecase.blog.get_following_tags.GetFollowingTagService;
 import overcloud.blog.usecase.blog.get_tags.GetTagsService;
 import overcloud.blog.usecase.blog.unfollow_tag.UnfollowTagService;
@@ -43,7 +44,7 @@ public class TagController {
     }
 
     @GetMapping(ApiConst.FOLLOWING_TAGS)
-    public RestResponse<List<ITagResponse>> getFollowedTags() {
+    public RestResponse<List<FollowingTagResponse>> getFollowedTags() {
         return getFollowingTagService.getFollowingTags();
     }
     

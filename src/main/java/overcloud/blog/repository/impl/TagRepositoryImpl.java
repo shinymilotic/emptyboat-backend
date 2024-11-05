@@ -2,9 +2,7 @@ package overcloud.blog.repository.impl;
 
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.stereotype.Repository;
-
 import jakarta.persistence.Tuple;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.repository.ITagRepository;
@@ -12,7 +10,6 @@ import overcloud.blog.repository.jparepository.JpaTagRepository;
 
 @Repository
 public class TagRepositoryImpl implements ITagRepository {
-
     private final JpaTagRepository jpa;
 
     public TagRepositoryImpl(JpaTagRepository jpa) {
@@ -37,5 +34,10 @@ public class TagRepositoryImpl implements ITagRepository {
     @Override
     public List<Tuple> findAllWithFollowing(UUID userId) {
         return jpa.findAllWithFollowing(userId);
+    }
+
+    @Override
+    public List<TagEntity> findFollowingTags(UUID userId) {
+        return this.jpa.findFollowingTags(userId);
     }
 }

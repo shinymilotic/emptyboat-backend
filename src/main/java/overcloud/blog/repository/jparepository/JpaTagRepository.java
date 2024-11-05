@@ -18,4 +18,9 @@ public interface JpaTagRepository extends JpaRepository<TagEntity, UUID> {
             " LEFT JOIN tag_follows tf ON tf.tag_id = t.tag_id" +
             " LEFT JOIN (SELECT u0.user_id FROM users u0 WHERE u0.user_id = :userId) u1 ON u1.user_id = tf.follower_id ", nativeQuery = true)
     List<Tuple> findAllWithFollowing(@Param("userId") UUID userId);
+
+    @Query(value = "SELECT t.tag_id, t.name FROM tags t  " +
+            " INNER JOIN tag_follows tf ON tf.tag_id = t.tag_id" +
+            " INNER JOIN (SELECT u0.user_id FROM users u0 WHERE u0.user_id = :userId) u1 ON u1.user_id = tf.follower_id ", nativeQuery = true)
+    List<TagEntity> findFollowingTags(@Param("userId") UUID userId);
 }

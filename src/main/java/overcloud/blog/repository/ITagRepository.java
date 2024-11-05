@@ -10,4 +10,5 @@ public interface ITagRepository {
     void saveAll(List<TagEntity> tagForSave);
     List<TagEntity> findAll();
     List<Tuple> findAllWithFollowing(UUID userId);
+    List<TagEntity> findFollowingTags(UUID userId);
 }
