@@ -1,6 +1,7 @@
 package overcloud.blog.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +20,10 @@ public class PracticeChoiceRepositoryImpl implements IPracticeChoiceRepository {
     @Override
     public void saveAll(List<PracticeChoiceAnswerEntity> choiceEntities) {
         jpa.saveAll(choiceEntities);
+    }
+
+    @Override
+    public void deleteAll(List<UUID> choiceAnswerIds) {
+        jpa.deleteByChoiceAnswerId(choiceAnswerIds);
     }
 }
