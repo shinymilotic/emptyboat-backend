@@ -110,7 +110,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         testEntity.setUpdatedAt(now);
 
         List<QuestionEntity> questionEntities = new ArrayList<>();
-        List<AnswerEntity> answerEntities = new ArrayList<>();
+        List<ChoiceAnswerEntity> answerEntities = new ArrayList<>();
         for (Question questionReq : testRequest.getQuestions()) {
             String question = questionReq.getQuestion();
             QuestionEntity questionEntity = new QuestionEntity();
@@ -145,20 +145,20 @@ public class CreateTestServiceImpl implements CreateTestService {
         return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
     }
 
-    public List<AnswerEntity> answerEntities(List<Answer> answers, QuestionEntity question, LocalDateTime now) {
-        List<AnswerEntity> answerEntities = new ArrayList<>();
+    public List<ChoiceAnswerEntity> answerEntities(List<Answer> answers, QuestionEntity question, LocalDateTime now) {
+        List<ChoiceAnswerEntity> answerEntities = new ArrayList<>();
 
         for (Answer answer : answers) {
             String answerContent = answer.getAnswer();
             boolean truth = answer.isTruth();
-            AnswerEntity answerEntity = new AnswerEntity();
-            answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
-            answerEntity.setAnswer(answerContent);
-            answerEntity.setQuestionId(question.getQuestionId());
-            answerEntity.setTruth(truth);
-            answerEntity.setCreatedAt(now);
-            answerEntity.setUpdatedAt(now);
-            answerEntities.add(answerEntity);
+            ChoiceAnswerEntity entity = new ChoiceAnswerEntity();
+            entity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
+            entity.setAnswer(answerContent);
+            entity.setQuestionId(question.getQuestionId());
+            entity.setTruth(truth);
+            entity.setCreatedAt(now);
+            entity.setUpdatedAt(now);
+            answerEntities.add(entity);
         }
 
         return answerEntities;

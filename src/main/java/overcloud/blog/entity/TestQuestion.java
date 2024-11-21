@@ -13,7 +13,4 @@ import lombok.*;
 public class TestQuestion {
     @EmbeddedId
     private TestQuestionId id;
-
-    @Column(name = "question_order")
-    private int questionOrder;
 }

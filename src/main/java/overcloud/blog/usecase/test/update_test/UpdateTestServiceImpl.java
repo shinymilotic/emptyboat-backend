@@ -13,9 +13,12 @@ import overcloud.blog.response.ApiError;
 import overcloud.blog.response.ResFactory;
 import overcloud.blog.response.RestResponse;
 import overcloud.blog.utils.validation.ObjectsValidator;
-import overcloud.blog.entity.AnswerEntity;
+import overcloud.blog.entity.ChoiceAnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
+import overcloud.blog.entity.TestQuestion;
+import overcloud.blog.entity.TestQuestionId;
 import overcloud.blog.repository.IChoiceAnswerRepository;
+import overcloud.blog.repository.IPracticeChoiceRepository;
 import overcloud.blog.repository.IPracticeOpenAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestQuestionRepository;
@@ -32,7 +35,8 @@ public class UpdateTestServiceImpl implements UpdateTestService {
     private final IQuestionRepository questionRepo;
     private final IChoiceAnswerRepository choiceAnswerRepo;
     private final ITestQuestionRepository testQuestionRepo;
-    private final IPracticeOpenAnswerRepository openAnswerRepo;
+    private final IPracticeOpenAnswerRepository practiceOpenAnswerRepo;
+    private final IPracticeChoiceRepository practiceChoiceRepo;
 
     public UpdateTestServiceImpl(ObjectsValidator validator,
             ResFactory resFactory,
@@ -40,14 +44,16 @@ public class UpdateTestServiceImpl implements UpdateTestService {
             IQuestionRepository questionRepo,
             IChoiceAnswerRepository choiceAnswerRepo,
             ITestQuestionRepository testQuestionRepo,
-            IPracticeOpenAnswerRepository openAnswerRepo) {
+            IPracticeOpenAnswerRepository practiceOpenAnswerRepo,
+            IPracticeChoiceRepository practiceChoiceRepo) {
         this.validator = validator;
         this.resFactory = resFactory;
         this.testRepo = testRepo;
         this.questionRepo = questionRepo;
         this.choiceAnswerRepo = choiceAnswerRepo;
         this.testQuestionRepo = testQuestionRepo;
-        this.openAnswerRepo = openAnswerRepo;
+        this.practiceOpenAnswerRepo = practiceOpenAnswerRepo;
+        this.practiceChoiceRepo = practiceChoiceRepo;
     }
 
     @Override
@@ -59,86 +65,92 @@ public class UpdateTestServiceImpl implements UpdateTestService {
             throw new InvalidDataException(apiError.get());
         }
         List<UpdQuestion> questions = request.getQuestions();
-        testRepo.updateTest(testId, request.getTitle(), request.getDescription());
-        List<QuestionEntity> insertList = new ArrayList<>();
-        List<QuestionEntity> updateList = new ArrayList<>();
-        List<UUID> deleteQuestionList = new ArrayList<>();
-        List<AnswerEntity> insertAnswers = new ArrayList<>();
-        List<AnswerEntity> updateAnswers = new ArrayList<>();
-        List<UUID> deleteAnswers = new ArrayList<>();
+        List<QuestionEntity> questionsToInsert = new ArrayList<>();
+        List<QuestionEntity> questionsToUpdate = new ArrayList<>();
+        List<UUID> questionsToDelete = new ArrayList<>();
+        List<ChoiceAnswerEntity> answersToInsert = new ArrayList<>();
+        List<ChoiceAnswerEntity> answersToUpdate = new ArrayList<>();
+        List<UUID> answersToDelete = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
+
         for (UpdQuestion question : questions) {
             if (question.getUpdateFlg().equals(UpdateFlg.NEW.getValue())) {
-                QuestionEntity questionEntity = new QuestionEntity();
-                questionEntity.setQuestionId(UuidCreator.getTimeOrderedEpoch());
-                questionEntity.setQuestion(question.getQuestion());
-                questionEntity.setQuestionType(question.getQuestionType());
-                questionEntity.setCreatedAt(now);
-                questionEntity.setUpdatedAt(now);
-                insertList.add(questionEntity);
+                UUID questionId = UuidCreator.getTimeOrderedEpoch();
+                questionsToInsert.add(QuestionEntity.builder()
+                        .questionId(questionId)
+                        .question(question.getQuestion())
+                        .questionType(question.getQuestionType())
+                        .createdAt(now)
+                        .updatedAt(now)
+                        .build()
+                );
 
                 if (question.getQuestionType().equals(QuestionType.CHOICE.getValue())) {
-                    UpdChoiceQuestion choiceQuestion = (UpdChoiceQuestion) question;
-                    List<UpdChoiceAnswer> answers = choiceQuestion.getAnswers();
-
-                    for (UpdChoiceAnswer answer : answers) {
-                        AnswerEntity answerEntity = new AnswerEntity();
-                        answerEntity.setChoiceAnswerId(UuidCreator.getTimeOrderedEpoch());
-                        answerEntity.setAnswer(answer.getAnswer());
-                        answerEntity.setTruth(answer.getTruth());
-                        answerEntity.setQuestionId(questionEntity.getQuestionId());
-                        answerEntity.setCreatedAt(now);
-                        answerEntity.setUpdatedAt(now);
-                        insertAnswers.add(answerEntity);
-                    }
+                    ((UpdChoiceQuestion) question).getAnswers().stream()
+                        .forEach(answer -> answersToInsert.add(ChoiceAnswerEntity.builder()
+                            .choiceAnswerId(UuidCreator.getTimeOrderedEpoch())
+                            .answer(answer.getAnswer())
+                            .truth(answer.getTruth())
+                            .questionId(questionId)
+                            .createdAt(now)
+                            .updatedAt(now).build()));
                 }
             } else if (question.getUpdateFlg().equals(UpdateFlg.UPDATE.getValue())) {
-                QuestionEntity questionEntity = new QuestionEntity();
-                questionEntity.setQuestionId(UUID.fromString(question.getId()));
-                questionEntity.setQuestion(question.getQuestion());
-                questionEntity.setQuestionType(question.getQuestionType());
-                questionEntity.setUpdatedAt(now);
-                updateList.add(questionEntity);
+                UUID questionId = UUID.fromString(question.getId());
+                questionsToUpdate.add(QuestionEntity.builder()
+                        .questionId(questionId)
+                        .question(question.getQuestion())
+                        .questionType(question.getQuestionType())
+                        .updatedAt(now).build()
+                );
 
                 if (question.getQuestionType().equals(QuestionType.CHOICE.getValue())) {
-                    UpdChoiceQuestion choiceQuestion = (UpdChoiceQuestion) question;
-                    List<UpdChoiceAnswer> answers = choiceQuestion.getAnswers();
-
-                    for (UpdChoiceAnswer answer : answers) {
-                        AnswerEntity answerEntity = new AnswerEntity();
-                        answerEntity.setChoiceAnswerId(UUID.fromString(answer.getId()));
-                        answerEntity.setAnswer(answer.getAnswer());
-                        answerEntity.setTruth(answer.getTruth());
-                        answerEntity.setQuestionId(questionEntity.getQuestionId());
-                        answerEntity.setCreatedAt(now);
-                        answerEntity.setUpdatedAt(now);
-                        updateAnswers.add(answerEntity);
-                    }
+                    ((UpdChoiceQuestion) question).getAnswers().stream()
+                        .forEach(answer -> 
+                            answersToUpdate.add(ChoiceAnswerEntity.builder()
+                            .choiceAnswerId(UUID.fromString(answer.getId()))
+                            .answer(answer.getAnswer())
+                            .truth(answer.getTruth())
+                            .questionId(questionId)
+                            .createdAt(now)
+                            .updatedAt(now).build()
+                        ));
                 }
             } else if (question.getUpdateFlg().equals(UpdateFlg.DELETE.getValue())) {
-                deleteQuestionList.add(UUID.fromString(question.getId()));
+                questionsToDelete.add(UUID.fromString(question.getId()));
 
                 if (question.getQuestionType().equals(QuestionType.CHOICE.getValue())) {
-                    UpdChoiceQuestion choiceQuestion = (UpdChoiceQuestion) question;
-                    List<UpdChoiceAnswer> answers = choiceQuestion.getAnswers();
-
-                    for (UpdChoiceAnswer answer : answers) {
-                        deleteAnswers.add(UUID.fromString(answer.getId()));
-                    }
+                    ((UpdChoiceQuestion) question).getAnswers().stream()
+                        .forEach(answer -> answersToDelete.add(UUID.fromString(answer.getId())));
                 }
             }
         }
 
-        questionRepo.saveAll(insertList);
-        questionRepo.updateAll(updateList);
-        openAnswerRepo.deleteAllByQuestionId(deleteQuestionList);
-        testQuestionRepo.deleteAllById(deleteQuestionList);
-        questionRepo.deleteAll(deleteQuestionList);
-        choiceAnswerRepo.saveAll(insertAnswers);
-        choiceAnswerRepo.updateAll(updateAnswers);
-        choiceAnswerRepo.deleteAll(deleteAnswers);
+        testRepo.updateTest(testId, request.getTitle(), request.getDescription());
+        testQuestionRepo.deleteAllById(questionsToDelete);
+        choiceAnswerRepo.deleteAll(answersToDelete);
+        practiceOpenAnswerRepo.deleteAllByQuestionId(questionsToDelete);
+        practiceChoiceRepo.deleteAll(answersToDelete);
+        questionRepo.deleteAll(questionsToDelete);
+        questionRepo.saveAll(questionsToInsert);
+        testQuestionRepo.saveAll(testQuestions(questionsToInsert, testId));
+        choiceAnswerRepo.saveAll(answersToInsert);
+        questionRepo.updateAll(questionsToUpdate);
+        choiceAnswerRepo.updateAll(answersToUpdate);
         
         return resFactory.success(TestResMsg.TEST_UPDATE_SUCCESS, null);
+    }
+
+    public List<TestQuestion> testQuestions(List<QuestionEntity> questions, UUID testId) {
+        List<TestQuestion> testQuestions = new ArrayList<>();
+        for (QuestionEntity question : questions) {
+            TestQuestionId id = new TestQuestionId();
+            id.setTestId(testId);
+            id.setQuestionId(question.getQuestionId());
+            testQuestions.add(new TestQuestion(id));
+        }
+
+        return testQuestions;
     }
     
 }

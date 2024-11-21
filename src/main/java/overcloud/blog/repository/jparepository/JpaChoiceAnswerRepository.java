@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import overcloud.blog.entity.AnswerEntity;
+import overcloud.blog.entity.ChoiceAnswerEntity;
 
 @Repository
-public interface JpaChoiceAnswerRepository extends JpaRepository<AnswerEntity, UUID> {
+public interface JpaChoiceAnswerRepository extends JpaRepository<ChoiceAnswerEntity, UUID> {
     @Modifying
-    @Query("DELETE FROM AnswerEntity a WHERE a.choiceAnswerId IN :answerIds")
+    @Query("DELETE FROM ChoiceAnswerEntity a WHERE a.choiceAnswerId IN :answerIds")
     void deleteAll(List<UUID> answerIds);
 }

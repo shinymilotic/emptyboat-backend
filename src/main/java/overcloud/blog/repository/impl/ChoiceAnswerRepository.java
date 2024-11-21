@@ -1,18 +1,16 @@
 package overcloud.blog.repository.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import overcloud.blog.entity.AnswerEntity;
+import overcloud.blog.entity.ChoiceAnswerEntity;
 import overcloud.blog.repository.IChoiceAnswerRepository;
 import overcloud.blog.repository.jparepository.JpaChoiceAnswerRepository;
 
 @Repository
 public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
-    
     private final JpaChoiceAnswerRepository jpa;
 
     @PersistenceContext
@@ -24,12 +22,12 @@ public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
     }
 
     @Override
-    public void saveAll(List<AnswerEntity> answers) {
+    public void saveAll(List<ChoiceAnswerEntity> answers) {
         jpa.saveAll(answers);
     }
 
     @Override
-    public void updateAll(List<AnswerEntity> answers) {
+    public void updateAll(List<ChoiceAnswerEntity> answers) {
         if (answers == null || answers.isEmpty()) {
             return;
         }

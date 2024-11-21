@@ -1,7 +1,10 @@
 package overcloud.blog.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -10,8 +13,11 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "choice_answers", schema = "public")
-public class AnswerEntity {
+public class ChoiceAnswerEntity {
     @Id
     // @GeneratedValue(strategy = GenerationType.UUID)
     private UUID choiceAnswerId;
