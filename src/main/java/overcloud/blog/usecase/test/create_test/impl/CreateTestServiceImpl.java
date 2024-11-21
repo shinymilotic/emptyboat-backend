@@ -128,12 +128,10 @@ public class CreateTestServiceImpl implements CreateTestService {
         }
 
         List<TestQuestion> testQuestions = new ArrayList<>();
-        int order = 0;
         for (QuestionEntity questionEntity : questionEntities) {
             TestQuestionId testQuestionId = new TestQuestionId(testEntity.getTestId(), questionEntity.getQuestionId());
             TestQuestion testQuestion = new TestQuestion();
             testQuestion.setId(testQuestionId);
-            testQuestion.setQuestionOrder(++order);
             testQuestions.add(testQuestion);
         }
         
