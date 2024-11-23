@@ -96,7 +96,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
                     practiceChoiceAnswerId.setPracticeId(practiceEntity.getPracticeId());
                     practiceChoiceAnswerId.setChoiceAnswerId(UUID.fromString(answerId));
                     PracticeChoiceAnswerEntity entity = new PracticeChoiceAnswerEntity();
-                    entity.setPracticeChoiceAnswerId(practiceChoiceAnswerId);
+                    entity.setId(practiceChoiceAnswerId);
                     choiceEntities.add(entity);
                 }
             } else if (questionType.equals(QuestionType.OPEN.getValue())) {
