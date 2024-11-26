@@ -3,9 +3,7 @@ package overcloud.blog.usecase.user.register;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.github.f4b6a3.uuid.UuidCreator;
-
 import overcloud.blog.auth.service.JwtUtils;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
@@ -21,7 +19,6 @@ import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.usecase.email.EmailService;
 import overcloud.blog.usecase.user.common.UserResMsg;
-
 import java.util.*;
 
 @Service

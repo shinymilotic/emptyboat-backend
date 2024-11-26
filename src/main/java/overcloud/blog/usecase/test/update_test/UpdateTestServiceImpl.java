@@ -29,7 +29,7 @@ import overcloud.blog.usecase.user.common.UpdateFlg;
 
 @Service
 public class UpdateTestServiceImpl implements UpdateTestService {
-    private final ObjectsValidator validator;
+    private final ObjectsValidator<TestUpdateRequest> validator;
     private final ResFactory resFactory;
     private final ITestRepository testRepo;
     private final IQuestionRepository questionRepo;
@@ -38,7 +38,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
     private final IPracticeOpenAnswerRepository practiceOpenAnswerRepo;
     private final IPracticeChoiceRepository practiceChoiceRepo;
 
-    public UpdateTestServiceImpl(ObjectsValidator validator,
+    public UpdateTestServiceImpl(ObjectsValidator<TestUpdateRequest> validator,
             ResFactory resFactory,
             ITestRepository testRepo,
             IQuestionRepository questionRepo,
@@ -136,7 +136,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
         testQuestionRepo.saveAll(testQuestions(questionsToInsert, testId));
         choiceAnswerRepo.saveAll(answersToInsert);
         questionRepo.updateAll(questionsToUpdate);
-        choiceAnswerRepo.updateAll(answersToUpdate);
+        choiceAnswerRepo.updateAll(answersToUpdate);    
         
         return resFactory.success(TestResMsg.TEST_UPDATE_SUCCESS, null);
     }
