@@ -108,7 +108,9 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                     ((UpdChoiceQuestion) question).getAnswers().stream()
                         .forEach(answer -> 
                             answersToUpdate.add(ChoiceAnswerEntity.builder()
-                            .choiceAnswerId(UUID.fromString(answer.getId()))
+                            .choiceAnswerId(answer.getUpdateFlg() == UpdateFlg.NEW.getValue() ? 
+                                UuidCreator.getTimeOrderedEpoch() :
+                                UUID.fromString(answer.getId()))
                             .answer(answer.getAnswer())
                             .truth(answer.getTruth())
                             .questionId(questionId)
