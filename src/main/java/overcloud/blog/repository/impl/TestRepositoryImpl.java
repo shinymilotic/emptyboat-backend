@@ -9,11 +9,13 @@ import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
+import overcloud.blog.usecase.test.common.QuestionType;
 import overcloud.blog.usecase.test.create_test.response.Answer;
 import overcloud.blog.usecase.test.create_test.response.ChoiceQuestion;
 import overcloud.blog.usecase.test.create_test.response.OpenQuestion;
 import overcloud.blog.usecase.test.get_test.response.TestResponse;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
+import overcloud.blog.usecase.user.common.UpdateFlg;
 import overcloud.blog.usecase.user.common.UserResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -102,8 +104,13 @@ public class TestRepositoryImpl implements ITestRepository {
             Integer questionType = (Integer) result.get("question_type");
             String question = (String) result.get("question");
             
-            if (questionType.equals(1)) {
+            if (questionType.equals(QuestionType.CHOICE.getValue())) {
                 UUID answerId = (UUID) result.get("answerId");
+
+                if (answerId == null) {
+                    continue;
+                }
+
                 String strAnswer = (String) result.get("answer");
                 Boolean truth = (Boolean) result.get("truth");
                 Answer answer = Answer.answerFactory(answerId, strAnswer, truth);
@@ -120,7 +127,7 @@ public class TestRepositoryImpl implements ITestRepository {
                     choiceQuestionMap.put(questionId, choiceQuestion);
                     testResponse.getQuestions().add(choiceQuestion);
                 }
-            } else if (questionType.equals(2)) {
+            } else if (questionType.equals(QuestionType.OPEN.getValue())) {
                 OpenQuestion openQuestion = new OpenQuestion();
                 openQuestion.setId(questionId.toString());
                 openQuestion.setQuestion(question);
