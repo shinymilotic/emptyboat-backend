@@ -86,7 +86,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                 );
 
                 if (question.getQuestionType().equals(QuestionType.CHOICE.getValue())) {
-                    ((UpdChoiceQuestion) question).getAnswers().stream()
+                    ((UpdChoiceQuestion) question).getAnswers()
                         .forEach(answer -> answersToInsert.add(ChoiceAnswerEntity.builder()
                             .choiceAnswerId(UuidCreator.getTimeOrderedEpoch())
                             .answer(answer.getAnswer())
@@ -105,10 +105,10 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                 );
 
                 if (question.getQuestionType().equals(QuestionType.CHOICE.getValue())) {
-                    ((UpdChoiceQuestion) question).getAnswers().stream()
+                    ((UpdChoiceQuestion) question).getAnswers()
                         .forEach(answer -> 
                             answersToUpdate.add(ChoiceAnswerEntity.builder()
-                            .choiceAnswerId(answer.getUpdateFlg() == UpdateFlg.NEW.getValue() ? 
+                            .choiceAnswerId(answer.getUpdateFlg().equals(UpdateFlg.NEW.getValue()) ?
                                 UuidCreator.getTimeOrderedEpoch() :
                                 UUID.fromString(answer.getId()))
                             .answer(answer.getAnswer())
@@ -122,7 +122,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                 questionsToDelete.add(UUID.fromString(question.getId()));
 
                 if (question.getQuestionType().equals(QuestionType.CHOICE.getValue())) {
-                    ((UpdChoiceQuestion) question).getAnswers().stream()
+                    ((UpdChoiceQuestion) question).getAnswers()
                         .forEach(answer -> answersToDelete.add(UUID.fromString(answer.getId())));
                 }
             }
@@ -130,31 +130,31 @@ public class UpdateTestServiceImpl implements UpdateTestService {
 
         testRepo.updateTest(testId, request.getTitle(), request.getDescription());
 
-        if (questionsToDelete != null && questionsToDelete.size() > 0) {
+        if (!questionsToDelete.isEmpty()) {
             testQuestionRepo.deleteAllById(questionsToDelete);
             practiceOpenAnswerRepo.deleteAllByQuestionId(questionsToDelete);
             questionRepo.deleteAll(questionsToDelete);
         }
 
-        if (answersToDelete != null && answersToDelete.size() > 0) {
+        if (!answersToDelete.isEmpty()) {
             choiceAnswerRepo.deleteAll(answersToDelete);
             practiceChoiceRepo.deleteAll(answersToDelete);
         }
 
-        if (questionsToInsert != null && questionsToInsert.size() > 0) {
+        if (!questionsToInsert.isEmpty()) {
             questionRepo.saveAll(questionsToInsert);
             testQuestionRepo.saveAll(testQuestions(questionsToInsert, testId));
         }
 
-        if (answersToInsert != null && answersToInsert.size() > 0) {
+        if (!answersToInsert.isEmpty()) {
             choiceAnswerRepo.saveAll(answersToInsert);
         }
 
-        if (questionsToUpdate != null && questionsToUpdate.size() > 0) {
+        if (!questionsToUpdate.isEmpty()) {
             questionRepo.updateAll(questionsToUpdate);
         }
 
-        if (answersToUpdate != null && answersToUpdate.size() > 0) {
+        if (!answersToUpdate.isEmpty()) {
             choiceAnswerRepo.updateAll(answersToUpdate);    
         }
         
