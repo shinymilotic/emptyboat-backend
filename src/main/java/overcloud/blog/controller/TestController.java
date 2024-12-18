@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.test.create_test.request.TestRequest;
+import overcloud.blog.usecase.test.get_profile_test.GetProfileTestService;
+import overcloud.blog.usecase.test.get_profile_test.ProfileTestRes;
 import overcloud.blog.usecase.test.get_test.response.TestResponse;
 import overcloud.blog.usecase.test.create_test.CreateTestService;
 import overcloud.blog.usecase.test.delete_test.DeleteTestService;
@@ -26,17 +28,20 @@ public class TestController {
     private final GetTestService getTestService;
     private final DeleteTestService deleteTestService;
     private final UpdateTestService updateTestService;
+    private final GetProfileTestService getProfileTestService;
 
     public TestController(CreateTestService createTestService,
                           GetListTestService getListTestService,
                           GetTestService getTestService,
                           DeleteTestService deleteTestService,
-                          UpdateTestService updateTestService) {
+                          UpdateTestService updateTestService,
+                          GetProfileTestService getProfileTestService) {
         this.createTestService = createTestService;
         this.getListTestService = getListTestService;
         this.getTestService = getTestService;
         this.deleteTestService = deleteTestService;
         this.updateTestService = updateTestService;
+        this.getProfileTestService = getProfileTestService;
     }
 
     @PostMapping(ApiConst.TEST)
@@ -63,5 +68,9 @@ public class TestController {
     public RestResponse<Void> updateTest(@PathVariable("id") String id, @RequestBody TestUpdateRequest request) {
         return updateTestService.updateTest(id, request);
     }
-    
+
+    @GetMapping(ApiConst.PROFILE_TESTS)
+    public RestResponse<ProfileTestRes> getProfileTests(@PathVariable("userId") String userId) {
+        return getProfileTestService.getProfileTests(userId);
+    }
 }
