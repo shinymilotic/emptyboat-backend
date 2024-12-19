@@ -31,7 +31,7 @@ public class GetTestServiceImpl implements GetTestService {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));
         }
         
-        return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, res.get());
+        return resFactory.success(TestResMsg.TEST_GET_SUCCESS, res.get());
     }
 
 }
