@@ -145,10 +145,7 @@ public class TestRepositoryImpl implements ITestRepository {
         jpa.updateTest(testId, title, description);
     }
 
-    // @Override
-    // public void batchInsert(List<TestEntity> testEntities) {
-    //     for (TestEntity testEntity : testEntities) {
-    //         entityManager.persist(testEntity);
-    //     }
-    // }
+    public Optional<TestEntity> getProfileTest(UUID userId) {
+        return this.jpa.findByUserId(userId);
+    }
 }

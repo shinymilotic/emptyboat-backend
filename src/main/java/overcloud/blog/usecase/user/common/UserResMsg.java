@@ -27,8 +27,8 @@ public class UserResMsg {
     public static final String AUTHORIZE_SUCCESS = "authorize.success";
     public static final String AUTHORIZE_FAILED = "authorize.failed";
     public static final String TOKEN_TIMEOUT = "authorize.token.timeout";
-    public static final String REFRESHTOKEN_FAILED = "refreshtoken.failed";
-    public static final String REFRESHTOKEN_SUCCESS = "refreshtoken.success";
+    public static final String REFRESH_TOKEN_FAILED = "refresh-token.failed";
+    public static final String REFRESH_TOKEN_SUCCESS = "refresh-token.success";
     public static final String USER_LOGOUT_SUCCESS = "user.logout.success";
     // get curren user
     public static final String USER_GET_CURRENT_USER = "user.get-current-user";

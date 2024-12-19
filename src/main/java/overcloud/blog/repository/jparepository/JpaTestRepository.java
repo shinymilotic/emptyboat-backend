@@ -17,5 +17,8 @@ public interface JpaTestRepository extends JpaRepository<TestEntity, UUID> {
     @Modifying
     @Query("UPDATE TestEntity t SET t.title = :title, t.description = :description WHERE t.testId = :testId")
     void updateTest(@Param("testId") UUID testId, @Param("title") String title, @Param("description") String description);
+
+    @Query("SELECT t FROM TestEntity t WHERE t.authorId = :userId")
+    Optional<TestEntity> findByUserId(@Param("userId") UUID userId);
 }
 
