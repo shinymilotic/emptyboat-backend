@@ -2,8 +2,6 @@ package overcloud.blog.repository.impl;
 
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
-
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
@@ -12,6 +10,7 @@ import overcloud.blog.usecase.user.get_profile.GetProfileResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -129,5 +128,10 @@ public class UserRepositoryImpl implements IUserRepository {
         }
 
         return response;
+    }
+
+    @Override
+    public Optional<UserEntity> findById(UUID userId) {
+        return jpa.findById(userId);
     }
 }
