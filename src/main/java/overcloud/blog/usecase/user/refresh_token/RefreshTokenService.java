@@ -37,13 +37,13 @@ public class RefreshTokenService {
         Optional<String> refreshToken = readServletCookie(request, "refreshToken");
 
         if (refreshToken.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESHTOKEN_FAILED));
+            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED));
         }
 
         Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken.get());
 
         if (refreshTokenEntity.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESHTOKEN_FAILED));
+            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED));
         }
 
         String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();
@@ -67,9 +67,9 @@ public class RefreshTokenService {
             response.addCookie(jwtTokenCookie);
             response.addCookie(jwtRefreshTokenCookie);
             UUID userId = refreshTokenEntity.get().getUserId();
-            return resFactory.success(UserResMsg.REFRESHTOKEN_SUCCESS, userId);
+            return resFactory.success(UserResMsg.REFRESH_TOKEN_SUCCESS, userId);
         } catch (JwtException e) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESHTOKEN_FAILED));
+            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED));
         }
     }
 
