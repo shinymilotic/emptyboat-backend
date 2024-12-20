@@ -129,9 +129,4 @@ public class UserRepositoryImpl implements IUserRepository {
 
         return response;
     }
-
-    @Override
-    public Optional<UserEntity> findById(UUID userId) {
-        return jpa.findById(userId);
-    }
 }

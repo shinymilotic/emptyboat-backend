@@ -28,16 +28,15 @@ public class GetProfileTestServiceImpl implements GetProfileTestService {
     }
 
     @Override
-    public RestResponse<ProfileTestRes> getProfileTests(String userId) {
-        UUID uuidUserId = UUID.fromString(userId);
+    public RestResponse<ProfileTestRes> getProfileTests(String username) {
 
-        Optional<UserEntity> userOptional = userRepository.findById(uuidUserId);
+        UserEntity userEntity = userRepository.findByUsername(username);
 
-        if (userOptional.isEmpty()) {
+        if (userEntity == null) {
             throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
         }
 
-        Optional<TestEntity> testEntityOptional = testRepository.getProfileTest(uuidUserId);
+        Optional<TestEntity> testEntityOptional = testRepository.getProfileTest(userEntity.getUserId());
 
         if (testEntityOptional.isEmpty()) {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));
