@@ -15,5 +15,5 @@ public interface ITestRepository {
     void deleteById(UUID id);
     Optional<TestResponse> getTestResponse(UUID id);
     void updateTest(UUID testId, String title, String description);
-    Optional<TestEntity> getProfileTest(UUID userId);
+    List<TestEntity> getProfileTest(UUID userId);
 }

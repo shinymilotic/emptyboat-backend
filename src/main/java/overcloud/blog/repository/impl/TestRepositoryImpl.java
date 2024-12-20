@@ -145,7 +145,7 @@ public class TestRepositoryImpl implements ITestRepository {
         jpa.updateTest(testId, title, description);
     }
 
-    public Optional<TestEntity> getProfileTest(UUID userId) {
+    public List<TestEntity> getProfileTest(UUID userId) {
         return this.jpa.findByUserId(userId);
     }
 }

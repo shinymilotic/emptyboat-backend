@@ -70,7 +70,7 @@ public class TestController {
     }
 
     @GetMapping(ApiConst.PROFILE_TESTS)
-    public RestResponse<ProfileTestRes> getProfileTests(@PathVariable("username") String username) {
+    public RestResponse<List<ProfileTestRes>> getProfileTests(@PathVariable("username") String username) {
         return getProfileTestService.getProfileTests(username);
     }
 }

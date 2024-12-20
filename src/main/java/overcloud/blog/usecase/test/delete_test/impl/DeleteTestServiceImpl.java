@@ -59,7 +59,7 @@ public class DeleteTestServiceImpl implements DeleteTestService {
         testQuestionRepository.deleteByTestId(testId);
         testRepository.deleteById(testId);
 
-        return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
+        return resFactory.success(TestResMsg.TEST_DELETE_SUCCESS, null);
     }
 
 }

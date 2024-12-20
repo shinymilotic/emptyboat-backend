@@ -1,6 +1,8 @@
 package overcloud.blog.usecase.test.get_profile_test;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.stylesheets.LinkStyle;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.exception.InvalidDataException;
@@ -10,6 +12,9 @@ import overcloud.blog.response.ResFactory;
 import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,26 +33,30 @@ public class GetProfileTestServiceImpl implements GetProfileTestService {
     }
 
     @Override
-    public RestResponse<ProfileTestRes> getProfileTests(String username) {
-
+    @Transactional
+    public RestResponse<List<ProfileTestRes>> getProfileTests(String username) {
         UserEntity userEntity = userRepository.findByUsername(username);
 
         if (userEntity == null) {
             throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
         }
 
-        Optional<TestEntity> testEntityOptional = testRepository.getProfileTest(userEntity.getUserId());
+        List<TestEntity> tests = testRepository.getProfileTest(userEntity.getUserId());
 
-        if (testEntityOptional.isEmpty()) {
+        if (tests.isEmpty()) {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));
         }
 
-        TestEntity testEntity = testEntityOptional.get();
-        ProfileTestRes res = new ProfileTestRes();
-        res.setId(testEntity.getTestId().toString());
-        res.setTitle(testEntity.getTitle());
-        res.setDescription(testEntity.getDescription());
+        List<ProfileTestRes> profileTests = new ArrayList<>();
 
-        return resFactory.success(TestResMsg.TEST_PROFILE_GET_SUCCESS, res);
+        tests.forEach((test) -> {
+            ProfileTestRes profileTest = new ProfileTestRes();
+            profileTest.setId(test.getTestId().toString());
+            profileTest.setTitle(test.getTitle());
+            profileTest.setDescription(test.getDescription());
+            profileTests.add(profileTest);
+        });
+
+        return resFactory.success(TestResMsg.TEST_PROFILE_GET_SUCCESS, profileTests);
     }
 }

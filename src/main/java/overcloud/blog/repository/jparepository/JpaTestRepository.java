@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.TestEntity;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +21,6 @@ public interface JpaTestRepository extends JpaRepository<TestEntity, UUID> {
     void updateTest(@Param("testId") UUID testId, @Param("title") String title, @Param("description") String description);
 
     @Query("SELECT t FROM TestEntity t WHERE t.authorId = :userId")
-    Optional<TestEntity> findByUserId(@Param("userId") UUID userId);
+    List<TestEntity> findByUserId(@Param("userId") UUID userId);
 }
 

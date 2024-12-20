@@ -47,7 +47,7 @@ public class ApiConst {
 
     public static final String TESTS = "/tests";
 
-    public static final String PROFILE_TESTS = "/tests/{userId}";
+    public static final String PROFILE_TESTS = "/tests/{username}/profile";
 
     public static final String TESTS_ID = "/tests/{id}";
 
