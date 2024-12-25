@@ -64,12 +64,12 @@ public class UserController {
         this.getFollowers = getFollowers;
     }
 
-    @PostMapping(ApiConst.USERS)
+    @PostMapping(ApiConst.CURRENT_USER)
     public RestResponse<Void> register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) {
         return registerService.registerUser(registrationDto, response);
     }
 
-    @PutMapping(ApiConst.USERS)
+    @PutMapping(ApiConst.CURRENT_USER)
     public RestResponse<UserResponse> update(@RequestBody UpdateUserRequest updateUserDto) {
         return updateUserService.updateUser(updateUserDto);
     }
@@ -89,7 +89,7 @@ public class UserController {
         return logoutService.logout(request, response);
     }
 
-    @GetMapping(ApiConst.USERS)
+    @GetMapping(ApiConst.CURRENT_USER)
     public RestResponse<UserResponse> getCurrentUser() {
         return getCurrentUserService.getCurrentUser();
     }

@@ -19,7 +19,7 @@ public class ApiConst {
 
     public static final String TAGS = "/tags";
 
-    public static final String USERS = "/users";
+    public static final String CURRENT_USER = "/users/current";
 
     public static final String USERS_LOGIN = "/users/login";
 

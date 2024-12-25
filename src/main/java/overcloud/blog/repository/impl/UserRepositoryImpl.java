@@ -77,7 +77,6 @@ public class UserRepositoryImpl implements IUserRepository {
                 .setFirstResult(page * (size - 1))
                 .setMaxResults(size)
                 .getResultList();
-
     }
 
     @Override
@@ -100,6 +99,7 @@ public class UserRepositoryImpl implements IUserRepository {
             sql.append("SELECT u.email, u.username, u.bio, u.image, COUNT(f2.follower_id) as followersCount ");
             sql.append(" FROM users u ");
             sql.append(" LEFT JOIN follows f2 on u.user_id = f2.followee_id ");
+//            sql.append(" LEFT JOIN follows f3 on u.user_id = f2.follower_id ");
             sql.append(" WHERE u.username = :username ");
             sql.append(" GROUP BY u.user_id ");
         }
