@@ -104,7 +104,7 @@ public class UserController {
         return refreshTokenService.refreshToken(request, response);
     }
 
-    @GetMapping(ApiConst.USER_LIST)
+    @GetMapping(ApiConst.USERS)
     public RestResponse<List<UserResponse>> getUsers(int page, int size) {
         return getUserListService.getUsers(page, size);
     }
