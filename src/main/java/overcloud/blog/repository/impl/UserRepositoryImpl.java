@@ -1,6 +1,7 @@
 package overcloud.blog.repository.impl;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;

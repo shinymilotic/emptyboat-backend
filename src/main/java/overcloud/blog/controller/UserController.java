@@ -105,7 +105,7 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.USERS)
-    public RestResponse<List<UserResponse>> getUsers(int page, int size) {
+    public RestResponse<List<UserResponse>> getUsers(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "size", defaultValue = "10") int size) {
         return getUserListService.getUsers(page, size);
     }
 
@@ -115,7 +115,7 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.CONFIRM_EMAIL)
-    public RestResponse<Void> confirmEmail(@RequestBody  ConfirmEmailRequest confirmToken) {
+    public RestResponse<Void> confirmEmail(@RequestBody ConfirmEmailRequest confirmToken) {
         return confirmEmailService.confirmEmail(confirmToken);
     }
 
