@@ -1,7 +1,6 @@
 package overcloud.blog.repository.impl;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
@@ -129,5 +128,11 @@ public class UserRepositoryImpl implements IUserRepository {
         }
 
         return response;
+    }
+
+    @Override
+    public Integer getUsersCount() {
+        return entityManager.createNativeQuery("SELECT COUNT(*) FROM users", Tuple.class)
+                .getFirstResult();
     }
 }

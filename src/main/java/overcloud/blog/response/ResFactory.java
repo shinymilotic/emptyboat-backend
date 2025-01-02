@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResFactory {
-
     private final MessageSource messageSource;
 
     public ResFactory(MessageSource messageSource) {

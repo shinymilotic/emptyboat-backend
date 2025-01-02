@@ -13,6 +13,7 @@ import overcloud.blog.usecase.user.get_profile.GetProfileService;
 import overcloud.blog.usecase.user.get_roles_user.GetRolesUserService;
 import overcloud.blog.usecase.user.get_roles_user.UserRoleResponse;
 import overcloud.blog.usecase.user.get_users.GetUserListService;
+import overcloud.blog.usecase.user.get_users_count.IGetUserCountService;
 import overcloud.blog.usecase.user.login.LoginRequest;
 import overcloud.blog.usecase.user.login.LoginService;
 import overcloud.blog.usecase.user.logout.LogoutService;
@@ -39,6 +40,7 @@ public class UserController {
     private final GetRolesUserService getRolesUserService;
     private final ConfirmEmailService confirmEmailService;
     private final GetFollowers getFollowers;
+    private final IGetUserCountService getUserCountService;
 
     public UserController(RegisterService registerService,
                           UpdateUserService updateUserService,
@@ -50,7 +52,8 @@ public class UserController {
                           GetUserListService getUserListService,
                           GetRolesUserService getRolesUserService,
                           ConfirmEmailService confirmEmailService,
-                          GetFollowers getFollowers) {
+                          GetFollowers getFollowers,
+                          IGetUserCountService getUserCountService) {
         this.registerService = registerService;
         this.updateUserService = updateUserService;
         this.logoutService = logoutService;
@@ -62,6 +65,7 @@ public class UserController {
         this.getRolesUserService = getRolesUserService;
         this.confirmEmailService = confirmEmailService;
         this.getFollowers = getFollowers;
+        this.getUserCountService = getUserCountService;
     }
 
     @PostMapping(ApiConst.CURRENT_USER)
@@ -109,6 +113,11 @@ public class UserController {
         return getUserListService.getUsers(page, size);
     }
 
+    @GetMapping(ApiConst.USERS_COUNT)
+    public Integer getUsersCount() {
+        return getUserCountService.getUsersCount();
+    }
+
     @GetMapping(ApiConst.ROLES_USERNAME)
     public RestResponse<List<UserRoleResponse>> getRolesUser(@PathVariable String username) {
         return getRolesUserService.getRolesUser(username);
@@ -122,5 +131,10 @@ public class UserController {
     @GetMapping(ApiConst.FOLLOWERS)
     public RestResponse<List<UserResponse>> getFollowers(@PathVariable UUID userId) {
         return getFollowers.getFollowers(userId);
+    }
+
+    @GetMapping(ApiConst.SEARCHED_USERS)
+    public RestResponse searchedUsers(@PathVariable("keyword") String keyword) {
+        return null;
     }
 }

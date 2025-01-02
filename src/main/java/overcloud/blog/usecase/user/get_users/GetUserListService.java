@@ -34,6 +34,6 @@ public class GetUserListService {
                 .map(userResponseMapper::toUserResponse)
                 .collect(Collectors.toList());
 
-        return resFactory.success(UserResMsg.USER_GET_USER_LIST, userResponses); 
+        return resFactory.success(UserResMsg.USER_GET_USER_LIST, userResponses);
     }
 }

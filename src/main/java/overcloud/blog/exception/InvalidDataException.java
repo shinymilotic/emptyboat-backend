@@ -9,9 +9,9 @@ import overcloud.blog.response.ApiError;
 @Getter
 @Setter
 public class InvalidDataException extends RuntimeException {
-    private ApiError response;
+    private Object response;
 
-    public InvalidDataException(ApiError response) {
+    public InvalidDataException(Object response) {
         this.response = response;
     }
 }

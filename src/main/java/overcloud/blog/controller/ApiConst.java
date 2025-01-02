@@ -41,6 +41,8 @@ public class ApiConst {
 
     public static final String USERS = "/users";
 
+    public static final String USERS_COUNT = "/usersCount";
+
     public static final String CONFIRM_EMAIL = "/confirmEmail";
 
     public static final String TEST = "/test";
@@ -64,4 +66,6 @@ public class ApiConst {
     public static final String UNFOLLOW_TAG = "/tag/{id}/unfollow";
 
     public static final String FOLLOWING_TAGS = "/followingTags";
+
+    public static final String SEARCHED_USERS = "/searchedUsers/{keyword}";
 }

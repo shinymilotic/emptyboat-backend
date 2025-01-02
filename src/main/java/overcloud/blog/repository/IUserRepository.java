@@ -16,4 +16,5 @@ public interface IUserRepository {
     List<UserEntity> findAll(int page, int size);
     UserEntity findRolesByUsernname(String username);
     GetProfileResponse findProfile(String username, UUID currentUserId);
+    Integer getUsersCount();
 }
