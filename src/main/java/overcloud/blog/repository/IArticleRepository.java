@@ -16,6 +16,5 @@ public interface IArticleRepository {
     List<ArticleSummary> findBy(UUID currentUserId, UUID tagId, String author, String favorited, int limit, String lastArticleId);
     ArticleSummary findArticleById(UUID id, UUID currentUserId);
     List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId);
-    List<UserEntity> findAllPaging(int page, int size);
     void save(ArticleEntity articleEntity);
 }

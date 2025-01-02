@@ -1,6 +1,7 @@
 package overcloud.blog.usecase.user.get_users_count;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.exception.InvalidDataException;
@@ -24,8 +25,9 @@ public class GetUserCountService implements IGetUserCountService {
     }
 
     @Override
-    public Integer getUsersCount() {
-        Integer usersCount = userRepository.getUsersCount();
+    @Transactional(readOnly = true)
+    public Long getUsersCount() {
+        Long usersCount = userRepository.getUsersCount();
         authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)));
 

@@ -71,11 +71,11 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public List<UserEntity> findAll(int page, int size) {
+    public List<UserEntity> findAll(int pageNumber, int itemsPerPage) {
         return entityManager
                 .createQuery("SELECT users FROM UserEntity users", UserEntity.class)
-                .setFirstResult(page * (size - 1))
-                .setMaxResults(size)
+                .setFirstResult((itemsPerPage * pageNumber) - itemsPerPage)
+                .setMaxResults(itemsPerPage)
                 .getResultList();
     }
 
@@ -131,8 +131,8 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public Integer getUsersCount() {
-        return entityManager.createNativeQuery("SELECT COUNT(*) FROM users", Tuple.class)
-                .getFirstResult();
+    public Long getUsersCount() {
+        return (Long) entityManager.createNativeQuery("SELECT COUNT(*) FROM users")
+                .getSingleResult();
     }
 }

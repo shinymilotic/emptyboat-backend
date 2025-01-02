@@ -28,12 +28,11 @@ public class GetUserListService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<List<UserResponse>> getUsers(int page, int size) {
-        List<UserEntity> users = userRepository.findAll(page, size);
-        List<UserResponse> userResponses = users.stream()
-                .map(userResponseMapper::toUserResponse)
-                .collect(Collectors.toList());
+    public List<UserResponse> getUsers(int pageNumber, int itemsPerPage) {
+        List<UserEntity> users = userRepository.findAll(pageNumber, itemsPerPage);
 
-        return resFactory.success(UserResMsg.USER_GET_USER_LIST, userResponses);
+        return users.stream()
+            .map(userResponseMapper::toUserResponse)
+            .collect(Collectors.toList());
     }
 }

@@ -109,12 +109,12 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.USERS)
-    public RestResponse<List<UserResponse>> getUsers(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "size", defaultValue = "10") int size) {
-        return getUserListService.getUsers(page, size);
+    public List<UserResponse> getUsers(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber, @RequestParam(value = "itemsPerPage", defaultValue = "10") int itemsPerPage) {
+        return getUserListService.getUsers(pageNumber, itemsPerPage);
     }
 
     @GetMapping(ApiConst.USERS_COUNT)
-    public Integer getUsersCount() {
+    public Long getUsersCount() {
         return getUserCountService.getUsersCount();
     }
 
