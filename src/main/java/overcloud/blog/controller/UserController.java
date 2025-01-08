@@ -3,6 +3,8 @@ package overcloud.blog.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import overcloud.blog.response.RestResponse;
+import overcloud.blog.usecase.user.admin_create_user.AdminCreateUserRequest;
+import overcloud.blog.usecase.user.admin_create_user.IAdminCreateUser;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailRequest;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailService;
@@ -41,6 +43,7 @@ public class UserController {
     private final ConfirmEmailService confirmEmailService;
     private final GetFollowers getFollowers;
     private final IGetUserCountService getUserCountService;
+    private final IAdminCreateUser adminCreateUser;
 
     public UserController(RegisterService registerService,
                           UpdateUserService updateUserService,
@@ -53,7 +56,8 @@ public class UserController {
                           GetRolesUserService getRolesUserService,
                           ConfirmEmailService confirmEmailService,
                           GetFollowers getFollowers,
-                          IGetUserCountService getUserCountService) {
+                          IGetUserCountService getUserCountService,
+                          IAdminCreateUser adminCreateUser) {
         this.registerService = registerService;
         this.updateUserService = updateUserService;
         this.logoutService = logoutService;
@@ -66,6 +70,7 @@ public class UserController {
         this.confirmEmailService = confirmEmailService;
         this.getFollowers = getFollowers;
         this.getUserCountService = getUserCountService;
+        this.adminCreateUser = adminCreateUser;
     }
 
     @PostMapping(ApiConst.CURRENT_USER)
@@ -136,5 +141,10 @@ public class UserController {
     @GetMapping(ApiConst.SEARCHED_USERS)
     public RestResponse searchedUsers(@PathVariable("keyword") String keyword) {
         return null;
+    }
+
+    @PostMapping("/admin/users")
+    public Void adminCreateUser(@RequestBody AdminCreateUserRequest request) {
+        return adminCreateUser.adminCreateUser(request);
     }
 }
