@@ -7,11 +7,8 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
-
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,11 +31,11 @@ public class AdminCreateUserImpl implements IAdminCreateUser {
             throw new InvalidDataException(error.get());
         }
 
-        if (userRepository.findByEmail(request.getEmail()) == null) {
+        if (userRepository.findByEmail(request.getEmail()) != null) {
             error = validator.addError(error, UserResMsg.USER_EMAIL_EXIST);
         }
 
-        if (userRepository.findByUsername(request.getUsername()) == null) {
+        if (userRepository.findByUsername(request.getUsername()) != null) {
             error = validator.addError(error, UserResMsg.USER_USERNAME_EXIST);
         }
 
@@ -56,6 +53,7 @@ public class AdminCreateUserImpl implements IAdminCreateUser {
         userForSave.setImage(request.getImage());
         userForSave.setEnable(request.isEnabled());
         userRepository.save(userForSave);
+
         return null;
     }
 }
