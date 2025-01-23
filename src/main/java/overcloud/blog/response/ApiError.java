@@ -17,7 +17,10 @@ public class ApiError {
         return new ApiError(data);
     }
 
-    public static ApiError from(String id, String message) {        
+    /*public static ApiError from(String id, String message) {
         return new ApiError(List.of(new ApiValidationError(id, message)));
+    }*/
+    public static ApiError from(String message) {
+        return new ApiError(List.of(new ApiValidationError(message)));
     }
 }

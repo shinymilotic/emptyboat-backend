@@ -44,11 +44,6 @@ public class ObjectsValidator<T> {
     public Optional<ApiError> addError(Optional<ApiError> error, String messageId) {
         if (error.isPresent()) {
             List<ApiValidationError> detail = error.get().getErrors();
-            for (ApiValidationError apiValidationError : detail) {
-                if (messageId.equals(apiValidationError.getMessageId())) {
-                    return error;
-                }
-            }
             error.get().getErrors().add(resFactory.failDetail(messageId));
             return Optional.of(ApiError.from(detail));
         } else {

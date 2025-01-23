@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApiValidationError {
-    private String messageId;
+//    private String messageId;
     private String message;
 }
