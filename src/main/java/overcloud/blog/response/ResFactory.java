@@ -22,15 +22,12 @@ public class ResFactory {
     public ApiError fail(String messageId) {
         String message = messageSource.getMessage(messageId, null, Locale.getDefault());
 
-//        return ApiError.from(messageId, message);
-        return ApiError.from(message);
+        return ApiError.from(messageId, message);
     }
 
     public ApiValidationError failDetail(String messageId) {
         String message = messageSource.getMessage(messageId, null, Locale.getDefault());
 
-//        return new ApiValidationError(message);
-        return new ApiValidationError(message);
-
+        return new ApiValidationError(messageId, message);
     }
 }
