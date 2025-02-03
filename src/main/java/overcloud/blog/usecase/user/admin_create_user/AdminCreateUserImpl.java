@@ -2,6 +2,7 @@ package overcloud.blog.usecase.user.admin_create_user;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.exception.InvalidDataException;
@@ -43,10 +44,15 @@ public class AdminCreateUserImpl implements IAdminCreateUser {
             throw new InvalidDataException(error.get());
         }
 
+        if (!StringUtils.hasText(request.getImage())) {
+            request.setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+        }
+
         String hashedPassword = authenticationService.encodePassword(request.getPassword());
 
         UserEntity userForSave = new UserEntity();
         userForSave.setUserId(UuidCreator.getTimeOrderedEpoch());
+        userForSave.setUsername(request.getUsername());
         userForSave.setPassword(hashedPassword);
         userForSave.setEmail(request.getEmail());
         userForSave.setBio(request.getBio());
