@@ -48,7 +48,7 @@ public class CreateArticleService {
     }
 
     @Transactional
-    public RestResponse<UUID> createArticle(ArticleRequest articleRequest) {
+    public UUID createArticle(ArticleRequest articleRequest) {
         String title = articleRequest.getTitle();
         List<String> distinctTags = filterDistinctTags(articleRequest.getTagList());
         articleRequest.setTagList(distinctTags);
@@ -78,7 +78,7 @@ public class CreateArticleService {
         articleTagRepository.saveAll(articleTags);
         articleRepository.updateSearchVector();
 
-        return resFactory.success(ArticleResMsg.ARTICLE_CREATE_SUCCESS, articleEntity.getArticleId());
+        return articleEntity.getArticleId();
     }
 
     private List<String> filterDistinctTags(List<String> tags) {

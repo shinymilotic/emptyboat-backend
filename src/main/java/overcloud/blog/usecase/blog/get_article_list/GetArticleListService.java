@@ -34,7 +34,7 @@ public class GetArticleListService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<GetArticlesResponse> getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
+    public GetArticlesResponse getArticles(String tag, String author, String favorited, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UUID tagId = null;
         if (StringUtils.hasText(tag)) {
@@ -57,7 +57,7 @@ public class GetArticleListService {
             getArticlesResponse.addArticleCount();
         }
 
-        return resFactory.success(ArticleResMsg.ARTICLE_GET_LIST, getArticlesResponse);
+        return getArticlesResponse;
     }
 
 

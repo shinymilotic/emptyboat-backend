@@ -18,18 +18,15 @@ import java.util.UUID;
 public class GetArticleService {
     private final IArticleRepository articleRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
 
     public GetArticleService(IArticleRepository articleRepository,
-                             SpringAuthenticationService authenticationService,
-                             ResFactory resFactory) {
+                             SpringAuthenticationService authenticationService) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
-        this.resFactory = resFactory;
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<GetArticleResponse> getArticle(String id) {
+    public GetArticleResponse getArticle(String id) {
         SecurityUser securityUser = authenticationService.getCurrentUser()
                 .orElse(null);
 
@@ -42,7 +39,7 @@ public class GetArticleService {
 
         ArticleSummary articleSummary = articleRepository.findArticleById(UUID.fromString(id), userId);
 
-        return resFactory.success(ArticleResMsg.ARTICLE_GET_SUCCESS, toGetArticlesingleResponse(articleSummary));
+        return toGetArticlesingleResponse(articleSummary);
     }
 
     private GetArticleResponse toGetArticlesingleResponse(ArticleSummary article) {

@@ -34,7 +34,7 @@ public class DeleteArticleService {
     }
 
     @Transactional
-    public RestResponse<Void> deleteArticle(String id) {
+    public Void deleteArticle(String id) {
         UUID articleId = UUID.fromString(id);
         commentRepository.deleteByArticleId(articleId);
         favoriteRepository.deleteByArticleId(articleId);
@@ -42,6 +42,6 @@ public class DeleteArticleService {
         articleRepository.deleteById(articleId);
         articleRepository.updateSearchVector();
         
-        return resFactory.success(ArticleResMsg.ARTICLE_DELETE_SUCCESS, null);
+        return null;
     }
 }

@@ -50,16 +50,16 @@ public class UpdateArticleService {
     }
 
     @Transactional
-    public RestResponse<Void> updateArticle(UpdateArticleRequest updateArticleRequest, String id) {
+    public Void updateArticle(UpdateArticleRequest updateArticleRequest, String id) {
         Optional<ApiError> apiError = validator.validate(updateArticleRequest);
-        if (!apiError.isEmpty()) {
+        if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
         }
         List<String> tags = updateArticleRequest.getTagList();
         Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
         List<TagEntity> tagEntities = tagRepository.findByTagIds(updateArticleRequest.getTagList());
         
-        if (!articleEntities.isPresent()) {
+        if (articleEntities.isEmpty()) {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
         }
         ArticleEntity articleEntity = articleEntities.get();
@@ -69,7 +69,7 @@ public class UpdateArticleService {
             UUID tagId = UUID.fromString(tag);
             Optional<TagEntity> tagEntity = isTagExist(tagId, tagEntities);
 
-            if (!tagEntity.isPresent()) {
+            if (tagEntity.isEmpty()) {
                 throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_NO_EXISTS));
             } else {
                 ArticleTagId articleTagId = new ArticleTagId(articleEntity.getArticleId(), tagEntity.get().getTagId());
@@ -96,7 +96,7 @@ public class UpdateArticleService {
         articleTagRepository.saveAll(articleTags);
         articleRepository.updateSearchVector();
 
-        return resFactory.success(ArticleResMsg.ARTICLE_UPDATE_SUCCESS, null);
+        return null;
     }
 
     private Optional<TagEntity> isTagExist(UUID tagId, List<TagEntity> tagEntities) {

@@ -38,30 +38,30 @@ public class ArticleController {
 
     @Secured({"ADMIN", "USER"})
     @PostMapping(ApiConst.ARTICLES)
-    public RestResponse<UUID> createArticle(@RequestBody ArticleRequest createArticleRequest) {
+    public UUID createArticle(@RequestBody ArticleRequest createArticleRequest) {
         return createArticleService.createArticle(createArticleRequest);
     }
 
     @Secured({"ADMIN", "USER"})
     @PutMapping(ApiConst.ARTICLE)
-    public RestResponse<Void> updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
+    public Void updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
                                                @PathVariable("id") String id) {
         return updateArticleService.updateArticle(updateArticleRequest, id);
     }
 
     @Secured({"ADMIN", "USER"})
     @DeleteMapping(ApiConst.ARTICLE)
-    public RestResponse<Void> deleteArticle(@PathVariable String id) {
+    public Void deleteArticle(@PathVariable String id) {
         return deleteArticleService.deleteArticle(id);
     }
 
     @GetMapping(ApiConst.ARTICLE)
-    public RestResponse<GetArticleResponse> getArticle(@PathVariable String id) {
+    public GetArticleResponse getArticle(@PathVariable String id) {
         return getArticleService.getArticle(id);
     }
 
     @GetMapping(ApiConst.ARTICLES)
-    public RestResponse<GetArticlesResponse> getArticles(@RequestParam(required = false) String tag,
+    public GetArticlesResponse getArticles(@RequestParam(required = false) String tag,
                                            @RequestParam(required = false) String author,
                                            @RequestParam(required = false) String favorited,
                                            @RequestParam(value = "size", defaultValue = "20") int limit,
