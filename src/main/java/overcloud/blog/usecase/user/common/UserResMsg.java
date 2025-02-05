@@ -6,7 +6,6 @@ public class UserResMsg {
     public static final String USER_EMAIL_EXIST = "user.email.exists";
     public static final String USER_EMAIL_NO_EXIST = "user.email.no-exists";
     public static final String USER_NON_ENABLED = "user.enabled.non";
-    public static final String USER_LOGIN_SUCCESS = "user.login.success";
     public static final String USER_LOGIN_FAILED = "user.login.failed";
     public static final String USER_LOGIN_EMAIL_SIZE = "user.login.email.size";
     public static final String USER_LOGIN_EMAIL_NOTNULL = "user.login.email.not-null";
