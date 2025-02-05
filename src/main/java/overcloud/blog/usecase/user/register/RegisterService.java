@@ -50,7 +50,7 @@ public class RegisterService {
     }
 
     @Transactional
-    public RestResponse<Void> registerUser(RegisterRequest registrationDto, HttpServletResponse response) {
+    public Void registerUser(RegisterRequest registrationDto, HttpServletResponse response) {
         Optional<ApiError> apiError = validator.validate(registrationDto);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -94,7 +94,7 @@ public class RegisterService {
         // emailService.sendSimpleMessage(savedUser.getEmail(), "Registration email confirm!",
         //         "Please click on the confirmation link: http://localhost:4200/confirmEmail/" + refreshToken);
 
-        return resFactory.success(UserResMsg.USER_REGISTER_SUCCESS, null);
+        return null;
     }
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {

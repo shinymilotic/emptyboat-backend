@@ -14,15 +14,13 @@ import java.util.UUID;
 @Service
 public class GetFollowersImpl implements GetFollowers {
     private final IUserRepository userRepository;
-    private final ResFactory resFactory;
 
-    public GetFollowersImpl(IUserRepository userRepository, ResFactory resFactory) {
+    public GetFollowersImpl(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.resFactory = resFactory;
     }
 
     @Override
-    public RestResponse<List<UserResponse>> getFollowers(UUID userId) {
-        return resFactory.success(UserResMsg.USER_GET_FOLLOWERS, userRepository.getFollowers(userId));
+    public List<UserResponse> getFollowers(UUID userId) {
+        return userRepository.getFollowers(userId);
     }
 }

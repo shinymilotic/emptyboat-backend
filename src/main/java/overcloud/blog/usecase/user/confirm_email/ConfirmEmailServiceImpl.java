@@ -30,7 +30,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
 
     @Override
     @Transactional
-    public RestResponse<Void> confirmEmail(ConfirmEmailRequest confirmToken) {
+    public Void confirmEmail(ConfirmEmailRequest confirmToken) {
         if (confirmToken == null || !StringUtils.hasText(confirmToken.getConfirmToken())) {
             throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
         }
@@ -43,6 +43,6 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
             throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
         }
 
-        return resFactory.success(UserResMsg.AUTHORIZE_SUCCESS, null);
+        return null;
     }
 }

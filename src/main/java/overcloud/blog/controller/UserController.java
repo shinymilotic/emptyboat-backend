@@ -74,42 +74,42 @@ public class UserController {
     }
 
     @PostMapping(ApiConst.CURRENT_USER)
-    public RestResponse<Void> register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) {
+    public Void register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) {
         return registerService.registerUser(registrationDto, response);
     }
 
     @PutMapping(ApiConst.CURRENT_USER)
-    public RestResponse<UserResponse> update(@RequestBody UpdateUserRequest updateUserDto) {
+    public UserResponse update(@RequestBody UpdateUserRequest updateUserDto) {
         return updateUserService.updateUser(updateUserDto);
     }
 
     @PostMapping(ApiConst.USERS_LOGIN)
-    public RestResponse<UserResponse> login(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
+    public UserResponse login(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
         return loginService.login(loginDto, response);
     }
 
     @PostMapping(ApiConst.USERS_LOGIN_ADMIN)
-    public RestResponse<UserResponse> loginAdmin(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
+    public UserResponse loginAdmin(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
         return loginService.login(loginDto, response);
     }
 
     @PostMapping(ApiConst.USERS_LOGOUT)
-    public RestResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+    public Void logout(HttpServletRequest request, HttpServletResponse response) {
         return logoutService.logout(request, response);
     }
 
     @GetMapping(ApiConst.CURRENT_USER)
-    public RestResponse<UserResponse> getCurrentUser() {
+    public UserResponse getCurrentUser() {
         return getCurrentUserService.getCurrentUser();
     }
 
     @GetMapping(ApiConst.PROFILES_USERNAME)
-    public RestResponse<GetProfileResponse> getProfile(@PathVariable String username) {
+    public GetProfileResponse getProfile(@PathVariable String username) {
         return getProfileService.getProfile(username);
     }
 
     @PostMapping(ApiConst.USERS_REFRESHTOKEN)
-    public RestResponse<UUID> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public UUID refreshToken(HttpServletRequest request, HttpServletResponse response) {
         return refreshTokenService.refreshToken(request, response);
     }
 
@@ -124,17 +124,17 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.ROLES_USERNAME)
-    public RestResponse<List<UserRoleResponse>> getRolesUser(@PathVariable String username) {
+    public List<UserRoleResponse> getRolesUser(@PathVariable String username) {
         return getRolesUserService.getRolesUser(username);
     }
 
     @PostMapping(ApiConst.CONFIRM_EMAIL)
-    public RestResponse<Void> confirmEmail(@RequestBody ConfirmEmailRequest confirmToken) {
+    public Void confirmEmail(@RequestBody ConfirmEmailRequest confirmToken) {
         return confirmEmailService.confirmEmail(confirmToken);
     }
 
     @GetMapping(ApiConst.FOLLOWERS)
-    public RestResponse<List<UserResponse>> getFollowers(@PathVariable UUID userId) {
+    public List<UserResponse> getFollowers(@PathVariable UUID userId) {
         return getFollowers.getFollowers(userId);
     }
 

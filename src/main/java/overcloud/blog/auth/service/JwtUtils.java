@@ -41,14 +41,18 @@ public class JwtUtils {
     }
 
     public boolean validateToken(String jwt) throws JwtException {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jwt)
-                .getBody();
-        Instant now = Instant.now();
-        Date exp = claims.getExpiration();
-        return exp.after(Date.from(now));
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(jwt)
+                    .getBody();
+            Instant now = Instant.now();
+            Date exp = claims.getExpiration();
+            return exp.after(Date.from(now));
+        } catch (JwtException ex) {
+            return false;
+        }
     }
 
     public String getSub(String jwt) {

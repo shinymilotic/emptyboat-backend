@@ -8,5 +8,5 @@ import overcloud.blog.response.RestResponse;
 
 @Service
 public interface GetRolesUserService {
-    RestResponse<List<UserRoleResponse>> getRolesUser(String username);
+    List<UserRoleResponse> getRolesUser(String username);
 }

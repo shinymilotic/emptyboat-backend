@@ -47,7 +47,7 @@ public class LoginService {
     }
 
     @Transactional
-    public RestResponse<UserResponse> login(LoginRequest loginRequest, HttpServletResponse response) {
+    public UserResponse login(LoginRequest loginRequest, HttpServletResponse response) {
         Optional<ApiError> apiError = validator.validate(loginRequest);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -87,7 +87,7 @@ public class LoginService {
         response.addCookie(jwtTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
 
-        return resFactory.success(UserResMsg.USER_LOGIN_SUCCESS, userResponseMapper.toUserResponse(user));
+        return userResponseMapper.toUserResponse(user);
     }
 
     private void saveDBRefreshToken(String refreshToken, UUID userId) {

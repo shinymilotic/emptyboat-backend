@@ -39,7 +39,7 @@ public class UpdateUserService {
     }
 
     @Transactional
-    public RestResponse<UserResponse> updateUser(UpdateUserRequest updateUserDto) {
+    public UserResponse updateUser(UpdateUserRequest updateUserDto) {
         Optional<ApiError> apiError = validator.validate(updateUserDto);
 
         if (apiError.isPresent()) {
@@ -56,7 +56,7 @@ public class UpdateUserService {
         currentUser.setImage(updateImage);
 //        currentUser.setEmail(email);
         UserEntity updateUserEntity = userRepository.save(currentUser);
-        return resFactory.success(UserResMsg.USER_UPDATE_SUCCESS, userResponseMapper.toUserResponse(updateUserEntity));
+        return userResponseMapper.toUserResponse(updateUserEntity);
     }
 
 }

@@ -31,7 +31,7 @@ public class GetRolesUserServiceImpl implements GetRolesUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public RestResponse<List<UserRoleResponse>> getRolesUser(String username) {
+    public List<UserRoleResponse> getRolesUser(String username) {
         UserEntity user = userRepository.findRolesByUsernname(username);
         List<RoleEntity> roles = roleRepository.findAll();
 
@@ -50,6 +50,6 @@ public class GetRolesUserServiceImpl implements GetRolesUserService {
             listResponse.add(userRoleResponse);
         }
 
-        return resFactory.success(UserResMsg.GET_ROLE_USER, (listResponse));
+        return listResponse;
     }
 }

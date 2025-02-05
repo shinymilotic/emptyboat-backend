@@ -15,17 +15,14 @@ import java.util.Optional;
 
 @Service
 public class LogoutService {
-
     private final JpaRefreshTokenRepository refreshTokenRepository;
-    private final ResFactory resFactory;
 
-    public LogoutService(JpaRefreshTokenRepository refreshTokenRepository, ResFactory resFactory) {
+    public LogoutService(JpaRefreshTokenRepository refreshTokenRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
-        this.resFactory = resFactory;
     }
 
     @Transactional
-    public RestResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+    public Void logout(HttpServletRequest request, HttpServletResponse response) {
         readServletCookie(request, "refreshToken")
                 .ifPresent(refreshTokenRepository::deleteByRefreshToken);
 
@@ -44,7 +41,7 @@ public class LogoutService {
         response.addCookie(jwtTokenCookie);
         response.addCookie(jwtRefreshTokenCookie);
         
-        return resFactory.success(UserResMsg.USER_LOGOUT_SUCCESS, null);
+        return null;
     }
 
     public Optional<String> readServletCookie(HttpServletRequest request, String name){

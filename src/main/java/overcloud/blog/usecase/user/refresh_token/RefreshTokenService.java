@@ -33,7 +33,7 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public RestResponse<UUID> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public UUID refreshToken(HttpServletRequest request, HttpServletResponse response) {
         Optional<String> refreshToken = readServletCookie(request, "refreshToken");
 
         if (refreshToken.isEmpty()) {
@@ -47,30 +47,30 @@ public class RefreshTokenService {
         }
 
         String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();
-        try {
-            jwtUtils.validateToken(gottenRefreshToken);
-            String email = jwtUtils.getSub(refreshToken.get());
-            String accessToken = jwtUtils.encode(email);
-            Cookie jwtTokenCookie = new Cookie("jwtToken", accessToken);
-            jwtTokenCookie.setMaxAge(86400);
-            jwtTokenCookie.setSecure(false);
-            jwtTokenCookie.setHttpOnly(true);
-            jwtTokenCookie.setPath("/");
-            jwtTokenCookie.setDomain("localhost");
+        boolean isValidate = jwtUtils.validateToken(gottenRefreshToken);
 
-            Cookie jwtRefreshTokenCookie = new Cookie("refreshToken", gottenRefreshToken);
-            jwtRefreshTokenCookie.setMaxAge(86400);
-            jwtRefreshTokenCookie.setSecure(false);
-            jwtRefreshTokenCookie.setHttpOnly(true);
-            jwtRefreshTokenCookie.setPath("/");
-            jwtRefreshTokenCookie.setDomain("localhost");
-            response.addCookie(jwtTokenCookie);
-            response.addCookie(jwtRefreshTokenCookie);
-            UUID userId = refreshTokenEntity.get().getUserId();
-            return resFactory.success(UserResMsg.REFRESH_TOKEN_SUCCESS, userId);
-        } catch (JwtException e) {
+        if (!isValidate) {
             throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED));
         }
+
+        String email = jwtUtils.getSub(refreshToken.get());
+        String accessToken = jwtUtils.encode(email);
+        Cookie jwtTokenCookie = new Cookie("jwtToken", accessToken);
+        jwtTokenCookie.setMaxAge(86400);
+        jwtTokenCookie.setSecure(false);
+        jwtTokenCookie.setHttpOnly(true);
+        jwtTokenCookie.setPath("/");
+        jwtTokenCookie.setDomain("localhost");
+
+        Cookie jwtRefreshTokenCookie = new Cookie("refreshToken", gottenRefreshToken);
+        jwtRefreshTokenCookie.setMaxAge(86400);
+        jwtRefreshTokenCookie.setSecure(false);
+        jwtRefreshTokenCookie.setHttpOnly(true);
+        jwtRefreshTokenCookie.setPath("/");
+        jwtRefreshTokenCookie.setDomain("localhost");
+        response.addCookie(jwtTokenCookie);
+        response.addCookie(jwtRefreshTokenCookie);
+        return refreshTokenEntity.get().getUserId();
     }
 
     public Optional<String> readServletCookie(HttpServletRequest request, String name){

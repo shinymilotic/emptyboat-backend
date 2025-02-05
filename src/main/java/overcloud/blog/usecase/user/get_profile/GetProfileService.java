@@ -29,7 +29,7 @@ public class GetProfileService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<GetProfileResponse> getProfile(String username) {
+    public GetProfileResponse getProfile(String username) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
         if (currentSecurityUser.isPresent()) {
@@ -41,9 +41,7 @@ public class GetProfileService {
             currentUserId = currentUser.getUserId();
         }
 
-        GetProfileResponse user = userRepository.findProfile(username, currentUserId);
-
-        return resFactory.success(UserResMsg.USER_GET_PROFILE, user);
+        return userRepository.findProfile(username, currentUserId);
     }
 
 }
