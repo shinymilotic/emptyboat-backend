@@ -19,16 +19,13 @@ public class DeleteArticleService {
     private final IArticleTagRepository articleTagRepository;
     private final ICommentRepository commentRepository;
     private final IFavoriteRepository favoriteRepository;
-    private final ResFactory resFactory;
 
     public DeleteArticleService(IArticleRepository articleRepository,
                                 IArticleTagRepository articleTagRepository,
                                 ICommentRepository commentRepository,
-                                IFavoriteRepository favoriteRepository,
-                                ResFactory resFactory) {
+                                IFavoriteRepository favoriteRepository) {
         this.articleRepository = articleRepository;
         this.articleTagRepository = articleTagRepository;
-        this.resFactory = resFactory;
         this.commentRepository = commentRepository;
         this.favoriteRepository = favoriteRepository;
     }

@@ -16,7 +16,7 @@ public class AssignRoleController {
     }
 
     @PutMapping(ApiConst.USERS_USERNAME_ASSIGNMENT)
-    public RestResponse<RoleAssignmentResponse> assignRole(@RequestBody RolesRequest request, @PathVariable String username) {
+    public RoleAssignmentResponse assignRole(@RequestBody RolesRequest request, @PathVariable String username) {
         return assignRoleService.assignRole(request, username);
     }
 }

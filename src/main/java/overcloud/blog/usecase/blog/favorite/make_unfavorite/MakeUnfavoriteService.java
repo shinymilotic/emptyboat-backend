@@ -36,7 +36,7 @@ public class MakeUnfavoriteService {
     }
 
     @Transactional
-    public RestResponse<Void> makeUnfavorite(String id) {
+    public Void makeUnfavorite(String id) {
         Optional<ArticleEntity> articleEntity = articleRepository.findById(UUID.fromString(id));
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
@@ -49,6 +49,6 @@ public class MakeUnfavoriteService {
             favoriteRepository.deleteById(favoritePk);
         }
         
-        return resFactory.success(ArticleResMsg.ARTICLE_UNFAVORITE_SUCCESS, null);
+        return null;
     }
 }

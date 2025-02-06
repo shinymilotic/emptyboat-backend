@@ -29,7 +29,7 @@ public class AssignRoleService {
     }
 
     @Transactional
-    public RestResponse<RoleAssignmentResponse> assignRole(RolesRequest request, String username) {
+    public RoleAssignmentResponse assignRole(RolesRequest request, String username) {
         // List<RoleDto> roles = request.getRoles();
         // UserEntity userEntity = userRepository.findByUsername(username);
         // List<String> roleNames = roles.stream()

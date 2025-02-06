@@ -33,14 +33,14 @@ public class MakeFavoriteService {
     }
 
     @Transactional
-    public RestResponse<Void> makeFavorite(String id) {
+    public Void makeFavorite(String id) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                 .getUser();
 
         Optional<ArticleEntity> articleList = articleRepository.findById(UUID.fromString(id));
-        if (!articleList.isPresent()) {
+        if (articleList.isEmpty()) {
             throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
         }
         ArticleEntity articleEntity = articleList.get();
@@ -50,6 +50,6 @@ public class MakeFavoriteService {
         favoriteEntity.setId(favoriteId);
         favoriteRepository.save(favoriteEntity);
 
-        return resFactory.success(ArticleResMsg.ARTICLE_FAVORITE_SUCCESS, null);
+        return null;
     }
 }

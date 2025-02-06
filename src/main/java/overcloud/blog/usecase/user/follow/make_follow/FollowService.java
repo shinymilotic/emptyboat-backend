@@ -32,7 +32,7 @@ public class FollowService {
     }
 
     @Transactional
-    public RestResponse<Void> followUser(String username) {
+    public Void followUser(String username) {
         FollowEntity followEntity = new FollowEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
                 .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
@@ -45,6 +45,6 @@ public class FollowService {
         followEntity.setId(followId);
         followRepository.save(followEntity);
 
-        return resFactory.success(UserResMsg.USER_FOLLOW_SUCCESS, null) ;
+        return null;
     }
 }

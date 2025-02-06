@@ -27,18 +27,18 @@ public class CommentController {
     }
 
     @PostMapping(ApiConst.ARTICLE_COMMENTS)
-    public RestResponse<CreateCommentResponse> createComment(@PathVariable String id,
+    public CreateCommentResponse createComment(@PathVariable String id,
                                                @RequestBody CreateCommentRequest createCommentRequest) {
         return createCommentService.createComment(createCommentRequest, id);
     }
 
     @GetMapping(ApiConst.ARTICLE_COMMENTS)
-    public RestResponse<List<CommentResponse>> getComments(@PathVariable String id) {
+    public List<CommentResponse> getComments(@PathVariable String id) {
         return getCommentsService.getComments(id);
     }
 
     @DeleteMapping(ApiConst.COMMENT_ID)
-    public RestResponse<Void> deleteComment(@PathVariable("commentId") String commendId) {
+    public Void deleteComment(@PathVariable("commentId") String commendId) {
         return deleteCommentService.deleteComment(commendId);
     }
 }

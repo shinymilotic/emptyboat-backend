@@ -45,7 +45,7 @@ public class CreateCommentService {
     }
 
     @Transactional
-    public RestResponse<CreateCommentResponse> createComment(CreateCommentRequest createCommentRequest, String id) {
+    public CreateCommentResponse createComment(CreateCommentRequest createCommentRequest, String id) {
         Optional<ApiError> apiError = validator.validate(createCommentRequest);
 
         if (apiError.isPresent()) {
@@ -53,7 +53,7 @@ public class CreateCommentService {
         }
 
         Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
-        if (!articleEntities.isPresent()) {
+        if (articleEntities.isEmpty()) {
             throw new InvalidDataException(resFactory.fail(CommentResMsg.COMMENT_ARTICLE_NOT_EXIST));
         }
 
@@ -64,7 +64,7 @@ public class CreateCommentService {
                 .getUser();
         CommentEntity savedCommentEntity = saveComment(createCommentRequest, articleEntity, currentUser);
 
-        return resFactory.success(CommentResMsg.COMMENT_SUCCESS, toCreateCommentResponse(savedCommentEntity, currentUser));
+        return toCreateCommentResponse(savedCommentEntity, currentUser);
     }
 
     public CommentEntity saveComment(CreateCommentRequest createCommentRequest, ArticleEntity articleEntity, UserEntity author) {

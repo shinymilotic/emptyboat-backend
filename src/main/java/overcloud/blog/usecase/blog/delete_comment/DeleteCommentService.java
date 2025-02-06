@@ -13,16 +13,14 @@ import java.util.UUID;
 @Service
 public class DeleteCommentService {
     private final ICommentRepository commentRepository;
-    private final ResFactory resFactory;
 
-    public DeleteCommentService(ICommentRepository commentRepository, ResFactory resFactory) {
+    public DeleteCommentService(ICommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-        this.resFactory = resFactory;
     }
 
     @Transactional
-    public RestResponse<Void> deleteComment(String commendId) {
+    public Void deleteComment(String commendId) {
         commentRepository.deleteById(UUID.fromString(commendId));
-        return resFactory.success(CommentResMsg.COMMENT_DELETE_SUCCESS, null);
+        return null;
     }
 }

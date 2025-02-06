@@ -20,13 +20,13 @@ public class FavoriteController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(ApiConst.ARTICLE_ID_FAVORITE)
-    public RestResponse<Void> makeFavorite(@PathVariable String id) {
+    public Void makeFavorite(@PathVariable String id) {
         return makeFavoriteService.makeFavorite(id);
     }
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(ApiConst.ARTICLE_ID_FAVORITE)
-    public RestResponse<Void> makeUnfavorite(@PathVariable String id) {
+    public Void makeUnfavorite(@PathVariable String id) {
         return makeUnfavoriteService.makeUnfavorite(id);
     }
 }
