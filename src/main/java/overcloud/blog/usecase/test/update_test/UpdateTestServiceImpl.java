@@ -58,7 +58,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
 
     @Override
     @Transactional
-    public RestResponse<Void> updateTest(String id, TestUpdateRequest request) {
+    public Void updateTest(String id, TestUpdateRequest request) {
         UUID testId = UUID.fromString(id);
         Optional<ApiError> apiError = validator.validate(request);
         if (apiError.isPresent()) {
@@ -158,7 +158,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
             choiceAnswerRepo.updateAll(answersToUpdate);    
         }
         
-        return resFactory.success(TestResMsg.TEST_UPDATE_SUCCESS, null);
+        return null;
     }
 
     public List<TestQuestion> testQuestions(List<QuestionEntity> questions, UUID testId) {

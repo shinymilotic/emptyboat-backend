@@ -4,5 +4,5 @@ import java.util.List;
 import overcloud.blog.response.RestResponse;
 
 public interface GetFollowingTagService {
-    RestResponse<List<FollowingTagResponse>> getFollowingTags();
+    List<FollowingTagResponse> getFollowingTags();
 }

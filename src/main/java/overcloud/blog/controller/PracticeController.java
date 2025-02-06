@@ -29,17 +29,17 @@ public class PracticeController {
     }
 
     @PostMapping(ApiConst.PRACTICE)
-    public RestResponse<CreatePracticeResponse> practice(@RequestBody PracticeRequest practiceRequest) {
+    public CreatePracticeResponse practice(@RequestBody PracticeRequest practiceRequest) {
         return createPracticeService.createPractice(practiceRequest);
     }
 
     @GetMapping(ApiConst.USER_PRACTICES)
-    public RestResponse<List<PracticeResponse>> getUserPractice(@PathVariable("username") String username) {
+    public List<PracticeResponse> getUserPractice(@PathVariable("username") String username) {
         return userPracticeService.getUserPractice(username);
     }
 
     @GetMapping(ApiConst.PRACTICE_ID)
-    public RestResponse<PracticeResult> getPracticeResult(@PathVariable("id") UUID practiceId) {
+    public PracticeResult getPracticeResult(@PathVariable("id") UUID practiceId) {
         return getPracticeResultService.getPracticeResult(practiceId);
     }
 }

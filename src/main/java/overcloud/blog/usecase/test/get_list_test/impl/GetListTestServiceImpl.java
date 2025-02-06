@@ -16,16 +16,14 @@ import java.util.List;
 @Service
 public class GetListTestServiceImpl implements GetListTestService {
     private final ITestRepository testRepository;
-    private final ResFactory resFactory;
 
-    public GetListTestServiceImpl(ITestRepository testRepository, ResFactory resFactory) {
+    public GetListTestServiceImpl(ITestRepository testRepository) {
         this.testRepository = testRepository;
-        this.resFactory = resFactory;
     }
 
     @Override
     @Transactional
-    public RestResponse<List<SimpleTestResponse>> getListTest() {
+    public List<SimpleTestResponse> getListTest() {
         List<TestListRecord> testList = testRepository.findAll();
         List<SimpleTestResponse> responses = (new ArrayList<>());
         for (TestListRecord test : testList) {
@@ -35,6 +33,6 @@ public class GetListTestServiceImpl implements GetListTestService {
             responses.add(new SimpleTestResponse(id, title, description));
         }
 
-        return resFactory.success(TestResMsg.TEST_GET_LIST, responses);
+        return responses;
     }
 }

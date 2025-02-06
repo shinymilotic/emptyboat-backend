@@ -45,32 +45,32 @@ public class TestController {
     }
 
     @PostMapping(ApiConst.TEST)
-    public RestResponse<Void> createTest(@RequestBody TestRequest testRequest) {
+    public Void createTest(@RequestBody TestRequest testRequest) {
         return this.createTestService.createTest(testRequest);
     }
 
     @GetMapping(ApiConst.TESTS)
-    public RestResponse<List<SimpleTestResponse>> getTest() {
+    public List<SimpleTestResponse> getTest() {
         return this.getListTestService.getListTest();
     }
 
     @GetMapping(ApiConst.TESTS_ID)
-    public RestResponse<TestResponse> getTestById(@PathVariable("id") String id) {
+    public TestResponse getTestById(@PathVariable("id") String id) {
         return this.getTestService.getTest(id);
     }
 
     @DeleteMapping(ApiConst.TESTS_ID)
-    public RestResponse<Void> deleteTestById(@PathVariable("id") String id) {
+    public Void deleteTestById(@PathVariable("id") String id) {
         return this.deleteTestService.deleteTest(id);
     }
 
     @PutMapping(ApiConst.TEST_UPDATE)
-    public RestResponse<Void> updateTest(@PathVariable("id") String id, @RequestBody TestUpdateRequest request) {
+    public Void updateTest(@PathVariable("id") String id, @RequestBody TestUpdateRequest request) {
         return updateTestService.updateTest(id, request);
     }
 
     @GetMapping(ApiConst.PROFILE_TESTS)
-    public RestResponse<List<ProfileTestRes>> getProfileTests(@PathVariable("username") String username) {
+    public List<ProfileTestRes> getProfileTests(@PathVariable("username") String username) {
         return getProfileTestService.getProfileTests(username);
     }
 }

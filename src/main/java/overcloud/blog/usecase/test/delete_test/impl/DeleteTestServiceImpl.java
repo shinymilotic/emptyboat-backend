@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ResFactory;
-import overcloud.blog.response.RestResponse;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IPracticeRepository;
@@ -40,13 +39,13 @@ public class DeleteTestServiceImpl implements DeleteTestService {
 
     @Override
     @Transactional
-    public RestResponse<Void> deleteTest(String id) {
+    public Void deleteTest(String id) {
         Optional<TestEntity> test = testRepository.findById(UUID.fromString(id));
         UserEntity currentUser = authenticationService.getCurrentUser()
                         .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
                         .getUser();
         
-        if (!test.isPresent()) {
+        if (test.isEmpty()) {
             throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));
         }
 
@@ -59,7 +58,7 @@ public class DeleteTestServiceImpl implements DeleteTestService {
         testQuestionRepository.deleteByTestId(testId);
         testRepository.deleteById(testId);
 
-        return resFactory.success(TestResMsg.TEST_DELETE_SUCCESS, null);
+        return null;
     }
 
 }

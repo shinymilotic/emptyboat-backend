@@ -34,7 +34,7 @@ public class GetTagsService {
     }
 
     @Transactional(readOnly = true)
-    public RestResponse<List<ITagResponse>> getTags(Boolean following) {
+    public List<ITagResponse> getTags(Boolean following) {
         List<ITagResponse> response = new ArrayList<>();
 
         if (following == null || !following) {
@@ -68,6 +68,6 @@ public class GetTagsService {
             }
         }
 
-        return resFactory.success(TagResMsg.TAG_GET_SUCCESS, response);
+        return response;
     }
 }

@@ -88,7 +88,7 @@ public class CreateTestServiceImpl implements CreateTestService {
 
     @Override
     @Transactional
-    public RestResponse<Void> createTest(TestRequest testRequest)  {
+    public Void createTest(TestRequest testRequest)  {
         Optional<ApiError> apiError = validator.validate(testRequest);
         apiError = validateQuestions(apiError, testRequest.getQuestions());
 
@@ -140,7 +140,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         testQuestionRepository.saveAll(testQuestions);
         choiceAnswerRepository.saveAll(answerEntities);
 
-        return resFactory.success(TestResMsg.TEST_CREATE_SUCCESS, null);
+        return null;
     }
 
     public List<ChoiceAnswerEntity> answerEntities(List<Answer> answers, QuestionEntity question, LocalDateTime now) {

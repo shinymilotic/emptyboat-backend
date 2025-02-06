@@ -34,7 +34,7 @@ public class GetProfileTestServiceImpl implements GetProfileTestService {
 
     @Override
     @Transactional
-    public RestResponse<List<ProfileTestRes>> getProfileTests(String username) {
+    public List<ProfileTestRes> getProfileTests(String username) {
         UserEntity userEntity = userRepository.findByUsername(username);
 
         if (userEntity == null) {
@@ -57,6 +57,6 @@ public class GetProfileTestServiceImpl implements GetProfileTestService {
             profileTests.add(profileTest);
         });
 
-        return resFactory.success(TestResMsg.TEST_PROFILE_GET_SUCCESS, profileTests);
+        return profileTests;
     }
 }

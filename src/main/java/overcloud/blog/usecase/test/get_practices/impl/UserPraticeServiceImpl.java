@@ -38,7 +38,7 @@ public class UserPraticeServiceImpl implements UserPracticeService {
 
     @Override
     @Transactional(readOnly = true)
-    public RestResponse<List<PracticeResponse>> getUserPractice(String username) {
+    public List<PracticeResponse> getUserPractice(String username) {
         UserEntity user = userRepository.findByUsername(username);
         if (user == null) {
             throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
@@ -60,7 +60,7 @@ public class UserPraticeServiceImpl implements UserPracticeService {
             practiceResponseList.add(practice);
         }
 
-        return resFactory.success(PracticeResMsg.PRACTICE_GET_LIST, practiceResponseList);
+        return practiceResponseList;
     }
 
 }

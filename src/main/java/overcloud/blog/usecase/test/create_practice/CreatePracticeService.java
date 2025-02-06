@@ -8,5 +8,5 @@ import overcloud.blog.usecase.test.create_practice.response.CreatePracticeRespon
 
 @Service
 public interface CreatePracticeService {
-    RestResponse<CreatePracticeResponse> createPractice(PracticeRequest practiceRequest);
+    CreatePracticeResponse createPractice(PracticeRequest practiceRequest);
 }

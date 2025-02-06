@@ -8,5 +8,5 @@ import overcloud.blog.usecase.test.get_practices.response.PracticeResponse;
 
 @Service
 public interface UserPracticeService {
-    RestResponse<List<PracticeResponse>> getUserPractice(String username);
+    List<PracticeResponse> getUserPractice(String username);
 }

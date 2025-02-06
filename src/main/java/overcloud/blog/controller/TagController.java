@@ -2,7 +2,6 @@ package overcloud.blog.controller;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.blog.common.ITagResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
@@ -34,28 +33,27 @@ public class TagController {
     }
 
     @PostMapping(ApiConst.TAGS)
-    public RestResponse<List<String>> createTags(@RequestBody CreateTagRequest createTagRequest) {
+    public List<String> createTags(@RequestBody CreateTagRequest createTagRequest) {
         return createTagService.createTags(createTagRequest);
     }
 
     @GetMapping(ApiConst.TAGS)
-    public RestResponse<List<ITagResponse>> getTags(@RequestParam(required = false) Boolean following) {
+    public List<ITagResponse> getTags(@RequestParam(required = false) Boolean following) {
         return getTagsService.getTags(following);
     }
 
     @GetMapping(ApiConst.FOLLOWING_TAGS)
-    public RestResponse<List<FollowingTagResponse>> getFollowedTags() {
+    public List<FollowingTagResponse> getFollowedTags() {
         return getFollowingTagService.getFollowingTags();
     }
-    
 
     @PostMapping(ApiConst.FOLLOW_TAG)
-    public RestResponse<Void> followTag(@PathVariable("id") String tagId) {
+    public Void followTag(@PathVariable("id") String tagId) {
         return followTagService.followTag(tagId);
     }
 
     @PostMapping(ApiConst.UNFOLLOW_TAG)
-    public RestResponse<Void> unfollowTag(@PathVariable("id") String tagId) {
+    public Void unfollowTag(@PathVariable("id") String tagId) {
         return unfollowTagService.unfollowTag(tagId);
     }
 

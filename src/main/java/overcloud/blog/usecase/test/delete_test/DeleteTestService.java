@@ -6,5 +6,5 @@ import overcloud.blog.response.RestResponse;
 
 @Service
 public interface DeleteTestService {
-    RestResponse<Void> deleteTest(String id);
+    Void deleteTest(String id);
 }

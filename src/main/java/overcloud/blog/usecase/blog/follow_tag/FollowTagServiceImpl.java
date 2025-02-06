@@ -16,7 +16,6 @@ import overcloud.blog.usecase.user.common.UserResMsg;
 
 @Service
 public class FollowTagServiceImpl implements FollowTagService {
-
     private final ITagFollowRepository tagFollowRepository;
     private final SpringAuthenticationService authenticationService;
     private final ResFactory resFactory;
@@ -30,7 +29,7 @@ public class FollowTagServiceImpl implements FollowTagService {
     }
 
     @Override
-    public RestResponse<Void> followTag(String id) {
+    public Void followTag(String id) {
         UUID tagId = UUID.fromString(id);
 
         UserEntity currentUser = authenticationService.getCurrentUser()
@@ -44,7 +43,7 @@ public class FollowTagServiceImpl implements FollowTagService {
         tagFollowEntity.setTagFollowId(tagFollowId);
         tagFollowRepository.save(tagFollowEntity);
 
-        return resFactory.success(TagResMsg.TAG_FOLLOW_SUCCESS, null);
+        return null;
     }
     
 }

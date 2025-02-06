@@ -29,7 +29,7 @@ public class GetFollowingTagServiceImpl implements GetFollowingTagService {
     }
 
     @Override
-    public RestResponse<List<FollowingTagResponse>> getFollowingTags() {
+    public List<FollowingTagResponse> getFollowingTags() {
         List<FollowingTagResponse> response = new ArrayList<>();
 
         UserEntity currentUser = authenticationService.getCurrentUser()
@@ -45,7 +45,7 @@ public class GetFollowingTagServiceImpl implements GetFollowingTagService {
             response.add(tag);
         }
         
-        return resFactory.success(TagResMsg.FOLLOWING_TAGS, response);
+        return response;
     }
     
 }

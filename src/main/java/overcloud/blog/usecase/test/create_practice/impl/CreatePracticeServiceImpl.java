@@ -54,7 +54,7 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
 
     @Override
     @Transactional
-    public RestResponse<CreatePracticeResponse> createPractice(PracticeRequest practiceRequest) {
+    public CreatePracticeResponse createPractice(PracticeRequest practiceRequest) {
         List<IQuestionPractice> practices = practiceRequest.getPractices();
         UUID testId = UUID.fromString(practiceRequest.getTestId());
         LocalDateTime now = LocalDateTime.now();
@@ -109,7 +109,8 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
 
         CreatePracticeResponse response = new CreatePracticeResponse();
         response.setPracticeId(practiceEntity.getPracticeId());
-        return resFactory.success(PracticeResMsg.PRACTICE_CREATE_SUCCESS, response);
+
+        return response;
     }
 
     private static PracticeOpenAnswerEntity getPracticeOpenAnswerEntity(PracticeEntity practiceEntity, PracticeOpenQuestion practice, UUID questionId, LocalDateTime now) {

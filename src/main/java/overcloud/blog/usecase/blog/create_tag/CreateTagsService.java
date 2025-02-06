@@ -34,7 +34,7 @@ public class CreateTagsService {
     }
 
     @Transactional
-    public RestResponse<List<String>> createTags(CreateTagRequest createTagRequest) {
+    public List<String> createTags(CreateTagRequest createTagRequest) {
         Optional<ApiError> apiError = validator.validate(createTagRequest);
         if (apiError.isPresent()) {
             throw new InvalidDataException(apiError.get());
@@ -49,7 +49,7 @@ public class CreateTagsService {
 
         saveAllTags(tags);
 
-        return resFactory.success(TagResMsg.TAG_CREATE_SUCCESS, tags);
+        return tags;
     }
 
     public List<String> removeDuplicatedTags(List<String> tags) {
