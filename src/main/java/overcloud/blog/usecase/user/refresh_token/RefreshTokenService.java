@@ -1,6 +1,5 @@
 package overcloud.blog.usecase.user.refresh_token;
 
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.JwtUtils;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ResFactory;
-import overcloud.blog.response.RestResponse;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;

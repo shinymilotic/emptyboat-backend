@@ -10,8 +10,6 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.ITagFollowRepository;
 import overcloud.blog.response.ResFactory;
-import overcloud.blog.response.RestResponse;
-import overcloud.blog.usecase.blog.common.TagResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
 
 @Service

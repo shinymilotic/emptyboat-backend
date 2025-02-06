@@ -2,7 +2,6 @@ package overcloud.blog.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.user.admin_create_user.AdminCreateUserRequest;
 import overcloud.blog.usecase.user.admin_create_user.IAdminCreateUser;
 import overcloud.blog.usecase.user.common.UserResponse;
@@ -139,7 +138,7 @@ public class UserController {
     }
 
     @GetMapping(ApiConst.SEARCHED_USERS)
-    public RestResponse searchedUsers(@PathVariable("keyword") String keyword) {
+    public Void searchedUsers(@PathVariable("keyword") String keyword) {
         return null;
     }
 

@@ -5,13 +5,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.response.ResFactory;
-import overcloud.blog.response.RestResponse;
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.IArticleTagRepository;
 import overcloud.blog.repository.ICommentRepository;
 import overcloud.blog.repository.IFavoriteRepository;
-import overcloud.blog.usecase.blog.common.ArticleResMsg;
 
 @Service
 public class DeleteArticleService {

@@ -11,7 +11,6 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
 import overcloud.blog.response.ResFactory;
-import overcloud.blog.response.RestResponse;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.ChoiceAnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
@@ -24,7 +23,6 @@ import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.common.QuestionType;
-import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.user.common.UpdateFlg;
 
 @Service

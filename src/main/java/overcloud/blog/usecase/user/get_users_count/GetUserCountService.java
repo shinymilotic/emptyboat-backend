@@ -3,11 +3,9 @@ package overcloud.blog.usecase.user.get_users_count;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
-import overcloud.blog.entity.UserEntity;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.response.ResFactory;
-import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
 
 @Service

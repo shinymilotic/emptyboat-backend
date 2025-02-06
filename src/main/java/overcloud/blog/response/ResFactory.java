@@ -12,12 +12,6 @@ public class ResFactory {
         this.messageSource = messageSource;
     }
 
-    public <T>RestResponse<T> success(String messageId, T data) {
-        return RestResponse.<T>builder()
-            .code(messageId)
-            .message(messageSource.getMessage(messageId, null, Locale.getDefault()))
-            .data(data).build();
-    }
 
     public ApiError fail(String messageId) {
         String message = messageSource.getMessage(messageId, null, Locale.getDefault());
