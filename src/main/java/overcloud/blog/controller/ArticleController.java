@@ -3,8 +3,6 @@ package overcloud.blog.controller;
 import java.util.UUID;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import overcloud.blog.response.RestResponse;
 import overcloud.blog.usecase.blog.create_article.ArticleRequest;
 import overcloud.blog.usecase.blog.create_article.CreateArticleService;
 import overcloud.blog.usecase.blog.delete_article.DeleteArticleService;

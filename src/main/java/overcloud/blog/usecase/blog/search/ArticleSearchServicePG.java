@@ -22,19 +22,16 @@ import java.util.UUID;
 public class ArticleSearchServicePG implements ArticleSearchService {
     private final IArticleRepository articleRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
 
     public ArticleSearchServicePG(IArticleRepository articleRepository,
-                                  SpringAuthenticationService authenticationService,
-                                  ResFactory resFactory) {
+                                  SpringAuthenticationService authenticationService) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
-        this.resFactory = resFactory;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RestResponse<GetArticlesResponse> searchArticles(String searchParam, int limit, String lastArticleId) {
+    public GetArticlesResponse searchArticles(String searchParam, int limit, String lastArticleId) {
         Optional<SecurityUser> currentSecurityUser = authenticationService.getCurrentUser();
         UserEntity currentUser = null;
         UUID currentUserId = null;
@@ -53,7 +50,7 @@ public class ArticleSearchServicePG implements ArticleSearchService {
             getArticlesResponse.addArticleCount();
         }
 
-        return resFactory.success(ArticleResMsg.ARTICLE_GET_LIST, getArticlesResponse);
+        return getArticlesResponse;
     }
 
     private GetArticlesSingleResponse toGetArticlesSingleResponse(ArticleSummary article) {
