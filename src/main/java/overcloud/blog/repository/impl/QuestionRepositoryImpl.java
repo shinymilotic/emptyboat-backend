@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Repository
 public class QuestionRepositoryImpl implements IQuestionRepository {
-
     private final JpaQuestionRepository jpa;
 
     public QuestionRepositoryImpl(JpaQuestionRepository jpa) {
@@ -35,5 +34,10 @@ public class QuestionRepositoryImpl implements IQuestionRepository {
     @Override
     public void deleteAll(List<UUID> questionIds) {
         jpa.deleteAllByIdInBatch(questionIds);
+    }
+
+    @Override
+    public void deleteByTestId(UUID testId) {
+        jpa.deleteByTestId(testId);
     }
 }

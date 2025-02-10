@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.auth.service.JwtUtils;
 import overcloud.blog.exception.InvalidDataException;
+import overcloud.blog.repository.IRefreshTokenRepository;
 import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
@@ -19,11 +20,11 @@ import java.util.UUID;
 @Service
 public class RefreshTokenService {
     private final JwtUtils jwtUtils;
-    private final JpaRefreshTokenRepository refreshTokenRepository;
+    private final IRefreshTokenRepository refreshTokenRepository;
     private final ResFactory resFactory;
 
     public RefreshTokenService(JwtUtils jwtUtils,
-        JpaRefreshTokenRepository refreshTokenRepository,
+        IRefreshTokenRepository refreshTokenRepository,
         ResFactory resFactory) {
         this.resFactory = resFactory;
         this.jwtUtils = jwtUtils;

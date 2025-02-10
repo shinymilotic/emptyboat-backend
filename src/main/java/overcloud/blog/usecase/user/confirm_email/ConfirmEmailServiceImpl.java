@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import overcloud.blog.exception.InvalidDataException;
+import overcloud.blog.repository.IRefreshTokenRepository;
 import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
@@ -15,11 +16,11 @@ import java.util.Optional;
 
 @Service
 public class ConfirmEmailServiceImpl implements ConfirmEmailService{
-    private final JpaRefreshTokenRepository refreshTokenRepository;
+    private final IRefreshTokenRepository refreshTokenRepository;
     private final ResFactory resFactory;
     private final IUserRepository userRepository;
 
-    public ConfirmEmailServiceImpl(JpaRefreshTokenRepository refreshTokenRepository,
+    public ConfirmEmailServiceImpl(IRefreshTokenRepository refreshTokenRepository,
                                     IUserRepository userRepository,
                                     ResFactory resFactory) {
         this.refreshTokenRepository = refreshTokenRepository;

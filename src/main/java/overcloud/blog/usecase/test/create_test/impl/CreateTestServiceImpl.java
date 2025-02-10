@@ -15,7 +15,6 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IChoiceAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
-import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.common.*;
 import overcloud.blog.usecase.test.create_test.CreateTestService;
@@ -31,7 +30,6 @@ public class CreateTestServiceImpl implements CreateTestService {
     private final IQuestionRepository questionRepository;
     private final SpringAuthenticationService authenticationService;
     private final ResFactory resFactory;
-    private final ITestQuestionRepository testQuestionRepository;
     private final IChoiceAnswerRepository choiceAnswerRepository;
     private final ObjectsValidator validator;
 
@@ -40,14 +38,12 @@ public class CreateTestServiceImpl implements CreateTestService {
                                  SpringAuthenticationService authenticationService,
                                  ResFactory resFactory,
                                  ObjectsValidator validator,
-                                 ITestQuestionRepository testQuestionRepository,
                                  IChoiceAnswerRepository choiceAnswerRepository) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.authenticationService = authenticationService;
         this.resFactory = resFactory;
         this.validator = validator;
-        this.testQuestionRepository = testQuestionRepository;
         this.choiceAnswerRepository = choiceAnswerRepository;
     }
 
@@ -107,6 +103,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         testEntity.setAuthorId(currentUser.getUserId());
         testEntity.setCreatedAt(now);
         testEntity.setUpdatedAt(now);
+        TestEntity savedTest = testRepository.save(testEntity);
 
         List<QuestionEntity> questionEntities = new ArrayList<>();
         List<ChoiceAnswerEntity> answerEntities = new ArrayList<>();
@@ -116,6 +113,7 @@ public class CreateTestServiceImpl implements CreateTestService {
             questionEntity.setQuestionId(UuidCreator.getTimeOrderedEpoch());
             questionEntity.setQuestion(question);
             questionEntity.setQuestionType(questionReq.getQuestionType());
+            questionEntity.setTestId(savedTest.getTestId());
             if (questionReq.getQuestionType() == QuestionType.CHOICE.getValue()) {
                 ChoiceQuestion choiceQuestion = (ChoiceQuestion) questionReq;
                 answerEntities.addAll(answerEntities(choiceQuestion.getAnswers(), questionEntity, now));
@@ -125,18 +123,8 @@ public class CreateTestServiceImpl implements CreateTestService {
             questionEntity.setUpdatedAt(now);
             questionEntities.add(questionEntity);
         }
-
-        List<TestQuestion> testQuestions = new ArrayList<>();
-        for (QuestionEntity questionEntity : questionEntities) {
-            TestQuestionId testQuestionId = new TestQuestionId(testEntity.getTestId(), questionEntity.getQuestionId());
-            TestQuestion testQuestion = new TestQuestion();
-            testQuestion.setId(testQuestionId);
-            testQuestions.add(testQuestion);
-        }
         
-        testRepository.save(testEntity);
         questionRepository.saveAll(questionEntities);
-        testQuestionRepository.saveAll(testQuestions);
         choiceAnswerRepository.saveAll(answerEntities);
 
         return null;

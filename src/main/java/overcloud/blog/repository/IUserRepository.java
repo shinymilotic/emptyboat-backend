@@ -17,4 +17,5 @@ public interface IUserRepository {
     UserEntity findRolesByUsernname(String username);
     GetProfileResponse findProfile(String username, UUID currentUserId);
     Long getUsersCount();
+    void deleteUser(UUID userId);
 }

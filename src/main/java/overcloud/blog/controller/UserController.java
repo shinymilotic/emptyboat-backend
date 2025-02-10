@@ -7,6 +7,7 @@ import overcloud.blog.usecase.user.admin_create_user.IAdminCreateUser;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailRequest;
 import overcloud.blog.usecase.user.confirm_email.ConfirmEmailService;
+import overcloud.blog.usecase.user.delete_user.IDeleteUser;
 import overcloud.blog.usecase.user.get_current_user.GetCurrentUserService;
 import overcloud.blog.usecase.user.get_followers.GetFollowers;
 import overcloud.blog.usecase.user.get_profile.GetProfileResponse;
@@ -43,6 +44,7 @@ public class UserController {
     private final GetFollowers getFollowers;
     private final IGetUserCountService getUserCountService;
     private final IAdminCreateUser adminCreateUser;
+    private final IDeleteUser deleteUser;
 
     public UserController(RegisterService registerService,
                           UpdateUserService updateUserService,
@@ -56,7 +58,8 @@ public class UserController {
                           ConfirmEmailService confirmEmailService,
                           GetFollowers getFollowers,
                           IGetUserCountService getUserCountService,
-                          IAdminCreateUser adminCreateUser) {
+                          IAdminCreateUser adminCreateUser,
+                          IDeleteUser deleteUser) {
         this.registerService = registerService;
         this.updateUserService = updateUserService;
         this.logoutService = logoutService;
@@ -70,6 +73,7 @@ public class UserController {
         this.getFollowers = getFollowers;
         this.getUserCountService = getUserCountService;
         this.adminCreateUser = adminCreateUser;
+        this.deleteUser = deleteUser;
     }
 
     @PostMapping(ApiConst.CURRENT_USER)
@@ -145,5 +149,10 @@ public class UserController {
     @PostMapping("/admin/users")
     public Void adminCreateUser(@RequestBody AdminCreateUserRequest request) {
         return adminCreateUser.adminCreateUser(request);
+    }
+
+    @DeleteMapping("/users/{userId}")
+    public Void deleteUser(@PathVariable("userId") String userId) {
+        return deleteUser.deleteUser(userId);
     }
 }

@@ -10,4 +10,5 @@ public interface IQuestionRepository {
     void saveAll(List<QuestionEntity> questions);
     void updateAll(List<QuestionEntity> questions);
     void deleteAll(List<UUID> questionIds);
+    void deleteByTestId(UUID testId);
 }

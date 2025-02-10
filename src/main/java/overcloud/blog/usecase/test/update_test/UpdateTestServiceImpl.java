@@ -14,13 +14,10 @@ import overcloud.blog.response.ResFactory;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.ChoiceAnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
-import overcloud.blog.entity.TestQuestion;
-import overcloud.blog.entity.TestQuestionId;
 import overcloud.blog.repository.IChoiceAnswerRepository;
 import overcloud.blog.repository.IPracticeChoiceRepository;
 import overcloud.blog.repository.IPracticeOpenAnswerRepository;
 import overcloud.blog.repository.IQuestionRepository;
-import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.common.QuestionType;
 import overcloud.blog.usecase.user.common.UpdateFlg;
@@ -32,7 +29,6 @@ public class UpdateTestServiceImpl implements UpdateTestService {
     private final ITestRepository testRepo;
     private final IQuestionRepository questionRepo;
     private final IChoiceAnswerRepository choiceAnswerRepo;
-    private final ITestQuestionRepository testQuestionRepo;
     private final IPracticeOpenAnswerRepository practiceOpenAnswerRepo;
     private final IPracticeChoiceRepository practiceChoiceRepo;
 
@@ -41,7 +37,6 @@ public class UpdateTestServiceImpl implements UpdateTestService {
             ITestRepository testRepo,
             IQuestionRepository questionRepo,
             IChoiceAnswerRepository choiceAnswerRepo,
-            ITestQuestionRepository testQuestionRepo,
             IPracticeOpenAnswerRepository practiceOpenAnswerRepo,
             IPracticeChoiceRepository practiceChoiceRepo) {
         this.validator = validator;
@@ -49,7 +44,6 @@ public class UpdateTestServiceImpl implements UpdateTestService {
         this.testRepo = testRepo;
         this.questionRepo = questionRepo;
         this.choiceAnswerRepo = choiceAnswerRepo;
-        this.testQuestionRepo = testQuestionRepo;
         this.practiceOpenAnswerRepo = practiceOpenAnswerRepo;
         this.practiceChoiceRepo = practiceChoiceRepo;
     }
@@ -78,6 +72,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                         .questionId(questionId)
                         .question(question.getQuestion())
                         .questionType(question.getQuestionType())
+                        .testId(testId)
                         .createdAt(now)
                         .updatedAt(now)
                         .build()
@@ -99,6 +94,7 @@ public class UpdateTestServiceImpl implements UpdateTestService {
                         .questionId(questionId)
                         .question(question.getQuestion())
                         .questionType(question.getQuestionType())
+                        .testId(testId)
                         .updatedAt(now).build()
                 );
 
@@ -129,7 +125,6 @@ public class UpdateTestServiceImpl implements UpdateTestService {
         testRepo.updateTest(testId, request.getTitle(), request.getDescription());
 
         if (!questionsToDelete.isEmpty()) {
-            testQuestionRepo.deleteAllById(questionsToDelete);
             practiceOpenAnswerRepo.deleteAllByQuestionId(questionsToDelete);
             questionRepo.deleteAll(questionsToDelete);
         }
@@ -141,7 +136,6 @@ public class UpdateTestServiceImpl implements UpdateTestService {
 
         if (!questionsToInsert.isEmpty()) {
             questionRepo.saveAll(questionsToInsert);
-            testQuestionRepo.saveAll(testQuestions(questionsToInsert, testId));
         }
 
         if (!answersToInsert.isEmpty()) {
@@ -158,17 +152,4 @@ public class UpdateTestServiceImpl implements UpdateTestService {
         
         return null;
     }
-
-    public List<TestQuestion> testQuestions(List<QuestionEntity> questions, UUID testId) {
-        List<TestQuestion> testQuestions = new ArrayList<>();
-        for (QuestionEntity question : questions) {
-            TestQuestionId id = new TestQuestionId();
-            id.setTestId(testId);
-            id.setQuestionId(question.getQuestionId());
-            testQuestions.add(new TestQuestion(id));
-        }
-
-        return testQuestions;
-    }
-    
 }

@@ -26,6 +26,9 @@ public class QuestionEntity {
     @Column(name = "question_type")
     private int questionType;
 
+    @Column(name = "test_id")
+    private UUID testId;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

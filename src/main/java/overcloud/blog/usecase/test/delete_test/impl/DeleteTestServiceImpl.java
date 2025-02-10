@@ -4,11 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
+import overcloud.blog.repository.IQuestionRepository;
 import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IPracticeRepository;
-import overcloud.blog.repository.ITestQuestionRepository;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.delete_test.DeleteTestService;
@@ -20,21 +20,21 @@ import java.util.UUID;
 public class DeleteTestServiceImpl implements DeleteTestService {
     private final ITestRepository testRepository;
     private final IPracticeRepository practiceRepository;
-    private final ITestQuestionRepository testQuestionRepository;
+    private final IQuestionRepository questionRepository;
     private final ResFactory resFactory ;
     private final SpringAuthenticationService authenticationService;
 
     DeleteTestServiceImpl(
             ITestRepository testRepository,
             IPracticeRepository practiceRepository,
+            IQuestionRepository questionRepository,
             ResFactory resFactory,
-            ITestQuestionRepository testQuestionRepository,
             SpringAuthenticationService authenticationService) {
         this.testRepository = testRepository;
         this.practiceRepository = practiceRepository;
+        this.questionRepository = questionRepository;
         this.resFactory = resFactory;
         this.authenticationService = authenticationService;
-        this.testQuestionRepository = testQuestionRepository;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class DeleteTestServiceImpl implements DeleteTestService {
 
         UUID testId = test.get().getTestId();
         practiceRepository.deleteTestId(testId);
-        testQuestionRepository.deleteByTestId(testId);
+        questionRepository.deleteByTestId(testId);
         testRepository.deleteById(testId);
 
         return null;
