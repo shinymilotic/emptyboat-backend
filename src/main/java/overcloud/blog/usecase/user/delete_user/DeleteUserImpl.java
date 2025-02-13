@@ -11,15 +11,15 @@ public class DeleteUserImpl implements IDeleteUser {
     private final IRefreshTokenRepository refreshTokenRepository;
     private final IArticleRepository articleRepository;
     private final ITestRepository testRepository;
-    private final IRoleRepository roleRepository;
+    private final IUserRoleRepository userRoleRepository;
     private final ITagFollowRepository tagFollowRepository;
 
-    public DeleteUserImpl(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository, IArticleRepository articleRepository, ITestRepository testRepository, IRoleRepository roleRepository, ITagFollowRepository tagFollowRepository) {
+    public DeleteUserImpl(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository, IArticleRepository articleRepository, ITestRepository testRepository, IUserRoleRepository userRoleRepository, ITagFollowRepository tagFollowRepository) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.articleRepository = articleRepository;
         this.testRepository = testRepository;
-        this.roleRepository = roleRepository;
+        this.userRoleRepository = userRoleRepository;
         this.tagFollowRepository = tagFollowRepository;
     }
 
@@ -27,10 +27,10 @@ public class DeleteUserImpl implements IDeleteUser {
     public Void deleteUser(String userId) {
         UUID uuidUserId = UUID.fromString(userId);
         refreshTokenRepository.deleteByUserId(uuidUserId);
-//        articleRepository.deleteByUserId(uuidUserId);
-//        testRepository.deleteByUserId(uuidUserId);
-//        roleRepository.deleteByUserId(uuidUserId);
-//        tagFollowRepository.deleteByUserId(uuidUserId);
+        articleRepository.deleteByUserId(uuidUserId);
+        testRepository.deleteByUserId(uuidUserId);
+        userRoleRepository.deleteByUserId(uuidUserId);
+        tagFollowRepository.deleteByUserId(uuidUserId);
         userRepository.deleteUser(uuidUserId);
         return null;
     }

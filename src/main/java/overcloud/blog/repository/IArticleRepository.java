@@ -17,4 +17,5 @@ public interface IArticleRepository {
     ArticleSummary findArticleById(UUID id, UUID currentUserId);
     List<ArticleSummary> search(String keyword, UUID currentUserId, int limit, String lastArticleId);
     void save(ArticleEntity articleEntity);
+    void deleteByUserId(UUID userId);
 }

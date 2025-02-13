@@ -334,4 +334,9 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     public void save(ArticleEntity articleEntity) {
         this.jpa.save(articleEntity);
     }
+
+    @Override
+    public void deleteByUserId(UUID userId) {
+        jpa.deleteByUserId(userId);
+    }
 }

@@ -13,9 +13,7 @@ import java.util.UUID;
 
 @Repository
 public class UserRoleRepositoryImpl implements IUserRoleRepository {
-
     private final JpaUserRoleRepository jpa;
-
     private final EntityManager entityManager;
 
     public UserRoleRepositoryImpl(JpaUserRoleRepository jpa, EntityManager entityManager) {
@@ -47,5 +45,10 @@ public class UserRoleRepositoryImpl implements IUserRoleRepository {
     @Override
     public void delete(UserRole userRole) {
         jpa.delete(userRole);
+    }
+
+    @Override
+    public void deleteByUserId(UUID userId) {
+        jpa.deleteByUserId(userId);
     }
 }

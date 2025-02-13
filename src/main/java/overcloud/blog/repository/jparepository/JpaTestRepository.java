@@ -22,5 +22,9 @@ public interface JpaTestRepository extends JpaRepository<TestEntity, UUID> {
 
     @Query("SELECT t FROM TestEntity t WHERE t.authorId = :userId")
     List<TestEntity> findByUserId(@Param("userId") UUID userId);
+
+    @Modifying
+    @Query("DELETE FROM TestEntity t WHERE t.authorId = :userId")
+    void deleteByUserId(@Param("userId") UUID userId);
 }
 

@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface ITagFollowRepository {
     TagFollowEntity save(TagFollowEntity tagFollowEntity);
     void delete(TagFollowId tagFollowId);
+    void deleteByUserId(UUID userId);
 }

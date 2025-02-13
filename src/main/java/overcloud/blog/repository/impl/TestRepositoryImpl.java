@@ -148,4 +148,9 @@ public class TestRepositoryImpl implements ITestRepository {
     public List<TestEntity> getProfileTest(UUID userId) {
         return this.jpa.findByUserId(userId);
     }
+
+    @Override
+    public void deleteByUserId(UUID userId) {
+        jpa.deleteByUserId(userId);
+    }
 }

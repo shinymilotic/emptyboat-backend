@@ -26,4 +26,9 @@ public class TagFollowRepositoryImpl implements ITagFollowRepository {
         jpa.deleteById(tagFollowId);
     }
 
+    @Override
+    public void deleteByUserId(UUID userId) {
+        jpa.deleteByUserId(userId);
+    }
+
 }
