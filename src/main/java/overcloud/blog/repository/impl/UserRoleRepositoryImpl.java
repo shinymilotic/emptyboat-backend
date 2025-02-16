@@ -30,10 +30,7 @@ public class UserRoleRepositoryImpl implements IUserRoleRepository {
                 .setParameter("roleName", roleName)
                 .getSingleResult();
 
-        UserRole userRole = UserRole.builder().id(new UserRoleId(roleId, userId))
-                .role(RoleEntity.builder().roleId(roleId).build())
-                .user(UserEntity.builder().userId(userId).build())
-                .build();
+        UserRole userRole = new UserRole(new UserRoleId(roleId, userId));
         return jpa.save(userRole);
     }
 

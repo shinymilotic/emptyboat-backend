@@ -5,6 +5,8 @@ import overcloud.blog.repository.IFollowRepository;
 import overcloud.blog.repository.jparepository.JpaFollowRepository;
 import overcloud.blog.usecase.user.follow.core.FollowEntity;
 
+import java.util.UUID;
+
 @Repository
 public class FollowRepositoryImpl implements IFollowRepository {
     private final JpaFollowRepository jpa;
@@ -26,5 +28,10 @@ public class FollowRepositoryImpl implements IFollowRepository {
     @Override
     public void delete(FollowEntity followEntity) {
         jpa.delete(followEntity);
+    }
+
+    @Override
+    public void deleteByUserId(UUID userId) {
+        jpa.deleteByUserId(userId);
     }
 }

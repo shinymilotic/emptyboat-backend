@@ -13,6 +13,6 @@ import java.util.UUID;
 @Repository
 public interface JpaTagFollowRepository extends JpaRepository<TagFollowEntity, TagFollowId> {
     @Modifying
-    @Query("DELETE FROM TagFollowEntity t WHERE t.tagFollowId.follower_id = :userId")
+    @Query("DELETE FROM TagFollowEntity t WHERE t.tagFollowId.followerId = :userId")
     void deleteByUserId(@Param("userId") UUID userId);
 }

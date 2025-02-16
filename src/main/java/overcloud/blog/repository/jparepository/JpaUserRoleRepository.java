@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @Repository
 public interface JpaUserRoleRepository extends JpaRepository<UserRole, UserRoleId> {
-    @Query("SELECT user_role.id.roleId FROM UserRole user_role WHERE user_role.id.userId = :userId")
-    List<UUID> findByUser(@Param("userId") UUID userId);
+//    @Query("SELECT user_role.id.roleId FROM UserRole user_role WHERE user_role.id.userId = :userId")
+//    List<UUID> findByUser(@Param("userId") UUID userId);
 
     @Modifying
     @Query("DELETE FROM UserRole ur WHERE ur.id.userId = :userId")

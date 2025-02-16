@@ -68,11 +68,7 @@ public class AssignRoleService {
 
     private Optional<UserRole> assignNewRole(RoleEntity roleEntity, UserEntity userEntity) {
         try {
-            UserRole userRole = UserRole.builder()
-                    .id(new UserRoleId())
-                    .role(roleEntity)
-                    .user(userEntity)
-                    .build();
+            UserRole userRole = new UserRole(new UserRoleId());
             UserRole savedEntity = userRoleRepository.saveAndFlush(userRole);
             return Optional.of(savedEntity);
         } catch (Exception e) {

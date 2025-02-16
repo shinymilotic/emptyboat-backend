@@ -13,12 +13,4 @@ import lombok.*;
 public class UserRole {
     @EmbeddedId
     private UserRoleId id;
-
-    @ManyToOne
-    @MapsId(value = "roleId")
-    private RoleEntity role;
-
-    @ManyToOne
-    @MapsId(value = "userId")
-    private UserEntity user;
 }
