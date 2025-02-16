@@ -30,7 +30,7 @@ public class GetFollowingTagServiceImpl implements GetFollowingTagService {
         List<FollowingTagResponse> response = new ArrayList<>();
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         List<TagEntity> followingTags = tagRepository.findFollowingTags(currentUser.getUserId());

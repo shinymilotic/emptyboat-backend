@@ -39,7 +39,7 @@ public class UserPraticeServiceImpl implements UserPracticeService {
     public List<PracticeResponse> getUserPractice(String username) {
         UserEntity user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
+            throw resFactory.fail(UserResMsg.USER_NOT_FOUND);
         }
 
         List<Tuple> data = practiceRepository.findByTesterId(user.getUserId());

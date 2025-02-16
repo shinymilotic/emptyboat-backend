@@ -59,7 +59,7 @@ public class UpdateArticleService {
         List<TagEntity> tagEntities = tagRepository.findByTagIds(updateArticleRequest.getTagList());
         
         if (articleEntities.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
+            throw resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS);
         }
         ArticleEntity articleEntity = articleEntities.get();
 
@@ -69,7 +69,7 @@ public class UpdateArticleService {
             Optional<TagEntity> tagEntity = isTagExist(tagId, tagEntities);
 
             if (tagEntity.isEmpty()) {
-                throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_NO_EXISTS));
+                throw resFactory.fail(TagResMsg.TAG_NO_EXISTS);
             } else {
                 ArticleTagId articleTagId = new ArticleTagId(articleEntity.getArticleId(), tagEntity.get().getTagId());
                 articleTags.add(new ArticleTag(articleTagId));
@@ -77,11 +77,11 @@ public class UpdateArticleService {
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
        if (!currentUser.getUserId().equals(articleEntity.getAuthorId())) {
-           throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_UPDATE_NO_AUTHORIZATION));
+           throw resFactory.fail(ArticleResMsg.ARTICLE_UPDATE_NO_AUTHORIZATION);
        }
 
         LocalDateTime now = LocalDateTime.now();

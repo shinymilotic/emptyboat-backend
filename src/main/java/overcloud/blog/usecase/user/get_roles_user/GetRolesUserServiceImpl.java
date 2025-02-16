@@ -35,7 +35,7 @@ public class GetRolesUserServiceImpl implements GetRolesUserService {
         List<RoleEntity> roles = roleRepository.findAll();
 
         if (user == null) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
+            throw resFactory.fail(UserResMsg.USER_NOT_FOUND);
         }
         Set<RoleEntity> rolesUser = user.getRoles();
 

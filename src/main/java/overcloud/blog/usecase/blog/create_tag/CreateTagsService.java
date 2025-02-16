@@ -43,7 +43,7 @@ public class CreateTagsService {
 
         List<TagEntity> tagEntities = tagRepository.findByTagIds(createTagRequest.getTags());
         if (tagEntities.size() >= tags.size()) {
-            throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_EXISTS));
+            throw resFactory.fail(TagResMsg.TAG_EXISTS);
         }
 
         saveAllTags(tags);

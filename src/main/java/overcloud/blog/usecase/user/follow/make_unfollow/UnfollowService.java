@@ -27,7 +27,7 @@ public class UnfollowService {
     @Transactional
     public Void unfollowUser(String username) {
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
         followRepository.unfollow(currentUser.getUsername(), username);
 

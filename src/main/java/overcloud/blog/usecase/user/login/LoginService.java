@@ -55,11 +55,11 @@ public class LoginService {
         String email = loginRequest.getEmail();
         String hashedPassword = loginRequest.getPassword();
         UserEntity user = authenticationService.authenticate(email, hashedPassword)
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_LOGIN_FAILED)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_LOGIN_FAILED))
                 .getUser();
 
         if (!user.isEnable()) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NON_ENABLED));
+            throw resFactory.fail(UserResMsg.USER_NON_ENABLED);
         }
 
         String accessToken = jwtUtils.encode(user.getEmail());

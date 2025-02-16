@@ -27,7 +27,7 @@ public class GetUserCountService implements IGetUserCountService {
     public Long getUsersCount() {
         Long usersCount = userRepository.getUsersCount();
         authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)));
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND));
 
         return usersCount;
     }

@@ -2,7 +2,12 @@ package overcloud.blog.usecase.user.delete_user;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import overcloud.blog.auth.service.SpringAuthenticationService;
+import overcloud.blog.entity.UserEntity;
+import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.*;
+import overcloud.blog.response.ResFactory;
+import overcloud.blog.usecase.user.common.UserResMsg;
 
 import java.util.UUID;
 
@@ -15,6 +20,8 @@ public class DeleteUserImpl implements IDeleteUser {
     private final IUserRoleRepository userRoleRepository;
     private final ITagFollowRepository tagFollowRepository;
     private final IFollowRepository followRepository;
+    private final SpringAuthenticationService authenticationService;
+    private final ResFactory resFactory;
 
     public DeleteUserImpl(IUserRepository userRepository,
                           IRefreshTokenRepository refreshTokenRepository,
@@ -22,7 +29,9 @@ public class DeleteUserImpl implements IDeleteUser {
                           ITestRepository testRepository,
                           IUserRoleRepository userRoleRepository,
                           ITagFollowRepository tagFollowRepository,
-                          IFollowRepository followRepository) {
+                          IFollowRepository followRepository,
+                          SpringAuthenticationService authenticationService,
+                          ResFactory resFactory) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.articleRepository = articleRepository;
@@ -30,12 +39,19 @@ public class DeleteUserImpl implements IDeleteUser {
         this.userRoleRepository = userRoleRepository;
         this.tagFollowRepository = tagFollowRepository;
         this.followRepository = followRepository;
+        this.authenticationService = authenticationService;
+        this.resFactory = resFactory;
     }
 
     @Override
     @Transactional
     public Void deleteUser(String userId) {
         UUID uuidUserId = UUID.fromString(userId);
+
+        UserEntity currentUser = authenticationService.getCurrentUser()
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .getUser();
+
         refreshTokenRepository.deleteByUserId(uuidUserId);
         articleRepository.deleteByUserId(uuidUserId);
         testRepository.deleteByUserId(uuidUserId);

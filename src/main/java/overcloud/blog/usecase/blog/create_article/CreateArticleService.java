@@ -60,16 +60,16 @@ public class CreateArticleService {
         Optional<Boolean> isExist = articleRepository.isTitleExist(title);
 
         if (isExist.isPresent()) {
-            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_TITLE_EXISTS));
+            throw resFactory.fail(ArticleResMsg.ARTICLE_TITLE_EXISTS);
         }
 
         List<TagEntity> tagEntities = tagRepository.findByTagIds(articleRequest.getTagList());
         if (distinctTags.size() > tagEntities.size()) {
-            throw new InvalidDataException(resFactory.fail(TagResMsg.TAG_NO_EXISTS));
+            throw resFactory.fail(TagResMsg.TAG_NO_EXISTS);
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
         ArticleEntity articleEntity = toArticleEntity(articleRequest, currentUser);
         List<ArticleTag> articleTags = toArticleTagEntity(tagEntities, articleEntity);

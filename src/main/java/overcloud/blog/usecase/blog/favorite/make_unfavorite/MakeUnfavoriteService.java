@@ -37,7 +37,7 @@ public class MakeUnfavoriteService {
     public Void makeUnfavorite(String id) {
         Optional<ArticleEntity> articleEntity = articleRepository.findById(UUID.fromString(id));
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         if (articleEntity.isPresent()) {

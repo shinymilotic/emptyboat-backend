@@ -60,7 +60,7 @@ public class ManageRoleService {
                     .name(role.getRoleName()).build();
             return Optional.of(roleRepository.saveAndFlush(roleEntity));
         } catch (Exception e) {
-            throw new InvalidDataException(resFactory.fail(RoleResMsg.ROLE_EXISTED));
+            throw resFactory.fail(RoleResMsg.ROLE_EXISTED);
         }
     }
 
@@ -70,7 +70,7 @@ public class ManageRoleService {
             String updateRoleName = role.getUpdateRoleName();
             return roleRepository.updateRoleByName(currentRoleName, updateRoleName);
         } catch (Exception e) {
-            throw new InvalidDataException(resFactory.fail(RoleResMsg.ROLE_EXISTED));
+            throw resFactory.fail(RoleResMsg.ROLE_EXISTED);
         }
     }
 
@@ -81,12 +81,12 @@ public class ManageRoleService {
 
     private void validate(ManageRoleRequest request) {
         if (request.getRoles() == null) {
-            throw new InvalidDataException(resFactory.fail(RoleResMsg.ROLE_LIST_NOT_EMPTY));
+            throw resFactory.fail(RoleResMsg.ROLE_LIST_NOT_EMPTY);
         }
 
         for (ManageRoleDto role : request.getRoles()) {
             if (role == null) {
-                throw new InvalidDataException(resFactory.fail(RoleResMsg.ROLENAME_SIZE));
+                throw resFactory.fail(RoleResMsg.ROLENAME_SIZE);
             }
         }
     }

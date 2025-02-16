@@ -53,13 +53,13 @@ public class CreateCommentService {
 
         Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
         if (articleEntities.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(CommentResMsg.COMMENT_ARTICLE_NOT_EXIST));
+            throw resFactory.fail(CommentResMsg.COMMENT_ARTICLE_NOT_EXIST);
         }
 
         ArticleEntity articleEntity = articleEntities.get();
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
         CommentEntity savedCommentEntity = saveComment(createCommentRequest, articleEntity, currentUser);
 

@@ -36,20 +36,20 @@ public class RefreshTokenService {
         Optional<String> refreshToken = readServletCookie(request, "refreshToken");
 
         if (refreshToken.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED));
+            throw resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED);
         }
 
         Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken.get());
 
         if (refreshTokenEntity.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED));
+            throw resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED);
         }
 
         String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();
         boolean isValidate = jwtUtils.validateToken(gottenRefreshToken);
 
         if (!isValidate) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED));
+            throw resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED);
         }
 
         String email = jwtUtils.getSub(refreshToken.get());

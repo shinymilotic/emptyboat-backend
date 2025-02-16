@@ -93,7 +93,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         
         LocalDateTime now = LocalDateTime.now();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         TestEntity testEntity = new TestEntity();

@@ -34,7 +34,7 @@ public class FollowService {
     public Void followUser(String username) {
         FollowEntity followEntity = new FollowEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         UserEntity followee = userRepository.findByUsername(username);

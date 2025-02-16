@@ -34,13 +34,13 @@ public class GetProfileTestServiceImpl implements GetProfileTestService {
         UserEntity userEntity = userRepository.findByUsername(username);
 
         if (userEntity == null) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND));
+            throw resFactory.fail(UserResMsg.USER_NOT_FOUND);
         }
 
         List<TestEntity> tests = testRepository.getProfileTest(userEntity.getUserId());
 
         if (tests.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));
+            throw resFactory.fail(TestResMsg.TEST_NOT_FOUND);
         }
 
         List<ProfileTestRes> profileTests = new ArrayList<>();

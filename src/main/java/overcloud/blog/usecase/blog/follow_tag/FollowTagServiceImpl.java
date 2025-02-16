@@ -31,7 +31,7 @@ public class FollowTagServiceImpl implements FollowTagService {
         UUID tagId = UUID.fromString(id);
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-            .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+            .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
             .getUser();
 
         TagFollowId tagFollowId = new TagFollowId();

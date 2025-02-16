@@ -48,7 +48,7 @@ public class UpdateUserService {
         String updateBio = updateUserDto.getBio();
         String updateImage = updateUserDto.getImage();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         currentUser.setBio(updateBio);

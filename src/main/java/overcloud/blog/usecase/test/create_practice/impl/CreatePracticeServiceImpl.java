@@ -58,17 +58,17 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         LocalDateTime now = LocalDateTime.now();
 
         if (practices == null || practices.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED));
+            throw resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED);
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         Optional<TestEntity> testEntity = testRepository.findById(testId);
 
         if (!testEntity.isPresent()) {
-            throw new InvalidDataException(resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED));
+            throw resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED);
         }
 
         PracticeEntity practiceEntity = new PracticeEntity();

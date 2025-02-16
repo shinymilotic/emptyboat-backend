@@ -42,15 +42,15 @@ public class DeleteTestServiceImpl implements DeleteTestService {
     public Void deleteTest(String id) {
         Optional<TestEntity> test = testRepository.findById(UUID.fromString(id));
         UserEntity currentUser = authenticationService.getCurrentUser()
-                        .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                        .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                         .getUser();
         
         if (test.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_NOT_FOUND));
+            throw resFactory.fail(TestResMsg.TEST_NOT_FOUND);
         }
 
         if (!currentUser.getUserId().equals(test.get().getAuthorId())) {
-            throw new InvalidDataException(resFactory.fail(TestResMsg.TEST_AUTHOR_NOT_MATCH));
+            throw resFactory.fail(TestResMsg.TEST_AUTHOR_NOT_MATCH);
         }
 
         UUID testId = test.get().getTestId();

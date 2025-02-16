@@ -58,11 +58,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 isValid = jwtUtils.validateToken(token);
             } catch (Exception e) {
-                throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
+                throw resFactory.fail(UserResMsg.AUTHORIZE_FAILED);
             }
 
             if (!isValid) {
-                throw new InvalidDataException(resFactory.fail(UserResMsg.TOKEN_TIMEOUT));
+                throw resFactory.fail(UserResMsg.TOKEN_TIMEOUT);
             }
             String email = jwtUtils.getSub(token);
             Authentication auth = authenticationProvider.getAuthentication(email);

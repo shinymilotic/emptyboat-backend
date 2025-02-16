@@ -60,11 +60,11 @@ public class RegisterService {
         String hashedPassword = authenticationService.encodePassword(registrationDto.getPassword());
 
         if (userRepository.findByUsername(username) != null) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_USERNAME_EXIST));
+            throw resFactory.fail(UserResMsg.USER_USERNAME_EXIST);
         }
 
         if (userRepository.findByEmail(email) != null) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.USER_EMAIL_EXIST));
+            throw resFactory.fail(UserResMsg.USER_EMAIL_EXIST);
         }
 
         UserEntity userEntity = UserEntity.builder()
@@ -84,7 +84,7 @@ public class RegisterService {
             roleEntitySet.add(role.get());
             savedUser.setRoles(roleEntitySet);
         } else {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
+            throw resFactory.fail(UserResMsg.AUTHORIZE_FAILED);
         }
 
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());

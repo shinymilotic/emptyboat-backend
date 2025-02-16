@@ -32,7 +32,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
     @Transactional
     public Void confirmEmail(ConfirmEmailRequest confirmToken) {
         if (confirmToken == null || !StringUtils.hasText(confirmToken.getConfirmToken())) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
+            throw resFactory.fail(UserResMsg.AUTHORIZE_FAILED);
         }
 
         Optional<UserEntity> user = refreshTokenRepository.findUserByToken(confirmToken.getConfirmToken());
@@ -40,7 +40,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
         if (user.isPresent()) {
             this.userRepository.enableUser(confirmToken.getConfirmToken());
         } else {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
+            throw resFactory.fail(UserResMsg.AUTHORIZE_FAILED);
         }
 
         return null;

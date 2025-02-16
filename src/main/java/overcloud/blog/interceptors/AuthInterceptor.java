@@ -55,7 +55,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         if (!isAuth) {
-            throw new InvalidDataException(resFactory.fail(UserResMsg.AUTHORIZE_FAILED));
+            throw resFactory.fail(UserResMsg.AUTHORIZE_FAILED);
         }
 
         return isAuth;

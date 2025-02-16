@@ -28,7 +28,7 @@ public class GetCurrentUserService {
     @Transactional(readOnly = true)
     public UserResponse getCurrentUser() {
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         return userResponseMapper.toUserResponse(currentUser);

@@ -35,12 +35,12 @@ public class MakeFavoriteService {
     public Void makeFavorite(String id) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> new InvalidDataException(resFactory.fail(UserResMsg.USER_NOT_FOUND)))
+                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         Optional<ArticleEntity> articleList = articleRepository.findById(UUID.fromString(id));
         if (articleList.isEmpty()) {
-            throw new InvalidDataException(resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS));
+            throw resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS);
         }
         ArticleEntity articleEntity = articleList.get();
         FavoriteId favoriteId = new FavoriteId();
