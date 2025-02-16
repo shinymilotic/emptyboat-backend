@@ -18,4 +18,5 @@ public class UserResMsg {
     public static final String AUTHORIZE_FAILED = "authorize.failed";
     public static final String TOKEN_TIMEOUT = "authorize.token.timeout";
     public static final String REFRESH_TOKEN_FAILED = "refresh-token.failed";
+    public static final String USER_DELETE_CURRENT = "user.delete.current-user";
 }

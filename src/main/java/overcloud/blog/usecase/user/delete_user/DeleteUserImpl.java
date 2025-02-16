@@ -52,6 +52,10 @@ public class DeleteUserImpl implements IDeleteUser {
                 .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
+        if (currentUser.getUserId().equals(uuidUserId)) {
+            throw resFactory.fail(UserResMsg.USER_DELETE_CURRENT);
+        }
+
         refreshTokenRepository.deleteByUserId(uuidUserId);
         articleRepository.deleteByUserId(uuidUserId);
         testRepository.deleteByUserId(uuidUserId);
