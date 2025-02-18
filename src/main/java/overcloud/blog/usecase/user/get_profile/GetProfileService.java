@@ -5,9 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.auth.bean.SecurityUser;
 import overcloud.blog.auth.service.SpringAuthenticationService;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -16,14 +16,14 @@ import java.util.UUID;
 public class GetProfileService {
     private final IUserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public GetProfileService(IUserRepository userRepository,
                              SpringAuthenticationService authenticationService,
-                             ResFactory resFactory) {
+                             ObjectsValidator validator) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Transactional(readOnly = true)

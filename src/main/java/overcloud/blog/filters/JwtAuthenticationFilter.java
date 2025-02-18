@@ -8,12 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import overcloud.blog.auth.service.AuthenticationProvider;
 import overcloud.blog.auth.service.JwtUtils;
 import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -22,14 +23,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String TOKEN_PREFIX = "";
     private final JwtUtils jwtUtils;
     private final AuthenticationProvider authenticationProvider;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public JwtAuthenticationFilter(JwtUtils jwtUtils,
                                    AuthenticationProvider authenticationProvider,
-                                   ResFactory resFactory) {
+                                   ObjectsValidator validator) {
         this.jwtUtils = jwtUtils;
         this.authenticationProvider = authenticationProvider;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -58,11 +59,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 isValid = jwtUtils.validateToken(token);
             } catch (Exception e) {
-                throw resFactory.fail(UserResMsg.AUTHORIZE_FAILED);
+                throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
             }
 
             if (!isValid) {
-                throw resFactory.fail(UserResMsg.TOKEN_TIMEOUT);
+                throw validator.fail(UserResMsg.TOKEN_TIMEOUT);
             }
             String email = jwtUtils.getSub(token);
             Authentication auth = authenticationProvider.getAuthentication(email);

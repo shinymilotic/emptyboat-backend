@@ -4,12 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.repository.IUserRepository;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +17,14 @@ import java.util.List;
 public class GetProfileTestServiceImpl implements GetProfileTestService {
     private final ITestRepository testRepository;
     private final IUserRepository userRepository;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public GetProfileTestServiceImpl(ITestRepository testRepository,
                                  IUserRepository userRepository,
-                                 ResFactory resFactory) {
+                                 ObjectsValidator validator) {
         this.testRepository = testRepository;
         this.userRepository = userRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -34,13 +33,13 @@ public class GetProfileTestServiceImpl implements GetProfileTestService {
         UserEntity userEntity = userRepository.findByUsername(username);
 
         if (userEntity == null) {
-            throw resFactory.fail(UserResMsg.USER_NOT_FOUND);
+            throw validator.fail(UserResMsg.USER_NOT_FOUND);
         }
 
         List<TestEntity> tests = testRepository.getProfileTest(userEntity.getUserId());
 
         if (tests.isEmpty()) {
-            throw resFactory.fail(TestResMsg.TEST_NOT_FOUND);
+            throw validator.fail(TestResMsg.TEST_NOT_FOUND);
         }
 
         List<ProfileTestRes> profileTests = new ArrayList<>();

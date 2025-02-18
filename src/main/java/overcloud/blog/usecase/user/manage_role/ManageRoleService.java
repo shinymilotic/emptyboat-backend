@@ -3,23 +3,23 @@ package overcloud.blog.usecase.user.manage_role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.repository.IRoleRepository;
 import overcloud.blog.usecase.user.common.RoleResMsg;
 import overcloud.blog.usecase.user.common.UpdateFlg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ManageRoleService {
     private final IRoleRepository roleRepository;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
-    public ManageRoleService(IRoleRepository roleRepository, ResFactory resFactory) {
+    public ManageRoleService(IRoleRepository roleRepository, ObjectsValidator validator) {
         this.roleRepository = roleRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Transactional
@@ -60,7 +60,7 @@ public class ManageRoleService {
                     .name(role.getRoleName()).build();
             return Optional.of(roleRepository.saveAndFlush(roleEntity));
         } catch (Exception e) {
-            throw resFactory.fail(RoleResMsg.ROLE_EXISTED);
+            throw validator.fail(RoleResMsg.ROLE_EXISTED);
         }
     }
 
@@ -70,7 +70,7 @@ public class ManageRoleService {
             String updateRoleName = role.getUpdateRoleName();
             return roleRepository.updateRoleByName(currentRoleName, updateRoleName);
         } catch (Exception e) {
-            throw resFactory.fail(RoleResMsg.ROLE_EXISTED);
+            throw validator.fail(RoleResMsg.ROLE_EXISTED);
         }
     }
 
@@ -81,12 +81,12 @@ public class ManageRoleService {
 
     private void validate(ManageRoleRequest request) {
         if (request.getRoles() == null) {
-            throw resFactory.fail(RoleResMsg.ROLE_LIST_NOT_EMPTY);
+            throw validator.fail(RoleResMsg.ROLE_LIST_NOT_EMPTY);
         }
 
         for (ManageRoleDto role : request.getRoles()) {
             if (role == null) {
-                throw resFactory.fail(RoleResMsg.ROLENAME_SIZE);
+                throw validator.fail(RoleResMsg.ROLENAME_SIZE);
             }
         }
     }

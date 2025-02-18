@@ -7,7 +7,6 @@ import com.github.f4b6a3.uuid.UuidCreator;
 
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.repository.ITagRepository;
@@ -22,14 +21,11 @@ import java.util.Optional;
 public class CreateTagsService {
     private final ITagRepository tagRepository;
     private final ObjectsValidator<CreateTagRequest> validator;
-    private final ResFactory resFactory;
 
     public CreateTagsService(ITagRepository tagRepository,
-                            ObjectsValidator<CreateTagRequest> validator,
-                            ResFactory resFactory) {
+                            ObjectsValidator<CreateTagRequest> validator) {
         this.tagRepository = tagRepository;
         this.validator = validator;
-        this.resFactory = resFactory;
     }
 
     @Transactional
@@ -43,7 +39,7 @@ public class CreateTagsService {
 
         List<TagEntity> tagEntities = tagRepository.findByTagIds(createTagRequest.getTags());
         if (tagEntities.size() >= tags.size()) {
-            throw resFactory.fail(TagResMsg.TAG_EXISTS);
+            throw validator.fail(TagResMsg.TAG_EXISTS);
         }
 
         saveAllTags(tags);

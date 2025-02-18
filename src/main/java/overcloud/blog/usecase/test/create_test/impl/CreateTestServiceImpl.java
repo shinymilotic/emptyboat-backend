@@ -7,7 +7,6 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.usecase.test.create_test.request.TestRequest;
 import overcloud.blog.usecase.test.create_test.response.Answer;
 import overcloud.blog.usecase.test.create_test.response.ChoiceQuestion;
@@ -29,20 +28,17 @@ public class CreateTestServiceImpl implements CreateTestService {
     private final ITestRepository testRepository;
     private final IQuestionRepository questionRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
     private final IChoiceAnswerRepository choiceAnswerRepository;
     private final ObjectsValidator validator;
 
     public CreateTestServiceImpl(ITestRepository testRepository,
                                  IQuestionRepository questionRepository,
                                  SpringAuthenticationService authenticationService,
-                                 ResFactory resFactory,
                                  ObjectsValidator validator,
                                  IChoiceAnswerRepository choiceAnswerRepository) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.authenticationService = authenticationService;
-        this.resFactory = resFactory;
         this.validator = validator;
         this.choiceAnswerRepository = choiceAnswerRepository;
     }
@@ -93,7 +89,7 @@ public class CreateTestServiceImpl implements CreateTestService {
         
         LocalDateTime now = LocalDateTime.now();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         TestEntity testEntity = new TestEntity();

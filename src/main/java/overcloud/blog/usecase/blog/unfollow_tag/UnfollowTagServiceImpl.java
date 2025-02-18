@@ -4,30 +4,30 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.TagFollowId;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.ITagFollowRepository;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.UUID;
 
 @Service
 public class UnfollowTagServiceImpl implements UnfollowTagService {
     private final ITagFollowRepository tagFollowRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public UnfollowTagServiceImpl(ITagFollowRepository tagFollowRepository,
                                   SpringAuthenticationService authenticationService,
-                                  ResFactory resFactory) {
+                                  ObjectsValidator validator) {
         this.tagFollowRepository = tagFollowRepository;
         this.authenticationService = authenticationService;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
     public Void unfollowTag(String tagId) {
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         TagFollowId tagFollowId = new TagFollowId();

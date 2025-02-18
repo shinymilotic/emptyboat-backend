@@ -6,22 +6,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.List;
 import java.util.Map;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-
     private final Map<String, AuthStrategy> authStrategy;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
-    public AuthInterceptor(Map<String, AuthStrategy> authStrategy, ResFactory resFactory) {
+    public AuthInterceptor(Map<String, AuthStrategy> authStrategy, ObjectsValidator validator) {
         this.authStrategy = authStrategy;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         if (!isAuth) {
-            throw resFactory.fail(UserResMsg.AUTHORIZE_FAILED);
+            throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
         }
 
         return isAuth;

@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.ArticleTag;
@@ -32,20 +31,17 @@ public class UpdateArticleService {
     private final ITagRepository tagRepository;
     private final IArticleTagRepository articleTagRepository;
     private final ObjectsValidator<UpdateArticleRequest> validator;
-    private final ResFactory resFactory;
 
     public UpdateArticleService(SpringAuthenticationService authenticationService,
                                 IArticleRepository articleRepository,
                                 ITagRepository tagRepository,
                                 IArticleTagRepository articleTagRepository,
-                                ObjectsValidator<UpdateArticleRequest> validator,
-                                ResFactory resFactory) {
+                                ObjectsValidator<UpdateArticleRequest> validator) {
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
         this.tagRepository = tagRepository;
         this.articleTagRepository = articleTagRepository;
         this.validator = validator;
-        this.resFactory = resFactory;
     }
 
     @Transactional
@@ -59,7 +55,7 @@ public class UpdateArticleService {
         List<TagEntity> tagEntities = tagRepository.findByTagIds(updateArticleRequest.getTagList());
         
         if (articleEntities.isEmpty()) {
-            throw resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS);
+            throw validator.fail(ArticleResMsg.ARTICLE_NO_EXISTS);
         }
         ArticleEntity articleEntity = articleEntities.get();
 
@@ -69,7 +65,7 @@ public class UpdateArticleService {
             Optional<TagEntity> tagEntity = isTagExist(tagId, tagEntities);
 
             if (tagEntity.isEmpty()) {
-                throw resFactory.fail(TagResMsg.TAG_NO_EXISTS);
+                throw validator.fail(TagResMsg.TAG_NO_EXISTS);
             } else {
                 ArticleTagId articleTagId = new ArticleTagId(articleEntity.getArticleId(), tagEntity.get().getTagId());
                 articleTags.add(new ArticleTag(articleTagId));
@@ -77,11 +73,11 @@ public class UpdateArticleService {
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
        if (!currentUser.getUserId().equals(articleEntity.getAuthorId())) {
-           throw resFactory.fail(ArticleResMsg.ARTICLE_UPDATE_NO_AUTHORIZATION);
+           throw validator.fail(ArticleResMsg.ARTICLE_UPDATE_NO_AUTHORIZATION);
        }
 
         LocalDateTime now = LocalDateTime.now();

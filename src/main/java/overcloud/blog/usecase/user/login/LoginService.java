@@ -11,7 +11,6 @@ import overcloud.blog.auth.service.JwtUtils;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.UserEntity;
@@ -29,20 +28,17 @@ public class LoginService {
     private final ObjectsValidator<LoginRequest> validator;
     private final UserResponseMapper userResponseMapper;
     private final JpaRefreshTokenRepository refreshTokenRepository;
-    private final ResFactory resFactory;
 
     public LoginService(SpringAuthenticationService authenticationService,
                         JwtUtils jwtUtils,
                         ObjectsValidator<LoginRequest> validator,
                         UserResponseMapper userResponseMapper,
-                        JpaRefreshTokenRepository refreshTokenRepository,
-                        ResFactory resFactory) {
+                        JpaRefreshTokenRepository refreshTokenRepository) {
         this.authenticationService = authenticationService;
         this.jwtUtils = jwtUtils;
         this.validator = validator;
         this.userResponseMapper = userResponseMapper;
         this.refreshTokenRepository = refreshTokenRepository;
-        this.resFactory = resFactory;
     }
 
     @Transactional
@@ -55,11 +51,11 @@ public class LoginService {
         String email = loginRequest.getEmail();
         String hashedPassword = loginRequest.getPassword();
         UserEntity user = authenticationService.authenticate(email, hashedPassword)
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_LOGIN_FAILED))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_LOGIN_FAILED))
                 .getUser();
 
         if (!user.isEnable()) {
-            throw resFactory.fail(UserResMsg.USER_NON_ENABLED);
+            throw validator.fail(UserResMsg.USER_NON_ENABLED);
         }
 
         String accessToken = jwtUtils.encode(user.getEmail());

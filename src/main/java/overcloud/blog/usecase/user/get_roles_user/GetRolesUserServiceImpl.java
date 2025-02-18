@@ -3,13 +3,13 @@ package overcloud.blog.usecase.user.get_roles_user;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IRoleRepository;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,14 +18,14 @@ import java.util.Set;
 public class GetRolesUserServiceImpl implements GetRolesUserService {
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public GetRolesUserServiceImpl(IUserRepository userRepository,
                                     IRoleRepository roleRepository,
-                                    ResFactory resFactory) {
+                                    ObjectsValidator validator) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class GetRolesUserServiceImpl implements GetRolesUserService {
         List<RoleEntity> roles = roleRepository.findAll();
 
         if (user == null) {
-            throw resFactory.fail(UserResMsg.USER_NOT_FOUND);
+            throw validator.fail(UserResMsg.USER_NOT_FOUND);
         }
         Set<RoleEntity> rolesUser = user.getRoles();
 

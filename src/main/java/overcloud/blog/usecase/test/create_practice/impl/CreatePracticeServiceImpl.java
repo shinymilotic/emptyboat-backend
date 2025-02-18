@@ -5,8 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.*;
-import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.repository.IPracticeOpenAnswerRepository;
 import overcloud.blog.repository.IPracticeChoiceRepository;
 import overcloud.blog.repository.IPracticeRepository;
@@ -20,6 +18,7 @@ import overcloud.blog.usecase.test.create_practice.request.PracticeRequest;
 import overcloud.blog.usecase.test.create_practice.response.CreatePracticeResponse;
 import overcloud.blog.usecase.test.create_practice.CreatePracticeService;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,20 +33,20 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
     private final SpringAuthenticationService authenticationService;
     private final IPracticeChoiceRepository practiceChoiceRepository;
     private final IPracticeOpenAnswerRepository openAnswerRepository;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     CreatePracticeServiceImpl(IPracticeRepository practiceRepository,
                               SpringAuthenticationService authenticationService,
                               ITestRepository testRepository,
                               IPracticeChoiceRepository practiceChoiceRepository,
                               IPracticeOpenAnswerRepository openAnswerRepository,
-                              ResFactory resFactory) {
+                              ObjectsValidator validator) {
         this.practiceRepository = practiceRepository;
         this.authenticationService = authenticationService;
         this.testRepository = testRepository;
         this.practiceChoiceRepository = practiceChoiceRepository;
         this.openAnswerRepository = openAnswerRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -58,17 +57,17 @@ public class CreatePracticeServiceImpl implements CreatePracticeService {
         LocalDateTime now = LocalDateTime.now();
 
         if (practices == null || practices.isEmpty()) {
-            throw resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED);
+            throw validator.fail(PracticeResMsg.PRACTICE_CREATE_FAILED);
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         Optional<TestEntity> testEntity = testRepository.findById(testId);
 
-        if (!testEntity.isPresent()) {
-            throw resFactory.fail(PracticeResMsg.PRACTICE_CREATE_FAILED);
+        if (testEntity.isEmpty()) {
+            throw validator.fail(PracticeResMsg.PRACTICE_CREATE_FAILED);
         }
 
         PracticeEntity practiceEntity = new PracticeEntity();

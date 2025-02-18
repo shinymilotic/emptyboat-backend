@@ -1,16 +1,15 @@
 package overcloud.blog.usecase.blog.get_article_list;
 
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.util.StringUtils;
 import overcloud.blog.auth.bean.SecurityUser;
 import overcloud.blog.auth.service.SpringAuthenticationService;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +20,14 @@ import java.util.UUID;
 public class GetArticleListService {
     private final IArticleRepository articleRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public GetArticleListService(IArticleRepository articleRepository,
                                  SpringAuthenticationService authenticationService,
-                                 ResFactory resFactory) {
+                                 ObjectsValidator validator) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Transactional(readOnly = true)

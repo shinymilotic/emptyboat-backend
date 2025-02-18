@@ -15,7 +15,6 @@ import java.util.Date;
 @Component
 public class JwtUtils {
     private final Long validAccessTokenTime;
-
     private final Long validRefreshTokenSeconds;
     private final Key key;
 

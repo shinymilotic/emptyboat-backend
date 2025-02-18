@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IArticleRepository;
@@ -30,20 +29,17 @@ public class CreateArticleService {
     private final IArticleRepository articleRepository;
     private final ObjectsValidator<ArticleRequest> validator;
     private final IArticleTagRepository articleTagRepository;
-    private final ResFactory resFactory;
 
     public CreateArticleService(SpringAuthenticationService authenticationService,
                                 ITagRepository tagRepository,
                                 IArticleRepository articleRepository,
                                 ObjectsValidator<ArticleRequest> validator,
-                                IArticleTagRepository articleTagRepository,
-                                ResFactory resFactory) {
+                                IArticleTagRepository articleTagRepository) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;
         this.articleRepository = articleRepository;
         this.validator = validator;
         this.articleTagRepository = articleTagRepository;
-        this.resFactory = resFactory;
     }
 
     @Transactional
@@ -60,16 +56,16 @@ public class CreateArticleService {
         Optional<Boolean> isExist = articleRepository.isTitleExist(title);
 
         if (isExist.isPresent()) {
-            throw resFactory.fail(ArticleResMsg.ARTICLE_TITLE_EXISTS);
+            throw validator.fail(ArticleResMsg.ARTICLE_TITLE_EXISTS);
         }
 
         List<TagEntity> tagEntities = tagRepository.findByTagIds(articleRequest.getTagList());
         if (distinctTags.size() > tagEntities.size()) {
-            throw resFactory.fail(TagResMsg.TAG_NO_EXISTS);
+            throw validator.fail(TagResMsg.TAG_NO_EXISTS);
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
         ArticleEntity articleEntity = toArticleEntity(articleRequest, currentUser);
         List<ArticleTag> articleTags = toArticleTagEntity(tagEntities, articleEntity);

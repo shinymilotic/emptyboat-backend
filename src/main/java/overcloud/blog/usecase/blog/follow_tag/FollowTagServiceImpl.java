@@ -7,21 +7,20 @@ import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.TagFollowEntity;
 import overcloud.blog.entity.TagFollowId;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.ITagFollowRepository;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 @Service
 public class FollowTagServiceImpl implements FollowTagService {
     private final ITagFollowRepository tagFollowRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public FollowTagServiceImpl(ITagFollowRepository tagFollowRepository,
                                SpringAuthenticationService authenticationService,
-                               ResFactory resFactory) {
-        this.resFactory = resFactory;
+                                ObjectsValidator validator) {
+        this.validator = validator;
         this.authenticationService = authenticationService;
         this.tagFollowRepository = tagFollowRepository;
     }
@@ -31,7 +30,7 @@ public class FollowTagServiceImpl implements FollowTagService {
         UUID tagId = UUID.fromString(id);
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-            .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+            .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
             .getUser();
 
         TagFollowId tagFollowId = new TagFollowId();

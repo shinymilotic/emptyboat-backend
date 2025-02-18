@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.ChoiceAnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
@@ -25,7 +24,6 @@ import overcloud.blog.usecase.user.common.UpdateFlg;
 @Service
 public class UpdateTestServiceImpl implements UpdateTestService {
     private final ObjectsValidator<TestUpdateRequest> validator;
-    private final ResFactory resFactory;
     private final ITestRepository testRepo;
     private final IQuestionRepository questionRepo;
     private final IChoiceAnswerRepository choiceAnswerRepo;
@@ -33,14 +31,12 @@ public class UpdateTestServiceImpl implements UpdateTestService {
     private final IPracticeChoiceRepository practiceChoiceRepo;
 
     public UpdateTestServiceImpl(ObjectsValidator<TestUpdateRequest> validator,
-            ResFactory resFactory,
             ITestRepository testRepo,
             IQuestionRepository questionRepo,
             IChoiceAnswerRepository choiceAnswerRepo,
             IPracticeOpenAnswerRepository practiceOpenAnswerRepo,
             IPracticeChoiceRepository practiceChoiceRepo) {
         this.validator = validator;
-        this.resFactory = resFactory;
         this.testRepo = testRepo;
         this.questionRepo = questionRepo;
         this.choiceAnswerRepo = choiceAnswerRepo;

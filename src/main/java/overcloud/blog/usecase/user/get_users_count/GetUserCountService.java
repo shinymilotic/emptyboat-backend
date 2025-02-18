@@ -3,23 +3,22 @@ package overcloud.blog.usecase.user.get_users_count;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.IUserRepository;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 @Service
 public class GetUserCountService implements IGetUserCountService {
     private final IUserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public GetUserCountService(IUserRepository userRepository,
                                SpringAuthenticationService authenticationService,
-                               ResFactory resFactory) {
+                               ObjectsValidator validator) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -27,7 +26,7 @@ public class GetUserCountService implements IGetUserCountService {
     public Long getUsersCount() {
         Long usersCount = userRepository.getUsersCount();
         authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND));
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND));
 
         return usersCount;
     }

@@ -8,7 +8,6 @@ import overcloud.blog.auth.service.JwtUtils;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.RoleEntity;
@@ -29,15 +28,13 @@ public class RegisterService {
     private final ObjectsValidator<RegisterRequest> validator;
     private final EmailService emailService;
     private final JpaRefreshTokenRepository refreshTokenRepository;
-    private final ResFactory resFactory;
 
     public RegisterService(IUserRepository userRepository, IRoleRepository roleRepository,
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
                            ObjectsValidator<RegisterRequest> validator,
                            EmailService emailService,
-                           JpaRefreshTokenRepository refreshTokenRepository,
-                           ResFactory resFactory) {
+                           JpaRefreshTokenRepository refreshTokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticationService = authenticationService;
@@ -45,7 +42,6 @@ public class RegisterService {
         this.validator = validator;
         this.emailService = emailService;
         this.refreshTokenRepository = refreshTokenRepository;
-        this.resFactory = resFactory;
     }
 
     @Transactional
@@ -60,11 +56,11 @@ public class RegisterService {
         String hashedPassword = authenticationService.encodePassword(registrationDto.getPassword());
 
         if (userRepository.findByUsername(username) != null) {
-            throw resFactory.fail(UserResMsg.USER_USERNAME_EXIST);
+            throw validator.fail(UserResMsg.USER_USERNAME_EXIST);
         }
 
         if (userRepository.findByEmail(email) != null) {
-            throw resFactory.fail(UserResMsg.USER_EMAIL_EXIST);
+            throw validator.fail(UserResMsg.USER_EMAIL_EXIST);
         }
 
         UserEntity userEntity = UserEntity.builder()
@@ -84,7 +80,7 @@ public class RegisterService {
             roleEntitySet.add(role.get());
             savedUser.setRoles(roleEntitySet);
         } else {
-            throw resFactory.fail(UserResMsg.AUTHORIZE_FAILED);
+            throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
         }
 
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());

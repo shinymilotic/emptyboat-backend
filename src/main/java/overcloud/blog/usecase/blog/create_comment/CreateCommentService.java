@@ -8,7 +8,6 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.CommentEntity;
@@ -29,18 +28,15 @@ public class CreateCommentService {
     private final ICommentRepository commentRepository;
     private final SpringAuthenticationService authenticationService;
     private final ObjectsValidator<CreateCommentRequest> validator;
-    private final ResFactory resFactory;
 
     public CreateCommentService(IArticleRepository articleRepository,
                                 ICommentRepository commentRepository,
                                 SpringAuthenticationService authenticationService,
-                                ObjectsValidator<CreateCommentRequest> validator,
-                                ResFactory resFactory) {
+                                ObjectsValidator<CreateCommentRequest> validator) {
         this.articleRepository = articleRepository;
         this.commentRepository = commentRepository;
         this.authenticationService = authenticationService;
         this.validator = validator;
-        this.resFactory = resFactory;
     }
 
     @Transactional
@@ -53,13 +49,13 @@ public class CreateCommentService {
 
         Optional<ArticleEntity> articleEntities = articleRepository.findById(UUID.fromString(id));
         if (articleEntities.isEmpty()) {
-            throw resFactory.fail(CommentResMsg.COMMENT_ARTICLE_NOT_EXIST);
+            throw validator.fail(CommentResMsg.COMMENT_ARTICLE_NOT_EXIST);
         }
 
         ArticleEntity articleEntity = articleEntities.get();
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
         CommentEntity savedCommentEntity = saveComment(createCommentRequest, articleEntity, currentUser);
 

@@ -4,13 +4,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.auth.service.SpringAuthenticationService;
-import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.*;
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.IFavoriteRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,28 +19,28 @@ public class MakeFavoriteService {
     private final IFavoriteRepository favoriteRepository;
     private final SpringAuthenticationService authenticationService;
     private final IArticleRepository articleRepository;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public MakeFavoriteService(IFavoriteRepository favoriteRepository,
                                SpringAuthenticationService authenticationService,
                                IArticleRepository articleRepository,
-                               ResFactory resFactory) {
+                               ObjectsValidator validator) {
         this.favoriteRepository = favoriteRepository;
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Transactional
     public Void makeFavorite(String id) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         Optional<ArticleEntity> articleList = articleRepository.findById(UUID.fromString(id));
         if (articleList.isEmpty()) {
-            throw resFactory.fail(ArticleResMsg.ARTICLE_NO_EXISTS);
+            throw validator.fail(ArticleResMsg.ARTICLE_NO_EXISTS);
         }
         ArticleEntity articleEntity = articleList.get();
         FavoriteId favoriteId = new FavoriteId();

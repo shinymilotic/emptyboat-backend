@@ -3,11 +3,12 @@ package overcloud.blog.usecase.user.get_users;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,14 +16,14 @@ import java.util.stream.Collectors;
 public class GetUserListService {
     private final IUserRepository userRepository;
     private final UserResponseMapper userResponseMapper;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public GetUserListService(IUserRepository userRepository,
                               UserResponseMapper userResponseMapper,
-                              ResFactory resFactory) {
+                              ObjectsValidator validator) {
         this.userRepository = userRepository;
         this.userResponseMapper = userResponseMapper;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Transactional(readOnly = true)

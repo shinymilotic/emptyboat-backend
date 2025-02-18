@@ -3,16 +3,16 @@ package overcloud.blog.usecase.blog.get_tags;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.Tuple;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.ITagRepository;
 import overcloud.blog.usecase.blog.common.ITagResponse;
 import overcloud.blog.usecase.blog.common.TagFollowingResponse;
 import overcloud.blog.usecase.blog.common.TagResponse;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,14 +20,14 @@ import java.util.UUID;
 @Service
 public class GetTagsService {
     private final ITagRepository tagRepository;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
     private final SpringAuthenticationService authenticationService;
 
     public GetTagsService(ITagRepository tagRepository,
-                        ResFactory resFactory, 
+                          ObjectsValidator validator,
                         SpringAuthenticationService authenticationService) {
         this.tagRepository = tagRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
         this.authenticationService = authenticationService;
     }
 
@@ -45,7 +45,7 @@ public class GetTagsService {
             }
         } else {
             UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
             List<Tuple> tags = tagRepository.findAllWithFollowing(currentUser.getUserId());

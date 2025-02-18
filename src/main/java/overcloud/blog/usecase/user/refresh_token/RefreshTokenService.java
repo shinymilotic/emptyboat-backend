@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.auth.service.JwtUtils;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.IRefreshTokenRepository;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.RefreshTokenEntity;
-import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,12 +20,12 @@ import java.util.UUID;
 public class RefreshTokenService {
     private final JwtUtils jwtUtils;
     private final IRefreshTokenRepository refreshTokenRepository;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public RefreshTokenService(JwtUtils jwtUtils,
         IRefreshTokenRepository refreshTokenRepository,
-        ResFactory resFactory) {
-        this.resFactory = resFactory;
+        ObjectsValidator validator) {
+        this.validator = validator;
         this.jwtUtils = jwtUtils;
         this.refreshTokenRepository = refreshTokenRepository;
     }
@@ -36,20 +35,20 @@ public class RefreshTokenService {
         Optional<String> refreshToken = readServletCookie(request, "refreshToken");
 
         if (refreshToken.isEmpty()) {
-            throw resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED);
+            throw validator.fail(UserResMsg.REFRESH_TOKEN_FAILED);
         }
 
         Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken.get());
 
         if (refreshTokenEntity.isEmpty()) {
-            throw resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED);
+            throw validator.fail(UserResMsg.REFRESH_TOKEN_FAILED);
         }
 
         String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();
         boolean isValidate = jwtUtils.validateToken(gottenRefreshToken);
 
         if (!isValidate) {
-            throw resFactory.fail(UserResMsg.REFRESH_TOKEN_FAILED);
+            throw validator.fail(UserResMsg.REFRESH_TOKEN_FAILED);
         }
 
         String email = jwtUtils.getSub(refreshToken.get());

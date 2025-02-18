@@ -4,10 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.*;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.util.UUID;
 
@@ -21,7 +20,7 @@ public class DeleteUserImpl implements IDeleteUser {
     private final ITagFollowRepository tagFollowRepository;
     private final IFollowRepository followRepository;
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     public DeleteUserImpl(IUserRepository userRepository,
                           IRefreshTokenRepository refreshTokenRepository,
@@ -31,7 +30,7 @@ public class DeleteUserImpl implements IDeleteUser {
                           ITagFollowRepository tagFollowRepository,
                           IFollowRepository followRepository,
                           SpringAuthenticationService authenticationService,
-                          ResFactory resFactory) {
+                          ObjectsValidator validator) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.articleRepository = articleRepository;
@@ -40,7 +39,7 @@ public class DeleteUserImpl implements IDeleteUser {
         this.tagFollowRepository = tagFollowRepository;
         this.followRepository = followRepository;
         this.authenticationService = authenticationService;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -49,11 +48,11 @@ public class DeleteUserImpl implements IDeleteUser {
         UUID uuidUserId = UUID.fromString(userId);
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         if (currentUser.getUserId().equals(uuidUserId)) {
-            throw resFactory.fail(UserResMsg.USER_DELETE_CURRENT);
+            throw validator.fail(UserResMsg.USER_DELETE_CURRENT);
         }
 
         refreshTokenRepository.deleteByUserId(uuidUserId);

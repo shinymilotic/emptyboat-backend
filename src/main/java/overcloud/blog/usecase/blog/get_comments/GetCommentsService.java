@@ -3,11 +3,11 @@ package overcloud.blog.usecase.blog.get_comments;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.ICommentRepository;
 import overcloud.blog.usecase.blog.common.AuthorResposne;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,11 +17,9 @@ import java.util.UUID;
 @Service
 public class GetCommentsService {
     private final ICommentRepository commentRepository;
-    private final ResFactory resFactory;
 
-    public GetCommentsService(ICommentRepository commentRepository, ResFactory resFactory) {
+    public GetCommentsService(ICommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-        this.resFactory = resFactory;
     }
 
     @Transactional(readOnly = true)

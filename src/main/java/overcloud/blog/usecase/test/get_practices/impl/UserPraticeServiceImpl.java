@@ -3,8 +3,6 @@ package overcloud.blog.usecase.test.get_practices.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.Tuple;
-import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.utils.datetime.DateTimeService;
 import overcloud.blog.repository.IPracticeRepository;
@@ -12,6 +10,8 @@ import overcloud.blog.repository.IUserRepository;
 import overcloud.blog.usecase.test.get_practices.response.PracticeResponse;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +22,16 @@ public class UserPraticeServiceImpl implements UserPracticeService {
     private final IPracticeRepository practiceRepository;
     private final IUserRepository userRepository;
     private final DateTimeService dateTimeService;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
     UserPraticeServiceImpl(IPracticeRepository practiceRepository,
                            IUserRepository userRepository,
                            DateTimeService dateTimeService,
-                           ResFactory resFactory) {
+                           ObjectsValidator validator) {
         this.practiceRepository = practiceRepository;
         this.userRepository = userRepository;
         this.dateTimeService = dateTimeService;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UserPraticeServiceImpl implements UserPracticeService {
     public List<PracticeResponse> getUserPractice(String username) {
         UserEntity user = userRepository.findByUsername(username);
         if (user == null) {
-            throw resFactory.fail(UserResMsg.USER_NOT_FOUND);
+            throw validator.fail(UserResMsg.USER_NOT_FOUND);
         }
 
         List<Tuple> data = practiceRepository.findByTesterId(user.getUserId());

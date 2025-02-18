@@ -2,23 +2,23 @@ package overcloud.blog.usecase.test.get_test.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.get_test.response.TestResponse;
 import overcloud.blog.usecase.test.get_test.GetTestService;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class GetTestServiceImpl implements GetTestService {
     private final ITestRepository testRepository;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
 
-    public GetTestServiceImpl(ITestRepository testRepository, ResFactory resFactory) {
+    public GetTestServiceImpl(ITestRepository testRepository, ObjectsValidator validator) {
         this.testRepository = testRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class GetTestServiceImpl implements GetTestService {
         Optional<TestResponse> res = this.testRepository.getTestResponse(UUID.fromString(id));
 
         if (res.isEmpty()) {
-            throw resFactory.fail(TestResMsg.TEST_NOT_FOUND);
+            throw validator.fail(TestResMsg.TEST_NOT_FOUND);
         }
         
         return res.get();

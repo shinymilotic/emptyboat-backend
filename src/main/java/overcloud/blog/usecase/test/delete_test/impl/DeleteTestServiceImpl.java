@@ -3,9 +3,7 @@ package overcloud.blog.usecase.test.delete_test.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.IQuestionRepository;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IPracticeRepository;
@@ -13,6 +11,8 @@ import overcloud.blog.repository.ITestRepository;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.delete_test.DeleteTestService;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,19 +21,19 @@ public class DeleteTestServiceImpl implements DeleteTestService {
     private final ITestRepository testRepository;
     private final IPracticeRepository practiceRepository;
     private final IQuestionRepository questionRepository;
-    private final ResFactory resFactory ;
+    private final ObjectsValidator validator ;
     private final SpringAuthenticationService authenticationService;
 
     DeleteTestServiceImpl(
             ITestRepository testRepository,
             IPracticeRepository practiceRepository,
             IQuestionRepository questionRepository,
-            ResFactory resFactory,
+            ObjectsValidator validator,
             SpringAuthenticationService authenticationService) {
         this.testRepository = testRepository;
         this.practiceRepository = practiceRepository;
         this.questionRepository = questionRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
         this.authenticationService = authenticationService;
     }
 
@@ -42,15 +42,15 @@ public class DeleteTestServiceImpl implements DeleteTestService {
     public Void deleteTest(String id) {
         Optional<TestEntity> test = testRepository.findById(UUID.fromString(id));
         UserEntity currentUser = authenticationService.getCurrentUser()
-                        .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                        .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                         .getUser();
         
         if (test.isEmpty()) {
-            throw resFactory.fail(TestResMsg.TEST_NOT_FOUND);
+            throw validator.fail(TestResMsg.TEST_NOT_FOUND);
         }
 
         if (!currentUser.getUserId().equals(test.get().getAuthorId())) {
-            throw resFactory.fail(TestResMsg.TEST_AUTHOR_NOT_MATCH);
+            throw validator.fail(TestResMsg.TEST_AUTHOR_NOT_MATCH);
         }
 
         UUID testId = test.get().getTestId();

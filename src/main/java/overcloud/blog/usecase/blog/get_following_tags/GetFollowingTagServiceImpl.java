@@ -6,23 +6,22 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.repository.ITagRepository;
-import overcloud.blog.response.ResFactory;
 import overcloud.blog.usecase.user.common.UserResMsg;
+import overcloud.blog.utils.validation.ObjectsValidator;
 
 @Service
 public class GetFollowingTagServiceImpl implements GetFollowingTagService {
     private final SpringAuthenticationService authenticationService;
-    private final ResFactory resFactory;
+    private final ObjectsValidator validator;
     private final ITagRepository tagRepository;
 
     public GetFollowingTagServiceImpl(SpringAuthenticationService authenticationService,
                                      ITagRepository tagRepository,
-                                     ResFactory resFactory) {
+                                     ObjectsValidator validator) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;
-        this.resFactory = resFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -30,7 +29,7 @@ public class GetFollowingTagServiceImpl implements GetFollowingTagService {
         List<FollowingTagResponse> response = new ArrayList<>();
 
         UserEntity currentUser = authenticationService.getCurrentUser()
-                .orElseThrow(() -> resFactory.fail(UserResMsg.USER_NOT_FOUND))
+                .orElseThrow(() -> validator.fail(UserResMsg.USER_NOT_FOUND))
                 .getUser();
 
         List<TagEntity> followingTags = tagRepository.findFollowingTags(currentUser.getUserId());
