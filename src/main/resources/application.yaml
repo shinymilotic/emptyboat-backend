@@ -18,6 +18,9 @@ web:
     allowed-headers: "Requestor-Type"
     exposed-headers: "X-Get-Header"
 spring:
+  web:
+    resources:
+      static-locations: file:/home/overcloud/images
 #  datasource:
 #    hikari:
 #      minimumIdle: 2
@@ -81,3 +84,6 @@ logging:
               core: DEBUG
         hibernate:
           type: trace
+
+file:
+  upload-dir: /home/overcloud/images

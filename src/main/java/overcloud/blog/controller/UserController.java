@@ -25,6 +25,8 @@ import overcloud.blog.usecase.user.register.RegisterService;
 import overcloud.blog.usecase.user.update_user.UpdateUserRequest;
 import overcloud.blog.usecase.user.update_user.UpdateUserService;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -147,7 +149,7 @@ public class UserController {
     }
 
     @PostMapping("/admin/users")
-    public Void adminCreateUser(@RequestBody AdminCreateUserRequest request) {
+    public Void adminCreateUser(@RequestBody AdminCreateUserRequest request) throws IOException {
         return adminCreateUser.adminCreateUser(request);
     }
 
