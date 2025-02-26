@@ -52,7 +52,10 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("from ");
         query.append("(select articles.article_id, body, title, description, created_at, author_id ");
         query.append("from articles ");
-        query.append(ifTag("left join article_tags on articles.article_id = article_tags.article_id left join tags on tags.tag_id = article_tags.tag_id", tagId));
+        query.append("left join article_tags ON articles.article_id = article_tags.article_id ");
+        query.append("inner join tag_follows tf ON tf.tag_id = article_tags.tag_id ");
+        query.append("where tf.follower_id = uuid(:currentUserId) ");
+        query.append(ifTag(" inner join tags on tags.tag_id = article_tags.tag_id", tagId));
         StringBuilder articleWhereStatement = new StringBuilder();
         if (StringUtils.hasText(lastArticleId)) {
             articleWhereStatement.append("  articles.article_id < uuid(:lastArticleId) ");
@@ -266,7 +269,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     private List<ArticleSummary> toArticleSummaryList(List<Tuple> articlesData) {
         List<ArticleSummary> articleSummaries = new ArrayList<>();
         UUID previousArticleId = null;
-        Map<UUID, ArticleSummary> articleSummaryMap = new HashMap<>();
+        Map<UUID, List<TagResponse>> articleSummaryMap = new HashMap<>();
         for (Tuple data : articlesData) {
             UUID articleId = (UUID) data.get("article_id");
             UUID tagId = (UUID) data.get("tagId");
@@ -274,8 +277,13 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             TagResponse tag = new TagResponse();
             tag.setId(tagId.toString());
             tag.setName(tagName);
+
             if (articleId.equals(previousArticleId)) {
-                articleSummaryMap.get(articleId).getTag().add(tag);
+                articleSummaryMap.get(articleId).add(tag);
+            } else {
+                List<TagResponse> tagList = new ArrayList<>();
+                tagList.add(tag);
+                articleSummaryMap.put(articleId, tagList);
             }
 
             ArticleSummary summary = new ArticleSummary();
@@ -283,9 +291,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             summary.setTitle((String) data.get("title"));
             summary.setDescription((String) data.get("description"));
             summary.setBody((String) data.get("body"));
-            List<TagResponse> tagList = new ArrayList<>();
-            tagList.add(tag);
-            summary.setTag(tagList);
+            summary.setTag(articleSummaryMap.get(articleId));
             summary.setCreatedAt((Timestamp) data.get("createdAt"));
             summary.setFavorited((Boolean) data.get("favorited"));
             summary.setFavoritesCount((Long) data.get("favoritesCount"));
@@ -295,7 +301,6 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             summary.setFollowing((Boolean) data.get("following"));
             summary.setFollowersCount((Long) data.get("followersCount"));
             articleSummaries.add(summary);
-            articleSummaryMap.put(articleId, summary);
             previousArticleId = articleId;
         }
         return articleSummaries;
