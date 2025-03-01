@@ -6,7 +6,6 @@ import jakarta.persistence.Tuple;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.IArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
@@ -54,8 +53,8 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("from articles ");
         query.append("left join article_tags ON articles.article_id = article_tags.article_id ");
         query.append("inner join tag_follows tf ON tf.tag_id = article_tags.tag_id ");
-        query.append(ifTag(" LEFT join tags on tags.tag_id = article_tags.tag_id ", tagId));
-        query.append(" where tf.follower_id = uuid(:currentUserId) ");
+        query.append("inner join tags on tags.tag_id = article_tags.tag_id ");
+        query.append("where tf.follower_id = uuid(:currentUserId) ");
 
         StringBuilder articleWhereStatement = new StringBuilder();
         if (StringUtils.hasText(lastArticleId)) {
@@ -63,9 +62,9 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         }
         articleWhereStatement.append(ifTag(operator(articleWhereStatement, " AND "), tagId));
         articleWhereStatement.append(ifTag(" tags.tag_id = :tag ", tagId));
-        articleWhereStatement.append(ifTag(" GROUP BY articles.article_id ", tagId));
         query.append(operator(articleWhereStatement, " AND "));
         query.append(articleWhereStatement);
+        query.append(" GROUP BY articles.article_id ");
 
         query.append(" ORDER BY articles.article_id DESC ");
         query.append(" limit :limit) a ");
@@ -95,7 +94,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("fa.article_id = a.article_id ");
         query.append("left join article_tags at2 on ");
         query.append("a.article_id = at2.article_id ");
-        query.append("left join tags t on ");
+        query.append("inner join tags t on ");
         query.append("t.tag_id = at2.tag_id ");
 
         StringBuilder whereStatement = new StringBuilder();
