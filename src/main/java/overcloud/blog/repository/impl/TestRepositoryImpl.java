@@ -15,7 +15,6 @@ import overcloud.blog.usecase.test.create_test.response.ChoiceQuestion;
 import overcloud.blog.usecase.test.create_test.response.OpenQuestion;
 import overcloud.blog.usecase.test.get_test.response.TestResponse;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
-import overcloud.blog.usecase.user.common.UpdateFlg;
 import overcloud.blog.usecase.user.common.UserResponse;
 import java.util.HashMap;
 import java.util.List;
