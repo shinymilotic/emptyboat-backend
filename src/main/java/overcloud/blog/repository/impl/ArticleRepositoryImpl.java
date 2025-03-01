@@ -54,8 +54,9 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         query.append("from articles ");
         query.append("left join article_tags ON articles.article_id = article_tags.article_id ");
         query.append("inner join tag_follows tf ON tf.tag_id = article_tags.tag_id ");
-        query.append("where tf.follower_id = uuid(:currentUserId) ");
-        query.append(ifTag(" inner join tags on tags.tag_id = article_tags.tag_id", tagId));
+        query.append(ifTag(" LEFT join tags on tags.tag_id = article_tags.tag_id ", tagId));
+        query.append(" where tf.follower_id = uuid(:currentUserId) ");
+
         StringBuilder articleWhereStatement = new StringBuilder();
         if (StringUtils.hasText(lastArticleId)) {
             articleWhereStatement.append("  articles.article_id < uuid(:lastArticleId) ");
@@ -63,7 +64,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         articleWhereStatement.append(ifTag(operator(articleWhereStatement, " AND "), tagId));
         articleWhereStatement.append(ifTag(" tags.tag_id = :tag ", tagId));
         articleWhereStatement.append(ifTag(" GROUP BY articles.article_id ", tagId));
-        query.append(operator(articleWhereStatement, " WHERE "));
+        query.append(operator(articleWhereStatement, " AND "));
         query.append(articleWhereStatement);
 
         query.append(" ORDER BY articles.article_id DESC ");
@@ -101,8 +102,6 @@ public class ArticleRepositoryImpl implements IArticleRepository {
         whereStatement.append(ifAuthor(" author.username = :author ", author));
         whereStatement.append(ifFavorited(operator(whereStatement, " AND "), favorited));
         whereStatement.append(ifFavorited(" fa.favoritedUser = true", favorited));
-        whereStatement.append(ifTag(operator(whereStatement, " AND "), tagId));
-        whereStatement.append(ifTag(" t.tag_id = :tag ", tagId));
         query.append(operator(whereStatement, " WHERE "));
         query.append(whereStatement);
         query.append(" ORDER BY a.article_id DESC  ");
@@ -280,6 +279,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
 
             if (articleId.equals(previousArticleId)) {
                 articleSummaryMap.get(articleId).add(tag);
+                continue;
             } else {
                 List<TagResponse> tagList = new ArrayList<>();
                 tagList.add(tag);

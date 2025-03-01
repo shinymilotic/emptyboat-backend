@@ -1,7 +1,5 @@
 package overcloud.blog.repository;
-
 import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.entity.UserEntity;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 
 import java.util.List;
