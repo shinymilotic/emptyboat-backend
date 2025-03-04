@@ -53,8 +53,7 @@ public class PracticeRepositoryImpl implements IPracticeRepository {
                         " pc.choice_answer_id = a.choice_answer_id as choice" +
                         " FROM practices p" +
                         " INNER JOIN tests t ON p.test_id = t.test_id and p.practice_id = :practiceId " +
-                        " INNER JOIN test_questions tq ON tq.test_id = t.test_id " +
-                        " INNER JOIN questions q ON tq.question_id = q.question_id " +
+                        " INNER JOIN questions q ON q.test_id = t.test_id " +
                         " LEFT JOIN choice_answers a ON a.question_id  = q.question_id " +
                         " LEFT JOIN practice_choice_answers pc ON pc.practice_id = p.practice_id AND pc.choice_answer_id = a.choice_answer_id " +
                         " LEFT JOIN practice_open_answers ea ON ea.practice_id = p.practice_id AND ea.question_id = q.question_id ", Tuple.class)

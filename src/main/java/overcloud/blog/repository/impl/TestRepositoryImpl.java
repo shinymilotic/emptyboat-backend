@@ -65,8 +65,7 @@ public class TestRepositoryImpl implements ITestRepository {
         sql.append(" , a.choice_answer_id as answerId, a.answer, a.truth  ");
         sql.append("FROM tests t ");
         sql.append("INNER JOIN users author on t.author_id = author.user_id ");
-        sql.append("LEFT JOIN test_questions tq on t.test_id = tq.test_id ");
-        sql.append("LEFT JOIN questions q on q.question_id = tq.question_id ");
+        sql.append("LEFT JOIN questions q on q.test_id = t.test_id ");
         sql.append("LEFT JOIN choice_answers a on a.question_id = q.question_id ");
         sql.append("WHERE t.test_id = :id ");
         sql.append("ORDER BY q.question_id ");

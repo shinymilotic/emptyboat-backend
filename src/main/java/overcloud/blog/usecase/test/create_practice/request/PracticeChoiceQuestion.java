@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import overcloud.blog.usecase.test.create_test.response.OpenQuestion;
-
 import java.util.List;
 
 @Getter
