@@ -89,7 +89,7 @@ public class AdminCreateUserImpl implements IAdminCreateUser {
             stream.write(data);
         }
 
-        return "http://localhost:80/images/" + fileName;
+        return "http://localhost:8081/api/images/" + fileName;
     }
 
     private String getFileName(String fileType) {

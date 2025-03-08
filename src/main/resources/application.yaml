@@ -21,7 +21,10 @@ spring:
   web:
     resources:
       static-locations: file:/home/overcloud/images
-#  datasource:
+
+  mvc:
+    static-path-pattern: /images/**
+  #  datasource:
 #    hikari:
 #      minimumIdle: 2
 #      maximumPoolSize: 10
