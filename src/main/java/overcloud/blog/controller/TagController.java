@@ -9,6 +9,8 @@ import overcloud.blog.usecase.blog.follow_tag.FollowTagService;
 import overcloud.blog.usecase.blog.get_following_tags.FollowingTagResponse;
 import overcloud.blog.usecase.blog.get_following_tags.GetFollowingTagService;
 import overcloud.blog.usecase.blog.get_tags.GetTagsService;
+import overcloud.blog.usecase.blog.get_tags_admin.IGetTagsAdmin;
+import overcloud.blog.usecase.blog.get_tags_admin.TagResponse;
 import overcloud.blog.usecase.blog.unfollow_tag.UnfollowTagService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -19,17 +21,20 @@ public class TagController {
     private final FollowTagService followTagService;
     private final UnfollowTagService unfollowTagService;
     private final GetFollowingTagService getFollowingTagService;
+    private final IGetTagsAdmin getTagsAdmin;
 
     public TagController(CreateTagsService createTagService,
                          GetTagsService getTagsService,
                          FollowTagService followTagService,
                          UnfollowTagService unfollowTagService,
-                         GetFollowingTagService getFollowingTagService) {
+                         GetFollowingTagService getFollowingTagService,
+                         IGetTagsAdmin getTagsAdmin) {
         this.createTagService = createTagService;
         this.getTagsService = getTagsService;
         this.followTagService = followTagService;
         this.unfollowTagService = unfollowTagService;
         this.getFollowingTagService = getFollowingTagService;
+        this.getTagsAdmin = getTagsAdmin;
     }
 
     @PostMapping(ApiConst.TAGS)
@@ -55,6 +60,12 @@ public class TagController {
     @PostMapping(ApiConst.UNFOLLOW_TAG)
     public Void unfollowTag(@PathVariable("id") String tagId) {
         return unfollowTagService.unfollowTag(tagId);
+    }
+
+    @GetMapping("/admin/tags")
+    public List<TagResponse> getTagsAdmin(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+                                    @RequestParam(value = "itemsPerPage", defaultValue = "10") int itemsPerPage) {
+        return getTagsAdmin.getTagsAdmin(pageNumber, itemsPerPage);
     }
 
 }

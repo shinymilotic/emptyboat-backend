@@ -23,4 +23,7 @@ public interface JpaTagRepository extends JpaRepository<TagEntity, UUID> {
             " INNER JOIN tag_follows tf ON tf.tag_id = t.tag_id" +
             " INNER JOIN (SELECT u0.user_id FROM users u0 WHERE u0.user_id = :userId) u1 ON u1.user_id = tf.follower_id ", nativeQuery = true)
     List<TagEntity> findFollowingTags(@Param("userId") UUID userId);
+
+    @Query(value = " SELECT tag_id, name FROM tags LIMIT :limit OFFSET :offset ", nativeQuery = true)
+    List<TagEntity> findTags(int limit, int offset);
 }

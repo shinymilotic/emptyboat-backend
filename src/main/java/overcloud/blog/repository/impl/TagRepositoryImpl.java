@@ -40,4 +40,10 @@ public class TagRepositoryImpl implements ITagRepository {
     public List<TagEntity> findFollowingTags(UUID userId) {
         return this.jpa.findFollowingTags(userId);
     }
+
+    @Override
+    public List<TagEntity> findTags(int pageNumber, int itemsPerPage) {
+        int offset = pageNumber - 1;
+        return jpa.findTags(itemsPerPage, offset);
+    }
 }
