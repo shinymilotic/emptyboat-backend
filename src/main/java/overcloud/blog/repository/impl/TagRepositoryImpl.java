@@ -46,4 +46,14 @@ public class TagRepositoryImpl implements ITagRepository {
         int offset = pageNumber - 1;
         return jpa.findTags(itemsPerPage, offset);
     }
+
+    @Override
+    public Long getTagCount() {
+        return jpa.getTagCount();
+    }
+
+    @Override
+    public void deleteTag(UUID tagId) {
+        jpa.deleteById(tagId);
+    }
 }

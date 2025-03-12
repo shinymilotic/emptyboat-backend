@@ -9,16 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GetTagsAdminImpl implements IGetTagsAdmin {
+public class GetTagAdminImpl implements IGetTagAdmin {
     private final ITagRepository tagRepository;
 
-    public GetTagsAdminImpl(ITagRepository tagRepository) {
+    public GetTagAdminImpl(ITagRepository tagRepository) {
         this.tagRepository = tagRepository;
     }
 
     @Override
     @Transactional
-    public List<TagResponse> getTagsAdmin(int pageNumber, int itemsPerPage) {
+    public List<TagResponse> getTagAdmin(int pageNumber, int itemsPerPage) {
         List<TagEntity> tags = tagRepository.findTags(pageNumber, itemsPerPage);
         List<TagResponse> response = new ArrayList<>();
 

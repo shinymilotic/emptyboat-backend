@@ -12,4 +12,6 @@ public interface ITagRepository {
     List<Tuple> findAllWithFollowing(UUID userId);
     List<TagEntity> findFollowingTags(UUID userId);
     List<TagEntity> findTags(int pageNumber, int itemsPerPage);
+    Long getTagCount();
+    void deleteTag(UUID tagId);
 }
