@@ -7,6 +7,6 @@ import overcloud.blog.entity.ArticleTag;
 
 public interface IArticleTagRepository {
     void saveAll(List<ArticleTag> articleTags);
-
     void deleteByArticleId(UUID articleId);
+    void deleteByTagId(UUID uuidTagId);
 }

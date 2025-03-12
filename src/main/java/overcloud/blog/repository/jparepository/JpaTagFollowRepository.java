@@ -15,4 +15,8 @@ public interface JpaTagFollowRepository extends JpaRepository<TagFollowEntity, T
     @Modifying
     @Query("DELETE FROM TagFollowEntity t WHERE t.tagFollowId.followerId = :userId")
     void deleteByUserId(@Param("userId") UUID userId);
+
+    @Modifying
+    @Query("DELETE FROM TagFollowEntity t WHERE t.tagFollowId.tagId = :tagId")
+    void deleteByTagId(@Param("tagId") UUID tagId);
 }

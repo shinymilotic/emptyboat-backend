@@ -21,4 +21,8 @@ public interface JpaArticleTagRepository extends JpaRepository<ArticleTag, Artic
     @Modifying
     @Query("DELETE FROM ArticleTag articleTag WHERE articleTag.id.articleId = :articleId")
     void deleteByArticleId(UUID articleId);
+
+    @Modifying
+    @Query("DELETE FROM ArticleTag articleTag WHERE articleTag.id.tagId = :tagId")
+    void deleteByTagId(UUID tagId);
 }

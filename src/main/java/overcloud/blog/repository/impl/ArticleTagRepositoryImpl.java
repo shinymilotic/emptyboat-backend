@@ -19,11 +19,16 @@ public class ArticleTagRepositoryImpl implements IArticleTagRepository {
 
     @Override
     public void saveAll(List<ArticleTag> articleTags) {
-        this.jpa.saveAll(articleTags);
+        jpa.saveAll(articleTags);
     }
 
     @Override
     public void deleteByArticleId(UUID articleId) {
-        this.jpa.deleteByArticleId(articleId);
+        jpa.deleteByArticleId(articleId);
+    }
+
+    @Override
+    public void deleteByTagId(UUID tagId) {
+        jpa.deleteByTagId(tagId);
     }
 }
