@@ -10,4 +10,5 @@ public interface IFavoriteRepository {
     void deleteByArticleId(UUID id);
     void deleteById(FavoriteId favoritePk);
     void save(FavoriteEntity favoriteEntity);
+    void deleteByUserId(UUID userId);
 }

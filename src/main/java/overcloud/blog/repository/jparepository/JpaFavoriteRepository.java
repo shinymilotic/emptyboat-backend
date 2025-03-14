@@ -25,4 +25,8 @@ public interface JpaFavoriteRepository extends JpaRepository<FavoriteEntity, Fav
              WHERE favorite.id.articleId = :id \
             """)
     void deleteByArticleId(UUID id);
+
+    @Modifying
+    @Query("DELETE FROM FavoriteEntity f WHERE f.id.userId = :userId")
+    void deleteByUserId(UUID userId);
 }

@@ -20,21 +20,26 @@ public class FavoriteRepositoryImpl implements IFavoriteRepository {
 
     @Override
     public List<FavoriteEntity> findById(UUID userId, UUID articleId) {
-        return this.jpa.findById(userId, articleId);
+        return jpa.findById(userId, articleId);
     }
 
     @Override
     public void deleteByArticleId(UUID id) {
-        this.jpa.deleteByArticleId(id);
+        jpa.deleteByArticleId(id);
     }
 
     @Override
     public void deleteById(FavoriteId favoritePk) {
-        this.jpa.deleteById(favoritePk);
+        jpa.deleteById(favoritePk);
     }
 
     @Override
     public void save(FavoriteEntity favoriteEntity) {
-        this.jpa.save(favoriteEntity);
+        jpa.save(favoriteEntity);
+    }
+
+    @Override
+    public void deleteByUserId(UUID userId) {
+        jpa.deleteByUserId(userId);
     }
 }

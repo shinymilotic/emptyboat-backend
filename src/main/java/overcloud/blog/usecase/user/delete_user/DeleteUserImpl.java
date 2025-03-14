@@ -19,6 +19,7 @@ public class DeleteUserImpl implements IDeleteUser {
     private final IUserRoleRepository userRoleRepository;
     private final ITagFollowRepository tagFollowRepository;
     private final IFollowRepository followRepository;
+    private final IFavoriteRepository favoriteRepository;
     private final SpringAuthenticationService authenticationService;
     private final ObjectsValidator validator;
 
@@ -29,6 +30,7 @@ public class DeleteUserImpl implements IDeleteUser {
                           IUserRoleRepository userRoleRepository,
                           ITagFollowRepository tagFollowRepository,
                           IFollowRepository followRepository,
+                          IFavoriteRepository favoriteRepository,
                           SpringAuthenticationService authenticationService,
                           ObjectsValidator validator) {
         this.userRepository = userRepository;
@@ -38,6 +40,7 @@ public class DeleteUserImpl implements IDeleteUser {
         this.userRoleRepository = userRoleRepository;
         this.tagFollowRepository = tagFollowRepository;
         this.followRepository = followRepository;
+        this.favoriteRepository = favoriteRepository;
         this.authenticationService = authenticationService;
         this.validator = validator;
     }
@@ -56,6 +59,7 @@ public class DeleteUserImpl implements IDeleteUser {
         }
 
         refreshTokenRepository.deleteByUserId(uuidUserId);
+        favoriteRepository.deleteByUserId(uuidUserId);
         articleRepository.deleteByUserId(uuidUserId);
         testRepository.deleteByUserId(uuidUserId);
         userRoleRepository.deleteByUserId(uuidUserId);
