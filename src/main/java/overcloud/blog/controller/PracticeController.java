@@ -31,7 +31,7 @@ public class PracticeController {
         return createPracticeService.createPractice(practiceRequest);
     }
 
-    @GetMapping("/practices/{username}")
+    @GetMapping("/practices/users/{username}")
     public List<PracticeResponse> getUserPractice(@PathVariable("username") String username) {
         return userPracticeService.getUserPractice(username);
     }
