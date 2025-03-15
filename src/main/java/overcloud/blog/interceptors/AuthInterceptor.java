@@ -15,46 +15,39 @@ import java.util.Map;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-    private final Map<String, AuthStrategy> authStrategy;
-    private final ObjectsValidator validator;
-
-    public AuthInterceptor(Map<String, AuthStrategy> authStrategy, ObjectsValidator validator) {
-        this.authStrategy = authStrategy;
-        this.validator = validator;
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAuth = false;
-        if (authentication != null && !"anonymousUser".equals(authentication.getPrincipal())) {
-            List<RoleEntity> roleEntities = (List<RoleEntity>) authentication.getAuthorities();
-
-            for (RoleEntity role : roleEntities) {
-                String authority = role.getAuthority();
-
-                switch (authority) {
-                    case "ADMIN" -> {
-                        if (authStrategy.get("adminAuthStrategy").auth(request)) {
-                            isAuth = true;
-                        }
-                    }
-                    case "USER" -> {
-                        if (authStrategy.get("frontAuthStrategy").auth(request)) {
-                            isAuth = true;
-                        }
-                    }
-                }
-            }
-        } else {
-            authStrategy.get("guestAuthStrategy").auth(request);
-            isAuth = true;
-        }
+        boolean isAuth = true;
+//        if (authentication != null && !"anonymousUser".equals(authentication.getPrincipal())) {
+//            List<RoleEntity> roleEntities = (List<RoleEntity>) authentication.getAuthorities();
+//
+//            for (RoleEntity role : roleEntities) {
+//                String authority = role.getAuthority();
+//
+//                switch (authority) {
+//                    case "ADMIN" -> {
+//                        if (authStrategy.get("adminAuthStrategy").auth(request)) {
+//                            isAuth = true;
+//                        }
+//                    }
+//                    case "USER" -> {
+//                        if (authStrategy.get("frontAuthStrategy").auth(request)) {
+//                            isAuth = true;
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            authStrategy.get("guestAuthStrategy").auth(request);
+//            isAuth = true;
+//        }
 
         if (!isAuth) {
-            throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
+//            throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
         }
 
         return isAuth;

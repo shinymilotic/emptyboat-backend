@@ -46,27 +46,27 @@ public class TagController {
         this.deleteTag = deleteTag;
     }
 
-    @PostMapping(ApiConst.TAGS)
+    @PostMapping("/tags")
     public List<String> createTags(@RequestBody CreateTagRequest createTagRequest) {
         return createTagService.createTags(createTagRequest);
     }
 
-    @GetMapping(ApiConst.TAGS)
+    @GetMapping("/tags")
     public List<ITagResponse> getTags(@RequestParam(required = false) Boolean following) {
         return getTagsService.getTags(following);
     }
 
-    @GetMapping(ApiConst.FOLLOWING_TAGS)
+    @GetMapping("/followingTags")
     public List<FollowingTagResponse> getFollowedTags() {
         return getFollowingTagService.getFollowingTags();
     }
 
-    @PostMapping(ApiConst.FOLLOW_TAG)
+    @PostMapping("/tags/{id}/follow")
     public Void followTag(@PathVariable("id") String tagId) {
         return followTagService.followTag(tagId);
     }
 
-    @PostMapping(ApiConst.UNFOLLOW_TAG)
+    @PostMapping("/tags/{id}/unfollow")
     public Void unfollowTag(@PathVariable("id") String tagId) {
         return unfollowTagService.unfollowTag(tagId);
     }
@@ -77,12 +77,12 @@ public class TagController {
         return getTagsAdmin.getTagAdmin(pageNumber, itemsPerPage);
     }
 
-    @GetMapping("/tagCount")
+    @GetMapping("/tags/count")
     public Long getTagCount() {
         return this.getTagCount.getTagCount();
     }
 
-    @DeleteMapping("/tag")
+    @DeleteMapping("/admin/tags")
     public Void deleteTag(@RequestParam(value = "tagId") String tagId) {
         return this.deleteTag.deleteTag(tagId);
     }

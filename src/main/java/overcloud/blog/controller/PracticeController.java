@@ -26,17 +26,17 @@ public class PracticeController {
         this.getPracticeResultService = getPracticeResultService;
     }
 
-    @PostMapping(ApiConst.PRACTICE)
+    @PostMapping("/practices")
     public CreatePracticeResponse practice(@RequestBody PracticeRequest practiceRequest) {
         return createPracticeService.createPractice(practiceRequest);
     }
 
-    @GetMapping(ApiConst.USER_PRACTICES)
+    @GetMapping("/practices/{username}")
     public List<PracticeResponse> getUserPractice(@PathVariable("username") String username) {
         return userPracticeService.getUserPractice(username);
     }
 
-    @GetMapping(ApiConst.PRACTICE_ID)
+    @GetMapping("/practices/{id}")
     public PracticeResult getPracticeResult(@PathVariable("id") UUID practiceId) {
         return getPracticeResultService.getPracticeResult(practiceId);
     }

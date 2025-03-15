@@ -34,31 +34,28 @@ public class ArticleController {
         this.deleteArticleService = deleteArticleService;
     }
 
-    @Secured({"ADMIN", "USER"})
-    @PostMapping(ApiConst.ARTICLES)
+    @PostMapping("/articles")
     public UUID createArticle(@RequestBody ArticleRequest createArticleRequest) {
         return createArticleService.createArticle(createArticleRequest);
     }
 
-    @Secured({"ADMIN", "USER"})
-    @PutMapping(ApiConst.ARTICLE)
+    @PutMapping("/articles/{id}")
     public Void updateArticle(@RequestBody UpdateArticleRequest updateArticleRequest,
                                                @PathVariable("id") String id) {
         return updateArticleService.updateArticle(updateArticleRequest, id);
     }
 
-    @Secured({"ADMIN", "USER"})
-    @DeleteMapping(ApiConst.ARTICLE)
+    @DeleteMapping("/articles/{id}")
     public Void deleteArticle(@PathVariable String id) {
         return deleteArticleService.deleteArticle(id);
     }
 
-    @GetMapping(ApiConst.ARTICLE)
+    @GetMapping("/articles/{id}")
     public GetArticleResponse getArticle(@PathVariable String id) {
         return getArticleService.getArticle(id);
     }
 
-    @GetMapping(ApiConst.ARTICLES)
+    @GetMapping("/articles")
     public GetArticlesResponse getArticles(@RequestParam(required = false) String tag,
                                            @RequestParam(required = false) String author,
                                            @RequestParam(required = false) String favorited,

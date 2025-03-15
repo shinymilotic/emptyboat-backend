@@ -78,52 +78,47 @@ public class UserController {
         this.deleteUser = deleteUser;
     }
 
-    @PostMapping(ApiConst.CURRENT_USER)
+    @PostMapping("/users/register")
     public Void register(@RequestBody RegisterRequest registrationDto, HttpServletResponse response) {
         return registerService.registerUser(registrationDto, response);
     }
 
-    @PutMapping(ApiConst.CURRENT_USER)
+    @PutMapping("/users")
     public UserResponse update(@RequestBody UpdateUserRequest updateUserDto) {
         return updateUserService.updateUser(updateUserDto);
     }
 
-    @PostMapping(ApiConst.USERS_LOGIN)
+    @PostMapping("/users/login")
     public UserResponse login(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
         return loginService.login(loginDto, response);
     }
 
-    @PostMapping(ApiConst.USERS_LOGIN_ADMIN)
-    public UserResponse loginAdmin(@RequestBody LoginRequest loginDto, HttpServletResponse response) {
-        return loginService.login(loginDto, response);
-    }
-
-    @PostMapping(ApiConst.USERS_LOGOUT)
+    @PostMapping("/users/logout")
     public Void logout(HttpServletRequest request, HttpServletResponse response) {
         return logoutService.logout(request, response);
     }
 
-    @GetMapping(ApiConst.CURRENT_USER)
+    @GetMapping("/users/current")
     public UserResponse getCurrentUser() {
         return getCurrentUserService.getCurrentUser();
     }
 
-    @GetMapping(ApiConst.PROFILES_USERNAME)
+    @GetMapping("/profiles/{username}")
     public GetProfileResponse getProfile(@PathVariable String username) {
         return getProfileService.getProfile(username);
     }
 
-    @PostMapping(ApiConst.USERS_REFRESHTOKEN)
+    @PostMapping("/users/refresh-token")
     public UUID refreshToken(HttpServletRequest request, HttpServletResponse response) {
         return refreshTokenService.refreshToken(request, response);
     }
 
-    @GetMapping(ApiConst.USERS)
+    @GetMapping("/users")
     public List<UserResponse> getUsers(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber, @RequestParam(value = "itemsPerPage", defaultValue = "10") int itemsPerPage) {
         return getUserListService.getUsers(pageNumber, itemsPerPage);
     }
 
-    @GetMapping(ApiConst.USERS_COUNT)
+    @GetMapping("/users/count")
     public Long getUsersCount() {
         return getUserCountService.getUsersCount();
     }
@@ -133,12 +128,12 @@ public class UserController {
         return getRolesUserService.getRolesUser(username);
     }
 
-    @PostMapping(ApiConst.CONFIRM_EMAIL)
+    @PostMapping("/users/confirm-email")
     public Void confirmEmail(@RequestBody ConfirmEmailRequest confirmToken) {
         return confirmEmailService.confirmEmail(confirmToken);
     }
 
-    @GetMapping(ApiConst.FOLLOWERS)
+    @GetMapping("/followers/{userId}")
     public List<UserResponse> getFollowers(@PathVariable UUID userId) {
         return getFollowers.getFollowers(userId);
     }
@@ -153,7 +148,7 @@ public class UserController {
         return adminCreateUser.adminCreateUser(request);
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/admin/users")
     public Void deleteUser(@PathVariable("userId") String userId) {
         return deleteUser.deleteUser(userId);
     }

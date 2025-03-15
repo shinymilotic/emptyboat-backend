@@ -43,32 +43,32 @@ public class TestController {
         this.getProfileTestService = getProfileTestService;
     }
 
-    @PostMapping(ApiConst.TEST)
+    @PostMapping("/tests")
     public Void createTest(@RequestBody TestRequest testRequest) {
         return this.createTestService.createTest(testRequest);
     }
 
-    @GetMapping(ApiConst.TESTS)
+    @GetMapping("/tests")
     public List<SimpleTestResponse> getTest() {
         return this.getListTestService.getListTest();
     }
 
-    @GetMapping(ApiConst.TESTS_ID)
+    @GetMapping("/tests/{id}")
     public TestResponse getTestById(@PathVariable("id") String id) {
         return this.getTestService.getTest(id);
     }
 
-    @DeleteMapping(ApiConst.TESTS_ID)
+    @DeleteMapping("/tests/{id}")
     public Void deleteTestById(@PathVariable("id") String id) {
         return this.deleteTestService.deleteTest(id);
     }
 
-    @PutMapping(ApiConst.TEST_UPDATE)
+    @PutMapping("/tests/{id}")
     public Void updateTest(@PathVariable("id") String id, @RequestBody TestUpdateRequest request) {
         return updateTestService.updateTest(id, request);
     }
 
-    @GetMapping(ApiConst.PROFILE_TESTS)
+    @GetMapping("/tests/profile/{username}")
     public List<ProfileTestRes> getProfileTests(@PathVariable("username") String username) {
         return getProfileTestService.getProfileTests(username);
     }

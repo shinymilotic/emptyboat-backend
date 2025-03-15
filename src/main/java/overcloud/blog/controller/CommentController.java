@@ -24,19 +24,19 @@ public class CommentController {
         this.createCommentService = createCommentService;
     }
 
-    @PostMapping(ApiConst.ARTICLE_COMMENTS)
+    @PostMapping("/articles/comments/{id}")
     public CreateCommentResponse createComment(@PathVariable String id,
                                                @RequestBody CreateCommentRequest createCommentRequest) {
         return createCommentService.createComment(createCommentRequest, id);
     }
 
-    @GetMapping(ApiConst.ARTICLE_COMMENTS)
+    @GetMapping("/articles/comments/{id}")
     public List<CommentResponse> getComments(@PathVariable String id) {
         return getCommentsService.getComments(id);
     }
 
-    @DeleteMapping(ApiConst.COMMENT_ID)
-    public Void deleteComment(@PathVariable("commentId") String commendId) {
+    @DeleteMapping("/comments/{id}")
+    public Void deleteComment(@PathVariable("id") String commendId) {
         return deleteCommentService.deleteComment(commendId);
     }
 }
