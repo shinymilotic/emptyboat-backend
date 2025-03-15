@@ -16,7 +16,9 @@ public class AdminUserController {
     private final IAdminCreateUser adminCreateUser;
     private final IDeleteUser deleteUser;
 
-    public AdminUserController(GetUserListService getUserListService, IAdminCreateUser adminCreateUser, IDeleteUser deleteUser) {
+    public AdminUserController(GetUserListService getUserListService,
+                               IAdminCreateUser adminCreateUser,
+                               IDeleteUser deleteUser) {
         this.getUserListService = getUserListService;
         this.adminCreateUser = adminCreateUser;
         this.deleteUser = deleteUser;
