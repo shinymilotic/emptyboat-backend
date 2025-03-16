@@ -3,6 +3,7 @@ package overcloud.blog.usecase.admin.user.create_user;
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
@@ -22,21 +23,22 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
-public class AdminCreateUserImpl implements AdminCreateUser {
-    private final ObjectsValidator<AdminCreateUserRequest> validator;
+public class CreateUserImpl implements CreateUser {
+    private final ObjectsValidator<CreateUserRequest> validator;
     private final UserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    public AdminCreateUserImpl(ObjectsValidator<AdminCreateUserRequest> validator, UserRepository userRepository, SpringAuthenticationService authenticationService) {
+    public CreateUserImpl(ObjectsValidator<CreateUserRequest> validator, UserRepository userRepository, SpringAuthenticationService authenticationService) {
         this.validator = validator;
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
     }
 
     @Override
-    public Void adminCreateUser(AdminCreateUserRequest request) throws IOException {
+    @Transactional
+    public Void createUser(CreateUserRequest request) throws IOException {
         Optional<ApiError> error = validator.validate(request);
 
         if (error.isPresent()) {

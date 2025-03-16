@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public interface QuestionPractice {
     String getQuestionId();
     void setQuestionId(String questionId);
-
     Integer getQuestionType();
     void setQuestionType(Integer questionType);
 }

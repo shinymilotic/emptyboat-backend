@@ -14,7 +14,7 @@ import overcloud.blog.utils.validation.LetterAndNumber;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminCreateUserRequest {
+public class CreateUserRequest {
     @NotBlank(message = UserResMsg.USER_REGISTER_USERNAME_NOTBLANK)
     @Size(min = 6, max = 32, message = UserResMsg.USER_REGISTER_USERNAME_SIZE)
     @LetterAndNumber(message = UserResMsg.USER_REGISTER_USERNAME_LETTERANDNUMBER)
