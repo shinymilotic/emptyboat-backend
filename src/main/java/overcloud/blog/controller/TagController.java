@@ -1,7 +1,6 @@
 package overcloud.blog.controller;
 
 import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
 import overcloud.blog.usecase.blog.common.TagResponse;
 import overcloud.blog.usecase.blog.follow_tag.FollowTagService;

@@ -1,4 +1,4 @@
-package overcloud.blog.controller;
+package overcloud.blog.controller.admin;
 
 import overcloud.blog.usecase.admin.user.create_user.CreateUserRequest;
 import overcloud.blog.usecase.admin.user.create_user.CreateUser;

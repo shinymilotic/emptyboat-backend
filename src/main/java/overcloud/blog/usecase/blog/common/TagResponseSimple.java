@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagResponseImpl implements TagResponse {
+public class TagResponseSimple implements TagResponse {
     private String id;
     private String name;
 }

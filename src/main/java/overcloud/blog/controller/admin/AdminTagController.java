@@ -1,4 +1,4 @@
-package overcloud.blog.controller;
+package overcloud.blog.controller.admin;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import overcloud.blog.usecase.admin.tag.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.admin.tag.create_tag.CreateTagService;
 import overcloud.blog.usecase.admin.tag.delete_tag.DeleteTag;
 import overcloud.blog.usecase.admin.tag.get_tags.GetTagAdmin;
+import overcloud.blog.usecase.admin.tag.get_tags.TagListResponse;
 import overcloud.blog.usecase.admin.tag.get_tags.TagResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -30,8 +31,8 @@ public class AdminTagController {
     }
 
     @GetMapping("/admin/tags")
-    public List<TagResponse> getTagAdmin(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
-                                         @RequestParam(value = "itemsPerPage", defaultValue = "10") int itemsPerPage) {
+    public TagListResponse getTagAdmin(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+                                       @RequestParam(value = "itemsPerPage", defaultValue = "10") int itemsPerPage) {
         return getTagsAdmin.getTagAdmin(pageNumber, itemsPerPage);
     }
 

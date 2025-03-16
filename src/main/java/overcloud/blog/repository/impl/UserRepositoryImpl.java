@@ -130,12 +130,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Long getUsersCount() {
-        return (Long) entityManager.createNativeQuery("SELECT COUNT(*) FROM users")
-                .getSingleResult();
-    }
-
-    @Override
     public void deleteUser(UUID userId) {
         jpa.deleteById(userId);
     }

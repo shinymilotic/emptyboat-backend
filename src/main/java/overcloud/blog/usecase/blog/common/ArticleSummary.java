@@ -12,7 +12,7 @@ public class ArticleSummary {
     private String title;
     private String description;
     private String body;
-    private List<TagResponseImpl> tag;
+    private List<TagResponseSimple> tag;
     private Timestamp createdAt;
     private Boolean favorited;
     private Long favoritesCount;
@@ -54,11 +54,11 @@ public class ArticleSummary {
         this.body = body;
     }
 
-    public List<TagResponseImpl> getTag() {
+    public List<TagResponseSimple> getTag() {
         return tag;
     }
 
-    public void setTag(List<TagResponseImpl> tag) {
+    public void setTag(List<TagResponseSimple> tag) {
         this.tag = tag;
     }
 

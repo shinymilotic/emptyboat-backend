@@ -36,11 +36,6 @@ public class PracticeRepositoryImpl implements PracticeRepository {
     }
 
     @Override
-    public void deleteByTestId(UUID testId) {
-        jpa.deleteByTestId(testId);
-    }
-
-    @Override
     public Optional<PracticeEntity> findById(UUID id) {
         return jpa.findById(id);
     }
@@ -107,7 +102,7 @@ public class PracticeRepositoryImpl implements PracticeRepository {
     }
 
     @Override
-    public int deleteTestId(UUID testId) {
+    public int deleteByTestId(UUID testId) {
         return entityManager.createQuery(
         "UPDATE PracticeEntity p SET p.testId = null WHERE p.testId = :testId")
             .setParameter("testId", testId)

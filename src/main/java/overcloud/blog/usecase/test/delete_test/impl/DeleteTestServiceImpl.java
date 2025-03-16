@@ -54,7 +54,7 @@ public class DeleteTestServiceImpl implements DeleteTestService {
         }
 
         UUID testId = test.get().getTestId();
-        practiceRepository.deleteTestId(testId);
+        practiceRepository.deleteByTestId(testId);
         questionRepository.deleteByTestId(testId);
         testRepository.deleteById(testId);
 

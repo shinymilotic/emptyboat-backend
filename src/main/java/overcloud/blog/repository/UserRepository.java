@@ -15,6 +15,5 @@ public interface UserRepository {
     List<UserEntity> findAll(int page, int size);
     UserEntity findRolesByUsernname(String username);
     GetProfileResponse findProfile(String username, UUID currentUserId);
-    Long getUsersCount();
     void deleteUser(UUID userId);
 }

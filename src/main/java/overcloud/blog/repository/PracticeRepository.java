@@ -9,9 +9,8 @@ import jakarta.persistence.Tuple;
 
 public interface PracticeRepository {
     List<Tuple> findByTesterId(UUID testerId);
-    void deleteByTestId(UUID testId);
     Optional<PracticeEntity> findById(UUID id);
     PracticeResult getPracticeResult(UUID id);
     PracticeEntity save(PracticeEntity entity);
-    int deleteTestId(UUID testId);
+    int deleteByTestId(UUID testId);
 }

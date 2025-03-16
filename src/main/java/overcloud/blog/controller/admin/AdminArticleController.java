@@ -1,4 +1,4 @@
-package overcloud.blog.controller;
+package overcloud.blog.controller.admin;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
