@@ -11,26 +11,26 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 import java.util.UUID;
 
 @Service
-public class DeleteUserImpl implements IDeleteUser {
-    private final IUserRepository userRepository;
-    private final IRefreshTokenRepository refreshTokenRepository;
-    private final IArticleRepository articleRepository;
-    private final ITestRepository testRepository;
-    private final IUserRoleRepository userRoleRepository;
-    private final ITagFollowRepository tagFollowRepository;
-    private final IFollowRepository followRepository;
-    private final IFavoriteRepository favoriteRepository;
+public class DeleteUserImpl implements DeleteUser {
+    private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final ArticleRepository articleRepository;
+    private final TestRepository testRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final TagFollowRepository tagFollowRepository;
+    private final FollowRepository followRepository;
+    private final FavoriteRepository favoriteRepository;
     private final SpringAuthenticationService authenticationService;
     private final ObjectsValidator validator;
 
-    public DeleteUserImpl(IUserRepository userRepository,
-                          IRefreshTokenRepository refreshTokenRepository,
-                          IArticleRepository articleRepository,
-                          ITestRepository testRepository,
-                          IUserRoleRepository userRoleRepository,
-                          ITagFollowRepository tagFollowRepository,
-                          IFollowRepository followRepository,
-                          IFavoriteRepository favoriteRepository,
+    public DeleteUserImpl(UserRepository userRepository,
+                          RefreshTokenRepository refreshTokenRepository,
+                          ArticleRepository articleRepository,
+                          TestRepository testRepository,
+                          UserRoleRepository userRoleRepository,
+                          TagFollowRepository tagFollowRepository,
+                          FollowRepository followRepository,
+                          FavoriteRepository favoriteRepository,
                           SpringAuthenticationService authenticationService,
                           ObjectsValidator validator) {
         this.userRepository = userRepository;

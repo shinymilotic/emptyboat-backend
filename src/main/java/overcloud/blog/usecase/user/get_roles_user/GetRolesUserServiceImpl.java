@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IRoleRepository;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.RoleRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
@@ -16,13 +16,13 @@ import java.util.Set;
 
 @Service
 public class GetRolesUserServiceImpl implements GetRolesUserService {
-    private final IUserRepository userRepository;
-    private final IRoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final ObjectsValidator validator;
 
-    public GetRolesUserServiceImpl(IUserRepository userRepository,
-                                    IRoleRepository roleRepository,
-                                    ObjectsValidator validator) {
+    public GetRolesUserServiceImpl(UserRepository userRepository,
+                                   RoleRepository roleRepository,
+                                   ObjectsValidator validator) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.validator = validator;

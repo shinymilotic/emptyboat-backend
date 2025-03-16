@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.repository.IRoleRepository;
+import overcloud.blog.repository.RoleRepository;
 import overcloud.blog.usecase.user.common.RoleResMsg;
 import overcloud.blog.usecase.user.common.UpdateFlg;
 import overcloud.blog.utils.validation.ObjectsValidator;
@@ -14,10 +14,10 @@ import java.util.Optional;
 
 @Service
 public class ManageRoleService {
-    private final IRoleRepository roleRepository;
+    private final RoleRepository roleRepository;
     private final ObjectsValidator validator;
 
-    public ManageRoleService(IRoleRepository roleRepository, ObjectsValidator validator) {
+    public ManageRoleService(RoleRepository roleRepository, ObjectsValidator validator) {
         this.roleRepository = roleRepository;
         this.validator = validator;
     }

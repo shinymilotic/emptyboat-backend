@@ -6,11 +6,10 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import overcloud.blog.entity.ChoiceAnswerEntity;
-import overcloud.blog.repository.IChoiceAnswerRepository;
 import overcloud.blog.repository.jparepository.JpaChoiceAnswerRepository;
 
 @Repository
-public class ChoiceAnswerRepository implements IChoiceAnswerRepository {
+public class ChoiceAnswerRepository implements overcloud.blog.repository.ChoiceAnswerRepository {
     private final JpaChoiceAnswerRepository jpa;
 
     @PersistenceContext

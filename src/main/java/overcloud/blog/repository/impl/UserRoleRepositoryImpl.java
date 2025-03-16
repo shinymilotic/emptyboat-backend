@@ -2,17 +2,15 @@ package overcloud.blog.repository.impl;
 
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
-import overcloud.blog.entity.RoleEntity;
-import overcloud.blog.entity.UserEntity;
 import overcloud.blog.entity.UserRole;
 import overcloud.blog.entity.UserRoleId;
-import overcloud.blog.repository.IUserRoleRepository;
+import overcloud.blog.repository.UserRoleRepository;
 import overcloud.blog.repository.jparepository.JpaUserRoleRepository;
 
 import java.util.UUID;
 
 @Repository
-public class UserRoleRepositoryImpl implements IUserRoleRepository {
+public class UserRoleRepositoryImpl implements UserRoleRepository {
     private final JpaUserRoleRepository jpa;
     private final EntityManager entityManager;
 

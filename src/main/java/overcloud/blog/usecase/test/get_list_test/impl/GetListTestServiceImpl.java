@@ -3,7 +3,7 @@ package overcloud.blog.usecase.test.get_list_test.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.repository.ITestRepository;
+import overcloud.blog.repository.TestRepository;
 import overcloud.blog.usecase.test.get_list_test.GetListTestService;
 import overcloud.blog.usecase.test.get_list_test.TestListRecord;
 import overcloud.blog.usecase.test.get_list_test.SimpleTestResponse;
@@ -12,9 +12,9 @@ import java.util.List;
 
 @Service
 public class GetListTestServiceImpl implements GetListTestService {
-    private final ITestRepository testRepository;
+    private final TestRepository testRepository;
 
-    public GetListTestServiceImpl(ITestRepository testRepository) {
+    public GetListTestServiceImpl(TestRepository testRepository) {
         this.testRepository = testRepository;
     }
 

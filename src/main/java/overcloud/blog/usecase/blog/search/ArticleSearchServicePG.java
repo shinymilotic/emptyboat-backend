@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.bean.SecurityUser;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IArticleRepository;
+import overcloud.blog.repository.ArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.usecase.blog.get_article_list.AuthorResponse;
 import overcloud.blog.usecase.blog.get_article_list.GetArticlesResponse;
@@ -17,10 +17,10 @@ import java.util.UUID;
 
 @Service
 public class ArticleSearchServicePG implements ArticleSearchService {
-    private final IArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
     private final SpringAuthenticationService authenticationService;
 
-    public ArticleSearchServicePG(IArticleRepository articleRepository,
+    public ArticleSearchServicePG(ArticleRepository articleRepository,
                                   SpringAuthenticationService authenticationService) {
         this.articleRepository = articleRepository;
         this.authenticationService = authenticationService;

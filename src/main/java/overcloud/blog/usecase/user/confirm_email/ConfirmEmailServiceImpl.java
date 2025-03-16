@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import overcloud.blog.repository.IRefreshTokenRepository;
+import overcloud.blog.repository.RefreshTokenRepository;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Service
 public class ConfirmEmailServiceImpl implements ConfirmEmailService{
-    private final IRefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final ObjectsValidator validator;
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public ConfirmEmailServiceImpl(IRefreshTokenRepository refreshTokenRepository,
-                                    IUserRepository userRepository,
-                                    ObjectsValidator validator) {
+    public ConfirmEmailServiceImpl(RefreshTokenRepository refreshTokenRepository,
+                                   UserRepository userRepository,
+                                   ObjectsValidator validator) {
         this.refreshTokenRepository = refreshTokenRepository;
         this.userRepository = userRepository;
         this.validator = validator;

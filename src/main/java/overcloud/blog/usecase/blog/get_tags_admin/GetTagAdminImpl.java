@@ -3,16 +3,16 @@ package overcloud.blog.usecase.blog.get_tags_admin;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.TagEntity;
-import overcloud.blog.repository.ITagRepository;
+import overcloud.blog.repository.TagRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GetTagAdminImpl implements IGetTagAdmin {
-    private final ITagRepository tagRepository;
+public class GetTagAdminImpl implements GetTagAdmin {
+    private final TagRepository tagRepository;
 
-    public GetTagAdminImpl(ITagRepository tagRepository) {
+    public GetTagAdminImpl(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
     }
 

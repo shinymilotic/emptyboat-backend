@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.ITagRepository;
+import overcloud.blog.repository.TagRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
@@ -14,10 +14,10 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 public class GetFollowingTagServiceImpl implements GetFollowingTagService {
     private final SpringAuthenticationService authenticationService;
     private final ObjectsValidator validator;
-    private final ITagRepository tagRepository;
+    private final TagRepository tagRepository;
 
     public GetFollowingTagServiceImpl(SpringAuthenticationService authenticationService,
-                                     ITagRepository tagRepository,
+                                     TagRepository tagRepository,
                                      ObjectsValidator validator) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;

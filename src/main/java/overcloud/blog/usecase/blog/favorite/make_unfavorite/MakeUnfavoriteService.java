@@ -10,21 +10,21 @@ import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.FavoriteId;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IArticleRepository;
-import overcloud.blog.repository.IFavoriteRepository;
+import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.FavoriteRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
 @Service
 public class MakeUnfavoriteService {
-    private final IFavoriteRepository favoriteRepository;
+    private final FavoriteRepository favoriteRepository;
     private final SpringAuthenticationService authenticationService;
-    private final IArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
     private final ObjectsValidator validator;
 
-    public MakeUnfavoriteService(IFavoriteRepository favoriteRepository,
+    public MakeUnfavoriteService(FavoriteRepository favoriteRepository,
                                  SpringAuthenticationService authenticationService,
-                                 IArticleRepository articleRepository,
+                                 ArticleRepository articleRepository,
                                  ObjectsValidator validator) {
         this.favoriteRepository = favoriteRepository;
         this.authenticationService = authenticationService;

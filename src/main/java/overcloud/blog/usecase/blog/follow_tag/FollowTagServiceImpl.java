@@ -7,18 +7,18 @@ import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.TagFollowEntity;
 import overcloud.blog.entity.TagFollowId;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.ITagFollowRepository;
+import overcloud.blog.repository.TagFollowRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
 @Service
 public class FollowTagServiceImpl implements FollowTagService {
-    private final ITagFollowRepository tagFollowRepository;
+    private final TagFollowRepository tagFollowRepository;
     private final SpringAuthenticationService authenticationService;
     private final ObjectsValidator validator;
 
-    public FollowTagServiceImpl(ITagFollowRepository tagFollowRepository,
-                               SpringAuthenticationService authenticationService,
+    public FollowTagServiceImpl(TagFollowRepository tagFollowRepository,
+                                SpringAuthenticationService authenticationService,
                                 ObjectsValidator validator) {
         this.validator = validator;
         this.authenticationService = authenticationService;

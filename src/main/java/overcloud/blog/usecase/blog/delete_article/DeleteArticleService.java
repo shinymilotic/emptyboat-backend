@@ -5,22 +5,22 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.repository.IArticleRepository;
-import overcloud.blog.repository.IArticleTagRepository;
-import overcloud.blog.repository.ICommentRepository;
-import overcloud.blog.repository.IFavoriteRepository;
+import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.ArticleTagRepository;
+import overcloud.blog.repository.CommentRepository;
+import overcloud.blog.repository.FavoriteRepository;
 
 @Service
 public class DeleteArticleService {
-    private final IArticleRepository articleRepository;
-    private final IArticleTagRepository articleTagRepository;
-    private final ICommentRepository commentRepository;
-    private final IFavoriteRepository favoriteRepository;
+    private final ArticleRepository articleRepository;
+    private final ArticleTagRepository articleTagRepository;
+    private final CommentRepository commentRepository;
+    private final FavoriteRepository favoriteRepository;
 
-    public DeleteArticleService(IArticleRepository articleRepository,
-                                IArticleTagRepository articleTagRepository,
-                                ICommentRepository commentRepository,
-                                IFavoriteRepository favoriteRepository) {
+    public DeleteArticleService(ArticleRepository articleRepository,
+                                ArticleTagRepository articleTagRepository,
+                                CommentRepository commentRepository,
+                                FavoriteRepository favoriteRepository) {
         this.articleRepository = articleRepository;
         this.articleTagRepository = articleTagRepository;
         this.commentRepository = commentRepository;

@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import overcloud.blog.auth.bean.SecurityUser;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IArticleRepository;
+import overcloud.blog.repository.ArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
@@ -18,11 +18,11 @@ import java.util.UUID;
 
 @Service
 public class GetArticleListService {
-    private final IArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
     private final SpringAuthenticationService authenticationService;
     private final ObjectsValidator validator;
 
-    public GetArticleListService(IArticleRepository articleRepository,
+    public GetArticleListService(ArticleRepository articleRepository,
                                  SpringAuthenticationService authenticationService,
                                  ObjectsValidator validator) {
         this.articleRepository = articleRepository;

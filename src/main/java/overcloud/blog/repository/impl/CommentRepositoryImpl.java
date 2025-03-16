@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.CommentEntity;
-import overcloud.blog.repository.ICommentRepository;
+import overcloud.blog.repository.CommentRepository;
 import overcloud.blog.repository.jparepository.JpaCommentRepository;
 
 @Repository
-public class CommentRepositoryImpl implements ICommentRepository {
+public class CommentRepositoryImpl implements CommentRepository {
     private final JpaCommentRepository jpa;
 
     public CommentRepositoryImpl(JpaCommentRepository jpa) {

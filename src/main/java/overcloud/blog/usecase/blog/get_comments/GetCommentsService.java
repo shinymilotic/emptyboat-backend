@@ -5,9 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.ICommentRepository;
+import overcloud.blog.repository.CommentRepository;
 import overcloud.blog.usecase.blog.common.AuthorResposne;
-import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,9 +15,9 @@ import java.util.UUID;
 
 @Service
 public class GetCommentsService {
-    private final ICommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
-    public GetCommentsService(ICommentRepository commentRepository) {
+    public GetCommentsService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
 

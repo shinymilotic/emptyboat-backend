@@ -7,21 +7,21 @@ import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.entity.UserRole;
 import overcloud.blog.entity.UserRoleId;
-import overcloud.blog.repository.IRoleRepository;
-import overcloud.blog.repository.IUserRepository;
-import overcloud.blog.repository.IUserRoleRepository;
+import overcloud.blog.repository.RoleRepository;
+import overcloud.blog.repository.UserRepository;
+import overcloud.blog.repository.UserRoleRepository;
 import overcloud.blog.usecase.user.common.RolesRequest;
 import java.util.Optional;
 
 @Service
 public class AssignRoleService {
-    private final IUserRoleRepository userRoleRepository;
-    private final IUserRepository userRepository;
-    private final IRoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public AssignRoleService(IUserRoleRepository userRoleRepository,
-                             IUserRepository userRepository,
-                             IRoleRepository roleRepository) {
+    public AssignRoleService(UserRoleRepository userRoleRepository,
+                             UserRepository userRepository,
+                             RoleRepository roleRepository) {
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;

@@ -5,16 +5,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import overcloud.blog.auth.bean.SecurityUser;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.UserRepository;
 
 import java.util.Optional;
 
 @Service
 public class SpringAuthenticationService {
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SpringAuthenticationService(IUserRepository userRepository,
+    public SpringAuthenticationService(UserRepository userRepository,
                                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

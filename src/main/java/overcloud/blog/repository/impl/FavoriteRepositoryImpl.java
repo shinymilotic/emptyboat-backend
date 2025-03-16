@@ -7,11 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import overcloud.blog.entity.FavoriteEntity;
 import overcloud.blog.entity.FavoriteId;
-import overcloud.blog.repository.IFavoriteRepository;
+import overcloud.blog.repository.FavoriteRepository;
 import overcloud.blog.repository.jparepository.JpaFavoriteRepository;
 
 @Repository
-public class FavoriteRepositoryImpl implements IFavoriteRepository {
+public class FavoriteRepositoryImpl implements FavoriteRepository {
     private final JpaFavoriteRepository jpa;
     
     public FavoriteRepositoryImpl(JpaFavoriteRepository jpa) {

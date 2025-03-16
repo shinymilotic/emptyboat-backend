@@ -9,7 +9,7 @@ import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.TagEntity;
-import overcloud.blog.repository.ITagRepository;
+import overcloud.blog.repository.TagRepository;
 import overcloud.blog.usecase.blog.common.TagResMsg;
 
 import java.util.ArrayList;
@@ -18,16 +18,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CreateTagsService {
-    private final ITagRepository tagRepository;
+public class CreateTagServiceImpl implements CreateTagService {
+    private final TagRepository tagRepository;
     private final ObjectsValidator<CreateTagRequest> validator;
 
-    public CreateTagsService(ITagRepository tagRepository,
-                            ObjectsValidator<CreateTagRequest> validator) {
+    public CreateTagServiceImpl(TagRepository tagRepository,
+                                ObjectsValidator<CreateTagRequest> validator) {
         this.tagRepository = tagRepository;
         this.validator = validator;
     }
 
+    @Override
     @Transactional
     public List<String> createTags(CreateTagRequest createTagRequest) {
         Optional<ApiError> apiError = validator.validate(createTagRequest);

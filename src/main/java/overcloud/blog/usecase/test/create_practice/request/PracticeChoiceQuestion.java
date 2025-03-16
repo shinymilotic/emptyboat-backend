@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonDeserialize(as = PracticeChoiceQuestion.class)
-public class PracticeChoiceQuestion implements IQuestionPractice {
+public class PracticeChoiceQuestion implements QuestionPractice {
     @JsonProperty("questionId")
     private String questionId;
 

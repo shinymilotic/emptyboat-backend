@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.bean.SecurityUser;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.util.Optional;
@@ -14,11 +14,11 @@ import java.util.UUID;
 
 @Service
 public class GetProfileService {
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
     private final ObjectsValidator validator;
 
-    public GetProfileService(IUserRepository userRepository,
+    public GetProfileService(UserRepository userRepository,
                              SpringAuthenticationService authenticationService,
                              ObjectsValidator validator) {
         this.userRepository = userRepository;

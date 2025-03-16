@@ -5,7 +5,7 @@ import overcloud.blog.entity.TagFollowId;
 
 import java.util.UUID;
 
-public interface ITagFollowRepository {
+public interface TagFollowRepository {
     TagFollowEntity save(TagFollowEntity tagFollowEntity);
     void delete(TagFollowId tagFollowId);
     void deleteByUserId(UUID userId);

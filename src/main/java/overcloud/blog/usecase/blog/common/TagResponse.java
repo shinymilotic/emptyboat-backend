@@ -1,15 +1,9 @@
 package overcloud.blog.usecase.blog.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public interface TagResponse {
+    void setId(String id);
+    String getId();
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TagResponse implements ITagResponse {
-    private String id;
-    private String name;
+    void setName(String name);
+    String getName();
 }

@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.ITestRepository;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.TestRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
@@ -15,13 +15,13 @@ import java.util.List;
 
 @Service
 public class GetProfileTestServiceImpl implements GetProfileTestService {
-    private final ITestRepository testRepository;
-    private final IUserRepository userRepository;
+    private final TestRepository testRepository;
+    private final UserRepository userRepository;
     private final ObjectsValidator validator;
 
-    public GetProfileTestServiceImpl(ITestRepository testRepository,
-                                 IUserRepository userRepository,
-                                 ObjectsValidator validator) {
+    public GetProfileTestServiceImpl(TestRepository testRepository,
+                                     UserRepository userRepository,
+                                     ObjectsValidator validator) {
         this.testRepository = testRepository;
         this.userRepository = userRepository;
         this.validator = validator;

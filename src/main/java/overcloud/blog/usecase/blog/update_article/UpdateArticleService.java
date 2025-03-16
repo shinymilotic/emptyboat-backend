@@ -11,9 +11,9 @@ import overcloud.blog.entity.ArticleTag;
 import overcloud.blog.entity.ArticleTagId;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IArticleRepository;
-import overcloud.blog.repository.IArticleTagRepository;
-import overcloud.blog.repository.ITagRepository;
+import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.ArticleTagRepository;
+import overcloud.blog.repository.TagRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.blog.common.TagResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
@@ -26,15 +26,15 @@ import java.util.UUID;
 @Service
 public class UpdateArticleService {
     private final SpringAuthenticationService authenticationService;
-    private final IArticleRepository articleRepository;
-    private final ITagRepository tagRepository;
-    private final IArticleTagRepository articleTagRepository;
+    private final ArticleRepository articleRepository;
+    private final TagRepository tagRepository;
+    private final ArticleTagRepository articleTagRepository;
     private final ObjectsValidator<UpdateArticleRequest> validator;
 
     public UpdateArticleService(SpringAuthenticationService authenticationService,
-                                IArticleRepository articleRepository,
-                                ITagRepository tagRepository,
-                                IArticleTagRepository articleTagRepository,
+                                ArticleRepository articleRepository,
+                                TagRepository tagRepository,
+                                ArticleTagRepository articleTagRepository,
                                 ObjectsValidator<UpdateArticleRequest> validator) {
         this.authenticationService = authenticationService;
         this.articleRepository = articleRepository;

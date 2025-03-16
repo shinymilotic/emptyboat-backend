@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
 import overcloud.blog.utils.validation.ObjectsValidator;
@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class GetUserListService {
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
     private final UserResponseMapper userResponseMapper;
     private final ObjectsValidator validator;
 
-    public GetUserListService(IUserRepository userRepository,
+    public GetUserListService(UserRepository userRepository,
                               UserResponseMapper userResponseMapper,
                               ObjectsValidator validator) {
         this.userRepository = userRepository;

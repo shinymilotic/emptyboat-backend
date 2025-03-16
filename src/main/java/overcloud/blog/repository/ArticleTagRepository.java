@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import overcloud.blog.entity.ArticleTag;
 
-public interface IArticleTagRepository {
+public interface ArticleTagRepository {
     void saveAll(List<ArticleTag> articleTags);
     void deleteByArticleId(UUID articleId);
     void deleteByTagId(UUID uuidTagId);

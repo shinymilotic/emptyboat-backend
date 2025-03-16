@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.Tuple;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.utils.datetime.DateTimeService;
-import overcloud.blog.repository.IPracticeRepository;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.PracticeRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.test.get_practices.response.PracticeResponse;
 import overcloud.blog.usecase.test.get_practices.UserPracticeService;
 import overcloud.blog.usecase.user.common.UserResMsg;
@@ -19,13 +19,13 @@ import java.util.UUID;
 
 @Service
 public class UserPraticeServiceImpl implements UserPracticeService {
-    private final IPracticeRepository practiceRepository;
-    private final IUserRepository userRepository;
+    private final PracticeRepository practiceRepository;
+    private final UserRepository userRepository;
     private final DateTimeService dateTimeService;
     private final ObjectsValidator validator;
 
-    UserPraticeServiceImpl(IPracticeRepository practiceRepository,
-                           IUserRepository userRepository,
+    UserPraticeServiceImpl(PracticeRepository practiceRepository,
+                           UserRepository userRepository,
                            DateTimeService dateTimeService,
                            ObjectsValidator validator) {
         this.practiceRepository = practiceRepository;

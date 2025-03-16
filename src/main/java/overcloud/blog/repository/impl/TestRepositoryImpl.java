@@ -7,7 +7,7 @@ import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.TestEntity;
-import overcloud.blog.repository.ITestRepository;
+import overcloud.blog.repository.TestRepository;
 import overcloud.blog.repository.jparepository.JpaTestRepository;
 import overcloud.blog.usecase.test.common.QuestionType;
 import overcloud.blog.usecase.test.create_test.response.Answer;
@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class TestRepositoryImpl implements ITestRepository {
+public class TestRepositoryImpl implements TestRepository {
     private final JpaTestRepository jpa;
 
     @PersistenceContext

@@ -6,11 +6,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import overcloud.blog.entity.PracticeChoiceAnswerEntity;
-import overcloud.blog.repository.IPracticeChoiceRepository;
+import overcloud.blog.repository.PracticeChoiceRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeChoiceAnswerRepository;
 
 @Repository
-public class PracticeChoiceRepositoryImpl implements IPracticeChoiceRepository {
+public class PracticeChoiceRepositoryImpl implements PracticeChoiceRepository {
     private final JpaPracticeChoiceAnswerRepository jpa;
 
     public PracticeChoiceRepositoryImpl(JpaPracticeChoiceAnswerRepository jpa) {

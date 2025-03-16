@@ -3,15 +3,14 @@ package overcloud.blog.repository.impl;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IRefreshTokenRepository;
+import overcloud.blog.repository.RefreshTokenRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
-import overcloud.blog.usecase.user.refresh_token.RefreshTokenRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class RefreshTokenRepositoryImpl implements IRefreshTokenRepository {
+public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
     private final JpaRefreshTokenRepository jpa;
 
     public RefreshTokenRepositoryImpl(JpaRefreshTokenRepository jpa) {

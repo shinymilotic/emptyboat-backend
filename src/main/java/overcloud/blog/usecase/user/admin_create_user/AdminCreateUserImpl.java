@@ -4,11 +4,10 @@ import com.github.f4b6a3.uuid.UuidCreator;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
 import overcloud.blog.exception.InvalidDataException;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.response.ApiError;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
@@ -23,14 +22,14 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
-public class AdminCreateUserImpl implements IAdminCreateUser {
+public class AdminCreateUserImpl implements AdminCreateUser {
     private final ObjectsValidator<AdminCreateUserRequest> validator;
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    public AdminCreateUserImpl(ObjectsValidator<AdminCreateUserRequest> validator, IUserRepository userRepository, SpringAuthenticationService authenticationService) {
+    public AdminCreateUserImpl(ObjectsValidator<AdminCreateUserRequest> validator, UserRepository userRepository, SpringAuthenticationService authenticationService) {
         this.validator = validator;
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;

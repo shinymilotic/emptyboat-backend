@@ -3,28 +3,23 @@ package overcloud.blog.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.usecase.blog.common.ITagResponse;
 import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
-import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
-import overcloud.blog.usecase.blog.delete_tag.IDeleteTag;
-import overcloud.blog.usecase.blog.follow_tag.FollowTagService;
-import overcloud.blog.usecase.blog.get_following_tags.FollowingTagResponse;
-import overcloud.blog.usecase.blog.get_following_tags.GetFollowingTagService;
-import overcloud.blog.usecase.blog.get_tags.GetTagsService;
-import overcloud.blog.usecase.blog.get_tags_admin.IGetTagAdmin;
+import overcloud.blog.usecase.blog.create_tag.CreateTagService;
+import overcloud.blog.usecase.blog.create_tag.CreateTagServiceImpl;
+import overcloud.blog.usecase.blog.delete_tag.DeleteTag;
+import overcloud.blog.usecase.blog.get_tags_admin.GetTagAdmin;
 import overcloud.blog.usecase.blog.get_tags_admin.TagResponse;
-import overcloud.blog.usecase.blog.unfollow_tag.UnfollowTagService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class AdminTagController {
-    private final CreateTagsService createTagService;
-    private final IGetTagAdmin getTagsAdmin;
-    private final IDeleteTag deleteTag;
+    private final CreateTagService createTagService;
+    private final GetTagAdmin getTagsAdmin;
+    private final DeleteTag deleteTag;
 
-    public AdminTagController(CreateTagsService createTagService,
-                         IGetTagAdmin getTagsAdmin,
-                         IDeleteTag deleteTag) {
+    public AdminTagController(CreateTagService createTagService,
+                              GetTagAdmin getTagsAdmin,
+                              DeleteTag deleteTag) {
         this.createTagService = createTagService;
         this.getTagsAdmin = getTagsAdmin;
         this.deleteTag = deleteTag;

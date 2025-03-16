@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import overcloud.blog.entity.PracticeOpenAnswerEntity;
 
-public interface IPracticeOpenAnswerRepository {
+public interface PracticeOpenAnswerRepository {
     void saveAll(List<PracticeOpenAnswerEntity> practiceOpenQuestions);
     void deleteAllByQuestionId(List<UUID> questionIds);
 }

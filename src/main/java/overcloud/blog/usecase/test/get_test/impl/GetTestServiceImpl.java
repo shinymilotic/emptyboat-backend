@@ -2,7 +2,7 @@ package overcloud.blog.usecase.test.get_test.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import overcloud.blog.repository.ITestRepository;
+import overcloud.blog.repository.TestRepository;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.get_test.response.TestResponse;
 import overcloud.blog.usecase.test.get_test.GetTestService;
@@ -13,10 +13,10 @@ import java.util.UUID;
 
 @Service
 public class GetTestServiceImpl implements GetTestService {
-    private final ITestRepository testRepository;
+    private final TestRepository testRepository;
     private final ObjectsValidator validator;
 
-    public GetTestServiceImpl(ITestRepository testRepository, ObjectsValidator validator) {
+    public GetTestServiceImpl(TestRepository testRepository, ObjectsValidator validator) {
         this.testRepository = testRepository;
         this.validator = validator;
     }

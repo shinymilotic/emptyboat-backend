@@ -3,16 +3,11 @@ package overcloud.blog.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.usecase.blog.common.ITagResponse;
-import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
-import overcloud.blog.usecase.blog.create_tag.CreateTagsService;
-import overcloud.blog.usecase.blog.delete_tag.IDeleteTag;
+import overcloud.blog.usecase.blog.common.TagResponse;
 import overcloud.blog.usecase.blog.follow_tag.FollowTagService;
 import overcloud.blog.usecase.blog.get_following_tags.FollowingTagResponse;
 import overcloud.blog.usecase.blog.get_following_tags.GetFollowingTagService;
 import overcloud.blog.usecase.blog.get_tags.GetTagsService;
-import overcloud.blog.usecase.blog.get_tags_admin.IGetTagAdmin;
-import overcloud.blog.usecase.blog.get_tags_admin.TagResponse;
 import overcloud.blog.usecase.blog.unfollow_tag.UnfollowTagService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -34,7 +29,7 @@ public class TagController {
     }
 
     @GetMapping("/tags")
-    public List<ITagResponse> getTags(@RequestParam(required = false) Boolean following) {
+    public List<TagResponse> getTags(@RequestParam(required = false) Boolean following) {
         return getTagsService.getTags(following);
     }
 

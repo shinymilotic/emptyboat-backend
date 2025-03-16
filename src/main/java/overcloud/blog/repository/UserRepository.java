@@ -4,10 +4,9 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.get_profile.GetProfileResponse;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-public interface IUserRepository {
+public interface UserRepository {
     UserEntity findByUsername(String username);
     UserEntity findByEmail(String email);
     UserEntity save(UserEntity entity);

@@ -8,7 +8,7 @@ import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.common.UserResponseMapper;
@@ -17,12 +17,12 @@ import java.util.Optional;
 
 @Service
 public class UpdateUserService {
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
     private final UserResponseMapper userResponseMapper;
     private final ObjectsValidator<UpdateUserRequest> validator;
 
-    public UpdateUserService(IUserRepository userRepository,
+    public UpdateUserService(UserRepository userRepository,
                              SpringAuthenticationService authenticationService,
                              UserResponseMapper userResponseMapper,
                              ObjectsValidator<UpdateUserRequest> validator) {

@@ -12,8 +12,8 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.ArticleEntity;
 import overcloud.blog.entity.CommentEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IArticleRepository;
-import overcloud.blog.repository.ICommentRepository;
+import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.CommentRepository;
 import overcloud.blog.usecase.blog.common.AuthorResponse;
 import overcloud.blog.usecase.blog.common.CommentResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
@@ -24,13 +24,13 @@ import java.util.UUID;
 
 @Service
 public class CreateCommentService {
-    private final IArticleRepository articleRepository;
-    private final ICommentRepository commentRepository;
+    private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
     private final SpringAuthenticationService authenticationService;
     private final ObjectsValidator<CreateCommentRequest> validator;
 
-    public CreateCommentService(IArticleRepository articleRepository,
-                                ICommentRepository commentRepository,
+    public CreateCommentService(ArticleRepository articleRepository,
+                                CommentRepository commentRepository,
                                 SpringAuthenticationService authenticationService,
                                 ObjectsValidator<CreateCommentRequest> validator) {
         this.articleRepository = articleRepository;

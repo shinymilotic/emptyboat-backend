@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import overcloud.blog.entity.PracticeChoiceAnswerEntity;
 
-public interface IPracticeChoiceRepository {
+public interface PracticeChoiceRepository {
     void saveAll(List<PracticeChoiceAnswerEntity> choiceEntities);
     void deleteAll(List<UUID> choiceAnswerIds);
 }

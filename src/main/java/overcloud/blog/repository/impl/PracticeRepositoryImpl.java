@@ -6,13 +6,13 @@ import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.PracticeEntity;
-import overcloud.blog.repository.IPracticeRepository;
+import overcloud.blog.repository.PracticeRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeRepository;
 import overcloud.blog.usecase.test.get_practice.*;
 import java.util.*;
 
 @Repository
-public class PracticeRepositoryImpl implements IPracticeRepository {
+public class PracticeRepositoryImpl implements PracticeRepository {
     private final JpaPracticeRepository jpa;
     private final EntityManager entityManager;
 

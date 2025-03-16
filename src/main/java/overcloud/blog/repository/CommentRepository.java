@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import overcloud.blog.entity.CommentEntity;
 
-public interface ICommentRepository {
+public interface CommentRepository {
     void deleteByArticleId(UUID id);
     void deleteById(UUID id);
     CommentEntity save(CommentEntity commentEntity);

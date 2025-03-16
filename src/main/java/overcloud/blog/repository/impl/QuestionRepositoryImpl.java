@@ -2,14 +2,14 @@ package overcloud.blog.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.QuestionEntity;
-import overcloud.blog.repository.IQuestionRepository;
+import overcloud.blog.repository.QuestionRepository;
 import overcloud.blog.repository.jparepository.JpaQuestionRepository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class QuestionRepositoryImpl implements IQuestionRepository {
+public class QuestionRepositoryImpl implements QuestionRepository {
     private final JpaQuestionRepository jpa;
 
     public QuestionRepositoryImpl(JpaQuestionRepository jpa) {

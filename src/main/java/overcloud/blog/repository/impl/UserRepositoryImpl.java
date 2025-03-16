@@ -3,18 +3,17 @@ package overcloud.blog.repository.impl;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.repository.jparepository.JpaUserRepository;
 import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.user.get_profile.GetProfileResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class UserRepositoryImpl implements IUserRepository {
+public class UserRepositoryImpl implements UserRepository {
     private final JpaUserRepository jpa;
     private final EntityManager entityManager;
 

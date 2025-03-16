@@ -12,9 +12,9 @@ import overcloud.blog.usecase.test.create_test.response.Answer;
 import overcloud.blog.usecase.test.create_test.response.ChoiceQuestion;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.*;
-import overcloud.blog.repository.IChoiceAnswerRepository;
-import overcloud.blog.repository.IQuestionRepository;
-import overcloud.blog.repository.ITestRepository;
+import overcloud.blog.repository.ChoiceAnswerRepository;
+import overcloud.blog.repository.QuestionRepository;
+import overcloud.blog.repository.TestRepository;
 import overcloud.blog.usecase.test.common.*;
 import overcloud.blog.usecase.test.create_test.CreateTestService;
 import overcloud.blog.usecase.user.common.UserResMsg;
@@ -25,17 +25,17 @@ import java.util.Optional;
 
 @Service
 public class CreateTestServiceImpl implements CreateTestService {
-    private final ITestRepository testRepository;
-    private final IQuestionRepository questionRepository;
+    private final TestRepository testRepository;
+    private final QuestionRepository questionRepository;
     private final SpringAuthenticationService authenticationService;
-    private final IChoiceAnswerRepository choiceAnswerRepository;
+    private final ChoiceAnswerRepository choiceAnswerRepository;
     private final ObjectsValidator validator;
 
-    public CreateTestServiceImpl(ITestRepository testRepository,
-                                 IQuestionRepository questionRepository,
+    public CreateTestServiceImpl(TestRepository testRepository,
+                                 QuestionRepository questionRepository,
                                  SpringAuthenticationService authenticationService,
                                  ObjectsValidator validator,
-                                 IChoiceAnswerRepository choiceAnswerRepository) {
+                                 ChoiceAnswerRepository choiceAnswerRepository) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.authenticationService = authenticationService;

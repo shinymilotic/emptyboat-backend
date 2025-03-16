@@ -1,7 +1,5 @@
 package overcloud.blog.usecase.blog.delete_tag;
 
-import java.util.UUID;
-
-public interface IDeleteTag {
+public interface DeleteTag {
     Void deleteTag(String tagId);
 }

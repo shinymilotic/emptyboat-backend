@@ -3,11 +3,11 @@ package overcloud.blog.usecase.test.delete_test.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import overcloud.blog.auth.service.SpringAuthenticationService;
-import overcloud.blog.repository.IQuestionRepository;
+import overcloud.blog.repository.QuestionRepository;
 import overcloud.blog.entity.TestEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IPracticeRepository;
-import overcloud.blog.repository.ITestRepository;
+import overcloud.blog.repository.PracticeRepository;
+import overcloud.blog.repository.TestRepository;
 import overcloud.blog.usecase.test.common.TestResMsg;
 import overcloud.blog.usecase.test.delete_test.DeleteTestService;
 import overcloud.blog.usecase.user.common.UserResMsg;
@@ -18,16 +18,16 @@ import java.util.UUID;
 
 @Service
 public class DeleteTestServiceImpl implements DeleteTestService {
-    private final ITestRepository testRepository;
-    private final IPracticeRepository practiceRepository;
-    private final IQuestionRepository questionRepository;
+    private final TestRepository testRepository;
+    private final PracticeRepository practiceRepository;
+    private final QuestionRepository questionRepository;
     private final ObjectsValidator validator ;
     private final SpringAuthenticationService authenticationService;
 
     DeleteTestServiceImpl(
-            ITestRepository testRepository,
-            IPracticeRepository practiceRepository,
-            IQuestionRepository questionRepository,
+            TestRepository testRepository,
+            PracticeRepository practiceRepository,
+            QuestionRepository questionRepository,
             ObjectsValidator validator,
             SpringAuthenticationService authenticationService) {
         this.testRepository = testRepository;

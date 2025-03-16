@@ -5,11 +5,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import jakarta.persistence.Tuple;
 import overcloud.blog.entity.TagEntity;
-import overcloud.blog.repository.ITagRepository;
+import overcloud.blog.repository.TagRepository;
 import overcloud.blog.repository.jparepository.JpaTagRepository;
 
 @Repository
-public class TagRepositoryImpl implements ITagRepository {
+public class TagRepositoryImpl implements TagRepository {
     private final JpaTagRepository jpa;
 
     public TagRepositoryImpl(JpaTagRepository jpa) {
@@ -45,11 +45,6 @@ public class TagRepositoryImpl implements ITagRepository {
     public List<TagEntity> findTags(int pageNumber, int itemsPerPage) {
         int offset = pageNumber - 1;
         return jpa.findTags(itemsPerPage, offset);
-    }
-
-    @Override
-    public Long getTagCount() {
-        return jpa.getTagCount();
     }
 
     @Override

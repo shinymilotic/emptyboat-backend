@@ -9,9 +9,9 @@ import overcloud.blog.exception.InvalidDataException;
 import overcloud.blog.response.ApiError;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.*;
-import overcloud.blog.repository.IArticleRepository;
-import overcloud.blog.repository.IArticleTagRepository;
-import overcloud.blog.repository.ITagRepository;
+import overcloud.blog.repository.ArticleRepository;
+import overcloud.blog.repository.ArticleTagRepository;
+import overcloud.blog.repository.TagRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
 import overcloud.blog.usecase.blog.common.TagResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
@@ -25,16 +25,16 @@ import java.util.stream.Collectors;
 @Service
 public class CreateArticleService {
     private final SpringAuthenticationService authenticationService;
-    private final ITagRepository tagRepository;
-    private final IArticleRepository articleRepository;
+    private final TagRepository tagRepository;
+    private final ArticleRepository articleRepository;
     private final ObjectsValidator<ArticleRequest> validator;
-    private final IArticleTagRepository articleTagRepository;
+    private final ArticleTagRepository articleTagRepository;
 
     public CreateArticleService(SpringAuthenticationService authenticationService,
-                                ITagRepository tagRepository,
-                                IArticleRepository articleRepository,
+                                TagRepository tagRepository,
+                                ArticleRepository articleRepository,
                                 ObjectsValidator<ArticleRequest> validator,
-                                IArticleTagRepository articleTagRepository) {
+                                ArticleTagRepository articleTagRepository) {
         this.authenticationService = authenticationService;
         this.tagRepository = tagRepository;
         this.articleRepository = articleRepository;

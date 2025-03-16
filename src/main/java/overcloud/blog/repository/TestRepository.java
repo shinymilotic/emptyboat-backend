@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ITestRepository {
+public interface TestRepository {
     List<TestListRecord> findAll();
     Optional<TestEntity> findById(UUID id);
     TestEntity save(TestEntity testEntity);

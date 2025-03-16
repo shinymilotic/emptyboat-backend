@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonDeserialize(as = PracticeOpenQuestion.class)
-public class PracticeOpenQuestion implements IQuestionPractice {
+public class PracticeOpenQuestion implements QuestionPractice {
     @JsonProperty("questionId")
     private String questionId;
 

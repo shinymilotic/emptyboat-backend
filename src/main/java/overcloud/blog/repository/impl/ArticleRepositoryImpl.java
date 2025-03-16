@@ -6,15 +6,15 @@ import jakarta.persistence.Tuple;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import overcloud.blog.entity.ArticleEntity;
-import overcloud.blog.repository.IArticleRepository;
+import overcloud.blog.repository.ArticleRepository;
 import overcloud.blog.repository.jparepository.JpaArticleRepository;
 import overcloud.blog.usecase.blog.common.ArticleSummary;
-import overcloud.blog.usecase.blog.common.TagResponse;
+import overcloud.blog.usecase.blog.common.TagResponseImpl;
 import java.sql.Timestamp;
 import java.util.*;
 
 @Repository
-public class ArticleRepositoryImpl implements IArticleRepository {
+public class ArticleRepositoryImpl implements ArticleRepository {
     private final JpaArticleRepository jpa;
     private final EntityManager entityManager;
 
@@ -235,7 +235,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             UUID articleId = (UUID) data.get("article_id");
             UUID tagId = (UUID) data.get("tagId");
             String tagName = (String) data.get("tag");
-            TagResponse tag = new TagResponse();
+            TagResponseImpl tag = new TagResponseImpl();
             tag.setId(tagId.toString());
             tag.setName(tagName);
             if (articleId.equals(previousArticleId)) {
@@ -247,7 +247,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
             summary.setTitle((String) data.get("title"));
             summary.setDescription((String) data.get("description"));
             summary.setBody((String) data.get("body"));
-            List<TagResponse> tagList = new ArrayList<>();
+            List<TagResponseImpl> tagList = new ArrayList<>();
             tagList.add(tag);
             summary.setTag(tagList);
             summary.setCreatedAt((Timestamp) data.get("createdAt"));
@@ -267,12 +267,12 @@ public class ArticleRepositoryImpl implements IArticleRepository {
     private List<ArticleSummary> toArticleSummaryList(List<Tuple> articlesData) {
         List<ArticleSummary> articleSummaries = new ArrayList<>();
         UUID previousArticleId = null;
-        Map<UUID, List<TagResponse>> articleSummaryMap = new HashMap<>();
+        Map<UUID, List<TagResponseImpl>> articleSummaryMap = new HashMap<>();
         for (Tuple data : articlesData) {
             UUID articleId = (UUID) data.get("article_id");
             UUID tagId = (UUID) data.get("tagId");
             String tagName = (String) data.get("tag");
-            TagResponse tag = new TagResponse();
+            TagResponseImpl tag = new TagResponseImpl();
             tag.setId(tagId.toString());
             tag.setName(tagName);
 
@@ -280,7 +280,7 @@ public class ArticleRepositoryImpl implements IArticleRepository {
                 articleSummaryMap.get(articleId).add(tag);
                 continue;
             } else {
-                List<TagResponse> tagList = new ArrayList<>();
+                List<TagResponseImpl> tagList = new ArrayList<>();
                 tagList.add(tag);
                 articleSummaryMap.put(articleId, tagList);
             }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.auth.service.JwtUtils;
-import overcloud.blog.repository.IRefreshTokenRepository;
+import overcloud.blog.repository.RefreshTokenRepository;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
@@ -19,11 +19,11 @@ import java.util.UUID;
 @Service
 public class RefreshTokenService {
     private final JwtUtils jwtUtils;
-    private final IRefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final ObjectsValidator validator;
 
     public RefreshTokenService(JwtUtils jwtUtils,
-        IRefreshTokenRepository refreshTokenRepository,
+        RefreshTokenRepository refreshTokenRepository,
         ObjectsValidator validator) {
         this.validator = validator;
         this.jwtUtils = jwtUtils;

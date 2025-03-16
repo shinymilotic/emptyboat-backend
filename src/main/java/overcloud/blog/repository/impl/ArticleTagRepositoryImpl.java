@@ -6,11 +6,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import overcloud.blog.entity.ArticleTag;
-import overcloud.blog.repository.IArticleTagRepository;
+import overcloud.blog.repository.ArticleTagRepository;
 import overcloud.blog.repository.jparepository.JpaArticleTagRepository;
 
 @Repository
-public class ArticleTagRepositoryImpl implements IArticleTagRepository {
+public class ArticleTagRepositoryImpl implements ArticleTagRepository {
     private final JpaArticleTagRepository jpa;
     
     public ArticleTagRepositoryImpl(JpaArticleTagRepository jpa) {

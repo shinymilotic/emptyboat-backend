@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IFollowRepository;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.FollowRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.usecase.user.follow.core.FollowEntity;
 import overcloud.blog.usecase.user.follow.core.FollowId;
@@ -14,14 +14,14 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 
 @Service
 public class FollowService {
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
     private final SpringAuthenticationService authenticationService;
-    private final IFollowRepository followRepository;
+    private final FollowRepository followRepository;
     private final ObjectsValidator validator;
 
-    public FollowService(IUserRepository userRepository,
+    public FollowService(UserRepository userRepository,
                          SpringAuthenticationService authenticationService,
-                         IFollowRepository followRepository,
+                         FollowRepository followRepository,
                          ObjectsValidator validator) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;

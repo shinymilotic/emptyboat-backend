@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface IArticleRepository {
+public interface ArticleRepository {
     Optional<ArticleEntity> findById(UUID id);
     void updateSearchVector();
     void deleteById(UUID id);

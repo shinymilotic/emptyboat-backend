@@ -8,12 +8,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import overcloud.blog.usecase.test.common.QuestionType;
 import java.io.IOException;
 
-public class QuestionPracticeDeserializer extends JsonDeserializer<IQuestionPractice> {
+public class QuestionPracticeDeserializer extends JsonDeserializer<QuestionPractice> {
     @Override
-    public IQuestionPractice deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public QuestionPractice deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         ObjectNode root = mapper.readTree(jp);
-        Class<? extends IQuestionPractice> instanceClass = null;
+        Class<? extends QuestionPractice> instanceClass = null;
         if (root.get("questionType").asInt() == QuestionType.CHOICE.getValue()) {
             instanceClass = PracticeChoiceQuestion.class;
         } else if (root.get("questionType").asInt() == QuestionType.OPEN.getValue()) {

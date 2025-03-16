@@ -2,6 +2,6 @@ package overcloud.blog.usecase.user.admin_create_user;
 
 import java.io.IOException;
 
-public interface IAdminCreateUser {
+public interface AdminCreateUser {
     Void adminCreateUser(AdminCreateUserRequest request) throws IOException;
 }

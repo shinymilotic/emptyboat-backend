@@ -6,17 +6,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import overcloud.blog.repository.IRefreshTokenRepository;
-import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
+import overcloud.blog.repository.RefreshTokenRepository;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 @Service
 public class LogoutService {
-    private final IRefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public LogoutService(IRefreshTokenRepository refreshTokenRepository) {
+    public LogoutService(RefreshTokenRepository refreshTokenRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 

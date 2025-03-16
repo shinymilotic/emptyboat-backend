@@ -6,11 +6,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import overcloud.blog.entity.PracticeOpenAnswerEntity;
-import overcloud.blog.repository.IPracticeOpenAnswerRepository;
+import overcloud.blog.repository.PracticeOpenAnswerRepository;
 import overcloud.blog.repository.jparepository.JpaPracticeOpenAnswerRepository;
 
 @Repository
-public class PracticeOpenAnswerRepositoryImpl implements IPracticeOpenAnswerRepository {
+public class PracticeOpenAnswerRepositoryImpl implements PracticeOpenAnswerRepository {
     private final JpaPracticeOpenAnswerRepository jpa;
 
     public PracticeOpenAnswerRepositoryImpl(JpaPracticeOpenAnswerRepository jpa) {

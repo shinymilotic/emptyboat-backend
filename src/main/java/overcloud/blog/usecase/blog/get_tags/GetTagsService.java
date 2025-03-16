@@ -6,10 +6,10 @@ import jakarta.persistence.Tuple;
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.TagEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.ITagRepository;
-import overcloud.blog.usecase.blog.common.ITagResponse;
-import overcloud.blog.usecase.blog.common.TagFollowingResponse;
+import overcloud.blog.repository.TagRepository;
 import overcloud.blog.usecase.blog.common.TagResponse;
+import overcloud.blog.usecase.blog.common.TagFollowingResponse;
+import overcloud.blog.usecase.blog.common.TagResponseImpl;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
@@ -19,26 +19,26 @@ import java.util.UUID;
 
 @Service
 public class GetTagsService {
-    private final ITagRepository tagRepository;
+    private final TagRepository tagRepository;
     private final ObjectsValidator validator;
     private final SpringAuthenticationService authenticationService;
 
-    public GetTagsService(ITagRepository tagRepository,
+    public GetTagsService(TagRepository tagRepository,
                           ObjectsValidator validator,
-                        SpringAuthenticationService authenticationService) {
+                          SpringAuthenticationService authenticationService) {
         this.tagRepository = tagRepository;
         this.validator = validator;
         this.authenticationService = authenticationService;
     }
 
     @Transactional(readOnly = true)
-    public List<ITagResponse> getTags(Boolean following) {
-        List<ITagResponse> response = new ArrayList<>();
+    public List<TagResponse> getTags(Boolean following) {
+        List<TagResponse> response = new ArrayList<>();
 
         if (following == null || !following) {
             List<TagEntity> tagEntities = tagRepository.findAll();
             for (TagEntity tagEntity : tagEntities) {
-                TagResponse tagResponse = new TagResponse();
+                TagResponseImpl tagResponse = new TagResponseImpl();
                 tagResponse.setId(tagEntity.getTagId().toString());
                 tagResponse.setName(tagEntity.getName());
                 response.add(tagResponse);

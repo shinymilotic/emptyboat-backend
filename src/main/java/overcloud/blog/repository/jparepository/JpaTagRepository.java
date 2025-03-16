@@ -26,7 +26,4 @@ public interface JpaTagRepository extends JpaRepository<TagEntity, UUID> {
 
     @Query(value = "SELECT tag_id, name FROM tags LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<TagEntity> findTags(int limit, int offset);
-
-    @Query(value = "SELECT COUNT(*) FROM tags", nativeQuery = true)
-    Long getTagCount();
 }

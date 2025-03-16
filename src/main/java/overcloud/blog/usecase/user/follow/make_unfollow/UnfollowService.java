@@ -5,18 +5,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import overcloud.blog.auth.service.SpringAuthenticationService;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IFollowRepository;
+import overcloud.blog.repository.FollowRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
 @Service
 public class UnfollowService {
     private final SpringAuthenticationService authenticationService;
-    private final IFollowRepository followRepository;
+    private final FollowRepository followRepository;
     private final ObjectsValidator validator;
 
     public UnfollowService(SpringAuthenticationService authenticationService,
-                           IFollowRepository followRepository,
+                           FollowRepository followRepository,
                            ObjectsValidator validator) {
         this.authenticationService = authenticationService;
         this.followRepository = followRepository;

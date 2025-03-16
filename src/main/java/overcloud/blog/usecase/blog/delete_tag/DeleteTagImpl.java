@@ -2,20 +2,20 @@ package overcloud.blog.usecase.blog.delete_tag;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import overcloud.blog.repository.IArticleTagRepository;
-import overcloud.blog.repository.ITagFollowRepository;
-import overcloud.blog.repository.ITagRepository;
+import overcloud.blog.repository.ArticleTagRepository;
+import overcloud.blog.repository.TagFollowRepository;
+import overcloud.blog.repository.TagRepository;
 import java.util.UUID;
 
 @Service
-public class DeleteTagImpl implements IDeleteTag {
-    private final ITagRepository tagRepository;
-    private final ITagFollowRepository tagFollowRepository;
-    private final IArticleTagRepository articleTagRepository;
+public class DeleteTagImpl implements DeleteTag {
+    private final TagRepository tagRepository;
+    private final TagFollowRepository tagFollowRepository;
+    private final ArticleTagRepository articleTagRepository;
 
-    public DeleteTagImpl(ITagRepository tagRepository,
-                         ITagFollowRepository tagFollowRepository,
-                         IArticleTagRepository articleTagRepository) {
+    public DeleteTagImpl(TagRepository tagRepository,
+                         TagFollowRepository tagFollowRepository,
+                         ArticleTagRepository articleTagRepository) {
         this.tagRepository = tagRepository;
         this.tagFollowRepository = tagFollowRepository;
         this.articleTagRepository = articleTagRepository;

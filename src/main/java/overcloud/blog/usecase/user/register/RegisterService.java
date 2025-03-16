@@ -12,8 +12,8 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.RefreshTokenEntity;
 import overcloud.blog.entity.RoleEntity;
 import overcloud.blog.entity.UserEntity;
-import overcloud.blog.repository.IRoleRepository;
-import overcloud.blog.repository.IUserRepository;
+import overcloud.blog.repository.RoleRepository;
+import overcloud.blog.repository.UserRepository;
 import overcloud.blog.repository.jparepository.JpaRefreshTokenRepository;
 import overcloud.blog.usecase.email.EmailService;
 import overcloud.blog.usecase.user.common.UserResMsg;
@@ -21,15 +21,15 @@ import java.util.*;
 
 @Service
 public class RegisterService {
-    private final IUserRepository userRepository;
-    private final IRoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final SpringAuthenticationService authenticationService;
     private final JwtUtils jwtUtils;
     private final ObjectsValidator<RegisterRequest> validator;
     private final EmailService emailService;
     private final JpaRefreshTokenRepository refreshTokenRepository;
 
-    public RegisterService(IUserRepository userRepository, IRoleRepository roleRepository,
+    public RegisterService(UserRepository userRepository, RoleRepository roleRepository,
                            SpringAuthenticationService authenticationService,
                            JwtUtils jwtUtils,
                            ObjectsValidator<RegisterRequest> validator,

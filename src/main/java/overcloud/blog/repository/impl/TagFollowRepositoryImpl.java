@@ -3,13 +3,13 @@ package overcloud.blog.repository.impl;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.entity.TagFollowEntity;
 import overcloud.blog.entity.TagFollowId;
-import overcloud.blog.repository.ITagFollowRepository;
+import overcloud.blog.repository.TagFollowRepository;
 import overcloud.blog.repository.jparepository.JpaTagFollowRepository;
 
 import java.util.UUID;
 
 @Repository
-public class TagFollowRepositoryImpl implements ITagFollowRepository {
+public class TagFollowRepositoryImpl implements TagFollowRepository {
     private final JpaTagFollowRepository jpa;
 
     public TagFollowRepositoryImpl(JpaTagFollowRepository jpa) {

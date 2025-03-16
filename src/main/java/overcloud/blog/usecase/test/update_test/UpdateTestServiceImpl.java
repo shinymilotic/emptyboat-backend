@@ -13,29 +13,29 @@ import overcloud.blog.response.ApiError;
 import overcloud.blog.utils.validation.ObjectsValidator;
 import overcloud.blog.entity.ChoiceAnswerEntity;
 import overcloud.blog.entity.QuestionEntity;
-import overcloud.blog.repository.IChoiceAnswerRepository;
-import overcloud.blog.repository.IPracticeChoiceRepository;
-import overcloud.blog.repository.IPracticeOpenAnswerRepository;
-import overcloud.blog.repository.IQuestionRepository;
-import overcloud.blog.repository.ITestRepository;
+import overcloud.blog.repository.ChoiceAnswerRepository;
+import overcloud.blog.repository.PracticeChoiceRepository;
+import overcloud.blog.repository.PracticeOpenAnswerRepository;
+import overcloud.blog.repository.QuestionRepository;
+import overcloud.blog.repository.TestRepository;
 import overcloud.blog.usecase.test.common.QuestionType;
 import overcloud.blog.usecase.user.common.UpdateFlg;
 
 @Service
 public class UpdateTestServiceImpl implements UpdateTestService {
     private final ObjectsValidator<TestUpdateRequest> validator;
-    private final ITestRepository testRepo;
-    private final IQuestionRepository questionRepo;
-    private final IChoiceAnswerRepository choiceAnswerRepo;
-    private final IPracticeOpenAnswerRepository practiceOpenAnswerRepo;
-    private final IPracticeChoiceRepository practiceChoiceRepo;
+    private final TestRepository testRepo;
+    private final QuestionRepository questionRepo;
+    private final ChoiceAnswerRepository choiceAnswerRepo;
+    private final PracticeOpenAnswerRepository practiceOpenAnswerRepo;
+    private final PracticeChoiceRepository practiceChoiceRepo;
 
     public UpdateTestServiceImpl(ObjectsValidator<TestUpdateRequest> validator,
-            ITestRepository testRepo,
-            IQuestionRepository questionRepo,
-            IChoiceAnswerRepository choiceAnswerRepo,
-            IPracticeOpenAnswerRepository practiceOpenAnswerRepo,
-            IPracticeChoiceRepository practiceChoiceRepo) {
+            TestRepository testRepo,
+            QuestionRepository questionRepo,
+            ChoiceAnswerRepository choiceAnswerRepo,
+            PracticeOpenAnswerRepository practiceOpenAnswerRepo,
+            PracticeChoiceRepository practiceChoiceRepo) {
         this.validator = validator;
         this.testRepo = testRepo;
         this.questionRepo = questionRepo;
