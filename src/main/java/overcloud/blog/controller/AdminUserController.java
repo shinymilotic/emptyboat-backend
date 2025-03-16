@@ -2,22 +2,20 @@ package overcloud.blog.controller;
 
 import overcloud.blog.usecase.admin.user.create_user.CreateUserRequest;
 import overcloud.blog.usecase.admin.user.create_user.CreateUser;
+import overcloud.blog.usecase.admin.user.get_users.GetUserListService;
 import overcloud.blog.usecase.admin.user.get_users.UserListResponse;
-import overcloud.blog.usecase.user.common.UserResponse;
 import overcloud.blog.usecase.admin.user.delete_user.DeleteUser;
-import overcloud.blog.usecase.admin.user.get_users.GetUserListServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
-import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class AdminUserController {
-    private final GetUserListServiceImpl getUserListService;
+    private final GetUserListService getUserListService;
     private final CreateUser createUser;
     private final DeleteUser deleteUser;
 
-    public AdminUserController(GetUserListServiceImpl getUserListService,
+    public AdminUserController(GetUserListService getUserListService,
                                CreateUser createUser,
                                DeleteUser deleteUser) {
         this.getUserListService = getUserListService;
