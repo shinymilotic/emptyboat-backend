@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.user.delete_user;
+package overcloud.blog.usecase.admin.user.delete_user;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.blog.delete_tag;
+package overcloud.blog.usecase.admin.tag.delete_tag;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,5 @@
-package overcloud.blog.usecase.user.admin_create_user;
+package overcloud.blog.usecase.admin.user.create_user;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

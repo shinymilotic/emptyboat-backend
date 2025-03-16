@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.user.admin_create_user;
+package overcloud.blog.usecase.admin.user.create_user;
 
 import java.io.IOException;
 

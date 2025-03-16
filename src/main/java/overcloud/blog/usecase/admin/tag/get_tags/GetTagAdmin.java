@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.blog.get_tags_admin;
+package overcloud.blog.usecase.admin.tag.get_tags;
 
 import java.util.List;
 

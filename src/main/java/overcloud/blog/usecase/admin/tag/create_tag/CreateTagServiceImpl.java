@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.blog.create_tag;
+package overcloud.blog.usecase.admin.tag.create_tag;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

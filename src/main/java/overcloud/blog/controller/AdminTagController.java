@@ -3,12 +3,11 @@ package overcloud.blog.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
-import overcloud.blog.usecase.blog.create_tag.CreateTagRequest;
-import overcloud.blog.usecase.blog.create_tag.CreateTagService;
-import overcloud.blog.usecase.blog.create_tag.CreateTagServiceImpl;
-import overcloud.blog.usecase.blog.delete_tag.DeleteTag;
-import overcloud.blog.usecase.blog.get_tags_admin.GetTagAdmin;
-import overcloud.blog.usecase.blog.get_tags_admin.TagResponse;
+import overcloud.blog.usecase.admin.tag.create_tag.CreateTagRequest;
+import overcloud.blog.usecase.admin.tag.create_tag.CreateTagService;
+import overcloud.blog.usecase.admin.tag.delete_tag.DeleteTag;
+import overcloud.blog.usecase.admin.tag.get_tags.GetTagAdmin;
+import overcloud.blog.usecase.admin.tag.get_tags.TagResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

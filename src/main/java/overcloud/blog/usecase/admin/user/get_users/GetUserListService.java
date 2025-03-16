@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.user.get_users;
+package overcloud.blog.usecase.admin.user.get_users;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

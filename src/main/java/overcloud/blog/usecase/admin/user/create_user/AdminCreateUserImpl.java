@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.user.admin_create_user;
+package overcloud.blog.usecase.admin.user.create_user;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.apache.commons.codec.binary.Base64;

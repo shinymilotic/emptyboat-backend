@@ -1,10 +1,10 @@
 package overcloud.blog.controller;
 
-import overcloud.blog.usecase.user.admin_create_user.AdminCreateUserRequest;
-import overcloud.blog.usecase.user.admin_create_user.AdminCreateUser;
+import overcloud.blog.usecase.admin.user.create_user.AdminCreateUserRequest;
+import overcloud.blog.usecase.admin.user.create_user.AdminCreateUser;
 import overcloud.blog.usecase.user.common.UserResponse;
-import overcloud.blog.usecase.user.delete_user.DeleteUser;
-import overcloud.blog.usecase.user.get_users.GetUserListService;
+import overcloud.blog.usecase.admin.user.delete_user.DeleteUser;
+import overcloud.blog.usecase.admin.user.get_users.GetUserListService;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;

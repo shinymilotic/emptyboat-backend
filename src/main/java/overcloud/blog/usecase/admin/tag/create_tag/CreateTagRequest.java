@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.blog.create_tag;
+package overcloud.blog.usecase.admin.tag.create_tag;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
