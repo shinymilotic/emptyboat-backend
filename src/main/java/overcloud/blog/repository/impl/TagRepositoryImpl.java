@@ -1,6 +1,7 @@
 package overcloud.blog.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import jakarta.persistence.Tuple;
@@ -19,6 +20,11 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public List<TagEntity> findByTagIds(List<String> tagList) {
         return jpa.findByTagIds(tagList);
+    }
+
+    @Override
+    public Optional<TagEntity> findByTagId(UUID tagId) {
+        return jpa.findById(tagId);
     }
 
     @Override
@@ -50,5 +56,10 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public void deleteTag(UUID tagId) {
         jpa.deleteById(tagId);
+    }
+
+    @Override
+    public void save(TagEntity tag) {
+        jpa.save(tag);
     }
 }

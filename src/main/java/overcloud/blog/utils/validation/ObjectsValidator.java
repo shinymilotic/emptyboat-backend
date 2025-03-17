@@ -34,7 +34,6 @@ public class ObjectsValidator<T> {
 
             return Optional.of(new ApiError(errors));
         }
-
         return Optional.empty();
     }
 
