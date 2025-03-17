@@ -33,7 +33,7 @@ public class AdminUserController {
         return createUser.createUser(request);
     }
 
-    @DeleteMapping("/admin/users")
+    @DeleteMapping("/admin/users/{userId}")
     public Void deleteUser(@PathVariable("userId") String userId) {
         return deleteUser.deleteUser(userId);
     }

@@ -57,10 +57,6 @@ public class CreateUserImpl implements CreateUser {
             throw new InvalidDataException(error.get());
         }
 
-        if (!StringUtils.hasText(request.getImage())) {
-            request.setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
-        }
-
         String hashedPassword = authenticationService.encodePassword(request.getPassword());
 
         UserEntity userForSave = new UserEntity();
@@ -77,20 +73,24 @@ public class CreateUserImpl implements CreateUser {
     }
 
     private String saveImage(String base64Image) throws IOException {
-        byte[] data = Base64.decodeBase64(base64Image);
-        String fileType = getImageType(data);
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+        if (StringUtils.hasText(base64Image)) {
+            byte[] data = Base64.decodeBase64(base64Image);
+            String fileType = getImageType(data);
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String fileName = this.getFileName(fileType);
+            Path filePath = uploadPath.resolve(fileName);
+            try (OutputStream stream = new FileOutputStream(filePath.toString())) {
+                stream.write(data);
+            }
+
+            return "http://localhost:8081/api/images/" + fileName;
         }
 
-        String fileName = this.getFileName(fileType);
-        Path filePath = uploadPath.resolve(fileName);
-        try (OutputStream stream = new FileOutputStream(filePath.toString())) {
-            stream.write(data);
-        }
-
-        return "http://localhost:8081/api/images/" + fileName;
+        return "";
     }
 
     private String getFileName(String fileType) {
