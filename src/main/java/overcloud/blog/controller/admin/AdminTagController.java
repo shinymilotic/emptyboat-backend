@@ -6,19 +6,18 @@ import org.springframework.web.bind.annotation.*;
 import overcloud.blog.usecase.admin.tag.create_tag.CreateTagRequest;
 import overcloud.blog.usecase.admin.tag.create_tag.CreateTagService;
 import overcloud.blog.usecase.admin.tag.delete_tag.DeleteTag;
-import overcloud.blog.usecase.admin.tag.get_tags.GetTagAdmin;
+import overcloud.blog.usecase.admin.tag.get_tags.GetTagList;
 import overcloud.blog.usecase.admin.tag.get_tags.TagListResponse;
-import overcloud.blog.usecase.admin.tag.get_tags.TagResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class AdminTagController {
     private final CreateTagService createTagService;
-    private final GetTagAdmin getTagsAdmin;
+    private final GetTagList getTagsAdmin;
     private final DeleteTag deleteTag;
 
     public AdminTagController(CreateTagService createTagService,
-                              GetTagAdmin getTagsAdmin,
+                              GetTagList getTagsAdmin,
                               DeleteTag deleteTag) {
         this.createTagService = createTagService;
         this.getTagsAdmin = getTagsAdmin;
@@ -31,9 +30,9 @@ public class AdminTagController {
     }
 
     @GetMapping("/admin/tags")
-    public TagListResponse getTagAdmin(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
-                                       @RequestParam(value = "itemsPerPage", defaultValue = "10") int itemsPerPage) {
-        return getTagsAdmin.getTagAdmin(pageNumber, itemsPerPage);
+    public TagListResponse getTagList(@RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+                                      @RequestParam(value = "itemsPerPage", defaultValue = "10") int itemsPerPage) {
+        return getTagsAdmin.getTagList(pageNumber, itemsPerPage);
     }
 
     @DeleteMapping("/admin/tags")

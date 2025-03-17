@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GetTagAdminImpl implements GetTagAdmin {
+public class GetTagAdminImpl implements GetTagList {
     private final TagRepository tagRepository;
 
     public GetTagAdminImpl(TagRepository tagRepository) {
@@ -17,7 +17,7 @@ public class GetTagAdminImpl implements GetTagAdmin {
 
     @Override
     @Transactional
-    public TagListResponse getTagAdmin(int pageNumber, int itemsPerPage) {
+    public TagListResponse getTagList(int pageNumber, int itemsPerPage) {
         List<TagEntity> tags = tagRepository.findTags(pageNumber, itemsPerPage);
         TagListResponse response = new TagListResponse();
         List<TagResponse> tagList = new ArrayList<>();
@@ -27,6 +27,7 @@ public class GetTagAdminImpl implements GetTagAdmin {
             tagResponse.setName(tag.getName());
             tagList.add(tagResponse);
         }
+        response.setTags(tagList);
         response.setTagCount(tags.size());
 
         return response;
