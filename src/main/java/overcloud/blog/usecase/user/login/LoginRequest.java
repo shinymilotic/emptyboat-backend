@@ -13,11 +13,10 @@ import overcloud.blog.usecase.user.common.UserResMsg;
 @Getter
 public class LoginRequest {
     @JsonProperty("email")
-    @NotNull(message = UserResMsg.USER_LOGIN_PASSWORD_NOTNULL)
-    @Size(min = 3, max = 256, message = UserResMsg.USER_LOGIN_EMAIL_SIZE)
+    @Size(min = 3, max = 256, message = "user.login.email.size")
     private String email;
 
     @JsonProperty("password")
-    @NotNull(message = UserResMsg.USER_LOGIN_PASSWORD_NOTNULL)
+    @NotNull(message = "user.login.password.not-null")
     private String password;
 }

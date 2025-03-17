@@ -15,18 +15,18 @@ import overcloud.blog.usecase.user.common.UserResMsg;
 @Getter
 public class RegisterRequest {
     @JsonProperty("username")
-    @NotBlank(message = UserResMsg.USER_REGISTER_USERNAME_NOTBLANK)
-    @Size(min = 6, max = 32, message = UserResMsg.USER_REGISTER_USERNAME_SIZE)
-    @LetterAndNumber(message = UserResMsg.USER_REGISTER_USERNAME_LETTERANDNUMBER)
+    @NotBlank(message = "user.register.username.not-blank")
+    @Size(min = 6, max = 32, message = "user.register.username.size")
+    @LetterAndNumber(message = "user.register.username.letter-and-number")
     private String username;
 
     @JsonProperty("email")
-    @NotBlank(message = UserResMsg.USER_REGISTER_EMAIL_NOTBLANK)
-    @Email(message = UserResMsg.USER_REGISTER_EMAIL_VALID)
+    @NotBlank(message = "user.register.email.not-blank")
+    @Email(message = "user.register.email.valid")
     private String email;
 
     @JsonProperty("password")
-    @NotBlank(message = UserResMsg.USER_REGISTER_PASSWORD_NOTBLANK)
-    @Size(min = 8, max = 64, message = UserResMsg.USER_REGISTER_PASSWORD_SIZE)
+    @NotBlank(message = "user.register.password.not-blank")
+    @Size(min = 8, max = 64, message = "user.register.password.size")
     private String password;
 }

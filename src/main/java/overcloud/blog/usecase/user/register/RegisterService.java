@@ -56,18 +56,17 @@ public class RegisterService {
         String hashedPassword = authenticationService.encodePassword(registrationDto.getPassword());
 
         if (userRepository.findByUsername(username) != null) {
-            throw validator.fail(UserResMsg.USER_USERNAME_EXIST);
+            throw validator.fail("user.register.username-exist");
         }
 
         if (userRepository.findByEmail(email) != null) {
-            throw validator.fail(UserResMsg.USER_EMAIL_EXIST);
+            throw validator.fail("user.register.email-exist");
         }
 
         UserEntity userEntity = UserEntity.builder()
                 .userId(UuidCreator.getTimeOrderedEpoch())
                 .username(registrationDto.getUsername())
                 .email(registrationDto.getEmail())
-                .image("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
                 .password(hashedPassword)
                 .enable(true)
                 .build();
@@ -80,7 +79,7 @@ public class RegisterService {
             roleEntitySet.add(role.get());
             savedUser.setRoles(roleEntitySet);
         } else {
-            throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
+            throw validator.fail("user.register.failed");
         }
 
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
