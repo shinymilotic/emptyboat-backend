@@ -13,7 +13,6 @@ import overcloud.blog.repository.ArticleRepository;
 import overcloud.blog.repository.ArticleTagRepository;
 import overcloud.blog.repository.TagRepository;
 import overcloud.blog.usecase.blog.common.ArticleResMsg;
-import overcloud.blog.usecase.blog.common.TagResMsg;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class CreateArticleService {
 
         List<TagEntity> tagEntities = tagRepository.findByTagIds(articleRequest.getTagList());
         if (distinctTags.size() > tagEntities.size()) {
-            throw validator.fail(TagResMsg.TAG_NO_EXISTS);
+            throw validator.fail(ArticleResMsg.TAG_NO_EXISTS);
         }
 
         UserEntity currentUser = authenticationService.getCurrentUser()
