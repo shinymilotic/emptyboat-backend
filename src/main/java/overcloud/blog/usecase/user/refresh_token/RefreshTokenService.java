@@ -21,7 +21,7 @@ public class RefreshTokenService {
     private final JwtUtils jwtUtils;
     private final RefreshTokenRepository refreshTokenRepository;
     private final ObjectsValidator validator;
-
+    private final String REFRESH_TOKEN_FAILED = "Refresh token failed!";
     public RefreshTokenService(JwtUtils jwtUtils,
         RefreshTokenRepository refreshTokenRepository,
         ObjectsValidator validator) {
@@ -35,20 +35,20 @@ public class RefreshTokenService {
         Optional<String> refreshToken = readServletCookie(request, "refreshToken");
 
         if (refreshToken.isEmpty()) {
-            throw validator.fail(UserResMsg.REFRESH_TOKEN_FAILED);
+            throw validator.fail(REFRESH_TOKEN_FAILED);
         }
 
         Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findByRefreshToken(refreshToken.get());
 
         if (refreshTokenEntity.isEmpty()) {
-            throw validator.fail(UserResMsg.REFRESH_TOKEN_FAILED);
+            throw validator.fail(REFRESH_TOKEN_FAILED);
         }
 
         String gottenRefreshToken = refreshTokenEntity.get().getRefreshToken();
         boolean isValidate = jwtUtils.validateToken(gottenRefreshToken);
 
         if (!isValidate) {
-            throw validator.fail(UserResMsg.REFRESH_TOKEN_FAILED);
+            throw validator.fail(REFRESH_TOKEN_FAILED);
         }
 
         String email = jwtUtils.getSub(refreshToken.get());

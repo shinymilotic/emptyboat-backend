@@ -19,6 +19,8 @@ import overcloud.blog.usecase.email.EmailService;
 import overcloud.blog.usecase.user.common.UserResMsg;
 import java.util.*;
 
+import static overcloud.blog.usecase.user.register.RegisterMsg.*;
+
 @Service
 public class RegisterService {
     private final UserRepository userRepository;
@@ -56,11 +58,11 @@ public class RegisterService {
         String hashedPassword = authenticationService.encodePassword(registrationDto.getPassword());
 
         if (userRepository.findByUsername(username) != null) {
-            throw validator.fail("user.register.username-exist");
+            throw validator.fail(USERNAME_EXISTS);
         }
 
         if (userRepository.findByEmail(email) != null) {
-            throw validator.fail("user.register.email-exist");
+            throw validator.fail(EMAIL_EXISTS);
         }
 
         UserEntity userEntity = UserEntity.builder()
@@ -79,7 +81,7 @@ public class RegisterService {
             roleEntitySet.add(role.get());
             savedUser.setRoles(roleEntitySet);
         } else {
-            throw validator.fail("user.register.failed");
+            throw validator.fail(REGISTER_FAILED);
         }
 
         String refreshToken = jwtUtils.generateRefreshToken(savedUser.getEmail());
