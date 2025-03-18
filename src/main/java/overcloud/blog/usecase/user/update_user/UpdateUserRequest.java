@@ -13,13 +13,13 @@ import overcloud.blog.utils.validation.LetterAndNumber;
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class UpdateUserRequest {
     @JsonProperty("username")
-    @NotBlank(message = "user.register.username.not-blank")
-    @Size(min = 6, max = 32, message = "user.register.username.size")
-    @LetterAndNumber(message = "user.register.username.letter-and-number")
+    @NotBlank(message = UpdateUserResMsg.USERNAME_NOTBLANK)
+    @Size(min = 6, max = 32, message = UpdateUserResMsg.USERNAME_SIZE)
+    @LetterAndNumber(message = UpdateUserResMsg.USERNAME_LETTERANDNUMBER)
     private String username;
 
     @JsonProperty("bio")
-    @Size(min = 8, max = 1000, message = "user.profile.bio.size")
+    @Size(min = 8, max = 1000, message = UpdateUserResMsg.BIO_SIZE)
     private String bio;
 
     @JsonProperty("image")

@@ -21,7 +21,7 @@ public class RefreshTokenService {
     private final JwtUtils jwtUtils;
     private final RefreshTokenRepository refreshTokenRepository;
     private final ObjectsValidator validator;
-    private final String REFRESH_TOKEN_FAILED = "Refresh token failed!";
+    private final String REFRESH_TOKEN_FAILED = "refresh-token.failed";
     public RefreshTokenService(JwtUtils jwtUtils,
         RefreshTokenRepository refreshTokenRepository,
         ObjectsValidator validator) {
