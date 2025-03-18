@@ -63,7 +63,7 @@ public class UpdateArticleService {
             Optional<TagEntity> tagEntity = isTagExist(tagId, tagEntities);
 
             if (tagEntity.isEmpty()) {
-                throw validator.fail(TagResMsg.TAG_NO_EXISTS);
+                throw validator.fail(ArticleResMsg.TAG_NO_EXISTS);
             } else {
                 ArticleTagId articleTagId = new ArticleTagId(articleEntity.getArticleId(), tagEntity.get().getTagId());
                 articleTags.add(new ArticleTag(articleTagId));
