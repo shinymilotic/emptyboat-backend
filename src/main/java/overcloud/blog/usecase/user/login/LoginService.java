@@ -21,6 +21,8 @@ import overcloud.blog.usecase.user.common.UserResponseMapper;
 import java.util.Optional;
 import java.util.UUID;
 
+import static overcloud.blog.usecase.user.login.LoginResMsg.USER_LOGIN_FAILED;
+
 @Service
 public class LoginService {
     private final SpringAuthenticationService authenticationService;
@@ -51,7 +53,7 @@ public class LoginService {
         String email = loginRequest.getEmail();
         String hashedPassword = loginRequest.getPassword();
         UserEntity user = authenticationService.authenticate(email, hashedPassword)
-                .orElseThrow(() -> validator.fail("user.login.failed"))
+                .orElseThrow(() -> validator.fail(USER_LOGIN_FAILED))
                 .getUser();
 
         if (!user.isEnable()) {
