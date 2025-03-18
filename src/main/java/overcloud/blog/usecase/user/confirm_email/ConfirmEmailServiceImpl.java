@@ -17,6 +17,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
     private final RefreshTokenRepository refreshTokenRepository;
     private final ObjectsValidator validator;
     private final UserRepository userRepository;
+    public static final String AUTHORIZE_FAILED = "authorize.failed";
 
     public ConfirmEmailServiceImpl(RefreshTokenRepository refreshTokenRepository,
                                    UserRepository userRepository,
@@ -30,7 +31,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
     @Transactional
     public Void confirmEmail(ConfirmEmailRequest confirmToken) {
         if (confirmToken == null || !StringUtils.hasText(confirmToken.getConfirmToken())) {
-            throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
+            throw validator.fail(AUTHORIZE_FAILED);
         }
 
         Optional<UserEntity> user = refreshTokenRepository.findUserByToken(confirmToken.getConfirmToken());
@@ -38,7 +39,7 @@ public class ConfirmEmailServiceImpl implements ConfirmEmailService{
         if (user.isPresent()) {
             this.userRepository.enableUser(confirmToken.getConfirmToken());
         } else {
-            throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
+            throw validator.fail(AUTHORIZE_FAILED);
         }
 
         return null;

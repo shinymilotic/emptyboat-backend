@@ -24,6 +24,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final AuthenticationProvider authenticationProvider;
     private final ObjectsValidator validator;
+    public static final String AUTHORIZE_FAILED = "authorize.failed";
+    public static final String TOKEN_TIMEOUT = "authorize.token.timeout";
 
     public JwtAuthenticationFilter(JwtUtils jwtUtils,
                                    AuthenticationProvider authenticationProvider,
@@ -59,11 +61,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 isValid = jwtUtils.validateToken(token);
             } catch (Exception e) {
-                throw validator.fail(UserResMsg.AUTHORIZE_FAILED);
+                throw validator.fail(AUTHORIZE_FAILED);
             }
 
             if (!isValid) {
-                throw validator.fail(UserResMsg.TOKEN_TIMEOUT);
+                throw validator.fail(TOKEN_TIMEOUT);
             }
             String email = jwtUtils.getSub(token);
             Authentication auth = authenticationProvider.getAuthentication(email);

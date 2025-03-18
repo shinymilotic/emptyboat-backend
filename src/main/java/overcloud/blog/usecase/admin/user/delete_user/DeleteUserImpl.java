@@ -10,6 +10,8 @@ import overcloud.blog.utils.validation.ObjectsValidator;
 
 import java.util.UUID;
 
+import static overcloud.blog.usecase.admin.user.delete_user.DeleteUserResMsg.USER_DELETE_CURRENT;
+
 @Service
 public class DeleteUserImpl implements DeleteUser {
     private final UserRepository userRepository;
@@ -55,7 +57,7 @@ public class DeleteUserImpl implements DeleteUser {
                 .getUser();
 
         if (currentUser.getUserId().equals(uuidUserId)) {
-            throw validator.fail(UserResMsg.USER_DELETE_CURRENT);
+            throw validator.fail(USER_DELETE_CURRENT);
         }
 
         refreshTokenRepository.deleteByUserId(uuidUserId);

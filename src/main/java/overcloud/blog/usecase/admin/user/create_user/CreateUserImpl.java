@@ -22,6 +22,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+import static overcloud.blog.usecase.admin.user.create_user.CreateUserResMsg.USER_EMAIL_EXIST;
+import static overcloud.blog.usecase.admin.user.create_user.CreateUserResMsg.USER_USERNAME_EXIST;
+
 @Service
 public class CreateUserImpl implements CreateUser {
     private final ObjectsValidator<CreateUserRequest> validator;
@@ -46,11 +49,11 @@ public class CreateUserImpl implements CreateUser {
         }
 
         if (userRepository.findByEmail(request.getEmail()) != null) {
-            error = validator.addError(error, UserResMsg.USER_EMAIL_EXIST);
+            error = validator.addError(error, USER_EMAIL_EXIST);
         }
 
         if (userRepository.findByUsername(request.getUsername()) != null) {
-            error = validator.addError(error, UserResMsg.USER_USERNAME_EXIST);
+            error = validator.addError(error, USER_USERNAME_EXIST);
         }
 
         if (error.isPresent()) {
