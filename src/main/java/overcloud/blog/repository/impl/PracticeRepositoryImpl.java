@@ -102,10 +102,12 @@ public class PracticeRepositoryImpl implements PracticeRepository {
     }
 
     @Override
-    public int deleteByTestId(UUID testId) {
-        return entityManager.createQuery(
-        "UPDATE PracticeEntity p SET p.testId = null WHERE p.testId = :testId")
-            .setParameter("testId", testId)
-            .executeUpdate();
+    public void deleteByTestId(UUID testId) {
+        jpa.deleteByTestId(testId);
+    }
+
+    @Override
+    public List<UUID> findByTestId(UUID testId) {
+        return jpa.findByTestId(testId);
     }
 }

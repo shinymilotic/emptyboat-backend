@@ -26,4 +26,9 @@ public class PracticeOpenAnswerRepositoryImpl implements PracticeOpenAnswerRepos
     public void deleteAllByQuestionId(List<UUID> questionIds) {
         jpa.deleteAllByQuestionId(questionIds);
     }
+
+    @Override
+    public void deleteByPracticeIdList(List<UUID> practiceIdList) {
+        jpa.deleteByPracticeIdList(practiceIdList);
+    }
 }

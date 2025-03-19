@@ -6,16 +6,17 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import overcloud.blog.entity.ChoiceAnswerEntity;
+import overcloud.blog.repository.ChoiceAnswerRepository;
 import overcloud.blog.repository.jparepository.JpaChoiceAnswerRepository;
 
 @Repository
-public class ChoiceAnswerRepository implements overcloud.blog.repository.ChoiceAnswerRepository {
+public class ChoiceAnswerRepositoryImpl implements ChoiceAnswerRepository {
     private final JpaChoiceAnswerRepository jpa;
 
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public ChoiceAnswerRepository(JpaChoiceAnswerRepository jpa, EntityManager entityManager) {
+    public ChoiceAnswerRepositoryImpl(JpaChoiceAnswerRepository jpa, EntityManager entityManager) {
         this.jpa = jpa;
         this.entityManager = entityManager;
     }
@@ -36,6 +37,11 @@ public class ChoiceAnswerRepository implements overcloud.blog.repository.ChoiceA
     @Override
     public void deleteAll(List<UUID> answerIds) {
         jpa.deleteAll(answerIds);
+    }
+
+    @Override
+    public void deleteByQuestionIdList(List<UUID> practiceIdList) {
+        jpa.deleteByQuestionIdList(practiceIdList);
     }
 }
 

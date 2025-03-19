@@ -14,4 +14,8 @@ public interface JpaPracticeChoiceAnswerRepository extends JpaRepository<Practic
     @Modifying
     @Query("DELETE FROM PracticeChoiceAnswerEntity p WHERE p.id.choiceAnswerId IN :answerIds")
     void findByChoiceAnswerIds(List<UUID> answerIds);
+
+    @Modifying
+    @Query("DELETE FROM PracticeChoiceAnswerEntity p WHERE p.id.practiceId IN :practiceIdList")
+    void deleteByPracticeIdList(List<UUID> practiceIdList);
 }

@@ -40,4 +40,9 @@ public class QuestionRepositoryImpl implements QuestionRepository {
     public void deleteByTestId(UUID testId) {
         jpa.deleteByTestId(testId);
     }
+
+    @Override
+    public List<UUID> findByTestId(UUID testId) {
+        return jpa.findByTestId(testId);
+    }
 }

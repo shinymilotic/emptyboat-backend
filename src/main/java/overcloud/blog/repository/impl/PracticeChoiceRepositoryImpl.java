@@ -26,4 +26,9 @@ public class PracticeChoiceRepositoryImpl implements PracticeChoiceRepository {
     public void deleteAll(List<UUID> choiceAnswerIds) {
         jpa.findByChoiceAnswerIds(choiceAnswerIds);
     }
+
+    @Override
+    public void deleteByPracticeIdList(List<UUID> practiceIdList) {
+        jpa.deleteByPracticeIdList(practiceIdList);
+    }
 }

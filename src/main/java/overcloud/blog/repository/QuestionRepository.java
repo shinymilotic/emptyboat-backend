@@ -11,4 +11,5 @@ public interface QuestionRepository {
     void updateAll(List<QuestionEntity> questions);
     void deleteAll(List<UUID> questionIds);
     void deleteByTestId(UUID testId);
+    List<UUID> findByTestId(UUID testId);
 }

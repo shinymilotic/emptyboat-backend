@@ -12,5 +12,6 @@ public interface PracticeRepository {
     Optional<PracticeEntity> findById(UUID id);
     PracticeResult getPracticeResult(UUID id);
     PracticeEntity save(PracticeEntity entity);
-    int deleteByTestId(UUID testId);
+    void deleteByTestId(UUID testId);
+    List<UUID> findByTestId(UUID testId);
 }

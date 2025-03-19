@@ -14,4 +14,8 @@ public interface JpaPracticeOpenAnswerRepository extends JpaRepository<PracticeO
     @Modifying
     @Query("DELETE FROM PracticeOpenAnswerEntity a WHERE a.id.questionId IN :questionIds")
     void deleteAllByQuestionId(List<UUID> questionIds);
+
+    @Modifying
+    @Query("DELETE FROM PracticeOpenAnswerEntity a WHERE a.id.practiceId IN :practiceIdList")
+    void deleteByPracticeIdList(List<UUID> practiceIdList);
 }

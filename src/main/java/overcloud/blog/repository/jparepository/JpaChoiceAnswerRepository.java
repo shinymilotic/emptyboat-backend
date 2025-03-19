@@ -13,4 +13,8 @@ public interface JpaChoiceAnswerRepository extends JpaRepository<ChoiceAnswerEnt
     @Modifying
     @Query("DELETE FROM ChoiceAnswerEntity a WHERE a.choiceAnswerId IN :answerIds")
     void deleteAll(List<UUID> answerIds);
+
+    @Modifying
+    @Query("DELETE FROM ChoiceAnswerEntity a WHERE a.questionId IN :questionIdList")
+    void deleteByQuestionIdList(List<UUID> questionIdList);
 }
