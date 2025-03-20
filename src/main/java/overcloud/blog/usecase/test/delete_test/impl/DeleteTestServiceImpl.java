@@ -75,7 +75,6 @@ public class DeleteTestServiceImpl implements DeleteTestService {
             choiceAnswerRepository.deleteByQuestionIdList(questionIdList);
         }
 
-
         practiceRepository.deleteByTestId(testId);
         questionRepository.deleteByTestId(testId);
         testRepository.deleteById(testId);
