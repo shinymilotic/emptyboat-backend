@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import overcloud.blog.usecase.user.follow.core.FollowEntity;
-import overcloud.blog.usecase.user.follow.core.FollowId;
+import overcloud.blog.entity.FollowEntity;
+import overcloud.blog.entity.FollowId;
 
 import java.util.UUID;
 

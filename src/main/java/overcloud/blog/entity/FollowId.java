@@ -1,4 +1,4 @@
-package overcloud.blog.usecase.user.follow.core;
+package overcloud.blog.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

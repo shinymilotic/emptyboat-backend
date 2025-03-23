@@ -1,6 +1,6 @@
 package overcloud.blog.repository;
 
-import overcloud.blog.usecase.user.follow.core.FollowEntity;
+import overcloud.blog.entity.FollowEntity;
 import java.util.UUID;
 
 public interface FollowRepository {

@@ -8,8 +8,8 @@ import overcloud.blog.entity.UserEntity;
 import overcloud.blog.repository.FollowRepository;
 import overcloud.blog.repository.UserRepository;
 import overcloud.blog.usecase.user.common.UserResMsg;
-import overcloud.blog.usecase.user.follow.core.FollowEntity;
-import overcloud.blog.usecase.user.follow.core.FollowId;
+import overcloud.blog.entity.FollowEntity;
+import overcloud.blog.entity.FollowId;
 import overcloud.blog.utils.validation.ObjectsValidator;
 
 @Service

@@ -3,7 +3,7 @@ package overcloud.blog.repository.impl;
 import org.springframework.stereotype.Repository;
 import overcloud.blog.repository.FollowRepository;
 import overcloud.blog.repository.jparepository.JpaFollowRepository;
-import overcloud.blog.usecase.user.follow.core.FollowEntity;
+import overcloud.blog.entity.FollowEntity;
 
 import java.util.UUID;
 
